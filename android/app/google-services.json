@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "579407812380",
+    "project_id": "fougito-food",
+    "storage_bucket": "fougito-food.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579407812380:android:8ab5d53633759ef2fd8cd9",
+        "android_client_info": {
+          "package_name": "com.fougitofood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579407812380-rniqq1i9mqq27vs198bmah457gpkd5ke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmXlsinkkWpcI3oG6O2bMbtAFNuOzAN8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579407812380-rniqq1i9mqq27vs198bmah457gpkd5ke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

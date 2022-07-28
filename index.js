@@ -33,19 +33,19 @@ const FougitoFood = () => (
     </Provider>
   );
 
-//   PushNotification.createChannel(
-//     {
-//       channelId: 'products', // (required)
-//       channelName: 'Orders', // (required)
-//       channelDescription: 'Order related Notification', // (optional) default: undefined.
-//       playSound: true, // (optional) default: true
-//       soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
-//       importance: 5, // (optional) default: 4. Int value of the Android notification importance
-//       vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-//     },
-//     created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-//   );
+  PushNotification.createChannel(
+    {
+      channelId: 'products', // (required)
+      channelName: 'Orders', // (required)
+      channelDescription: 'Order related Notification', // (optional) default: undefined.
+      playSound: true, // (optional) default: true
+      soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+      importance: 5, // (optional) default: 4. Int value of the Android notification importance
+      vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+    },
+    created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+  );
   
-//   messaging().setBackgroundMessageHandler(async remoteMessage => {console.log('Message handled in the background!', remoteMessage);});
+  messaging().setBackgroundMessageHandler(async remoteMessage => {console.log('Message handled in the background!', remoteMessage);});
  
 AppRegistry.registerComponent(appName, () => gestureHandlerRootHOC(FougitoFood));
