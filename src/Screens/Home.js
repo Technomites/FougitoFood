@@ -130,6 +130,10 @@ const Home = ({navigation, drawerAnimationStyle}) => {
     dispatch(seticonfocus('home'));
     // listeners()
   }, []);
+  useEffect(() => {
+    
+     listeners()
+  }, []);
 
  
 
