@@ -13,7 +13,12 @@ import {
   ScrollView,
   Keyboard,
 } from 'react-native';
-import {login, eraselogin,   createsession, eraselogout,} from '../Actions/actions';
+import {
+  login,
+  eraselogin,
+  createsession,
+  eraselogout,
+} from '../Actions/actions';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -31,13 +36,12 @@ import PickerModel from '../Shared/Components/PickerModel';
 import NetInfo from '@react-native-community/netinfo';
 import DeviceInfo from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
-import { totalSize } from 'react-native-dimension';
-
+import {totalSize} from 'react-native-dimension';
 
 const Login = ({navigation}) => {
   const [Loading, setLoading] = useState(false);
   const [phoneNumberActive, setPhoneNumberActive] = useState(false);
- 
+
   const [phoneNumber, setphoneNumber] = useState('');
   const [passwordActive, setPasswordActive] = useState(false);
   const [password, setPassword] = useState('');
@@ -46,7 +50,7 @@ const Login = ({navigation}) => {
   const [numberShown, setNumberShown] = useState(false);
   const [deviceid, setdeviceid] = useState('');
   const [Loader, setLoader] = useState(false);
-  const [passwordshow, setpasswordshow]  = useState(true);
+  const [passwordshow, setpasswordshow] = useState(true);
 
   const countryCodes = [
     {
@@ -1275,7 +1279,7 @@ const Login = ({navigation}) => {
   useEffect(() => {
     setLoader(false);
     if (Login == 200) {
-      session()
+      session();
       navigation.replace('Drawernavigator');
     } else {
       if (Login != '') {
@@ -1288,10 +1292,13 @@ const Login = ({navigation}) => {
 
     if (Logout) {
       // session()
-      showToast(Lang == "en" ? "Logout Successfully!" : "تم تسجيل الخروج بنجاح!", {
-        duration: 500,
-      });
-    } 
+      showToast(
+        Lang == 'en' ? 'Logout Successfully!' : 'تم تسجيل الخروج بنجاح!',
+        {
+          duration: 500,
+        },
+      );
+    }
     dispatch(eraselogout());
   }, [Login, Logout]);
 
@@ -1330,59 +1337,60 @@ const Login = ({navigation}) => {
           setLoader(false);
         } else {
           setLoader(true);
-          dispatch(login(selectNumber.substring(1), phoneNumber, password, deviceid));
+          dispatch(
+            login(selectNumber.substring(1), phoneNumber, password, deviceid),
+          );
         }
       });
     }
   };
-  
-  return (
-   
-      <View
-        style={{height: '100%', width: '100%', backgroundColor: 'transparent'}}>
-        <View style={{height:"80%", position: 'absolute'}}>
-          <PickerModel
-            modalPopUp={numberShown}
-            pickerSearch={text => setPickerSearch(text)}
-            onCancel={() => setNumberShown(false)}
-            countryCode={selectNumber}>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              style={{width: '100%'}}>
-              {countryCodes.map(item => {
-                if (item.name.includes(pickerSearch.trim())) {
-                  return (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setSelectedNumber(item?.dial_code);
-                        setNumberShown(false);
-                      }}
-                      style={{
-                        height: scalableheight.seven,
-                        width: '100%',
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                        borderBottomColor: 'lightgray',
-                        borderBottomWidth: scalableheight.borderTopWidth,
-                        flexDirection: 'row',
-                      }}>
-                      <View
-                        style={{
-                          width: '100%',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}>
-                        <Text>{item.name}</Text>
-                        <Text>{item.dial_code}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  );
-                }
-              })}
-            </ScrollView>
 
-            {/* <FlatList
+  return (
+    <View
+      style={{height: '100%', width: '100%', backgroundColor: 'transparent'}}>
+      <View style={{height: '80%', position: 'absolute'}}>
+        <PickerModel
+          modalPopUp={numberShown}
+          pickerSearch={text => setPickerSearch(text)}
+          onCancel={() => setNumberShown(false)}
+          countryCode={selectNumber}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{width: '100%'}}>
+            {countryCodes.map(item => {
+              if (item.name.includes(pickerSearch.trim())) {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedNumber(item?.dial_code);
+                      setNumberShown(false);
+                    }}
+                    style={{
+                      height: scalableheight.seven,
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      borderBottomColor: 'lightgray',
+                      borderBottomWidth: scalableheight.borderTopWidth,
+                      flexDirection: 'row',
+                    }}>
+                    <View
+                      style={{
+                        width: '100%',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <Text>{item.name}</Text>
+                      <Text>{item.dial_code}</Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              }
+            })}
+          </ScrollView>
+
+          {/* <FlatList
               showsVerticalScrollIndicator={false}
               data={countryCodes}
               keyExtractor={(item, index) => index.toString()}
@@ -1411,18 +1419,18 @@ const Login = ({navigation}) => {
                 }
               }}
             /> */}
-          </PickerModel>
-        </View>
-        <ImageBackground
-          resizeMode="cover"
-          style={styles.backgroundImageStyle}
-          source={require('../Resources/images/Splash.png')}>
-          {/* <CustomStatusBar 
+        </PickerModel>
+      </View>
+      <ImageBackground
+        resizeMode="cover"
+        style={styles.backgroundImageStyle}
+        source={require('../Resources/images/Splash.png')}>
+        {/* <CustomStatusBar 
                 barStyle={"light-content"}
                 backgroundColor={"transparent"}
             /> */}
-             <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
           <Image
             resizeMode="contain"
             style={styles.imageStyle}
@@ -1433,7 +1441,6 @@ const Login = ({navigation}) => {
           </Text>
 
           <View style={{position: 'relative', width: '100%'}}>
-        
             <MyInput
               countryCode={selectNumber}
               onPhone={() => setNumberShown(true)}
@@ -1464,28 +1471,31 @@ const Login = ({navigation}) => {
               ]}
               value={password}
               secureTextEntry={passwordshow}
-              placeholder={  Lang == 'en' ? 'Password' : 'كلمة المرور'}
+              placeholder={Lang == 'en' ? 'Password' : 'كلمة المرور'}
               placeholderTextColor={'#A0A0A0'}
               placeholderStyle={styles.placeholderStyle}
               onChangeText={val => setPassword(val)}
               onFocus={() => setPasswordActive(true)}
               onBlur={() => setPasswordActive(false)}
             />
-           <TouchableOpacity
-            onPress={()=>{setpasswordshow(!passwordshow)}}
-            style={styles.inputIconStyle}>
-                   {passwordshow == true ?
-              <Ionicons
-                color={'#818181'}
-                name="md-eye-outline"
-                size={fontSize.twentytwo}
-              />: 
-              <Ionicons
-              color={'#818181'}
-              name="md-eye-off-sharp"
-              size={fontSize.twentytwo}
-            />
-            }
+            <TouchableOpacity
+              onPress={() => {
+                setpasswordshow(!passwordshow);
+              }}
+              style={styles.inputIconStyle}>
+              {passwordshow == true ? (
+                <Ionicons
+                  color={'#818181'}
+                  name="md-eye-outline"
+                  size={fontSize.twentytwo}
+                />
+              ) : (
+                <Ionicons
+                  color={'#818181'}
+                  name="md-eye-off-sharp"
+                  size={fontSize.twentytwo}
+                />
+              )}
             </TouchableOpacity>
           </View>
 
@@ -1502,58 +1512,69 @@ const Login = ({navigation}) => {
             title={Lang == 'en' ? 'Login' : 'تسجيل الدخول'}
             customButtonStyle={{marginTop: '6%'}}
             Loading={Loader}
-            style={{  backgroundColor: '#AB8651',}}
+            style={{backgroundColor: '#AB8651'}}
             onPress={() => {
               handleSubmit();
             }}
           />
-</KeyboardAvoidingView>
-<TouchableOpacity
-onPress={() => {    navigation.replace('Drawernavigator')}}
-style={{ ...styles.shadow,
-                width: '100%', justifyContent: 'center',
-             
-           
-                borderRadius: fontSize.borderradiusmedium,
-           
-             
-           
-                alignSelf:"center"}}>
-<Text style={{color: "white", alignSelf:"center", fontSize: fontSize.fifteen}}>   {Lang == 'en' ? 'Proceed without signing in' : "المتابعة دون تسجيل الدخول"}</Text>
-          </TouchableOpacity>
+        </KeyboardAvoidingView>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.replace('Drawernavigator');
+          }}
+          style={{
+            ...styles.shadow,
+            width: '100%',
+            justifyContent: 'center',
 
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('SignUp');
-            }}
+            borderRadius: fontSize.borderradiusmedium,
+
+            alignSelf: 'center',
+          }}>
+          <Text
             style={{
+              color: 'white',
               alignSelf: 'center',
-              position: 'absolute',
-              bottom: scalableheight.two,
-              flexDirection: Lang == 'en' ? 'row' : 'row-reverse',
-              fontFamily: 'Rubik-Regular',
-              alignItems: 'center',
-              justifyContent: 'center',
+              fontSize: fontSize.fifteen,
             }}>
-            {/* <Text style={styles.bottomTextStyle}> */}
-            <Text style={{color: '#B3B3B3', fontSize: fontSize.fourteen}}>
-              {Lang == 'en' ? "Don't have an account ?" : 'ليس لديك حساب؟'}
-            </Text>
-            <Text
-              style={{
-                fontSize: fontSize.fourteen,
-                color: 'white',
-                marginLeft: Lang == 'en' ? '2%' : '0%',
-                marginRight: Lang == 'en' ? '0%' : '2%',
-              }}>
-              {Lang == 'en' ? 'Sign Up' : 'اشتراك'}
-            </Text>
-            {/* </Text> */}
-          </TouchableOpacity>
-          <GToastContainer paddingBottom={100} style={{height: 40, width: 60}} />
-        </ImageBackground>
-      </View>
+            {' '}
+            {Lang == 'en'
+              ? 'Proceed without signing in'
+              : 'المتابعة دون تسجيل الدخول'}
+          </Text>
+        </TouchableOpacity>
 
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('SignUp');
+          }}
+          style={{
+            alignSelf: 'center',
+            position: 'absolute',
+            bottom: scalableheight.two,
+            flexDirection: Lang == 'en' ? 'row' : 'row-reverse',
+            fontFamily: 'Rubik-Regular',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          {/* <Text style={styles.bottomTextStyle}> */}
+          <Text style={{color: '#B3B3B3', fontSize: fontSize.fourteen}}>
+            {Lang == 'en' ? "Don't have an account ?" : 'ليس لديك حساب؟'}
+          </Text>
+          <Text
+            style={{
+              fontSize: fontSize.fourteen,
+              color: 'white',
+              marginLeft: Lang == 'en' ? '2%' : '0%',
+              marginRight: Lang == 'en' ? '0%' : '2%',
+            }}>
+            {Lang == 'en' ? 'Sign Up' : 'اشتراك'}
+          </Text>
+          {/* </Text> */}
+        </TouchableOpacity>
+        <GToastContainer paddingBottom={100} style={{height: 40, width: 60}} />
+      </ImageBackground>
+    </View>
   );
 };
 

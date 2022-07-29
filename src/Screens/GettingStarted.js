@@ -11,76 +11,121 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { fontSize, scalableheight } from '../Utilities/fonts'
+import Entypo from 'react-native-vector-icons/Entypo';
+import {fontSize, scalableheight} from '../Utilities/fonts';
 // import AuthButton from '../Shared/Components/AuthButton';
 import * as Animatable from 'react-native-animatable';
+import MYButton from '../Shared/Components/MYButton';
 
 const GettingStarted = props => {
   const {Lang} = useSelector(state => state.userReducer);
 
- 
   useEffect(() => {
     //  StatusBar.setHidden(false);
-    // StatusBar.setBackgroundColor('#363431');  
+    // StatusBar.setBackgroundColor('#363431');
     // StatusBar.setBarStyle("dark-content")
     // hideNavigationBar()
     // changeNavigationBarColor("white");
   }, []);
 
   return (
-    
-  
-
+    <View
+      style={{height: '100%', width: '100%', backgroundColor: 'transparent'}}>
       <ImageBackground
-      resizeMode="cover"
-  
-        source={require('../Resources/images/Splash.png')}
+        resizeMode="cover"
+        source={require('../Resources/images/GetstartedS1.png')}
         style={styleSheet.BackgroundImage}>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: scalableheight.fifty,
+            width: '100%',
+          }}>
           <Image
-    resizeMode= "contain"
-      style={styleSheet.Image}
-      source={require('../Resources/images/GettingStartedLogo.png')}/>
-      <Text style={{color:"white", fontSize:fontSize.twentysix, fontFamily:"Rubik-Medium", textAlign:"center", width: "80%",    marginBottom:scalableheight.two}}>{Lang == "en" ? "PROVIDING YOU\n THE BEST FACILITIES" : "نوفر لك \n أفضل المرافق"}</Text>
-    
-      <Text style={{color:"#E6E3E3", fontSize:fontSize.fourteen, fontFamily:"Rubik-Regular", textAlign:"center", width: "80%",  marginBottom:scalableheight.two}}>{Lang == "en" ? "It is a long established fact that a reader will be distracted by the readable" : "هناك حقيقة مثبتة منذ زمن طويل وهي أن المقروء سيلهي القارئ عن التركيز"}</Text>
+            resizeMode="contain"
+            style={styleSheet.Image}
+            source={require('../Resources/images/logo-black.png')}
+          />
+          <Text
+            style={{
+              color: '#29262A',
+              fontSize: fontSize.twentyseven,
+              fontWeight: '700',
+              fontFamily: 'Inter, Extra Bold',
+              textAlign: 'center',
+              width: '80%',
+              // marginBottom: scalableheight.two,
+            }}>
+            Getting Started
+          </Text>
 
-<TouchableOpacity
- onPress={() => {
+          <Text
+            style={{
+              color: '#29262A',
+              fontSize: fontSize.fourteen,
+              fontFamily: 'Rubik-Regular',
+              textAlign: 'center',
+              width: '80%',
+              // marginBottom: scalableheight.two,
+            }}>
+            5 Star Restaurants at your finger tips
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignContent: 'center',
+              width: '100%',
+              position: 'relative',
+              marginVertical: scalableheight.pointfive,
+            }}>
+            <View style={{width: scalableheight.four, alignItems: 'center'}}>
+              <Entypo
+                name="dot-single"
+                color={'#E14E4E'}
+                size={scalableheight.six}
+              />
+            </View>
+            <View style={{width: scalableheight.four}}>
+              <Entypo
+                name="dot-single"
+                color={'rgba(245, 80, 80, 0.5)'}
+                size={scalableheight.six}
+              />
+            </View>
+            <View style={{width: scalableheight.four}}>
+              <Entypo
+                name="dot-single"
+                color={'rgba(245, 80, 80, 0.5)'}
+                size={scalableheight.six}
+              />
+            </View>
+          </View>
 
-  props.navigation.replace("Drawernavigator")
-}}
-style= {{paddingVertical: scalableheight.onepointfive,
-  paddingHorizontal: scalableheight.two, backgroundColor: "#AB8651", alignItems:"center", justifyContent:"space-evenly", flexDirection:"row", borderRadius:8 ,
-elevation: 3,
-shadowOffset: {width: 1, height: 1},
-shadowColor: '#333',
-shadowOpacity: 0.3,
-shadowRadius: 2,
-
-marginVertical: 6,
-}}>
-<Text style= {{color:"white", fontSize:fontSize.fourteen, fontFamily:"Rubik-Regular", paddingRight: scalableheight.two,}}>{Lang == "en" ? "Get Started" : "البدء"}</Text>
-<Animatable.View
-        animation="zoomIn"
-             easing="ease"
-              iterationCount="infinite"
-           
-            >
-<AntDesign name="arrowright" size={fontSize.twenty} color={'white'} />
-</Animatable.View>
-</TouchableOpacity>
-
+          <View style={{width: '100%', padding: scalableheight.three}}>
+            <MYButton
+              color={'#E14E4E'}
+              title="NEXT"
+              textcolor={'white'}
+              onPress={() => {
+                props.navigation.navigate('GetStartedsteptwo');
+              }}
+            />
+            <MYButton title="SKIP" textcolor={'#000'}  onPress={() => {
+              props.navigation.navigate('GetStartedstepthree');
+            }} />
+          </View>
+        </View>
       </ImageBackground>
-
- 
+    </View>
   );
 };
 
@@ -97,19 +142,20 @@ const styleSheet = StyleSheet.create({
     paddingBottom: 20,
     fontFamily: 'Rubik-Regular',
     width: '90%',
-    color:"black"
+    color: 'black',
   },
   Image: {
- 
-    width:scalableheight.thirtysix,
-    height:scalableheight.twentysix,
- 
-
+    width: scalableheight.twenty,
+    // height: scalableheight.ten,
+    resizeMode: 'contain',
   },
   BackgroundImage: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#EFF1F3',
+    height: '80%',
+    // height: scalableheight.thirtyfive,
   },
 });
 export default GettingStarted;
