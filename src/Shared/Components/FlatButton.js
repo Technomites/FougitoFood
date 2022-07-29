@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
-import Text from './DerivedText';
+
 import {myColors} from './MyColors';
 
 type Props = {

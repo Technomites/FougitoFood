@@ -18,125 +18,107 @@ import {
   Platform,
   Vibration,
   ActivityIndicator,
-  Keyboard
+  Keyboard,
+  Modal,
+  KeyboardAvoidingView
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-
+import renderIf from 'render-if';
+// import Modal from "react-native-modal";
 import {getblogshome, getnewsfeedshome, getpopularserviceshome, changelang, seticonfocus, getProfileInformation, getbanner, getcategories, getcategoriesbyid, getNewNotificationCount} from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
+import RNAndroidKeyboardAdjust from 'rn-android-keyboard-adjust'
 import { SliderBox } from "react-native-image-slider-box";
 import ImagesSwiper from "react-native-image-swiper";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import NetInfo from '@react-native-community/netinfo';
 import BookingHeader from '../Shared/Components/BookingHeader';
 import HeaderComponent from '../Shared/Components/HeaderComponent';
-import BottomTab from '../Shared/Components/BottomTab';
+import Reviewscontainer from '../Shared/Components/Reviewscontainer';
+import Categoriescard from '../Shared/Components/Categoriescard';
 import Animated from 'react-native-reanimated';
-import Line from '../Shared/Components/Line';
+import Infobar from '../Shared/Components/Infobar';
+import SearchBar from '../Shared/Components/SearchBar';
+import Starters from '../Shared/Components/Starters';
+import MultiChoiceDropDown from '../Shared/Components/MultiChoiceDropDown';
+import MYButton from '../Shared/Components/MYButton';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {createDrawerNavigator, DrawerItemList, useIsDrawerOpen} from '@react-navigation/drawer';
 import listeners from '../Listener/Listener';
 import {createConfigItem} from '@babel/core';
 import { fontSize, scalableheight } from '../Utilities/fonts'
 import moment from 'moment';
-import renderIf from 'render-if';
+
 const Home = ({navigation, drawerAnimationStyle}) => {
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
+  const [specialinstructions, setspecialinstructions] = useState("");
   const [refreshing, setRefreshing] = useState(false);
-  const [Data, setData] = useState([
+  const [cartvisible, setcartvisible] = useState(false);
+  const [modalVisible, setmodalVisible] = useState(false);
+  const [search, setsearch] = useState("");
+  const [count, setcount] = useState(0);
+  const [serving, setserving] = useState([
     {
-      name: 'cars',
-      image: require('../Resources/images/CategoriesIcon.png'),
-    },
-    {
-      name: 'cleaning',
-      image: require('../Resources/images/CategoriesIcon.png'),
-    },
-    {
-      name: 'car wash',
-      image: require('../Resources/images/CategoriesIcon.png'),
-    },
-    {
-      name: 'hair cut',
-      image: require('../Resources/images/CategoriesIcon.png'),
-    },
-    {
-      name: 'driver',
-      image: require('../Resources/images/CategoriesIcon.png'),
-    },
-    {
-      name: 'maid',
-      image: require('../Resources/images/CategoriesIcon.png'),
-    },
-  ]);
-  const [Populardata, setPopulardata] = useState([
-    {
-      name: 'cars',
-      image: require('../Resources/images/popularservice.png'),
-    },
-    {
-      name: 'cleaning',
-      image: require('../Resources/images/popularservice.png'),
-    },
-    {
-      name: 'car wash',
-      image: require('../Resources/images/popularservice.png'),
-    },
-    {
-      name: 'hair cut',
-      image: require('../Resources/images/popularservice.png'),
-    },
-    {
-      name: 'driver',
-      image: require('../Resources/images/popularservice.png'),
-    },
-    {
-      name: 'maid',
-      image: require('../Resources/images/popularservice.png'),
-    },
-  ]);
-
-  const [popu, setpopu] = useState([
-  require('../Resources/images/popularservice.png'),
-   require('../Resources/images/popularservice.png'),
-   require('../Resources/images/popularservice.png'),
+      
+      selected: false,
+      serving: 'Single Plate',
+      price: "AED 159.00",
  
+    },
+    {
+      
+      selected: false,
+      serving: 'Double Plate',
+      price: "AED 129.00",
+ 
+    },
+    {
+      
+      selected: false,
+      serving: 'Triple Plate',
+      price: "AED 59.00",
+ 
+    },
+  
+
+  
   ]);
 
-  const [BrowseServices, setBrowseServices] = useState([
+  const [flavours, setflavours] = useState([
     {
-      name: 'cars service',
-      image: require('../Resources/images/browseservices.png'),
+      
+      selected: false,
+      serving: 'Hummus',
+    
+ 
     },
     {
-      name: 'cleaning service',
-      image: require('../Resources/images/browseservices.png'),
+      
+      selected: false,
+      serving: 'Chicken Munchurian',
+   
+ 
     },
     {
-      name: 'car wash service',
-      image: require('../Resources/images/browseservices.png'),
+      
+      selected: false,
+      serving: 'Pasta',
+    
+ 
     },
-    {
-      name: 'hair cut service',
-      image: require('../Resources/images/browseservices.png'),
-    },
-    {
-      name: 'driver service',
-      image: require('../Resources/images/browseservices.png'),
-    },
-    {
-      name: 'maid service',
-      image: require('../Resources/images/browseservices.png'),
-    },
+  
+
+  
   ]);
   const {blogsdatahome, newsfeedshomedata, Lang, ProfileInfo, profileimage, bannerarray, categories, newNotificationCount, popularservicedatahome} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
@@ -148,6 +130,8 @@ const Home = ({navigation, drawerAnimationStyle}) => {
     dispatch(seticonfocus('home'));
     // listeners()
   }, []);
+
+ 
 
   useEffect(() => {
     dispatch(getNewNotificationCount());
@@ -192,15 +176,10 @@ const Home = ({navigation, drawerAnimationStyle}) => {
   function onRefresh() {
     NetInfo.fetch().then(state => {
       if (state.isConnected == true && state.isInternetReachable == true) {
-        dispatch(getProfileInformation())
-        dispatch(getbanner())
-        dispatch(getcategories(Lang))
-        dispatch(getpopularserviceshome(Lang))
-        dispatch(getnewsfeedshome(Lang))
-        dispatch(getblogshome(Lang))
+      
       } else {
         showToast(
-          Lang == 'en' ? 'No Internet Connection' : 'لا يوجد اتصال بالإنترنت',
+        'No Internet Connection',
           {
             duration: 500,
           },
@@ -220,312 +199,314 @@ const Home = ({navigation, drawerAnimationStyle}) => {
     //  Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
-  const renderItem = ({item}) => (
+
+
+  const renderpopularcategories = ({item}) => (
+   
+  <Categoriescard image={require('../Resources/images/food.png')} type={"Pizza"} price={20}/>
+  );
+  const starters = ({item}) => (
+    <View style={{paddingHorizontal:scalableheight.one}}>
+    <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+    </View>
+    );
+ 
   
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPress={() => {
-        // navigation.navigate('PopularServices');
 
+    function updateservingstate(index){
+      let arr =[...serving]
+      for(const key in arr){
+        if(key == index){
+          if( arr[key].selected == true){
+            arr[key].selected = false
+          }else{
+            arr[key].selected = true
+          }
+      
+        }else{
+          arr[key].selected = false
+        }
+      }
+setserving(arr)
+console.log("arr" + JSON.stringify(arr))
+    }
 
-        navigation.navigate('CleaningService', {
-          data: item.id,
-        });
-      }}
-      style={{
-        height: '100%',
-        width: Dimensions.get('window').width / 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-    
-      }}>
-      <Image
-        resizeMode="stretch"
-        style={{width: scalableheight.seven, height: scalableheight.seven, borderRadius: fontSize.circle}}
-        source={{uri: item.icon}}
-      />
-      <Text
-      numberOfLines={1}
-        style={{
-          color: 'black',
-          opacity: 0.3,
-          fontSize: fontSize.eleven,
-          fontFamily: 'Rubik-Medium',
-          marginTop: '5%',
-        }}>
-        {item.name}
-      </Text>
-    </TouchableOpacity> 
-  );
-
-  const renderpopularservices = ({item}) => (
-   
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPress={() => {
-        
-        navigation.navigate('PopularServicceDetails', {
-          data: item.id,
-          categoryid: item.serviceCategoryID
-        });
-      }}
-      style={{
-        height: '100%',
-        width: Dimensions.get('window').width / 3,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <>
-        <View
-          style={{
-            ...styleSheet.shadow,
-            width: '95%',
-            height: '80%',
-            borderRadius: fontSize.eleven,
-          }}>
-          <Image
-            resizeMode="stretch"
-            style={{
-              width: '100%',
-              height: '100%',
-              borderRadius: fontSize.eleven,
-            }}
-            source={{uri: item.image}}
-          />
-        </View>
-        <Text
-          style={{
-            color: 'black',
-            opacity: 0.3,
-            fontSize: fontSize.eleven,
-            fontFamily: 'Rubik-Medium',
-            marginTop: '5%',
-          }}>
-          {item.name}
-        </Text>
-      </>
-    </TouchableOpacity>
-  );
-
-  const renderItemnewsfeeds = ({item, index}) => {
-
-    return (
-        <TouchableOpacity
-            key={index}
-            activeOpacity={0.9}
-            onPress={() => {
-                navigation.navigate("NewsFeedDetail", {
-                    feedID: item.id,
-                })
-            }}
-            style={{
-                ...styleSheet.shadow,
-                backgroundColor: "#FFF",
-                borderRadius: fontSize.eleven,
-                width: Dimensions.get('window').width / 1.25,
-          
-                height:"95%",
-                marginRight:scalableheight.two
-            }}
-        >
-     
-             <View style={{ width:"100%", height: "70%", borderRadius:fontSize.eleven,marginBottom:scalableheight.one}}>
-                  <Image
-                     resizeMode= "stretch"
-                    style={{width:"100%", height: "100%", borderRadius:fontSize.eleven}}
-                     source={ {uri: item.image}}
-                 />  
-            </View>
-                       <View style={{paddingHorizontal: scalableheight.two}}>
-                <Text style={{color:"#C59E6E", fontSize:fontSize.twelve, fontFamily:"Rubik-Medium", marginTop:"2%", alignSelf:Lang==="en"?"flex-start":"flex-end", marginLeft:"1%" }}>
-                    {moment(item.date).format("D, MMM, YYYY")}
-                </Text>
-                <Text numberOfLines={2} style={{color:"#113038", fontSize:fontSize.fourteen, fontFamily:"Rubik-Regular", alignSelf:Lang==="en"?"flex-start":"flex-end", marginLeft:"1%" }}>
-                    {item.name}
-                </Text>
-            </View>
-            <View style={{backgroundColor:"#C59E6E",paddingHorizontal:scalableheight.two,paddingVertical:scalableheight.onepointfive,borderRadius:8,position:'absolute',top:scalableheight.tweleve,left:Lang==="ar"?scalableheight.two:null,right:Lang==="en"?scalableheight.two:null}}>
-                <Text style={{color:"#fff", fontSize:fontSize.eightteen, fontFamily:"Rubik-Bold", textAlign:'center'}}>
-                    {moment(item.date).format("D")}
-                </Text>
-                <Text style={{color:"#fff", fontSize:fontSize.fourteen, fontFamily:"Rubik-Medium", textAlign:'center',marginTop:"1%"}}>
-                    {moment(item.date).format("MMM")}
-                </Text>
-            </View> 
-        </TouchableOpacity>
-    )
-};
-const renderItemblogs = ({item, index}) => {
-
-  return (
-      <TouchableOpacity
-          key={index}
-          activeOpacity={0.9}
-          onPress={() => {
-            navigation.navigate("BlogDetail", {
-              blogID: item.id
-          });
-          }}
-          style={{
-              ...styleSheet.shadow,
-              backgroundColor: "#FFF",
-              borderRadius: fontSize.eleven,
-              width: Dimensions.get('window').width / 1.25,
-        
-              height:"95%",
-              marginRight:scalableheight.two
-          }}
-      >
-   
-           <View style={{ width:"100%", height: "65%", borderRadius:fontSize.eleven,marginBottom:scalableheight.one}}>
-                <Image
-                   resizeMode= "stretch"
-                  style={{width:"100%", height: "100%", borderRadius:fontSize.eleven}}
-                   source={ {uri: item.bannerImage}}
-               />  
-          </View>
-                     <View style={{paddingHorizontal: scalableheight.two}}>
-          
-              <Text numberOfLines={2} style={{color:"#113038", fontSize:fontSize.fourteen, fontFamily:"Rubik-Regular", alignSelf:Lang==="en"?"flex-start":"flex-end", marginLeft:"1%" }}>
-                  {item.title}
-              </Text>
-              <Text numberOfLines={2} style={{color:"#113038", fontSize:fontSize.fourteen, fontFamily:"Rubik-Regular", alignSelf:Lang==="en"?"flex-start":"flex-end", marginLeft:"1%" }}>
-                  {item.description}
-              </Text>
-              {/* <Text style={{color:"#C59E6E", fontSize:fontSize.twelve, fontFamily:"Rubik-Medium", marginTop:"2%", alignSelf:Lang==="en"?"flex-start":"flex-end", marginLeft:"1%" }}>
-                  {moment(item.date).format("D, MMM, YYYY")}
-              </Text> */}
-          
-          </View>
-          {/* <View style={{backgroundColor:"#C59E6E",paddingHorizontal:scalableheight.two,paddingVertical:scalableheight.onepointfive,borderRadius:8,position:'absolute',top:scalableheight.tweleve,left:Lang==="ar"?scalableheight.two:null,right:Lang==="en"?scalableheight.two:null}}>
-              <Text style={{color:"#fff", fontSize:fontSize.eightteen, fontFamily:"Rubik-Bold", textAlign:'center'}}>
-                  {moment(item.date).format("D")}
-              </Text>
-              <Text style={{color:"#fff", fontSize:fontSize.fourteen, fontFamily:"Rubik-Medium", textAlign:'center',marginTop:"1%"}}>
-                  {moment(item.date).format("MMM")}
-              </Text>
-          </View>  */}
-      </TouchableOpacity>
-  )
-};
+    function updateflavourstate(index){
+      let arr =[...flavours]
+      for(const key in arr){
+        if(key == index){
+          if( arr[key].selected == true){
+            arr[key].selected = false
+          }else{
+            arr[key].selected = true
+          }
+      
+        }else{
+          arr[key].selected = false
+        }
+      }
+setflavours(arr)
+console.log("arr" + JSON.stringify(arr))
+    }
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
-      <StatusBar barStyle={useIsDrawerOpen() ? "light-content" : "dark-content"} />
+          <Modal
+              // animationInTiming={32000}
+              // animationOutTiming={32000}
+              // animationOut="bounceInUp"
+              // animationIn="bounceOut"
+              animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      statusBarTranslucent
+      onRequestClose={() => {
+        Alert.alert('Modal has been closed.');
+        setmodalVisible(!modalVisible);
+      }}>
+ <KeyboardAvoidingView style={{width:"100%", height:"100%"}}     behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
+         <View style={{width: "100%", height: "100%", alignItems:"center",
+          justifyContent:"center" }}>
+          
+        <View style={{width: "95%", height: "90%", borderRadius:fontSize.eleven, backgroundColor:"white"}}>
+  <View style={{width:"100%", height: "35%"}}>
+  <Image
+      resizeMode="stretch"
+      style={{ 
+
+        width: '100%',
+        height: "100%",
+      }}
+      source={require('../Resources/images/food.png')}
+    />
+     {renderIf(
+                  
+                  serving?.filter(
+                    item => item.selected == true,
+                  ) != ''
+                   
+                )(
+      <View style={{flexDirection:"row", paddingHorizontal: scalableheight.two, height:scalableheight.four, backgroundColor:"#E14E4E", position:"absolute", bottom: 0, right: 0, borderTopLeftRadius: fontSize.eleven, alignItems:"center", justifyContent:"center"}}>
+      <Text style={{color:"white",fontFamily: 'Inter-SemiBold',
+                fontSize: fontSize.ten,}}>AED </Text>
+
+                  
+                  {serving?.filter(function (item) {
+          return item.selected == true;
+        })
+        .map(function ({price}) {
+          return (
+            <Text style={{color:"white",fontFamily: 'Inter-SemiBold',
+                fontSize: fontSize.fourteen,}}>{price}</Text>
+         ) 
+        })}
+                
+</View>
+                )}
+                <TouchableOpacity 
+                onPress={() => {setmodalVisible(false) }}
+                style={{ position:"absolute", top: scalableheight.one, right: scalableheight.one}}>
+            <Ionicons
+                name="close-circle"
+                color={'#F5F5F5'}
+                size={ fontSize.thirtyseven}
+                style={{}}
+                /> 
+                </TouchableOpacity>
+  </View>
+ 
+  <ScrollView 
   
-      <View style={{flex: 12, backgroundColor: '#303030', borderRadius:10}}>
-        <ScrollView
+  showsVerticalScrollIndicator={false}
+  style={{width:"100%", height: "65%", padding: scalableheight.two}}>
+
+<Text style={{  fontFamily: 'Inter-Bold',
+                fontSize: fontSize.sixteen,
+                color:"black",}}>Chicken Shawarma</Text>
+<Text style={{  fontFamily: 'Inter-Medium',
+                fontSize: fontSize.fourteen,
+                color:"black",}}>Special mouth watering Chicken Fillet served with fresh vegies and special sauce.</Text>
+  <View style={{height: scalableheight.one}}/>
+  <MultiChoiceDropDown title = {"Choose Serving"} data={serving} update ={updateservingstate}/>
+  <View style={{height: scalableheight.one}}/>
+  <MultiChoiceDropDown title = {"Choose Serving"}  data={flavours} update ={updateflavourstate}/>
+  
+  <View style={{height: scalableheight.one}}/>
+  <Text style={{  fontFamily: 'Inter-SemiBold',
+                fontSize: fontSize.thirteen,
+                color:"black", opacity: 0.4}}>Special Instructions</Text>
+  <View style={{height: scalableheight.one}}/>
+  <TextInput
+  multiline
+    value={specialinstructions}
+      onChangeText={text => setspecialinstructions(text)}
+      placeholder={"Type here"}
+      style={{
+        width: '100%',
+        height: scalableheight.fifteen,
+fontSize:fontSize.fifteen,
+        backgroundColor: '#F5F5F5',
+        alignSelf: 'center',
+        borderRadius: fontSize.borderradiusmedium,
+        paddingHorizontal: '5%',
+        textAlignVertical:'top'
+      }}
+    />
+      <View style={{height: scalableheight.one}}/>
+      <View style={{flexDirection:"row", alignItems:"center", width: "50%", justifyContent: "space-evenly", alignSelf:"center"}}> 
+      <TouchableOpacity
+      onPress={()=> {count > 1 ? setcount(count - 1) : null}}>
+                  <AntDesign
+                name="minuscircle"
+                color={'#E14E4E'}
+                size={ fontSize.twentyseven}
+                style={{}}
+                /> 
+                </TouchableOpacity>
+                <View style={{ backgroundColor: '#F5F5F5', width: scalableheight.six, height: scalableheight.four, alignItems: "center", justifyContent:"center", borderRadius: fontSize.eight}}>
+<Text>{count}</Text>
+                </View>
+                
+                <TouchableOpacity
+      onPress={()=> {setcount(count + 1)}}>
+      <AntDesign
+                name="pluscircle"
+                color={'#E14E4E'}
+                size={ fontSize.twentyseven}
+                style={{}}
+                /> 
+                </TouchableOpacity>
+                </View>
+                  <View style={{height: scalableheight.one}}/>
+<MYButton color={"#E14E4E"} title={"Add To Cart"} textcolor={"white"} onPress = {() => {setmodalVisible(false)}}/>
+
+<View style={{height: scalableheight.three}}/>
+  </ScrollView>
+
+
+      </View>
+    
+      </View>
+      </KeyboardAvoidingView>
+    </Modal>
+      <StatusBar barStyle={useIsDrawerOpen() ? "light-content" : "dark-content"} />
+   {modalVisible &&
+      <View style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(0,0,0,0.8)", zIndex:1,}}>
+
+</View>}
+
+{cartvisible &&  <View style={{bottom: scalableheight.two, position:"absolute", width:"90%", backgroundColor:"#E14E4E", zIndex:1, alignSelf:"center", borderRadius: fontSize.eleven, paddingVertical:scalableheight.one, paddingHorizontal: scalableheight.two}}>
+<View style={{flexDirection:"row", justifyContent:"space-between"}}>
+<View>
+<View style={{flexDirection:"row", alignItems:"center"}}>
+<View style={{width: scalableheight.four, height:scalableheight.four, backgroundColor:"white",  borderRadius: fontSize.circle, justifyContent:"center", alignItems:"center"}}>
+<Text style={{color:"black",fontFamily: 'Inter-Bold',
+                fontSize: fontSize.fourteen,}}>1</Text>
+</View>
+<Text style={{marginLeft:scalableheight.one, color:"white",fontFamily: 'Inter-Bold',
+                fontSize: fontSize.fourteen,}}>Items in Cart</Text>
+                </View>
+<Text style={{color:"white",fontFamily: 'Inter-Medium',
+                fontSize: fontSize.twelve, opacity: 0.6}}>AED 175.00</Text>
+                </View>
+                <View style={{height:"100%", justifyContent:"center"}}>
+                <Text style={{color:"white",fontFamily: 'Inter-SemiBold',
+                fontSize: fontSize.fifteen}}>Checkout</Text>
+                </View>
+                </View>
+
+</View>}
+      <View style={{flex:1, backgroundColor: '#303030', borderRadius:10}}>
+      
+     <View style={{ flex:1,  marginTop: getStatusBarHeight()}}>
+          <HeaderComponent newNotificationCount={newNotificationCount} />
+   <View style={{ width: '100%',
+    alignSelf: 'center',
+    height: scalableheight.tweleve,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#303030',
+    paddingHorizontal: scalableheight.two}}>
+ <Infobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
+   </View>
+  
+<Reviewscontainer rating={"8.9"} reviews={"350"} title={"Perfect Grill"} description={"Its the food you love"} image={require('../Resources/images/grill.png')}/>
+<ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
           showsVerticalScrollIndicator={false}
-          style={{
-           
-            alignSelf: 'center',
-            backgroundColor: 'white',
-            marginTop: getStatusBarHeight(),
-          }}>
-          <HeaderComponent newNotificationCount={newNotificationCount} />
-   <View style={{ width: '100%',
-    alignSelf: 'center',
-    height: scalableheight.fourteen,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#303030',}}>
+         
+          style={{  width:"100%", backgroundColor:"#F6F6F6", paddingHorizontal: scalableheight.one}}
 
-      <View style={{...styleSheet.shadow, flexDirection:"row", width:"90%", height:scalableheight.ten, backgroundColor:"white", borderRadius: fontSize.borderradiusmedium}}>
-      <View style={{height: "100%", width: "20%", borderWidth:1, borderColor:"red", alignItems:"center", justifyContent:"center"}}>
-<View style={{height:"80%", width: "80%", backgroundColor:"#00000029",  borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center"}}>
-<MaterialIcons 
-              name="location-pin"
-              color={'#F55050'}
-              size={fontSize.thirtyeight}
-            />
-</View>
-      </View>
-   
-      <View style={{height: "100%", width: "60%", borderWidth:1, borderColor:"red"}}>
+       >
 
-      </View>
-    
-      <View style={{height: "100%", width: "20%", borderWidth:1, borderColor:"red"}}>
 
-      </View>
-  
-
-</View>
-   </View>
-      
-          <View
-            style={{
-              width: '100%',
-              height: Dimensions.get('window').height / 4,
-            }}>
-       
-       <Animatable.View
+<Animatable.View
         animation="zoomIn"
              easing="ease"
              //  iterationCount="infinite"
              iterationCount={1}
-              style={{
-                flexDirection: Lang == 'en' ? 'row' : 'row-reverse',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                height: '20%',
-              }}>
-              <Text
-                style={{
-                  fontFamily: 'Rubik-Medium',
-                  fontSize: fontSize.eightteen,
-                  color: 'black',
-                }}>
-                {Lang == 'en' ? 'Popular Services' : 'الخدمات الشعبية'}
-              </Text>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={{
-                  width: '30%',
-                  alignItems: Lang == 'en' ? 'flex-end' : 'flex-start',
-                }}
-                onPress={() => {
-                  navigation.navigate('PopularServices');
-                }}>
-                <Text
-                  style={{
-                    fontFamily: 'Rubik-Medium',
-                    fontSize: fontSize.twelve,
-                    color: 'black',
-                    opacity: 0.4,
-                  }}>
-                  {Lang == 'en' ? 'View All' : 'مشاهدة الكل'}
-                </Text>
-              </TouchableOpacity>
-            </Animatable.View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '80%',
-                width: '100%',
-              }}>
-              
+             
+  style={{flexDirection:"row", alignItems:"center", paddingVertical: scalableheight.two, width: "100%"}}>
+  <View style={{width:scalableheight.three, height: scalableheight.three, alignItems:"center", justifyContent: "center", backgroundColor: "#E14E4E", borderRadius: fontSize.borderradius}}>
+  <MaterialIcons 
+            name="local-fire-department"
+            color={"white"}
+            size={fontSize.fifteen}
+          />
+  </View>
+<Text style={{marginLeft: scalableheight.one,
+                fontFamily: 'Inter-ExtraBold',
+                fontSize: fontSize.sixteen,
+                color:"#29262A"
+              }}>Popular Categories</Text>
+              </Animatable.View>
+
               <FlatList
                 keyExtractor={(item, index) => index.toString()}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 data={popularservicedatahome}
-                renderItem={renderpopularservices}
+                renderItem={renderpopularcategories}
                 // onEndReached={() => LoadFeaturedProjectPagination()}
                 // onEndReachedThreshold={0.1}
               />
-            </View>
-          </View>
-        
+<View style={{paddingHorizontal: scalableheight.one}}>
+<SearchBar search={search} onchange={(val) => {setsearch(val)}}/>
+</View>
+<Animatable.View
+        animation="zoomIn"
+             easing="ease"
+             //  iterationCount="infinite"
+             iterationCount={1}
+             
+  style={{ flexDirection:"row", alignItems:"center",paddingTop: scalableheight.pointfive, paddingBottom: scalableheight.one}}>
+ 
+<Text style={{
+                fontFamily: 'Inter-ExtraBold',
+                fontSize: fontSize.sixteen,
+                color:"#29262A"
+              }}>STARTERS</Text>
+              </Animatable.View>
 
-         
+              <FlatList
+                keyExtractor={(item, index) => index.toString()}
+                showsVerticalScrollIndicator={false}
+                data={popularservicedatahome}
+                renderItem={starters}
+                // onEndReached={() => LoadFeaturedProjectPagination()}
+                // onEndReachedThreshold={0.1}
+              />
+
+
+   
+
+
+
 
         </ScrollView>
+       </View>
       </View>
  
     </Animated.View>
