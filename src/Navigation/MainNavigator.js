@@ -30,8 +30,10 @@ import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -41,13 +43,15 @@ import * as Animatable from 'react-native-animatable';
 import Home from '../Screens/Home';
 import Settings from '../Screens/Settings';
 import Help from '../Screens/Help';
+import Coupons from '../Screens/Coupons';
+
 import Login from '../Screens/Login';
 import SignUp from '../Screens/SignUp';
 import OtpVerification from '../Screens/OtpVerification';
 import ContactUs from '../Screens/ContactUs';
 import Aboutus from '../Screens/Aboutus';
 import ForgotPassword from '../Screens/ForgotPassword';
-import Notifications from '../Screens/Notifications';
+import MyFavourite from '../Screens/MyFavourite';
 import Changepassword from '../Screens/Changepassword';
 import AccountInfo from '../Screens/AccountInfo';
 import Changepasswordforgot from '../Screens/Changepasswordforgot';
@@ -81,31 +85,31 @@ const CustomDrawerStyle = ({navigation}) => {
  
     {
       label: 'Settings',
-      img: 'ios-settings-sharp',
+      img: 'settings',
       onPress: () => {
         navigation.navigate('Settings');
         navigation.dispatch(DrawerActions.closeDrawer());
       },
-      type: 1,
+      type: 4,
     },
-    {
-      label:'Help',
-      img: 'question-circle',
-      onPress: () => {
-        navigation.navigate('Help');
-        navigation.dispatch(DrawerActions.closeDrawer());
-      },
-      type: 2,
-    },
-    {
-      label: 'About Us',
-      img: 'person',
-      onPress: () => {
-        navigation.navigate('Aboutus');
-        navigation.dispatch(DrawerActions.closeDrawer());
-      },
-      type: 1,
-    },
+    // {
+    //   label:'Help',
+    //   img: 'question-circle',
+    //   onPress: () => {
+    //     navigation.navigate('Help');
+    //     navigation.dispatch(DrawerActions.closeDrawer());
+    //   },
+    //   type: 2,
+    // },
+    // {
+    //   label: 'About Us',
+    //   img: 'person',
+    //   onPress: () => {
+    //     navigation.navigate('Aboutus');
+    //     navigation.dispatch(DrawerActions.closeDrawer());
+    //   },
+    //   type: 1,
+    // },
     {
       label:'Contact Us',
       img: 'phone',
@@ -113,7 +117,7 @@ const CustomDrawerStyle = ({navigation}) => {
         navigation.navigate('ContactUs');
         navigation.dispatch(DrawerActions.closeDrawer());
       },
-      type: 2,
+      type: 5,
     },
   
   ];
@@ -282,6 +286,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
             width: '100%',
           }}>
 
+
           <View
             style={{
               width: '95%',
@@ -345,7 +350,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   fontFamily: 'Rubik-Medium',
               
                 }}>
-             {Lang == "en" ? "Guest User" : "حساب زائر"}
+             { "Guest User"}
               </Text>
 </View>
      )}
@@ -372,7 +377,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
         navigation.dispatch(DrawerActions.closeDrawer());
                   }}
                   style={{
-                    flexDirection: Lang == "en" ? "row" : "row-reverse",
+                    flexDirection:  "row",
                     alignItems: 'center',
 
                     borderTopWidth: scalableheight.borderTopWidth,
@@ -389,27 +394,27 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginLeft: scalableheight.two,
-                      marginRight: Lang == "ar" ? scalableheight.two : null,
+                     
                     }}>
              
-             <Ionicons name={'home'} color={'#EFBC70'} size={fontSize.twentytwo} />
+             <MaterialCommunityIcons name={'home-outline'} color={'#E14E4E'}  size={fontSize.twentyfour} />
                   
             
                   </View>
                   <Text
                     style={{
-                      color: 'white',
-                      fontFamily: 'Rubik-Regular',
+                      color: 'black',
+                      fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
                     }}>
-                    {Lang == "en" ? "Home" : "مسكن"}
+                    {"Home"}
                   </Text>
                 
                 </TouchableOpacity>
           
-          {renderIf(ProfileInfo != '')(
-            <>
+          {/* {renderIf(ProfileInfo != '')(
+            <> */}
 
 
                 <TouchableOpacity
@@ -419,7 +424,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                     navigation.dispatch(DrawerActions.closeDrawer());
                   }}
                   style={{
-                    flexDirection: Lang == "en" ? "row" : "row-reverse",
+                    flexDirection: "row",
                     alignItems: 'center',
 
                     borderTopWidth: scalableheight.borderTopWidth,
@@ -435,12 +440,12 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginLeft: scalableheight.two,
-                      marginRight: Lang == "ar" ? scalableheight.two : null,
+                 
                     }}>
              
-             <FontAwesome
-                        name={"calendar-o"}
-                        color={'#EFBC70'}
+             <MaterialIcons
+                        name={"history"}
+                        color={'#E14E4E'} 
                         size={fontSize.twentytwo}
                       />
                   
@@ -448,23 +453,23 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   </View>
                   <Text
                     style={{
-                      color: 'white',
-                      fontFamily: 'Rubik-Regular',
+                      color: 'black',
+                      fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
                     }}>
-                   {Lang == "en" ? "My Bookings" : "حجوزاتي"}
+                   {"My Orders"}
                   </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   onPress={() => {
                     
-                    navigation.navigate('Notifications');
+                    navigation.navigate('Coupons');
                     navigation.dispatch(DrawerActions.closeDrawer());
                   }}
                   style={{
-                    flexDirection: Lang == "en" ? "row" : "row-reverse",
+                    flexDirection: "row" ,
                     alignItems: 'center',
 
                     borderTopWidth: scalableheight.borderTopWidth,
@@ -480,24 +485,66 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginLeft: scalableheight.two,
-                      marginRight: Lang == "ar" ? scalableheight.two : null,
                     }}>
              
-             <Ionicons name={'notifications'} color={'#EFBC70'} size={fontSize.twentytwo} />
+             <AntDesign
+                        name={"tago"}
+                        color={'#E14E4E'} 
+                        size={fontSize.twentytwo}
+                      />
                   
             
                   </View>
                   <Text
                     style={{
-                      color: 'white',
-                      fontFamily: 'Rubik-Regular',
+                      color: 'black',
+                      fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
-                      marginRight: Lang == "ar" ? scalableheight.two : null,
                     }}>
-                        {Lang == "en" ? "Notifications" : "إشعارات"}
+                            {"My Coupons"}
                   </Text>
-                  {newNotificationCount !== 0 ?
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    
+                    navigation.navigate('MyFavourite');
+                    navigation.dispatch(DrawerActions.closeDrawer());
+                  }}
+                  style={{
+                    flexDirection:  "row",
+                    alignItems: 'center',
+
+                    borderTopWidth: scalableheight.borderTopWidth,
+                    borderColor: '#adadad',
+                    height: Dimensions.get('window').height / 12,
+                  }}>
+                  <View
+                    style={{
+                      width: scalableheight.five,
+                      height:scalableheight.five,
+                      borderRadius: fontSize.circle,
+                      backgroundColor: '#F9F9F9',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginLeft: scalableheight.two,
+                   
+                    }}>
+             
+             <AntDesign name={'hearto'} color={'#E14E4E'} size={fontSize.twentytwo} />
+                  
+            
+                  </View>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontFamily: 'Inter-Medium',
+                      fontSize: fontSize.fourteen,
+                      marginLeft:  scalableheight.two,
+                    }}>
+                        {"My Favourites"}
+                  </Text>
+                  {/* {newNotificationCount !== 0 ?
                     <View style={{backgroundColor:'#EFBC70',marginLeft:scalableheight.two,borderRadius:100,paddingVertical:4,paddingHorizontal:8,alignItems:'center',justifyContent:'center'}}>
                       <Text
                         style={{
@@ -508,62 +555,18 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                         {newNotificationCount}
                       </Text>
                     </View> : null
-                  }
+                  } */}
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                  onPress={() => {
-                    
-                    navigation.navigate('Coupons');
-                    navigation.dispatch(DrawerActions.closeDrawer());
-                  }}
-                  style={{
-                    flexDirection: Lang == "en" ? "row" : "row-reverse",
-                    alignItems: 'center',
-
-                    borderTopWidth: scalableheight.borderTopWidth,
-                    borderColor: '#adadad',
-                    height: Dimensions.get('window').height / 12,
-                  }}>
-                  <View
-                    style={{
-                      width: scalableheight.five,
-                      height:scalableheight.five,
-                      borderRadius: fontSize.circle,
-                      backgroundColor: '#F9F9F9',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginLeft: scalableheight.two,
-                      marginRight: Lang == "ar" ? scalableheight.two : null,
-                    }}>
-             
-             <MaterialCommunityIcons
-                        name={"ticket"}
-                        color={'#EFBC70'}
-                        size={fontSize.twentytwo}
-                      />
-                  
-            
-                  </View>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontFamily: 'Rubik-Regular',
-                      fontSize: fontSize.fourteen,
-                      marginLeft:  scalableheight.two,
-                    }}>
-                            {Lang == "en" ? "Coupons" : "كوبونات"}
-                  </Text>
-                </TouchableOpacity>
-                </>
-          )}
+                {/* </>
+          )} */}
           <View style={{}}>
             {options.map(item => {
               return (
                 <TouchableOpacity
                   onPress={() => item.onPress()}
                   style={{
-                    flexDirection: Lang == "en" ? "row" : "row-reverse",
+                    flexDirection: "row",
                     alignItems: 'center',
 
                     borderTopWidth: scalableheight.borderTopWidth,
@@ -579,28 +582,43 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginLeft: scalableheight.two,
-                      marginRight: Lang == "ar" ? scalableheight.two : null,
+
                     }}>
                     {item.type == 1 ? (
-                      <Ionicons name={item.img} color={'#EFBC70'} size={fontSize.twentytwo} />
+                      <Ionicons name={item.img} color={'#E14E4E'}  size={fontSize.twentytwo} />
                     ) : item.type == 2 ? (
                       <FontAwesome
                         name={item.img}
-                        color={'#EFBC70'}
+                        color={'#E14E4E'} 
                         size={fontSize.twentytwo}
                       />
                     ) : item.type == 3 ? (
                       <MaterialCommunityIcons
                         name={item.img}
-                        color={'#EFBC70'}
+                        color={'#E14E4E'} 
                         size={fontSize.twentytwo}
                       />
-                    ) : null}
+                    ) : item.type == 4 ? (
+                      <Feather
+                        name={item.img}
+                        color={'#E14E4E'} 
+                        size={fontSize.twentytwo}
+                      />
+                    ) : item.type == 5 ? (
+                      <AntDesign
+                        name={item.img}
+                        color={'#E14E4E'} 
+                        size={fontSize.twentytwo}
+                      />
+                    ) : 
+                    
+                    
+                    null}
                   </View>
                   <Text
                     style={{
-                      color: 'white',
-                      fontFamily: 'Rubik-Regular',
+                      color: 'black',
+                      fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
                     }}>
@@ -616,7 +634,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
           <TouchableOpacity
                   onPress={() => setModalVisible(true)}
                   style={{
-                    flexDirection: Lang == "en" ? "row" : "row-reverse",
+                    flexDirection:"row",
                     alignItems: 'center',
 
                     borderTopWidth: scalableheight.borderTopWidth,
@@ -632,22 +650,21 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginLeft: scalableheight.two,
-                      marginRight: Lang == "ar" ? scalableheight.two : null,
+                    
                     }}>
              
-                      <Ionicons name={"log-in"} color={'#EFBC70'} size={fontSize.twentytwo} />
+                      <MaterialIcons name={"logout"} color={'#E14E4E'}  size={fontSize.twentytwo} />
                   
             
                   </View>
                   <Text
                     style={{
-                      color: 'white',
-                      fontFamily: 'Rubik-Regular',
+                      color: 'black',
+                      fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
-                      marginRight: Lang == "ar" ? scalableheight.two : null,
                     }}>
-                      {Lang == "en" ? "Logout" : "تسجيل خروج"}
+                      { "Logout"}
                   </Text>
                 </TouchableOpacity>
           )}
@@ -655,7 +672,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 <TouchableOpacity
                   onPress={() => navigation.navigate("Login")}
                   style={{
-                    flexDirection: Lang == "en" ? "row" : "row-reverse",
+                    flexDirection: "row" ,
                     alignItems: 'center',
 
                     borderTopWidth: scalableheight.borderTopWidth,
@@ -673,21 +690,21 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginLeft: scalableheight.two,
-                      marginRight: Lang == "ar" ? scalableheight.two : null,
+                   
                     }}>
      
-                      <Ionicons name={"log-in"} color={'#EFBC70'} size={fontSize.twentytwo} />
+                      <MaterialIcons name={"login"} color={'#E14E4E'} size={fontSize.twentytwo} />
                   
                    
               </View>
                   <Text
                     style={{
-                      color: 'white',
-                      fontFamily: 'Rubik-Regular',
+                      color: 'black',
+                      fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
                     }}>
-                     {Lang == "en" ? "Login" : "تسجيل الدخول"}
+                     { "Login" }
                   </Text>
                 </TouchableOpacity>
           )}
@@ -753,8 +770,8 @@ const Drawernavigator = props => {
       <Drawer.Screen name="Changepassword" options={{headerShown: false}}>
         {props => <Changepassword {...props} drawerAnimationStyle={animatedStyle}  />}
       </Drawer.Screen>
-      <Drawer.Screen name="Notifications" options={{headerShown: false}}>
-        {props => <Notifications {...props} drawerAnimationStyle={animatedStyle}  />}
+      <Drawer.Screen name="MyFavourite" options={{headerShown: false}}>
+        {props => <MyFavourite {...props} drawerAnimationStyle={animatedStyle}  />}
       </Drawer.Screen>
 
       
@@ -776,7 +793,11 @@ const Drawernavigator = props => {
       <Drawer.Screen name="Aboutus" options={{headerShown: false}}>
         {props => <Aboutus {...props} drawerAnimationStyle={animatedStyle}   />}
       </Drawer.Screen>
-   
+      <Drawer.Screen name="Coupons" options={{headerShown: false}}>
+        {props => <Coupons {...props} drawerAnimationStyle={animatedStyle}   />}
+      </Drawer.Screen>
+
+      
     </Drawer.Navigator>
   );
 };
@@ -832,7 +853,7 @@ const MainNavigator = () => {
   return (
     <>
       <NavigationContainer theme={navTheme}>
-        <ImageBackground
+        {/* <ImageBackground
           resizeMode="cover"
           style={{
             justifyContent: 'center',
@@ -841,16 +862,38 @@ const MainNavigator = () => {
             width: '100%',
             position: 'absolute',
           }}
-          source={require('../Resources/images/drawer.jpg')}>
-          <View
+          source={require('../Resources/images/drawer.png')}> */}
+          <View    style={{
+           
+            alignItems: 'center',
+            height: '100%',
+            width: '100%',
+            position: 'absolute',
+            backgroundColor:"white"
+          }}>
+            <Image
+          resizeMode="stretch"
+          style={{
+           
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            width: '100%',
+            height: scalableheight.eighty,
+        
+          
+          }}
+          source={require('../Resources/images/drawer.png')}>
+             </Image>
+          {/* <View
             style={{
               flex: 1,
               justifyContent: 'center',
               alignItems: 'flex-start',
               width: '100%',
               backgroundColor: 'rgba(0,0,0,0.6)',
-            }}></View>
-        </ImageBackground>
+            }}></View> */}
+            </View>
+        {/* </ImageBackground> */}
         <Stack.Navigator
           screenOptions={TransitionScreenOptions}
           initialRouteName="SplashScreen">

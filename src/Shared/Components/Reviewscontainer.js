@@ -47,7 +47,7 @@ const navigation = useNavigation();
                     fontSize: fontSize.twelve,}}>{props.rating}</Text>
           </View>
           <Text style={{marginLeft: scalableheight.one, color:"#29262A", fontFamily: 'Inter-Regular',
-                    fontSize: fontSize.twelve,}}>{props.reviews}{ "reviews"}</Text>
+                    fontSize: fontSize.twelve,}}>{props.reviews}{ " reviews"}</Text>
           </View>
     <Text style={{ color:"#303030", fontFamily: 'Inter-Bold',
                     fontSize: fontSize.twentytwo,}}>{props.title}</Text>

@@ -41,13 +41,14 @@ const navigation = useNavigation();
         width: scalableheight.fourty,
         alignItems: 'center',
         justifyContent: 'center',
+        marginRight: scalableheight.two
        
       }}>
       <>
         <View
           style={{
             ...styleSheet.shadow,
-            width: '95%',
+            width: '100%',
             height: '95%',
             borderRadius: fontSize.eleven,
           }}>

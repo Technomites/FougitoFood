@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -44,19 +44,19 @@ const navigation = useNavigation();
             alignItems: 'center',
            
           }}>
-                 <View style={styleSheet.backButtonMain}>
-              <Ionicons 
+                 {/* <View style={styleSheet.backButtonMain}> */}
+              <AntDesign 
               style={{  alignSelf:"center"}}
-              name="chevron-back"
-      //  color={"black"}
-          size={fontSize.twenty}
+              name="arrowleft"
+       color={"black"}
+          size={fontSize.twentyfour}
         
         />
-              </View>
+              {/* </View> */}
        
         </TouchableOpacity>
 
-    <Text style={{color:"black",  fontSize:fontSize.twenty, fontFamily:"Rubik-Medium",}}>{props.title}</Text>
+    <Text style={{color:"black",  fontSize:fontSize.twenty, fontFamily:"Inter-SemiBold",}}>{props.title}</Text>
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
           

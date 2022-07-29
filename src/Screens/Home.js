@@ -210,9 +210,9 @@ const Home = ({navigation, drawerAnimationStyle}) => {
   <Categoriescard image={require('../Resources/images/food.png')} type={"Pizza"} price={20}/>
   );
   const starters = ({item}) => (
-    <View style={{paddingHorizontal:scalableheight.one}}>
+  
     <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
-    </View>
+ 
     );
  
   
@@ -430,7 +430,8 @@ fontSize:fontSize.fifteen,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#303030',
-    paddingHorizontal: scalableheight.two}}>
+    paddingHorizontal: scalableheight.four,
+  }}>
  <Infobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
    </View>
   
@@ -447,12 +448,12 @@ fontSize:fontSize.fifteen,
 
 
 <Animatable.View
-        animation="zoomIn"
+        animation="bounceInRight"
              easing="ease"
-             //  iterationCount="infinite"
+              // iterationCount="infinite"
              iterationCount={1}
              
-  style={{flexDirection:"row", alignItems:"center", paddingVertical: scalableheight.two, width: "100%"}}>
+  style={{flexDirection:"row", alignItems:"center", paddingVertical: scalableheight.two, justifyContent:"flex-start", width:"100%"}}>
   <View style={{width:scalableheight.three, height: scalableheight.three, alignItems:"center", justifyContent: "center", backgroundColor: "#E14E4E", borderRadius: fontSize.borderradius}}>
   <MaterialIcons 
             name="local-fire-department"
@@ -476,16 +477,16 @@ fontSize:fontSize.fifteen,
                 // onEndReached={() => LoadFeaturedProjectPagination()}
                 // onEndReachedThreshold={0.1}
               />
-<View style={{paddingHorizontal: scalableheight.one}}>
+
 <SearchBar search={search} onchange={(val) => {setsearch(val)}}/>
-</View>
+
 <Animatable.View
         animation="zoomIn"
              easing="ease"
              //  iterationCount="infinite"
              iterationCount={1}
              
-  style={{ flexDirection:"row", alignItems:"center",paddingTop: scalableheight.pointfive, paddingBottom: scalableheight.one}}>
+  style={{ flexDirection:"row", alignItems:"center",paddingTop: scalableheight.pointfive, paddingBottom: scalableheight.one, justifyContent:"flex-start", width:"100%"}}>
  
 <Text style={{
                 fontFamily: 'Inter-ExtraBold',

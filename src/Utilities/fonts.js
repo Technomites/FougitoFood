@@ -7,6 +7,9 @@ const scalableheight = {
     borderwidth: height(0.2),
     pointfive: height(0.5),
     pointsevenfive: height(0.75),
+    zeropointnine: height(0.4),
+    zeropointsix: height(0.6),
+    zeropointeight: height(0.8),
   one: height(1),
   onepointfive: height(1.5),
   two: height(2),
@@ -35,6 +38,9 @@ const scalableheight = {
   thirtytwo: height(32),
   thirtysix: height(36),
   fourty: height(40),
+  sixty: height(60),
+  seventy: height(70),
+  eighty: height(80),
 
 }
 const fontSize = {

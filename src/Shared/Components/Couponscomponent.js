@@ -30,8 +30,26 @@ const navigation = useNavigation();
 
 
   return (
-    <View style={{...styleSheet.shadow, borderWidth:1, borderColor:"#C59E6E", width:"100%", height:Dimensions.get('window').height / 7, borderRadius:fontSize.borderradiuslarge, flexDirection:"row"}}>
-    <View style={{ width :"25%", height:"100%", backgroundColor:"#F9F9F9", borderTopLeftRadius: fontSize.borderradiuslarge, borderBottomLeftRadius:fontSize.borderradiuslarge, alignItems:"center", justifyContent:"center"}}>
+    <View style={{...styleSheet.shadow, width:"100%", height:Dimensions.get('window').height / 5, borderRadius:fontSize.borderradiusmedium}}>
+      <View style={{height:"57%", width: "100%", borderWidth:1, borderColor:"red", flexDirection:"row"}}>
+<View style={{height: "100%", borderWidth:1, borderColor:"blue", width: "25%",alignItems:"center", justifyContent:"center"}}>
+<View style={{ width :"80%", height:"80%", backgroundColor:"#F9F9F9",alignItems:"center", justifyContent:"center", borderRadius: fontSize.borderradiuslarge}}>
+    <FontAwesome5 name="tags" size={fontSize.thirtyfive} color={"#F55050"} />
+        </View>
+</View>
+<View style={{height: "100%", borderWidth:1, borderColor:"blue", width: "55%", justifyContent:"center"}}>
+  <Text style={{fontFamily:"Inter-Medium", fontSize:fontSize.eleven, color: "#F55050"}}>40% OFF</Text>
+  <Text style={{fontFamily:"Inter-Bold", fontSize:fontSize.sixteen, color: "black"}}>EidSpecial40</Text>
+  <Text style={{fontFamily:"Inter-Medium", fontSize:fontSize.twelve, color: "#636363"}}>Min Order: AED 100</Text>
+</View>
+<View style={{height: "100%", borderWidth:1, borderColor:"blue", width: "20%"}}>
+<Text style={{fontFamily:"Inter-Bold", fontSize:fontSize.twelve, color: "#F55050"}}>3 days left</Text>
+</View>
+      </View>
+      <View style={{height:"42%", width: "100%", borderWidth:1, borderColor:"red"}}>
+
+</View>
+    {/* <View style={{ width :"25%", height:"100%", backgroundColor:"#F9F9F9", borderTopLeftRadius: fontSize.borderradiuslarge, borderBottomLeftRadius:fontSize.borderradiuslarge, alignItems:"center", justifyContent:"center"}}>
     <FontAwesome5 name="ticket-alt" size={fontSize.thirtyfive} color={"rgba(192,192,192, 0.8)"} />
         </View>
         <View style={{width :"75%", height:"100%", justifyContent:"space-evenly", padding:10,backgroundColor:"white", borderBottomRightRadius :fontSize.borderradiuslarge, borderTopRightRadius:fontSize.borderradiuslarge,}}>
@@ -52,7 +70,7 @@ const navigation = useNavigation();
             <FontAwesome5 name="copy" size={fontSize.thirteen} color={"#C59E6E"} style={{marginLeft:"4%"}} />
         </TouchableOpacity>
             </View>
-        </View>
+        </View> */}
      </View>
   );
 }

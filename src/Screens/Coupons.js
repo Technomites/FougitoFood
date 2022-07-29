@@ -115,7 +115,7 @@ function onRefresh() {
       dispatch(getcoupons())
     } else {
       showToast(
-        Lang == 'en' ? 'No Internet Connection' : 'لا يوجد اتصال بالإنترنت',
+         'No Internet Connection',
         {
           duration: 500,
         },
@@ -133,9 +133,9 @@ function onRefresh() {
           width: '100%',
       
           alignSelf: 'center', paddingTop: getStatusBarHeight(),
-          flex:12
+         
         }}>
-        <PlainHeader title={Lang == "en" ? 'Coupons' : "كوبونات"} />
+        <PlainHeader title={' My Coupons'} />
         <View style={{height:"91%", width:"100%", paddingHorizontal: scalableheight.two}}>
         {Loading == false?
     <FlatList
@@ -149,7 +149,7 @@ function onRefresh() {
        keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ alignSelf:"center" , width: "100%", paddingBottom:20 }}
-        data={coupons}
+        data={Bookingdata}
         renderItem={({item}) => {
           return (
             <View style={{alignItems:"center", marginTop:"5%"}}>
@@ -179,9 +179,7 @@ resizeMode="cover"
             </View>}
            </View>   
       </View>
-      <View  style={{  flex: 1, backgroundColor: 'white',        borderBottomLeftRadius:10, borderBottomRightRadius:10}}>
-<BottomTab/>
-      </View>
+    
       <GToastContainer paddingBottom={100} style={{height: 50, width: 60}} />
       </Animated.View>
   );
