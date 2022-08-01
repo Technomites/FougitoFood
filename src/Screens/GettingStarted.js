@@ -33,19 +33,60 @@ const GettingStarted = props => {
     // hideNavigationBar()
     // changeNavigationBarColor("white");
   }, []);
+  const [count, setcount] = useState(0);
+  const [getstarted, SetGetstarted] = useState([
+    {
+      image: require('../Resources/images/GetstartedS1.png'),
+      caption: '5 Star Restaurants at your finger tips',
+      buttontitle: 'NEXT',
+      buttontitle2: true,
+
+      press2: () => {
+        props.navigation.replace('GetStartedstepthree');
+      },
+    },
+    {
+      image: require('../Resources/images/GetstartedS2.png'),
+      caption: 'Why go out when you can have food delivered to your doorstep',
+      buttontitle: 'NEXT',
+      buttontitle2: true,
+
+      press2: () => {
+        props.navigation.replace('GetStartedstepthree');
+      },
+    },
+    {
+      image: require('../Resources/images/GetstartedS3.png'),
+      caption: 'Your Favourite Food Delivered to you',
+      buttontitle: 'PROCEED',
+      buttontitle2: false,
+    },
+  ]);
 
   return (
-    <View
-      style={{height: '100%', width: '100%', backgroundColor: 'transparent'}}>
-      <ImageBackground
-        resizeMode="cover"
-        source={require('../Resources/images/GetstartedS1.png')}
-        style={styleSheet.BackgroundImage}>
+    <ImageBackground
+      resizeMode="cover"
+      source={getstarted[count]?.image}
+      style={styleSheet.BackgroundImage}>
+      <Animatable.View
+        animation={count ? 'bounceInRight' : undefined}
+        // animation="bounceInRight"
+        easing="ease"
+        // iterationCount="infinite"
+        iterationCount={1}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingVertical: scalableheight.two,
+          justifyContent: 'flex-start',
+          width: '100%',
+          position: 'absolute',
+          bottom: 0,
+        }}>
         <View
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: scalableheight.fifty,
             width: '100%',
           }}>
           <Image
@@ -61,7 +102,6 @@ const GettingStarted = props => {
               fontFamily: 'Inter, Extra Bold',
               textAlign: 'center',
               width: '80%',
-              // marginBottom: scalableheight.two,
             }}>
             Getting Started
           </Text>
@@ -75,7 +115,7 @@ const GettingStarted = props => {
               width: '80%',
               // marginBottom: scalableheight.two,
             }}>
-            5 Star Restaurants at your finger tips
+            {getstarted[count]?.caption}
           </Text>
           <View
             style={{
@@ -87,45 +127,44 @@ const GettingStarted = props => {
               position: 'relative',
               marginVertical: scalableheight.pointfive,
             }}>
-            <View style={{width: scalableheight.four, alignItems: 'center'}}>
-              <Entypo
-                name="dot-single"
-                color={'#E14E4E'}
-                size={scalableheight.six}
-              />
-            </View>
-            <View style={{width: scalableheight.four}}>
-              <Entypo
-                name="dot-single"
-                color={'rgba(245, 80, 80, 0.5)'}
-                size={scalableheight.six}
-              />
-            </View>
-            <View style={{width: scalableheight.four}}>
-              <Entypo
-                name="dot-single"
-                color={'rgba(245, 80, 80, 0.5)'}
-                size={scalableheight.six}
-              />
-            </View>
+            {getstarted.map((item, index) => {
+              return (
+                <Entypo
+                  style={{margin: -15}}
+                  name="dot-single"
+                  color={index === count ? '#E14E4E' : 'rgba(245, 80, 80, 0.5)'}
+                  size={scalableheight.six}
+                />
+              );
+            })}
           </View>
 
           <View style={{width: '100%', padding: scalableheight.three}}>
             <MYButton
               color={'#E14E4E'}
-              title="NEXT"
+              title={getstarted[count]?.buttontitle}
               textcolor={'white'}
-              onPress={() => {
-                props.navigation.navigate('GetStartedsteptwo');
-              }}
+              onPress={
+                () =>
+                  count < 2
+                    ? setcount(count + 1)
+                    : props.navigation.replace('Drawernavigator')
+                // getstarted[count]?.onPress
+              }
             />
-            <MYButton title="SKIP" textcolor={'#000'}  onPress={() => {
-              props.navigation.navigate('GetStartedstepthree');
-            }} />
+            {getstarted[count]?.buttontitle2 ? (
+              <MYButton
+                title={'SKIP'}
+                textcolor={'#000'}
+                onPress={getstarted[count]?.press2}
+              />
+            ) : (
+              <MYButton title={'SKIP'} textcolor={'white'} onPress={null} />
+            )}
           </View>
         </View>
-      </ImageBackground>
-    </View>
+      </Animatable.View>
+    </ImageBackground>
   );
 };
 
@@ -154,7 +193,7 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#EFF1F3',
-    height: '80%',
+    height: '100%',
     // height: scalableheight.thirtyfive,
   },
 });

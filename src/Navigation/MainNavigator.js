@@ -44,8 +44,6 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import GettingStarted from '../Screens/GettingStarted';
-import GetStartedsteptwo from '../Screens/GetStartedsteptwo';
-import GetStartedstepthree from '../Screens/GetStartedstepthree';
 import SplashScreen from '../Screens/SplashScreen';
 import * as Animatable from 'react-native-animatable';
 import Home from '../Screens/Home';
@@ -971,16 +969,7 @@ const MainNavigator = () => {
             component={GettingStarted}
             options={{headerShown: false}}
           />
-          <Stack.Screen
-            name="GetStartedsteptwo"
-            component={GetStartedsteptwo}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="GetStartedstepthree"
-            component={GetStartedstepthree}
-            options={{headerShown: false}}
-          />
+   
          
           <Stack.Screen
             name="Login"

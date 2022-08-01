@@ -487,12 +487,18 @@ const hasLocationPermissionIOS = async () => {
    
   );
   const starters = ({item}) => (
-  
-    <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
- 
-    );
- 
-  
+    <Starters
+      image={require('../Resources/images/food.png')}
+      title={'Mexican Enchiladas'}
+      description={
+        'The original French toast! Thick slices of our signature jumbo...'
+      }
+      price={9.4}
+      onPress={() => {
+        setmodalVisible(true);
+      }}
+    />
+  );
 
   function updateservingstate(index) {
     let arr = [...serving];
