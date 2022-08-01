@@ -205,12 +205,18 @@ const Home = ({navigation, drawerAnimationStyle}) => {
     />
   );
   const starters = ({item}) => (
-  
-    <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
- 
-    );
- 
-  
+    <Starters
+      image={require('../Resources/images/food.png')}
+      title={'Mexican Enchiladas'}
+      description={
+        'The original French toast! Thick slices of our signature jumbo...'
+      }
+      price={9.4}
+      onPress={() => {
+        setmodalVisible(true);
+      }}
+    />
+  );
 
   function updateservingstate(index) {
     let arr = [...serving];
@@ -553,87 +559,127 @@ const Home = ({navigation, drawerAnimationStyle}) => {
       <View style={{flex: 1, backgroundColor: '#303030', borderRadius: 10}}>
         <View style={{flex: 1, marginTop: getStatusBarHeight()}}>
           <HeaderComponent newNotificationCount={newNotificationCount} />
-   <View style={{ width: '100%',
-    alignSelf: 'center',
-    height: scalableheight.tweleve,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#303030',
-    paddingHorizontal: scalableheight.four,
-  }}>
- <Infobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
-   </View>
-  
-<Reviewscontainer rating={"8.9"} reviews={"350"} title={"Perfect Grill"} description={"Its the food you love"} image={require('../Resources/images/grill.png')}/>
-<ScrollView
+          <View
+            style={{
+              width: '100%',
+              alignSelf: 'center',
+              height: scalableheight.tweleve,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#303030',
+              paddingHorizontal: scalableheight.four,
+            }}>
+            <Infobar
+              Heading={'Home'}
+              Details={'Clifton block 2, plot no 245, near bilawal house'}
+            />
+          </View>
+
+          <Reviewscontainer
+            rating={'8.9'}
+            reviews={'350'}
+            title={'Perfect Grill'}
+            description={'Its the food you love'}
+            image={require('../Resources/images/grill.png')}
+          />
+          <ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-          showsVerticalScrollIndicator={false}
-         
-          style={{  width:"100%", backgroundColor:"#F6F6F6", paddingHorizontal: scalableheight.one}}
-
-       >
-
-
-<Animatable.View
-        animation="bounceInRight"
-             easing="ease"
+            showsVerticalScrollIndicator={false}
+            style={{
+              width: '100%',
+              backgroundColor: '#F6F6F6',
+              paddingHorizontal: scalableheight.one,
+            }}>
+            <Animatable.View
+              animation="bounceInRight"
+              easing="ease"
               // iterationCount="infinite"
-             iterationCount={1}
-             
-  style={{flexDirection:"row", alignItems:"center", paddingVertical: scalableheight.two, justifyContent:"flex-start", width:"100%"}}>
-  <View style={{width:scalableheight.three, height: scalableheight.three, alignItems:"center", justifyContent: "center", backgroundColor: "#E14E4E", borderRadius: fontSize.borderradius}}>
-  <MaterialIcons 
-            name="local-fire-department"
-            color={"white"}
-            size={fontSize.fifteen}
-          />
-  </View>
-<Text style={{marginLeft: scalableheight.one,
-                fontFamily: 'Inter-ExtraBold',
-                fontSize: fontSize.sixteen,
-                color:"#29262A"
-              }}>Popular Categories</Text>
-              </Animatable.View>
+              iterationCount={1}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: scalableheight.two,
+                justifyContent: 'flex-start',
+                width: '100%',
+              }}>
+              <View
+                style={{
+                  width: scalableheight.three,
+                  height: scalableheight.three,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#E14E4E',
+                  borderRadius: fontSize.borderradius,
+                }}>
+                <MaterialIcons
+                  name="local-fire-department"
+                  color={'white'}
+                  size={fontSize.fifteen}
+                />
+              </View>
+              <Text
+                style={{
+                  marginLeft: scalableheight.one,
+                  fontFamily: 'Inter-ExtraBold',
+                  fontSize: fontSize.sixteen,
+                  color: '#29262A',
+                }}>
+                Popular Categories
+              </Text>
+            </Animatable.View>
 
-              <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={popularservicedatahome}
-                renderItem={renderpopularcategories}
-                // onEndReached={() => LoadFeaturedProjectPagination()}
-                // onEndReachedThreshold={0.1}
-              />
+            <FlatList
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={popularservicedatahome}
+              renderItem={renderpopularcategories}
+              // onEndReached={() => LoadFeaturedProjectPagination()}
+              // onEndReachedThreshold={0.1}
+            />
 
-<SearchBar search={search} onchange={(val) => {setsearch(val)}}/>
+            <SearchBar
+              search={search}
+              onchange={val => {
+                setsearch(val);
+              }}
+            />
 
-<Animatable.View
-        animation="zoomIn"
-             easing="ease"
-             //  iterationCount="infinite"
-             iterationCount={1}
-             
-  style={{ flexDirection:"row", alignItems:"center",paddingTop: scalableheight.pointfive, paddingBottom: scalableheight.one, justifyContent:"flex-start", width:"100%"}}>
- 
-<Text style={{
-                fontFamily: 'Inter-ExtraBold',
-                fontSize: fontSize.sixteen,
-                color:"#29262A"
-              }}>STARTERS</Text>
-              </Animatable.View>
+            <Animatable.View
+              animation="zoomIn"
+              easing="ease"
+              //  iterationCount="infinite"
+              iterationCount={1}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingTop: scalableheight.pointfive,
+                paddingBottom: scalableheight.one,
+                justifyContent: 'flex-start',
+                width: '100%',
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Inter-ExtraBold',
+                  fontSize: fontSize.sixteen,
+                  color: '#29262A',
+                }}>
+                STARTERS
+              </Text>
+            </Animatable.View>
 
-              <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                showsVerticalScrollIndicator={false}
-                data={popularservicedatahome}
-                renderItem={starters}
-                // onEndReached={() => LoadFeaturedProjectPagination()}
-                // onEndReachedThreshold={0.1}
-              />
-          
+            <FlatList
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+              data={popularservicedatahome}
+              renderItem={starters}
+              // onEndReached={() => LoadFeaturedProjectPagination()}
+              // onEndReachedThreshold={0.1}
+            />
+
             <Animatable.View
               animation="zoomIn"
               easing="ease"
