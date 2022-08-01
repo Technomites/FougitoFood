@@ -2,6 +2,7 @@
   package="com.fougitofood">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
       android:name=".MainApplication"
@@ -21,6 +22,10 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+      
       </activity>
+          <meta-data
+     android:name="com.google.android.geo.API_KEY"
+     android:value="AIzaSyD0yqMcrlEZUYylJJhmbrweCD-W9lALgzI"/>
     </application>
 </manifest>

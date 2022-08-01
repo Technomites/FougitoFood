@@ -129,15 +129,16 @@ function onRefresh() {
            
       <View
         style={{
-          height: '100%',
-          width: '100%',
+         flex:1,
       
-          alignSelf: 'center', paddingTop: getStatusBarHeight(),
+          alignSelf: 'center', marginTop: getStatusBarHeight(),
          
         }}>
-        <PlainHeader title={' My Coupons'} />
-        <View style={{height:"91%", width:"100%", paddingHorizontal: scalableheight.two}}>
-        {Loading == false?
+       
+        <PlainHeader title={'My Coupons'} />
+      
+       
+       
     <FlatList
    
     refreshControl={
@@ -146,14 +147,16 @@ function onRefresh() {
         onRefresh={onRefresh}
       />
     }
+    
        keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ alignSelf:"center" , width: "100%", paddingBottom:20 }}
+        contentContainerStyle={{ alignSelf:"center" , width: "100%", paddingBottom: scalableheight.two}}
+
         data={Bookingdata}
         renderItem={({item}) => {
           return (
-            <View style={{alignItems:"center", marginTop:"5%"}}>
-        <Couponscomponent copy={copied} code= {item.promoCode} percentage= {item.dicountPercentage} vailidity= {item.expiry} title= {item.name} discountprice= {item.dicountAmount}/>
+            <View style={{alignItems:"center", paddingHorizontal: scalableheight.two,marginTop:"5%",}}>
+        <Couponscomponent sale={"40% OFF"} title= {"EidSpecial40"} minorder= {"AED 100"} daysleft= {"3 days left"} title= {item.name} discountprice= {item.dicountAmount}/>
       
     
     
@@ -165,19 +168,8 @@ function onRefresh() {
         // onEndReached={() => LoadVRTourPagination()}
         // onEndReachedThreshold={0.1}
       />
-      :
-<View style={{  height: "100%", width: "100%",
-alignItems:"center",
-justifyContent:"center",
-
-}}>
-<Image
-resizeMode="cover"
-              source={require('../Resources/images/Skeleton/1.gif')}
-              style={{width: "100%", height: "90%"}}
-            />
-            </View>}
-           </View>   
+    
+ 
       </View>
     
       <GToastContainer paddingBottom={100} style={{height: 50, width: 60}} />

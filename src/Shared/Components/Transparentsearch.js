@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
+  TextInput
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -18,48 +19,48 @@ import {useSelector, useDispatch} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import Fontisto from 'react-native-vector-icons/Fontisto';
-export default function Infobar(props) {
+export default function Transparentsearch(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
 
 
   return (
-    <View style={{...styleSheet.shadow, flexDirection:"row", width:"100%", height:scalableheight.eight, backgroundColor:"white", borderRadius: fontSize.borderradiusmedium,}}>
-    <View style={{height: "100%", width: "20%", alignItems:"center", justifyContent:"center"}}>
-<View style={{height:scalableheight.six, width: scalableheight.six, backgroundColor:"#00000029",  borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center"}}>
-<MaterialIcons 
-            name="location-pin"
-            color={'#F55050'}
-            size={fontSize.thirtythree}
-          />
+    <View style={{...styleSheet.shadow, flexDirection:"row", width:"100%", height:scalableheight.eight,  borderRadius: fontSize.borderradiusmedium, borderWidth:1, borderColor:"rgba(211,211,211, 0.5)", backgroundColor: "rgba(211,211,211, 0.05)"}}>
+    <TextInput
+    value={props.search}
+    placeholderTextColor= "rgba(211,211,211, 0.5)"
+      onChangeText={text => props.onchange(text)}
+      placeholder={"Search Restaurants"}
+      style={{
+        width: '100%',
+        height: '100%',
+fontSize:fontSize.fifteen,
+   color: "rgba(211,211,211, 0.5)",
+   
+        alignSelf: 'center',
+        paddingHorizontal: scalableheight.seven
+        
+     
+      
+      }}
+    />
+      
+
+<Ionicons
+name="search"
+color={'grey'}
+size={ fontSize.twenty}
+style={{position: 'absolute', left: '5%', alignSelf: "center"}}
+/>
+
+<View style={{height: "100%", width: scalableheight.eight, backgroundColor:"#E14E4E",position: 'absolute', right: 0, borderRadius: fontSize.borderradiusmedium, alignItems: "center", justifyContent: "center"}}>
+<MaterialCommunityIcons
+name="qrcode-scan"
+color={'white'}
+size={ fontSize.fourty}
+style={{ alignSelf: "center"}}
+/>
 </View>
-    </View>
- 
-    <View style={{height: "100%", width: "60%", justifyContent:"center"}}>
-
-    <Text
-              style={{
-                fontFamily: 'Inter-Bold',
-                fontSize: fontSize.sixteen,
-                color:"#29262A"
-              }}>{props.Heading}</Text>
-<Text 
-              style={{
-                fontFamily: 'Inter-Medium',
-                fontSize: fontSize.ten,
-                color:"#29262A",
-                opacity: 0.4
-              }} numberOfLines={2}>{props.Details}</Text>
-    </View>
-  
-    <View style={{height: "100%", width: "20%", alignItems:"center", justifyContent:"center"}}>
-    <MaterialIcons 
-            name="edit"
-            color={"#00000029"}
-            size={fontSize.twentyeight}
-          />
-    </View>
-
 
 </View>
   );

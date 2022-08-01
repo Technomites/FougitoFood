@@ -34,10 +34,11 @@ const navigation = useNavigation();
         style={{
           width: '100%',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          flexDirection: Lang == "en" ? "row" : 'row-reverse',
+          justifyContent: 'center',
+          flexDirection: "row" ,
+        
         }}>
-          <View style={{flexDirection:"row",  alignItems: 'center',}}>
+        
           <TouchableOpacity
           onPress={openMenu}
           style={{
@@ -45,7 +46,8 @@ const navigation = useNavigation();
             width:  scalableheight.five,
             justifyContent: 'center',
             alignItems: 'center',
-       
+       position:"absolute",
+       left: 0
            
           }}>
           <MaterialCommunityIcons 
@@ -57,12 +59,12 @@ const navigation = useNavigation();
 
         <Image
           resizeMode="contain"
-          style={{  marginLeft: scalableheight.two, width: scalableheight.thirteen, height: scalableheight.four}}
+          style={{  alignSelf: "center", width: scalableheight.thirteen, height: scalableheight.four}}
           source={require('../../Resources/images/logo.png')}
         />
-          </View>
+       
       
-        <View style={{flexDirection: 'row',justifyContent:"flex-end"}}>
+        {/* <View style={{flexDirection: 'row',justifyContent:"flex-end"}}>
        
         <MaterialIcons 
               name="location-pin"
@@ -76,7 +78,7 @@ const navigation = useNavigation();
               size={fontSize.twentyeight}
             />
            
-        </View>
+        </View> */}
       </View>
     </View>
   );
@@ -90,7 +92,7 @@ const styleSheet = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#303030',
+   
     
 
   },

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,7 @@ import {
   Keyboard,
   Modal,
   KeyboardAvoidingView,
+  PermissionsAndroid
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
@@ -51,10 +52,14 @@ import HeaderComponent from '../Shared/Components/HeaderComponent';
 import Reviewscontainer from '../Shared/Components/Reviewscontainer';
 import Categoriescard from '../Shared/Components/Categoriescard';
 import Animated from 'react-native-reanimated';
-import Infobar from '../Shared/Components/Infobar';
+import Transparentinfobar from '../Shared/Components/Transparentinfobar';
+import Transparentsearch from '../Shared/Components/Transparentsearch';
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import Geocoder from 'react-native-geocoding';
+import Geolocation from "@react-native-community/geolocation";
 import SearchBar from '../Shared/Components/SearchBar';
 import Starters from '../Shared/Components/Starters';
-import MultiChoiceDropDown from '../Shared/Components/MultiChoiceDropDown';
+import Favourites from '../Shared/Components/Favourites';
 import MYButton from '../Shared/Components/MYButton';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -76,6 +81,9 @@ import moment from 'moment';
 const Home = ({navigation, drawerAnimationStyle}) => {
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
+  const [lat, setlat] = useState(24.8607);
+  const [long, setlong] = useState(67.0011);
+  const [pinlocation, setpinlocation] = useState("");
   const [specialinstructions, setspecialinstructions] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [cartvisible, setcartvisible] = useState(false);
@@ -99,7 +107,7 @@ const Home = ({navigation, drawerAnimationStyle}) => {
       price: 'AED 59.00',
     },
   ]);
-
+  const refMap = useRef(null);
   const [flavours, setflavours] = useState([
     {
       selected: false,
@@ -126,7 +134,178 @@ const Home = ({navigation, drawerAnimationStyle}) => {
     popularservicedatahome,
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
-
+  const customStyle = [
+    {
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#d8d8d8',
+        },
+      ],
+    },
+    
+    {
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#ffb606',
+        },
+      ],
+    },
+  //   {
+  //     elementType: 'labels.text.stroke',
+  //     stylers: [
+  //       {
+  //         color: '#242f3e',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     featureType: 'administrative.locality',
+  //     elementType: 'labels.text.fill',
+  //     stylers: [
+  //       {
+  //         color: '#fffff',
+  //       },
+  //     ],
+  //   },
+  
+   {
+        featureType: "poi.business",
+        stylers: [{ visibility: "off" }],
+      },
+      {
+        featureType: "transit",
+        elementType: "labels.icon",
+        stylers: [{ visibility: "off" }],
+      },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#d8d8d8',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d8d8d8',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#9ca5b3',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#b6b4b4',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+  ];
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
@@ -175,6 +354,108 @@ const Home = ({navigation, drawerAnimationStyle}) => {
     dispatch(getblogshome(Lang));
   }, [Lang]);
 
+  // useEffect(() => {
+  //   Geocoder.init("AIzaSyD0yqMcrlEZUYylJJhmbrweCD-W9lALgzI")
+  // Geolocation.getCurrentPosition((info) => {
+  //   setlat(info?.coords?.latitude)
+  //   setlong(info?.coords?.longitude)
+
+  //   console.log(info?.coords?.latitude);
+  //   console.log(info?.coords?.longitude);})
+  //   getLocation()
+  // }, []);
+
+  // useEffect(() => {
+  //   Geocoder.from(lat, long)
+	// 	.then(json => {
+  //       		var addressComponent = json.results[0].formatted_address;
+	// 		console.log(addressComponent);
+  //     setpinlocation(addressComponent)
+
+	// 	})
+	// 	.catch(error => console.warn(error));
+   
+   
+  // }, [lat, long]);
+  const getLocation = async () => {
+
+    const hasLocationPermission = await hasLocationPermissions();
+    if (!hasLocationPermission) {
+      return;
+    }
+
+    
+};
+const hasLocationPermissions = async () => {
+    if (Platform.OS === 'ios') {
+      const hasPermission = await hasLocationPermissionIOS();
+      return hasPermission;
+    }
+
+    if (Platform.OS === 'android' && Platform.Version < 23) {
+      return true;
+    }
+
+    const hasPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (hasPermission) {
+      return true;
+    }
+
+    const status = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (status === PermissionsAndroid.RESULTS.GRANTED) {
+      return true;
+    }
+
+    if (status === PermissionsAndroid.RESULTS.DENIED) {
+      // ToastAndroid.show(
+      //   'Location permission denied by user.',
+      //   ToastAndroid.LONG,
+      // );
+    } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+      // ToastAndroid.show(
+      //   'Location permission revoked by user.',
+      //   ToastAndroid.LONG,
+      // );
+    }
+    return false;
+};
+const hasLocationPermissionIOS = async () => {
+    const openSetting = () => {
+      Linking.openSettings().catch(() => {
+        ToastMessage('success', "Success", 'Unable to open settings');
+      });
+    };
+    const status = await Geolocation.requestAuthorization('whenInUse');
+
+    if (status === 'granted') {
+      return true;
+    }
+
+    if (status === 'denied') {
+        ToastMessage('error', "Error", 'Location permission denied');
+    }
+
+    if (status === 'disabled') {
+      Alert.alert(
+        `Turn on Location Services to allow Bakery App to determine your location.`,
+        '',
+        [
+          { text: 'Go to Settings', onPress: openSetting },
+          { text: "Don't Use Location", onPress: () => { } },
+        ],
+      );
+    }
+    return false;
+};
+
+ 
+
   function onRefresh() {
     NetInfo.fetch().then(state => {
       if (state.isConnected == true && state.isInternetReachable == true) {
@@ -197,12 +478,13 @@ const Home = ({navigation, drawerAnimationStyle}) => {
     return unsubscribe;
   }, [navigation]);
 
-  const renderpopularcategories = ({item}) => (
-    <Categoriescard
-      image={require('../Resources/images/food.png')}
-      type={'Pizza'}
-      price={20}
-    />
+  const rendernearby = ({item}) => (
+    <View style={{width:Dimensions.get('window').width / 1.2, marginRight: scalableheight.two}}>
+<Favourites image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} reviews={"8.9 (350 reviews)"} time={"9:00 AM - 10:00PM"} onPress={()=>{}} distance={"2.5KM AWAY"}/>
+    </View>
+ 
+
+   
   );
   const starters = ({item}) => (
   
@@ -247,370 +529,100 @@ const Home = ({navigation, drawerAnimationStyle}) => {
   }
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
-      <Modal
-        // animationInTiming={32000}
-        // animationOutTiming={32000}
-        // animationOut="bounceInUp"
-        // animationIn="bounceOut"
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        statusBarTranslucent
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setmodalVisible(!modalVisible);
-        }}>
-        <KeyboardAvoidingView
-          style={{width: '100%', height: '100%'}}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <View
-              style={{
-                width: '95%',
-                height: '90%',
-                borderRadius: fontSize.eleven,
-                backgroundColor: 'white',
-              }}>
-              <View style={{width: '100%', height: '35%'}}>
-                <Image
-                  resizeMode="stretch"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                  }}
-                  source={require('../Resources/images/food.png')}
-                />
-                {renderIf(serving?.filter(item => item.selected == true) != '')(
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      paddingHorizontal: scalableheight.two,
-                      height: scalableheight.four,
-                      backgroundColor: '#E14E4E',
-                      position: 'absolute',
-                      bottom: 0,
-                      right: 0,
-                      borderTopLeftRadius: fontSize.eleven,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: 'white',
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.ten,
-                      }}>
-                      AED{' '}
-                    </Text>
-
-                    {serving
-                      ?.filter(function (item) {
-                        return item.selected == true;
-                      })
-                      .map(function ({price}) {
-                        return (
-                          <Text
-                            style={{
-                              color: 'white',
-                              fontFamily: 'Inter-SemiBold',
-                              fontSize: fontSize.fourteen,
-                            }}>
-                            {price}
-                          </Text>
-                        );
-                      })}
-                  </View>,
-                )}
-                <TouchableOpacity
-                  onPress={() => {
-                    setmodalVisible(false);
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: scalableheight.one,
-                    right: scalableheight.one,
-                  }}>
-                  <Ionicons
-                    name="close-circle"
-                    color={'#F5F5F5'}
-                    size={fontSize.thirtyseven}
-                    style={{}}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                style={{
-                  width: '100%',
-                  height: '65%',
-                  padding: scalableheight.two,
-                }}>
-                <Text
-                  style={{
-                    fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.sixteen,
-                    color: 'black',
-                  }}>
-                  Chicken Shawarma
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: 'Inter-Medium',
-                    fontSize: fontSize.fourteen,
-                    color: 'black',
-                  }}>
-                  Special mouth watering Chicken Fillet served with fresh vegies
-                  and special sauce.
-                </Text>
-                <View style={{height: scalableheight.one}} />
-                <MultiChoiceDropDown
-                  title={'Choose Serving'}
-                  data={serving}
-                  update={updateservingstate}
-                />
-                <View style={{height: scalableheight.one}} />
-                <MultiChoiceDropDown
-                  title={'Choose Serving'}
-                  data={flavours}
-                  update={updateflavourstate}
-                />
-
-                <View style={{height: scalableheight.one}} />
-                <Text
-                  style={{
-                    fontFamily: 'Inter-SemiBold',
-                    fontSize: fontSize.thirteen,
-                    color: 'black',
-                    opacity: 0.4,
-                  }}>
-                  Special Instructions
-                </Text>
-                <View style={{height: scalableheight.one}} />
-                <TextInput
-                  multiline
-                  value={specialinstructions}
-                  onChangeText={text => setspecialinstructions(text)}
-                  placeholder={'Type here'}
-                  style={{
-                    width: '100%',
-                    height: scalableheight.fifteen,
-                    fontSize: fontSize.fifteen,
-                    backgroundColor: '#F5F5F5',
-                    alignSelf: 'center',
-                    borderRadius: fontSize.borderradiusmedium,
-                    paddingHorizontal: '5%',
-                    textAlignVertical: 'top',
-                  }}
-                />
-                <View style={{height: scalableheight.one}} />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: '50%',
-                    justifyContent: 'space-evenly',
-                    alignSelf: 'center',
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      count > 1 ? setcount(count - 1) : null;
-                    }}>
-                    <AntDesign
-                      name="minuscircle"
-                      color={'#E14E4E'}
-                      size={fontSize.twentyseven}
-                      style={{}}
-                    />
-                  </TouchableOpacity>
-                  <View
-                    style={{
-                      backgroundColor: '#F5F5F5',
-                      width: scalableheight.six,
-                      height: scalableheight.four,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: fontSize.eight,
-                    }}>
-                    <Text>{count}</Text>
-                  </View>
-
-                  <TouchableOpacity
-                    onPress={() => {
-                      setcount(count + 1);
-                    }}>
-                    <AntDesign
-                      name="pluscircle"
-                      color={'#E14E4E'}
-                      size={fontSize.twentyseven}
-                      style={{}}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={{height: scalableheight.one}} />
-                <MYButton
-                  color={'#E14E4E'}
-                  title={'Add To Cart'}
-                  textcolor={'white'}
-                  onPress={() => {
-                    setmodalVisible(false);
-                  }}
-                />
-
-                <View style={{height: scalableheight.three}} />
-              </ScrollView>
-            </View>
-          </View>
-        </KeyboardAvoidingView>
-      </Modal>
+    
       <StatusBar
-        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
       />
-      {modalVisible && (
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            zIndex: 1,
-          }}></View>
-      )}
-
-      {cartvisible && (
-        <View
-          style={{
-            bottom: scalableheight.two,
-            position: 'absolute',
-            width: '90%',
-            backgroundColor: '#E14E4E',
-            zIndex: 1,
-            alignSelf: 'center',
-            borderRadius: fontSize.eleven,
-            paddingVertical: scalableheight.one,
-            paddingHorizontal: scalableheight.two,
-          }}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <View
-                  style={{
-                    width: scalableheight.four,
-                    height: scalableheight.four,
-                    backgroundColor: 'white',
-                    borderRadius: fontSize.circle,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontFamily: 'Inter-Bold',
-                      fontSize: fontSize.fourteen,
-                    }}>
-                    1
-                  </Text>
-                </View>
-                <Text
-                  style={{
-                    marginLeft: scalableheight.one,
-                    color: 'white',
-                    fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.fourteen,
-                  }}>
-                  Items in Cart
-                </Text>
-              </View>
-              <Text
-                style={{
-                  color: 'white',
-                  fontFamily: 'Inter-Medium',
-                  fontSize: fontSize.twelve,
-                  opacity: 0.6,
-                }}>
-                AED 175.00
-              </Text>
-            </View>
-            <View style={{height: '100%', justifyContent: 'center'}}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontFamily: 'Inter-SemiBold',
-                  fontSize: fontSize.fifteen,
-                }}>
-                Checkout
-              </Text>
-            </View>
-          </View>
-        </View>
-      )}
-      <View style={{flex: 1, backgroundColor: '#303030', borderRadius: 10}}>
-        <View style={{flex: 1, marginTop: getStatusBarHeight()}}>
-          <HeaderComponent newNotificationCount={newNotificationCount} />
-   <View style={{ width: '100%',
-    alignSelf: 'center',
-    height: scalableheight.tweleve,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#303030',
-    paddingHorizontal: scalableheight.four,
-  }}>
- <Infobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
-   </View>
-  
-<Reviewscontainer rating={"8.9"} reviews={"350"} title={"Perfect Grill"} description={"Its the food you love"} image={require('../Resources/images/grill.png')}/>
-<ScrollView
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          showsVerticalScrollIndicator={false}
+    
+      <View style={{flex: 1,  borderRadius: 10}}>
+        <View style={{flex: 1, backgroundColor: 'white',}}>
          
-          style={{  width:"100%", backgroundColor:"#F6F6F6", paddingHorizontal: scalableheight.one}}
+          <ImageBackground
+          resizeMode="cover"
+          style={{
+         
+            width:"100%", height: scalableheight.thirtyfive, zIndex:1
+          
+          }}
+          imageStyle={{borderBottomLeftRadius: fontSize.borderradiuslarge, borderBottomRightRadius: fontSize.borderradiuslarge,}}
+          source={require('../Resources/images/homebackground.png')}>
+            <View style={{ marginTop: getStatusBarHeight()}}></View>
+             <HeaderComponent newNotificationCount={newNotificationCount} />
+             <View style={{paddingHorizontal: scalableheight.one}}>
+             <Transparentinfobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
+             <View style={{marginTop: scalableheight.one}}></View>
+             <Transparentsearch search={search} onchange={(val) => {setsearch(val)}}/>
+            
+             </View>
+             </ImageBackground>
+             <View
+              style={{
+                ...styleSheet.shadow,
+                height: scalableheight.fifty,
+                width: '100%',
+                backgroundColor: '#F5F5F5',
+            
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: fontSize.fifteen,
+            
+                color: '#8c8c8c',
+            
+         
+                alignSelf: 'center',
+                marginTop: '-2%',
+                overflow: 'hidden' 
+              }}
+       
+            >
+           <MapView
+           provider={PROVIDER_GOOGLE}
+           customMapStyle={customStyle}
+              ref={refMap}
+      style={{ width:"100%", height:"100%",       borderRadius: fontSize.fifteen, }}
+     
+      showsUserLocation
+      
+      region={{
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      }}
+      initialRegion={{
+          latitude: lat,
+          longitude: long,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+      }}
 
-       >
+      
+   
+    >
+         
+{/* 
+      <Marker 
+      position={center} 
+      coordinate = {{latitude: lat,longitude: long}}
+      draggable
+     onDragEnd={(e) => {
 
+      console.log('longitude', e?.nativeEvent?.coordinate?.longitude )
+       console.log('latitude', e?.nativeEvent?.coordinate?.latitude )
+      setlat(e?.nativeEvent?.coordinate?.latitude)
+      setlong(e?.nativeEvent?.coordinate?.longitude)
 
-<Animatable.View
-        animation="bounceInRight"
-             easing="ease"
-              // iterationCount="infinite"
-             iterationCount={1}
-             
-  style={{flexDirection:"row", alignItems:"center", paddingVertical: scalableheight.two, justifyContent:"flex-start", width:"100%"}}>
-  <View style={{width:scalableheight.three, height: scalableheight.three, alignItems:"center", justifyContent: "center", backgroundColor: "#E14E4E", borderRadius: fontSize.borderradius}}>
-  <MaterialIcons 
-            name="local-fire-department"
-            color={"white"}
-            size={fontSize.fifteen}
-          />
-  </View>
-<Text style={{marginLeft: scalableheight.one,
-                fontFamily: 'Inter-ExtraBold',
-                fontSize: fontSize.sixteen,
-                color:"#29262A"
-              }}>Popular Categories</Text>
-              </Animatable.View>
+      }}
+         pinColor = {"red"} // any color
+         title={"Location"}
+         description={pinlocation}/> */}
+         </MapView>
+            
+            </View>
+            <View style={{paddingHorizontal: scalableheight.one, position: "absolute", bottom: scalableheight.eight}}>
 
-              <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={popularservicedatahome}
-                renderItem={renderpopularcategories}
-                // onEndReached={() => LoadFeaturedProjectPagination()}
-                // onEndReachedThreshold={0.1}
-              />
-
-<SearchBar search={search} onchange={(val) => {setsearch(val)}}/>
-
-<Animatable.View
+           
+            <Animatable.View
         animation="zoomIn"
              easing="ease"
              //  iterationCount="infinite"
@@ -622,48 +634,21 @@ const Home = ({navigation, drawerAnimationStyle}) => {
                 fontFamily: 'Inter-ExtraBold',
                 fontSize: fontSize.sixteen,
                 color:"#29262A"
-              }}>STARTERS</Text>
+              }}>RESTAURANTS NEARBY</Text>
               </Animatable.View>
-
-              <FlatList
+             
+<FlatList
                 keyExtractor={(item, index) => index.toString()}
-                showsVerticalScrollIndicator={false}
+                horizontal
+                contentContainerStyle={{}}
                 data={popularservicedatahome}
-                renderItem={starters}
+                renderItem={rendernearby}
                 // onEndReached={() => LoadFeaturedProjectPagination()}
                 // onEndReachedThreshold={0.1}
               />
-          
-            <Animatable.View
-              animation="zoomIn"
-              easing="ease"
-              //  iterationCount="infinite"
-              iterationCount={1}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingTop: scalableheight.pointfive,
-                paddingBottom: scalableheight.one,
-              }}>
-              <Text
-                style={{
-                  fontFamily: 'Inter-ExtraBold',
-                  fontSize: fontSize.sixteen,
-                  color: '#29262A',
-                }}>
-                STARTERS
-              </Text>
-            </Animatable.View>
+ </View>
 
-            <FlatList
-              keyExtractor={(item, index) => index.toString()}
-              showsVerticalScrollIndicator={false}
-              data={popularservicedatahome}
-              renderItem={starters}
-              // onEndReached={() => LoadFeaturedProjectPagination()}
-              // onEndReachedThreshold={0.1}
-            />
-          </ScrollView>
+             
         </View>
       </View>
     </Animated.View>

@@ -18,15 +18,15 @@ import {useSelector, useDispatch} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import Fontisto from 'react-native-vector-icons/Fontisto';
-export default function Infobar(props) {
+export default function Transparentinfobar(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
 
 
   return (
-    <View style={{...styleSheet.shadow, flexDirection:"row", width:"100%", height:scalableheight.eight, backgroundColor:"white", borderRadius: fontSize.borderradiusmedium,}}>
+    <View style={{...styleSheet.shadow, flexDirection:"row", width:"100%", height:scalableheight.eight,  borderRadius: fontSize.borderradiusmedium, borderWidth:1, borderColor:"rgba(211,211,211, 0.5)", backgroundColor: "rgba(211,211,211, 0.05)"}}>
     <View style={{height: "100%", width: "20%", alignItems:"center", justifyContent:"center"}}>
-<View style={{height:scalableheight.six, width: scalableheight.six, backgroundColor:"#00000029",  borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center"}}>
+<View style={{height:scalableheight.six, width: scalableheight.six, backgroundColor:"white",  borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center"}}>
 <MaterialIcons 
             name="location-pin"
             color={'#F55050'}
@@ -41,13 +41,13 @@ const navigation = useNavigation();
               style={{
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.sixteen,
-                color:"#29262A"
+                color:"white"
               }}>{props.Heading}</Text>
 <Text 
               style={{
                 fontFamily: 'Inter-Medium',
                 fontSize: fontSize.ten,
-                color:"#29262A",
+                color:"white",
                 opacity: 0.4
               }} numberOfLines={2}>{props.Details}</Text>
     </View>
@@ -55,7 +55,7 @@ const navigation = useNavigation();
     <View style={{height: "100%", width: "20%", alignItems:"center", justifyContent:"center"}}>
     <MaterialIcons 
             name="edit"
-            color={"#00000029"}
+            color={"white"}
             size={fontSize.twentyeight}
           />
     </View>

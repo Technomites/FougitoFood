@@ -23,6 +23,8 @@ import changeNavigationBarColor, {
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
 import CustomButton from '../Shared/Components/CustomButton';
+import LinearGradient from 'react-native-linear-gradient';
+import RadialGradient from 'react-native-radial-gradient';
 import {useSelector, useDispatch} from 'react-redux';
 import {FullWindowOverlay} from 'react-native-screens';
 import {
@@ -47,6 +49,8 @@ import GetStartedstepthree from '../Screens/GetStartedstepthree';
 import SplashScreen from '../Screens/SplashScreen';
 import * as Animatable from 'react-native-animatable';
 import Home from '../Screens/Home';
+import Restaurantpage from '../Screens/Restaurantpage';
+
 import Settings from '../Screens/Settings';
 import Help from '../Screens/Help';
 import Coupons from '../Screens/Coupons';
@@ -316,7 +320,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
           }}>
 
 
-          <View
+          {/* <View
             style={{
               width: '95%',
               height: scalableheight.nine,
@@ -328,14 +332,16 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
               justifyContent: 'space-evenly',
               flexDirection: 'row',
               alignItems: 'center',
-            }}>
+            }}> */}
+            <View style={{width:"100%", justifyContent:"center", alignItems:"center", paddingVertical: scalableheight.two}}>
             <Image
               style={{
-                width: height(7),
-                height: height(7),
+                width: height(12),
+                height: height(12),
                 borderRadius: fontSize.circle,
                 borderWidth: scalableheight.borderwidth,
-                borderColor: '#B10071',
+                borderColor: 'black',
+           
               }}
               source={
                 ProfileInfo != ''
@@ -345,8 +351,31 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   : require('../Resources/images/logoguest.png')
               }
             />
+             <TouchableOpacity
+             style={{alignItems:"center", marginTop: scalableheight.one}}
+                onPress={() => navigation.navigate('AccountInfo')}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: fontSize.eightteen,
+                    fontFamily: 'Inter-SemiBold',
+                  }}>
+                 Humza Samiullah
+                </Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: fontSize.twelve,
+                    fontFamily: 'Inter-Medium',
+                    opacity: 0.8,
+                  }}>
+                  {'View Profile'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+         
 
-            {renderIf(ProfileInfo != '')(
+            {/* {renderIf(ProfileInfo != '')(
               <TouchableOpacity
                 onPress={() => navigation.navigate('AccountInfo')}>
                 <Text
@@ -392,11 +421,11 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
               }}>
               <Ionicons
                 name="settings-outline"
-                color={'#B10071'}
+                color={'black'}
                 size={fontSize.twentytwo}
               />
-            </TouchableOpacity>
-          </View>
+            </TouchableOpacity> 
+          </View>*/}
 
           <TouchableOpacity
                   onPress={() => {
@@ -417,7 +446,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                     style={{
                       width: scalableheight.five,
                       height:scalableheight.five,
-                      borderRadius: fontSize.circle,
+                      borderRadius: fontSize.nine,
                       backgroundColor: '#F9F9F9',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -425,13 +454,13 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                      
                     }}>
              
-             <MaterialCommunityIcons name={'home-outline'} color={'#E14E4E'}  size={fontSize.twentyfour} />
+             <MaterialCommunityIcons name={'home-outline'} color={'black'}  size={fontSize.twentyfour} />
                   
             
                   </View>
                   <Text
                     style={{
-                      color: 'black',
+                      color: 'white',
                       fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
@@ -460,7 +489,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                     style={{
                       width: scalableheight.five,
                       height:scalableheight.five,
-                      borderRadius: fontSize.circle,
+                      borderRadius: fontSize.nine,
                       backgroundColor: '#F9F9F9',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -470,7 +499,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
              
              <MaterialIcons
                         name={"history"}
-                        color={'#E14E4E'} 
+                        color={'black'}
                         size={fontSize.twentytwo}
                       />
                   
@@ -478,7 +507,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   </View>
                   <Text
                     style={{
-                      color: 'black',
+                      color: 'white',
                       fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
@@ -488,61 +517,91 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   
                 </TouchableOpacity>
 
-               
-
-
-              
                 <TouchableOpacity
-                  onPress={() => {
-                    
-                    navigation.navigate('MyFavourite');
-                    navigation.dispatch(DrawerActions.closeDrawer());
-                  }}
-                  style={{
-                    flexDirection:  "row",
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginLeft: scalableheight.two,
-                    marginRight: Lang == 'ar' ? scalableheight.two : null,
-                  }}>
+                onPress={() => {
+                  navigation.navigate('Coupons');
+                  navigation.dispatch(DrawerActions.closeDrawer());
+                }}
+                style={{
+                  flexDirection:  'row' ,
+                  alignItems: 'center',
+                  borderTopWidth: scalableheight.borderTopWidth,
+                  borderColor: '#adadad',
+                  height: Dimensions.get('window').height / 12,
+                }}>
+               
                   <View
                     style={{
                       width: scalableheight.five,
                       height:scalableheight.five,
-                      borderRadius: fontSize.circle,
+                      borderRadius: fontSize.nine,
                       backgroundColor: '#F9F9F9',
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginLeft: scalableheight.two,
-                   
+                 
                     }}>
              
-             <AntDesign name={'hearto'} color={'#E14E4E'} size={fontSize.twentytwo} />
+             <AntDesign name={'tagso'} color={'black'} size={fontSize.twentytwo} />
                   
             
                   </View>
                   <Text
                     style={{
-                      color: 'black',
+                      color: 'white',
                       fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
                     }}>
-                        {"My Favourites"}
+                   {"My Coupons"}
                   </Text>
-                  {/* {newNotificationCount !== 0 ?
-                    <View style={{backgroundColor:'#EFBC70',marginLeft:scalableheight.two,borderRadius:100,paddingVertical:4,paddingHorizontal:8,alignItems:'center',justifyContent:'center'}}>
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontFamily: 'Rubik-Regular',
-                          fontSize: fontSize.twelve,
-                        }}>
-                        {newNotificationCount}
-                      </Text>
-                    </View> : null
-                  } */}
+                  
                 </TouchableOpacity>
+                <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('MyFavourite');
+                  navigation.dispatch(DrawerActions.closeDrawer());
+                }}
+                style={{
+                  flexDirection:  'row' ,
+                  alignItems: 'center',
+                  borderTopWidth: scalableheight.borderTopWidth,
+                  borderColor: '#adadad',
+                  height: Dimensions.get('window').height / 12,
+                }}>
+               
+                  <View
+                    style={{
+                      width: scalableheight.five,
+                      height:scalableheight.five,
+                      borderRadius: fontSize.nine,
+                      backgroundColor: '#F9F9F9',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginLeft: scalableheight.two,
+                 
+                    }}>
+             
+             <AntDesign name={'hearto'} color={'black'} size={fontSize.twentytwo} />
+                  
+            
+                  </View>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontFamily: 'Inter-Medium',
+                      fontSize: fontSize.fourteen,
+                      marginLeft:  scalableheight.two,
+                    }}>
+                   {"My Favourites"}
+                  </Text>
+                  
+                </TouchableOpacity>
+               
+
+
+              
+             
 
            
        
@@ -564,7 +623,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
               style={{
                 width: scalableheight.five,
                 height: scalableheight.five,
-                borderRadius: fontSize.circle,
+                borderRadius: fontSize.nine,
                 backgroundColor: '#F9F9F9',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -572,29 +631,29 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
 
               }}>
               {item.type == 1 ? (
-                <Ionicons name={item.img} color={'#E14E4E'}  size={fontSize.twentytwo} />
+                <Ionicons name={item.img} color={'black'}  size={fontSize.twentytwo} />
               ) : item.type == 2 ? (
                 <FontAwesome
                   name={item.img}
-                  color={'#E14E4E'} 
+                  color={'black'}
                   size={fontSize.twentytwo}
                 />
               ) : item.type == 3 ? (
                 <MaterialCommunityIcons
                   name={item.img}
-                  color={'#E14E4E'} 
+                  color={'black'}
                   size={fontSize.twentytwo}
                 />
               ) : item.type == 4 ? (
                 <Feather
                   name={item.img}
-                  color={'#E14E4E'} 
+                  color={'black'}
                   size={fontSize.twentytwo}
                 />
               ) : item.type == 5 ? (
                 <AntDesign
                   name={item.img}
-                  color={'#E14E4E'} 
+                  color={'black'}
                   size={fontSize.twentytwo}
                 />
               ) : 
@@ -604,7 +663,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
             </View>
             <Text
               style={{
-                color: 'black',
+                color: 'white',
                 fontFamily: 'Inter-Medium',
                 fontSize: fontSize.fourteen,
                 marginLeft: scalableheight.two,
@@ -631,7 +690,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                     style={{
                       width: scalableheight.five,
                       height:scalableheight.five,
-                      borderRadius: fontSize.circle,
+                      borderRadius: fontSize.nine,
                       backgroundColor: '#F9F9F9',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -639,13 +698,13 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                     
                     }}>
              
-                      <MaterialIcons name={"logout"} color={'#E14E4E'}  size={fontSize.twentytwo} />
+                      <MaterialIcons name={"logout"} color={'black'}  size={fontSize.twentytwo} />
                   
             
                   </View>
                   <Text
                     style={{
-                      color: 'black',
+                      color: 'white',
                       fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
@@ -671,7 +730,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                     style={{
                       width: scalableheight.five,
                       height:scalableheight.five,
-                      borderRadius: fontSize.circle,
+                      borderRadius: fontSize.nine,
                       backgroundColor: '#F9F9F9',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -679,13 +738,13 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                    
                     }}>
      
-                      <MaterialIcons name={"login"} color={'#E14E4E'} size={fontSize.twentytwo} />
+                      <MaterialIcons name={"login"} color={'black'} size={fontSize.twentytwo} />
                   
                    
               </View>
                   <Text
                     style={{
-                      color: 'black',
+                      color: 'white',
                       fontFamily: 'Inter-Medium',
                       fontSize: fontSize.fourteen,
                       marginLeft:  scalableheight.two,
@@ -750,6 +809,11 @@ const Drawernavigator = props => {
       <Drawer.Screen name="Home" options={{headerShown: false}}>
         {props => <Home {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
+      <Drawer.Screen name="Restaurantpage" options={{headerShown: false}}>
+        {props => <Restaurantpage {...props} drawerAnimationStyle={animatedStyle} />}
+      </Drawer.Screen>
+
+      
       <Drawer.Screen name="Changepassword" options={{headerShown: false}}>
         {props => (
           <Changepassword {...props} drawerAnimationStyle={animatedStyle} />
@@ -832,7 +896,7 @@ const MainNavigator = () => {
   return (
     <>
       <NavigationContainer theme={navTheme}>
-        {/* <ImageBackground
+       <ImageBackground
           resizeMode="cover"
           style={{
             justifyContent: 'center',
@@ -841,8 +905,20 @@ const MainNavigator = () => {
             width: '100%',
             position: 'absolute',
           }}
-          source={require('../Resources/images/drawer.png')}> */}
-          <View    style={{
+          source={require('../Resources/images/background.png')}> 
+    
+
+    <Image
+          resizeMode="contain"
+          style={{  position:"absolute", bottom: scalableheight.three, left: scalableheight.three, width: scalableheight.thirteen, height: scalableheight.four}}
+          source={require('../Resources/images/logo.png')}
+        />
+<Text style={{position:"absolute", bottom: scalableheight.three, right: scalableheight.four,  color: 'white',
+                      fontFamily: 'Inter-Medium',
+                      fontSize: fontSize.twelve, opacity: 0.7}}>Version 1.0.5</Text>
+
+          </ImageBackground>
+        {/*     <View    style={{
            
             alignItems: 'center',
             height: '100%',
@@ -870,9 +946,18 @@ const MainNavigator = () => {
               alignItems: 'flex-start',
               width: '100%',
               backgroundColor: 'rgba(0,0,0,0.6)',
-            }}></View> */}
-            </View>
-        {/* </ImageBackground> */}
+            }}></View>
+            </View> */}
+               {/* <RadialGradient
+            colors={['white', '#E57160']}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+              width: '100%',
+              position: 'absolute',
+            }}></RadialGradient> */}
+      
         <Stack.Navigator
           screenOptions={TransitionScreenOptions}
           initialRouteName="SplashScreen">

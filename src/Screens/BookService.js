@@ -39,6 +39,7 @@ import CustomButton from '../Shared/Components/CustomButton';
 import {GToastContainer, showToast} from 'react-native-gtoast';
 import DatePicker from 'react-native-date-picker';
 import ImagePicker from 'react-native-image-crop-picker';
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { format } from 'date-fns'
 import Geocoder from 'react-native-geocoding';
 import MYButton from '../Shared/Components/MYButton';

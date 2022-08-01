@@ -30,24 +30,26 @@ const navigation = useNavigation();
 
 
   return (
-    <View style={{...styleSheet.shadow, width:"100%", height:Dimensions.get('window').height / 5, borderRadius:fontSize.borderradiusmedium}}>
-      <View style={{height:"57%", width: "100%", borderWidth:1, borderColor:"red", flexDirection:"row"}}>
-<View style={{height: "100%", borderWidth:1, borderColor:"blue", width: "25%",alignItems:"center", justifyContent:"center"}}>
+    <View style={{...styleSheet.shadow, width:"100%", height:Dimensions.get('window').height / 5, borderRadius:fontSize.borderradiusmedium, padding: scalableheight.pointfive, }}>
+      <View style={{height:"65%", width: "100%", flexDirection:"row"}}>
+<View style={{height: "100%", width: "25%",alignItems:"center", justifyContent:"center"}}>
 <View style={{ width :"80%", height:"80%", backgroundColor:"#F9F9F9",alignItems:"center", justifyContent:"center", borderRadius: fontSize.borderradiuslarge}}>
     <FontAwesome5 name="tags" size={fontSize.thirtyfive} color={"#F55050"} />
         </View>
 </View>
-<View style={{height: "100%", borderWidth:1, borderColor:"blue", width: "55%", justifyContent:"center"}}>
-  <Text style={{fontFamily:"Inter-Medium", fontSize:fontSize.eleven, color: "#F55050"}}>40% OFF</Text>
-  <Text style={{fontFamily:"Inter-Bold", fontSize:fontSize.sixteen, color: "black"}}>EidSpecial40</Text>
-  <Text style={{fontFamily:"Inter-Medium", fontSize:fontSize.twelve, color: "#636363"}}>Min Order: AED 100</Text>
+<View style={{height: "100%",  width: "75%", justifyContent:"center"}}>
+  <Text style={{fontFamily:"Inter-Medium", fontSize:fontSize.eleven, color: "#F55050"}}>{props.sale}</Text>
+  <Text style={{fontFamily:"Inter-Bold", fontSize:fontSize.sixteen, color: "black"}}>{props.title}</Text>
+  <Text style={{fontFamily:"Inter-Medium", fontSize:fontSize.twelve, color: "#636363"}}>{"Min Order: "} {props.minorder}</Text>
 </View>
-<View style={{height: "100%", borderWidth:1, borderColor:"blue", width: "20%"}}>
-<Text style={{fontFamily:"Inter-Bold", fontSize:fontSize.twelve, color: "#F55050"}}>3 days left</Text>
-</View>
+<Text style={{position:"absolute", right: scalableheight.one, top: scalableheight.one, fontFamily:"Inter-Bold", fontSize:fontSize.twelve, color: "#F55050"}}>{props.daysleft}</Text>
       </View>
-      <View style={{height:"42%", width: "100%", borderWidth:1, borderColor:"red"}}>
-
+      <View style={{height:"35%", width: "100%"}}>
+<View style={{borderTopWidth:1, width: "85%", borderColor:"#707070", alignSelf:"center"}}></View>
+<View style={{width:"100%", padding: scalableheight.two}}>
+<Text style={{fontFamily:"Inter-Bold", fontSize:fontSize.ten, color: "#E14E4E"}}>T&C</Text>
+<Text style={{fontFamily:"Inter-Medium", fontSize:fontSize.ten, color: "#636363"}}>Place an order on Eid and Get AED10 OFF in your order.</Text>
+</View>
 </View>
     {/* <View style={{ width :"25%", height:"100%", backgroundColor:"#F9F9F9", borderTopLeftRadius: fontSize.borderradiuslarge, borderBottomLeftRadius:fontSize.borderradiuslarge, alignItems:"center", justifyContent:"center"}}>
     <FontAwesome5 name="ticket-alt" size={fontSize.thirtyfive} color={"rgba(192,192,192, 0.8)"} />
@@ -107,7 +109,7 @@ const styleSheet = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
 
-    elevation: 2,
+    elevation: 1,
   },
 });
 
