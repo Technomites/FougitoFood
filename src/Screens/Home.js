@@ -630,10 +630,12 @@ const Home = ({navigation, drawerAnimationStyle}) => {
              <View
               style={{
                 ...styleSheet.shadow,
+                height: scalableheight.fifty,
                 height: scalableheight.seventy,
                 width: '100%',
-                height: '100%',
+                backgroundColor: '#F5F5F5',
                 borderRadius: fontSize.fifteen,
+                overflow: 'hidden' 
               }}
        
             >
