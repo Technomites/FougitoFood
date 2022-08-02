@@ -42,7 +42,7 @@ const GettingStarted = props => {
       buttontitle2: true,
 
       press2: () => {
-        props.navigation.replace('GetStartedstepthree');
+        setcount(2);
       },
     },
     {
@@ -52,7 +52,7 @@ const GettingStarted = props => {
       buttontitle2: true,
 
       press2: () => {
-        props.navigation.replace('GetStartedstepthree');
+        setcount(2);
       },
     },
     {
@@ -70,7 +70,7 @@ const GettingStarted = props => {
       style={styleSheet.BackgroundImage}>
       <Animatable.View
         animation={count ? 'bounceInRight' : undefined}
-        // animation="bounceInRight"
+        //animation="bounceInRight"
         easing="ease"
         // iterationCount="infinite"
         iterationCount={1}

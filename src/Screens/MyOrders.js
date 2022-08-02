@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  Image,
+  Modal,
+  ScrollView,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
@@ -23,46 +26,54 @@ import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
 import Favourites from '../Shared/Components/Favourites';
+import ActiveRequestTile from '../Shared/Components/ActiveRequestTile';
 
 import BottomTab from '../Shared/Components/BottomTab';
 import Animated from 'react-native-reanimated';
 import Octicons from 'react-native-vector-icons/Octicons';
 import NetInfo from '@react-native-community/netinfo';
+import {styles} from 'react-native-element-dropdown/src/components/TextInput/styles';
 
-const MyFavourite = ({navigation, drawerAnimationStyle}) => {
+const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   const {notificationList, notificationCount} = useSelector(
     state => state.userReducer,
   );
 
-  const [serving, setserving] = useState([
+  const [Order, SetOrders] = useState([
     {
-      selected: false,
-      serving: 'Single Plate',
-      price: 'AED 159.00',
+      OrderNo: 'ORD-85814',
+      Restaurant: 'Perfect Grill Restaurant',
+      timmings: '06-12-21 | 4:00 PM',
+      Amount: '1337.00',
+      OrderStatus: 'Order Confirmed',
     },
     {
-      selected: false,
-      serving: 'Double Plate',
-      price: 'AED 129.00',
+      OrderNo: 'ORD-85814',
+      Restaurant: 'Perfect Grill Restaurant',
+      timmings: '06-12-21 | 4:00 PM',
+      Amount: '1337.00',
+      OrderStatus: 'Cancelled',
     },
     {
-      selected: false,
-      serving: 'Triple Plate',
-      price: 'AED 59.00',
+      OrderNo: 'ORD-85814',
+      Restaurant: 'Perfect Grill Restaurant',
+      timmings: '06-12-21 | 4:00 PM',
+      Amount: '1337.00',
+      OrderStatus: 'Delivered',
     },
   ]);
 
-  const renderItem = ({item, index}) => (
-    <Favourites
-      image={require('../Resources/images/food.png')}
-      title={'Mexican Enchiladas'}
-      reviews={'8.9 (350 reviews)'}
-      time={'9:00 AM - 10:00PM'}
-      onPress={() => {}}
-      distance={'2.5KM AWAY'}
-    />
-  );
+  //   const renderItem = ({item, index}) => (
+  //     <Favourites
+  //       image={require('../Resources/images/food.png')}
+  //       title={'Mexican Enchiladas'}
+  //       reviews={'8.9 (350 reviews)'}
+  //       time={'9:00 AM - 10:00PM'}
+  //       onPress={() => {}}
+  //       distance={'2.5KM AWAY'}
+  //     />
+  //   );
 
   return (
     <Animated.View
@@ -71,22 +82,34 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
         style={{
           height: '100%',
           width: '100%',
-
           alignSelf: 'center',
-
           paddingTop: getStatusBarHeight(),
         }}>
-        <PlainHeader title={'My Favourites'} />
+        <PlainHeader title={'My Orders'} />
         <View style={{height: scalableheight.three}} />
         <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
           <FlatList
-            data={serving}
-            renderItem={renderItem}
-            // ListFooterComponent={renderFooter}
-            // onEndReached={loadMoreNotifications}
+            data={Order}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 54}}
-            keyExtractor={(item, index) => index.toString()}
+            style={{
+              width: '100%',
+              marginBottom: 20,
+              height: '100%',
+            }}
+            renderItem={({item, i}) => {
+              return (
+                <ActiveRequestTile
+                  onPress={() =>
+                    navigation.navigate('OrderDetails', {
+                      orderId: item.OrderNo,
+                      completedetails:Order 
+                    })
+                  }
+                  // onModelPopUp={changestatus}
+                  deatils={item}
+                />
+              );
+            }}
           />
         </View>
       </View>
@@ -162,5 +185,26 @@ const styleSheet = StyleSheet.create({
     paddingVertical: scalableheight.two,
     paddingHorizontal: scalableheight.one,
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000075',
+    paddingHorizontal: 30,
+  },
+  modalView: {
+    backgroundColor: '#FFF',
+    borderRadius: 6,
+    padding: 16,
+    shadowColor: '#29262A',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: '100%',
+  },
 });
-export default MyFavourite;
+export default MyOrders;
