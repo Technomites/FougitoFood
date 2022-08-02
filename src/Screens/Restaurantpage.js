@@ -557,6 +557,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                   textcolor={'white'}
                   onPress={() => {
                     setmodalVisible(false);
+                    setcartvisible(true)
                   }}
                 />
 
@@ -572,7 +573,13 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   
 
       {cartvisible && (
-        <View
+        <Animatable.View
+        animation={'fadeInUpBig'}
+
+             easing="ease"
+             //  iterationCount="infinite"
+             iterationCount={1}
+            
           style={{
             bottom: scalableheight.two,
             position: 'absolute',
@@ -636,7 +643,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
               </Text>
             </View>
           </View>
-        </View>
+        </Animatable.View>
       )}
       <View style={{flex: 1, backgroundColor: '#303030', borderRadius: 10}}>
         <View style={{flex: 1, marginTop: getStatusBarHeight(), }}>

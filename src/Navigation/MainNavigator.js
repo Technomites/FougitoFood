@@ -49,6 +49,7 @@ import SplashScreen from '../Screens/SplashScreen';
 import * as Animatable from 'react-native-animatable';
 import Home from '../Screens/Home';
 import Restaurantpage from '../Screens/Restaurantpage';
+import Checkout from '../Screens/Checkout';
 
 import Settings from '../Screens/Settings';
 import Help from '../Screens/Help';
@@ -847,6 +848,12 @@ const Drawernavigator = props => {
           <MyFavourite {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
+      <Drawer.Screen name="Checkout" options={{headerShown: false}}>
+        {props => (
+          <Checkout {...props} drawerAnimationStyle={animatedStyle} />
+        )}
+      </Drawer.Screen>
+      
       <Drawer.Screen name="MyAddresses" options={{headerShown: false}}>
         {props => (
           <MyAddresses {...props} drawerAnimationStyle={animatedStyle} />
