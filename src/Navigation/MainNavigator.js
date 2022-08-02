@@ -22,7 +22,7 @@ import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
-import RBSheet from "react-native-raw-bottom-sheet";
+import RBSheet from 'react-native-raw-bottom-sheet';
 import CustomButton from '../Shared/Components/CustomButton';
 import LinearGradient from 'react-native-linear-gradient';
 import RadialGradient from 'react-native-radial-gradient';
@@ -74,7 +74,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import renderIf from 'render-if';
 import {totalSize, height} from 'react-native-dimension';
@@ -613,8 +613,8 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 justifyContent: 'center',
                 marginLeft: scalableheight.two,
               }}>
-              <AntDesign
-                name={'hearto'}
+              <Ionicons
+                name={'location-outline'}
                 color={'black'}
                 size={fontSize.twentytwo}
               />
@@ -923,7 +923,6 @@ const navTheme = {
 const MainNavigator = () => {
   return (
     <>
-
       <NavigationContainer theme={navTheme}>
         <ImageBackground
           resizeMode="cover"
@@ -1071,7 +1070,6 @@ const MainNavigator = () => {
           />
         </Stack.Navigator>
       </NavigationContainer>
-      
     </>
   );
 };
