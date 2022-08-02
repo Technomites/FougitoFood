@@ -45,7 +45,7 @@ const scalableheight = {
   fiftyfive: height(55),
   sixty: height(60),
   sixtyfive: height(65),
-  seventy: height(68),
+  seventy: height(70),
   eighty: height(80),
   ninety: height(91),
 

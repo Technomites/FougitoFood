@@ -613,7 +613,7 @@ const Home = ({navigation, drawerAnimationStyle}) => {
          
           style={{
          
-            width:"100%", height: scalableheight.twentyfour, zIndex:1
+            width:"100%", height: scalableheight.twentytwo, zIndex:1
           
           }}
           imageStyle={{borderBottomLeftRadius: fontSize.twenty, borderBottomRightRadius: fontSize.twenty,}}
