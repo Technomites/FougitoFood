@@ -26,7 +26,7 @@ const navigation = useNavigation();
   return (
     <View style={{...styleSheet.shadow, flexDirection:"row", width:"100%", height:scalableheight.eight, backgroundColor:"white", borderRadius: fontSize.borderradiusmedium,}}>
     <View style={{height: "100%", width: "20%", alignItems:"center", justifyContent:"center"}}>
-<View style={{height:scalableheight.six, width: scalableheight.six, backgroundColor:"#00000029",  borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center"}}>
+<View style={{height:scalableheight.six, width: scalableheight.six, backgroundColor:"rgba(211,211,211, 0.3)",  borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center"}}>
 <MaterialIcons 
             name="location-pin"
             color={'#F55050'}
@@ -52,13 +52,15 @@ const navigation = useNavigation();
               }} numberOfLines={2}>{props.Details}</Text>
     </View>
   
-    <View style={{height: "100%", width: "20%", alignItems:"center", justifyContent:"center"}}>
+    <TouchableOpacity
+    onPress={props.onPress}
+    style={{height: "100%", width: "20%", alignItems:"center", justifyContent:"center"}}>
     <MaterialIcons 
             name="edit"
             color={"#00000029"}
             size={fontSize.twentyeight}
           />
-    </View>
+    </TouchableOpacity>
 
 
 </View>

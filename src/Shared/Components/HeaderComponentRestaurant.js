@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
+  
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -18,7 +19,8 @@ import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
-export default function HeaderComponent(props) {
+import ToggleSwitch from 'toggle-switch-react-native';
+export default function HeaderComponentRestaurant(props) {
   const {blogsdatahome, newsfeedshomedata, Lang, ProfileInfo, profileimage, bannerarray, categories, newNotificationCount, popularservicedatahome} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 const navigation = useNavigation();
@@ -34,11 +36,12 @@ const navigation = useNavigation();
         style={{
           width: '100%',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           flexDirection: "row" ,
         
         }}>
         
+
           <TouchableOpacity
           onPress={openMenu}
           style={{
@@ -46,8 +49,7 @@ const navigation = useNavigation();
             width:  scalableheight.five,
             justifyContent: 'center',
             alignItems: 'center',
-       position:"absolute",
-       left: 0
+    
            
           }}>
           <MaterialCommunityIcons 
@@ -59,10 +61,30 @@ const navigation = useNavigation();
 
         <Image
           resizeMode="contain"
-          style={{  alignSelf: "center", width: scalableheight.thirteen, height: scalableheight.four}}
+          style={{ marginLeft: scalableheight.one, alignSelf: "center", width: scalableheight.thirteen, height: scalableheight.four}}
           source={require('../../Resources/images/logo.png')}
         />
-       
+        <View
+        style={{position: "absolute", right: "3%", flexDirection: "row", alignItems: "center"}}>
+   <Text  style={{
+                fontFamily: 'Inter-Bold',
+                fontSize: fontSize.fourteen,
+                color:"white", marginRight: scalableheight.one
+              }}>Switch to Pickup</Text>
+       <ToggleSwitch
+  style={{}}
+              isOn={props.isEnabled}
+              thumbOnStyle={{backgroundColor: 'white'}}
+              thumbOffStyle={{backgroundColor: 'white'}}
+              trackOnStyle={{backgroundColor: "#E14E4E"}}
+              trackOffStyle={{backgroundColor: "grey"}}
+              onToggle={props.toggleSwitch}
+              size="medium"
+            />
+        </View>
+    
+            
+         
       
         {/* <View style={{flexDirection: 'row',justifyContent:"flex-end"}}>
        
@@ -93,7 +115,7 @@ const styleSheet = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
    
-
+    backgroundColor: '#303030',
 
   },
 

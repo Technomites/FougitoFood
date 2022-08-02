@@ -25,7 +25,7 @@ const navigation = useNavigation();
 
 
   return (
-    <View style={{...styleSheet.shadow, flexDirection:"row", width:"100%", height:scalableheight.eight,  borderRadius: fontSize.borderradiusmedium, borderWidth:1, borderColor:"rgba(211,211,211, 0.5)", backgroundColor: "rgba(211,211,211, 0.05)"}}>
+    <View style={{...styleSheet.shadow, flexDirection:"row", width:"100%", height:scalableheight.six,  borderRadius: fontSize.borderradiusmedium, borderWidth:1, borderColor:"rgba(211,211,211, 0.5)", backgroundColor: "rgba(211,211,211, 0.05)"}}>
     <TextInput
     value={props.search}
     placeholderTextColor= "rgba(211,211,211, 0.5)"
@@ -53,7 +53,7 @@ size={ fontSize.twenty}
 style={{position: 'absolute', left: '5%', alignSelf: "center"}}
 />
 
-<View style={{height: "100%", width: scalableheight.eight, backgroundColor:"#E14E4E",position: 'absolute', right: 0, borderRadius: fontSize.borderradiusmedium, alignItems: "center", justifyContent: "center"}}>
+<View style={{height: "100%", width: scalableheight.six, backgroundColor:"#E14E4E",position: 'absolute', right: 0, borderRadius: fontSize.borderradiusmedium, alignItems: "center", justifyContent: "center"}}>
 <MaterialCommunityIcons
 name="qrcode-scan"
 color={'white'}

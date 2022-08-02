@@ -9,64 +9,36 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
-  Dimensions,
-  TextInput
+  ImageBackground
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-export default function SearchBar(props) {
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
+export default function SavedAddresses(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
 
 
   return (
-    <View
-    style={{
-      ...styleSheet.shadow,
-      width: '99%',
-      height: Dimensions.get('window').height / 15,
-      justifyContent: 'center',
-      borderRadius: fontSize.twenty,
-      marginTop: '3%',
-      alignSelf: 'center',
-      marginBottom: '3%',
-    }}>
-    <TextInput
-    value={props.search}
-      onChangeText={text => props.onchange(text)}
-      placeholder={"Search here"}
-      style={{
-        width: '100%',
-        height: '98%',
-fontSize:fontSize.fifteen,
-        backgroundColor: 'white',
-        alignSelf: 'center',
-        borderRadius: fontSize.twenty,
-        paddingHorizontal: '5%',
-        alignItems:"center",
-        justifyContent:"center"
-      
-      }}
-    />
-      
-
-<Ionicons
-name="search"
-color={'grey'}
-size={ fontSize.twenty}
-style={{position: 'absolute', right: '5%'}}
-/>
-      
-        
+    
+    <View style={{flexDirection:"row", borderBottomWidth: 1, borderColor:  "rgba(211,211,211, 0.5)", paddingVertical: scalableheight.one}}>
+    <View style={{justifyContent:"center"}}>
+    <FontAwesome name={'home'} color={"#F55050"}   size={fontSize.twenty} />
+  </View>
+    <View style={{marginLeft:scalableheight.two}}>
+    <Text style={{color:"black", fontFamily: 'Inter-SemiBold',
+  fontSize: fontSize.sixteen,}}>{props.title}</Text>
    
-  </View>   
+     <Text style={{color:"black", fontFamily: 'Inter-Regular', opacity:0.5,
+  fontSize: fontSize.fourteen,}}>{props.address}</Text>
+  </View>
+</View>  
   );
 }
 

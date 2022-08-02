@@ -33,7 +33,7 @@ const navigation = useNavigation();
       style={{
         ...styleSheet.shadow,
         height: scalableheight.fifteen,
-        width: "100%",
+        width: "99%",
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: scalableheight.one,

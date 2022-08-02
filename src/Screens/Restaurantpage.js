@@ -41,12 +41,13 @@ import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
+
 import RNAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
 import {SliderBox} from 'react-native-image-slider-box';
 import ImagesSwiper from 'react-native-image-swiper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import NetInfo from '@react-native-community/netinfo';
-import BookingHeader from '../Shared/Components/BookingHeader';
+import HeaderComponentRestaurant from '../Shared/Components/HeaderComponentRestaurant';
 import HeaderComponent from '../Shared/Components/HeaderComponent';
 import Reviewscontainer from '../Shared/Components/Reviewscontainer';
 import Categoriescard from '../Shared/Components/Categoriescard';
@@ -56,7 +57,15 @@ import SearchBar from '../Shared/Components/SearchBar';
 import Starters from '../Shared/Components/Starters';
 import MultiChoiceDropDown from '../Shared/Components/MultiChoiceDropDown';
 import MYButton from '../Shared/Components/MYButton';
-
+import {
+  CollapsibleContainer,
+  CollapsibleFlatList,
+  CollapsibleScrollView,
+  useCollapsibleContext,
+  CollapsibleHeaderContainer,
+  withCollapsibleContext,
+  StickyView
+} from '@r0b0t3d/react-native-collapsible';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
@@ -72,6 +81,7 @@ import listeners from '../Listener/Listener';
 import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   const [searchText, setSearchText] = useState('');
@@ -81,6 +91,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   const [cartvisible, setcartvisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
   const [search, setsearch] = useState('');
+  const [isEnabled, setisEnabled] = useState(false);
+  const [isCollapsed, setisCollapsed] = useState(false);
+  const Top = createMaterialTopTabNavigator();
   const [count, setcount] = useState(0);
   const [serving, setserving] = useState([
     {
@@ -126,7 +139,11 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     popularservicedatahome,
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
-
+  const {
+    collapse,   // <-- Collapse header
+    expand,     // <-- Expand header
+    scrollY,    // <-- Animated scroll position. In case you need to do some animation in your header or somewhere else
+  } = useCollapsibleContext();
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
@@ -175,6 +192,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     dispatch(getblogshome(Lang));
   }, [Lang]);
 
+  useEffect(() => {
+   
+        hideNavigationBar();
+       
+   
+  }, [modalVisible]);
+
+  
   function onRefresh() {
     NetInfo.fetch().then(state => {
       if (state.isConnected == true && state.isInternetReachable == true) {
@@ -205,9 +230,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     />
   );
   const starters = ({item}) => (
-  
+<View style={{width:"100%", alignItems:"center"}}>
     <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
- 
+  </View>
     );
  
   
@@ -245,21 +270,93 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     setflavours(arr);
     console.log('arr' + JSON.stringify(arr));
   }
+
+  const Starterslabel =  props => {
+    return(
+      <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
+      <FlatList
+      keyExtractor={(item, index) => index.toString()}
+      showsVerticalScrollIndicator={false}
+      data={popularservicedatahome}
+      renderItem={starters}
+      // onEndReached={() => LoadFeaturedProjectPagination()}
+      // onEndReachedThreshold={0.1}
+    /> 
+    </View>
+    )
+   };
+ 
+   const MainCourselabel = props => {
+     return (
+      <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
+      <FlatList
+      keyExtractor={(item, index) => index.toString()}
+      showsVerticalScrollIndicator={false}
+      data={popularservicedatahome}
+      renderItem={starters}
+      // onEndReached={() => LoadFeaturedProjectPagination()}
+      // onEndReachedThreshold={0.1}
+    /> 
+    </View>
+    )
+     
+   };
+
+   const Desert = props => {
+    return (
+     <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
+     <FlatList
+     keyExtractor={(item, index) => index.toString()}
+     showsVerticalScrollIndicator={false}
+     data={popularservicedatahome}
+     renderItem={starters}
+     // onEndReached={() => LoadFeaturedProjectPagination()}
+     // onEndReachedThreshold={0.1}
+   /> 
+   </View>
+   )
+    
+  };
+
+  const Drinks = props => {
+    return (
+     <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
+     <FlatList
+     keyExtractor={(item, index) => index.toString()}
+     showsVerticalScrollIndicator={false}
+     data={popularservicedatahome}
+     renderItem={starters}
+     // onEndReached={() => LoadFeaturedProjectPagination()}
+     // onEndReachedThreshold={0.1}
+   /> 
+   </View>
+   )
+    
+  };
+  const toggleSwitch = async () => {
+
+    setisEnabled(!isEnabled)
+  };
+
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
-      <Modal
-        // animationInTiming={32000}
-        // animationOutTiming={32000}
-        // animationOut="bounceInUp"
-        // animationIn="bounceOut"
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        statusBarTranslucent
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setmodalVisible(!modalVisible);
-        }}>
+       {modalVisible && (
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            zIndex: 1,
+          }}></View>
+      )}
+   {modalVisible  &&  (  <Animatable.View
+              animation={'fadeInUpBig'}
+   
+                   easing="ease"
+                   //  iterationCount="infinite"
+                   iterationCount={1}
+                   style={{elevation: 4, zIndex:4}}>
         <KeyboardAvoidingView
           style={{width: '100%', height: '100%'}}
           behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
@@ -468,20 +565,11 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
             </View>
           </View>
         </KeyboardAvoidingView>
-      </Modal>
+      </Animatable.View>)}
       <StatusBar
-        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
       />
-      {modalVisible && (
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            zIndex: 1,
-          }}></View>
-      )}
+  
 
       {cartvisible && (
         <View
@@ -551,8 +639,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
         </View>
       )}
       <View style={{flex: 1, backgroundColor: '#303030', borderRadius: 10}}>
-        <View style={{flex: 1, marginTop: getStatusBarHeight()}}>
-          <HeaderComponent newNotificationCount={newNotificationCount} />
+        <View style={{flex: 1, marginTop: getStatusBarHeight(), }}>
+        <CollapsibleContainer>   
+        <CollapsibleHeaderContainer>
+    <StickyView>
+          <HeaderComponentRestaurant newNotificationCount={newNotificationCount}  isEnabled={isEnabled}
+          toggleSwitch={toggleSwitch}/>
+          </StickyView>
+       
    <View style={{ width: '100%',
     alignSelf: 'center',
     height: scalableheight.tweleve,
@@ -560,23 +654,13 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#303030',
-    paddingHorizontal: scalableheight.four,
+    paddingHorizontal: scalableheight.one,
   }}>
  <Infobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
    </View>
   
 <Reviewscontainer rating={"8.9"} reviews={"350"} title={"Perfect Grill"} description={"Its the food you love"} image={require('../Resources/images/grill.png')}/>
-<ScrollView
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          showsVerticalScrollIndicator={false}
-         
-          style={{  width:"100%", backgroundColor:"#F6F6F6", paddingHorizontal: scalableheight.one}}
-
-       >
-
-
+<View style={{paddingHorizontal: scalableheight.one}}>
 <Animatable.View
         animation="bounceInRight"
              easing="ease"
@@ -609,8 +693,61 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
               />
 
 <SearchBar search={search} onchange={(val) => {setsearch(val)}}/>
+</View>
 
-<Animatable.View
+        </CollapsibleHeaderContainer>
+        
+<CollapsibleScrollView
+            
+          showsVerticalScrollIndicator={false}
+         
+          style={{  width:"100%", backgroundColor:"white"}}
+
+       >
+
+<Top.Navigator
+     
+  
+          screenOptions={{
+            tabBarActiveTintColor: "#E14E4E",
+            tabBarInactiveTintColor: 'grey',
+            tabBarPressColor: 'white',
+    
+          }}
+          tabBarOptions={{
+            activeTintColor: "#E14E4E",
+           
+            tabStyle: {height: scalableheight.nine},
+            labelStyle: {fontSize: fontSize.twelve, fontWeight: 'bold'},
+            indicatorStyle: {
+              height: scalableheight.borderwidth,
+              backgroundColor: "#E14E4E",
+              borderRadius: 5,
+            },
+          }}>
+          <Top.Screen
+            name={'Starters'}
+            component={Starterslabel}
+          />
+          <Top.Screen
+          
+            name={'Main Course'}
+            component={MainCourselabel}
+          />
+
+<Top.Screen
+            name={'Desert'}
+            component={Desert}
+          />
+          <Top.Screen
+          
+            name={'Drinks'}
+            component={Drinks}
+          />
+        </Top.Navigator> 
+
+
+{/* <Animatable.View
         animation="zoomIn"
              easing="ease"
              //  iterationCount="infinite"
@@ -624,20 +761,22 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                 color:"#29262A"
               }}>STARTERS</Text>
               </Animatable.View>
-
               <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                showsVerticalScrollIndicator={false}
-                data={popularservicedatahome}
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+              data={popularservicedatahome}
+              renderItem={starters}
+              // onEndReached={() => LoadFeaturedProjectPagination()}
+              // onEndReachedThreshold={0.1}
+            /> */}
              
-                renderItem={starters}
-                // onEndReached={() => LoadFeaturedProjectPagination()}
-                // onEndReachedThreshold={0.1}
-              />
           
        
-          </ScrollView>
+          </CollapsibleScrollView>
+          </CollapsibleContainer>   
+
         </View>
+        
       </View>
     </Animated.View>
   );
@@ -690,4 +829,4 @@ const styleSheet = StyleSheet.create({
     elevation: 3,
   },
 });
-export default Restaurantpage;
+export default withCollapsibleContext(Restaurantpage);

@@ -30,11 +30,7 @@ const navigation = useNavigation();
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={() => {
-        
-        navigation.navigate('PopularServicceDetails', {
-          data: item.id,
-          categoryid: item.serviceCategoryID
-        });
+      
       }}
       style={{
         height: scalableheight.fifteen,

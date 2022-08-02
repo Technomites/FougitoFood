@@ -38,13 +38,16 @@ const scalableheight = {
   thirtyfour: height(34),
   thirtyfive: height(35),
   thirtysix: height(36),
+  thirtyseven: height(37),
   fourty: height(40),
   fourtyfive: height(45),
   fifty: height(50),
   fiftyfive: height(55),
   sixty: height(60),
-  seventy: height(70),
+  sixtyfive: height(65),
+  seventy: height(69),
   eighty: height(80),
+  ninety: height(91),
 
 }
 const fontSize = {
