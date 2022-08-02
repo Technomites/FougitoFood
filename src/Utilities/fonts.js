@@ -1,14 +1,14 @@
 import {totalSize, height} from 'react-native-dimension';
 
 const scalableheight = {
-    borderTopWidth: height(0.1),
-    borderTopWidthtoggle: height(0.15),
-    borderwidth: height(0.2),
-    pointfive: height(0.5),
-    pointsevenfive: height(0.75),
-    zeropointnine: height(0.4),
-    zeropointsix: height(0.6),
-    zeropointeight: height(0.8),
+  borderTopWidth: height(0.1),
+  borderTopWidthtoggle: height(0.15),
+  borderwidth: height(0.2),
+  pointfive: height(0.5),
+  pointsevenfive: height(0.75),
+  zeropointnine: height(0.4),
+  zeropointsix: height(0.6),
+  zeropointeight: height(0.8),
   one: height(1),
   onepointfive: height(1.5),
   two: height(2),

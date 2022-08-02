@@ -60,7 +60,7 @@ import Categoriescard from '../Shared/Components/Categoriescard';
 import Animated from 'react-native-reanimated';
 import Transparentinfobar from '../Shared/Components/Transparentinfobar';
 import Transparentsearch from '../Shared/Components/Transparentsearch';
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from "@react-native-community/geolocation";
 import SavedAddresses from '../Shared/Components/SavedAddresses';
@@ -179,7 +179,7 @@ const Home = ({navigation, drawerAnimationStyle}) => {
         },
       ],
     },
-    
+
     {
       elementType: 'labels.text.fill',
       stylers: [
@@ -188,33 +188,33 @@ const Home = ({navigation, drawerAnimationStyle}) => {
         },
       ],
     },
-  //   {
-  //     elementType: 'labels.text.stroke',
-  //     stylers: [
-  //       {
-  //         color: '#242f3e',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     featureType: 'administrative.locality',
-  //     elementType: 'labels.text.fill',
-  //     stylers: [
-  //       {
-  //         color: '#fffff',
-  //       },
-  //     ],
-  //   },
-  
-   {
-        featureType: "poi.business",
-        stylers: [{ visibility: "off" }],
-      },
-      {
-        featureType: "transit",
-        elementType: "labels.icon",
-        stylers: [{ visibility: "off" }],
-      },
+    //   {
+    //     elementType: 'labels.text.stroke',
+    //     stylers: [
+    //       {
+    //         color: '#242f3e',
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     featureType: 'administrative.locality',
+    //     elementType: 'labels.text.fill',
+    //     stylers: [
+    //       {
+    //         color: '#fffff',
+    //       },
+    //     ],
+    //   },
+
+    {
+      featureType: 'poi.business',
+      stylers: [{visibility: 'off'}],
+    },
+    {
+      featureType: 'transit',
+      elementType: 'labels.icon',
+      stylers: [{visibility: 'off'}],
+    },
     {
       featureType: 'poi',
       elementType: 'labels.text.fill',
@@ -428,15 +428,12 @@ const Home = ({navigation, drawerAnimationStyle}) => {
 		.catch(error => console.warn(error));
   }
   const getLocation = async () => {
-
     const hasLocationPermission = await hasLocationPermissions();
     if (!hasLocationPermission) {
       return;
     }
-
-    
-};
-const hasLocationPermissions = async () => {
+  };
+  const hasLocationPermissions = async () => {
     if (Platform.OS === 'ios') {
       const hasPermission = await hasLocationPermissionIOS();
       return hasPermission;
@@ -474,11 +471,11 @@ const hasLocationPermissions = async () => {
       // );
     }
     return false;
-};
-const hasLocationPermissionIOS = async () => {
+  };
+  const hasLocationPermissionIOS = async () => {
     const openSetting = () => {
       Linking.openSettings().catch(() => {
-        ToastMessage('success', "Success", 'Unable to open settings');
+        ToastMessage('success', 'Success', 'Unable to open settings');
       });
     };
     const status = await Geolocation.requestAuthorization('whenInUse');
@@ -488,7 +485,7 @@ const hasLocationPermissionIOS = async () => {
     }
 
     if (status === 'denied') {
-        ToastMessage('error', "Error", 'Location permission denied');
+      ToastMessage('error', 'Error', 'Location permission denied');
     }
 
     if (status === 'disabled') {
@@ -496,15 +493,13 @@ const hasLocationPermissionIOS = async () => {
         `Turn on Location Services to allow Bakery App to determine your location.`,
         '',
         [
-          { text: 'Go to Settings', onPress: openSetting },
-          { text: "Don't Use Location", onPress: () => { } },
+          {text: 'Go to Settings', onPress: openSetting},
+          {text: "Don't Use Location", onPress: () => {}},
         ],
       );
     }
     return false;
-};
-
- 
+  };
 
   function onRefresh() {
     NetInfo.fetch().then(state => {
@@ -607,14 +602,12 @@ const hasLocationPermissionIOS = async () => {
   }
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
-    
       <StatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
       />
-    
-      <View style={{flex: 1,  borderRadius: 10}}>
-        <View style={{flex: 1, backgroundColor: 'white',}}>
-         
+
+      <View style={{flex: 1, borderRadius: 10}}>
+        <View style={{flex: 1, backgroundColor: 'white'}}>
           <ImageBackground
           resizeMode="cover"
          
@@ -639,18 +632,8 @@ const hasLocationPermissionIOS = async () => {
                 ...styleSheet.shadow,
                 height: scalableheight.seventy,
                 width: '100%',
-                backgroundColor: '#F5F5F5',
-            
-                justifyContent: 'center',
-                alignItems: 'center',
+                height: '100%',
                 borderRadius: fontSize.fifteen,
-            
-                color: '#8c8c8c',
-            
-         
-                alignSelf: 'center',
-                marginTop: '-2%',
-                overflow: 'hidden' 
               }}
        
             >

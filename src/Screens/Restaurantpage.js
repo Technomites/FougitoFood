@@ -665,32 +665,49 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
         animation="bounceInRight"
              easing="ease"
               // iterationCount="infinite"
-             iterationCount={1}
-             
-  style={{flexDirection:"row", alignItems:"center", paddingVertical: scalableheight.two, justifyContent:"flex-start", width:"100%"}}>
-  <View style={{width:scalableheight.three, height: scalableheight.three, alignItems:"center", justifyContent: "center", backgroundColor: "#E14E4E", borderRadius: fontSize.borderradius}}>
-  <MaterialIcons 
-            name="local-fire-department"
-            color={"white"}
-            size={fontSize.fifteen}
-          />
-  </View>
-<Text style={{marginLeft: scalableheight.one,
-                fontFamily: 'Inter-ExtraBold',
-                fontSize: fontSize.sixteen,
-                color:"#29262A"
-              }}>Popular Categories</Text>
-              </Animatable.View>
+              iterationCount={1}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: scalableheight.two,
+                justifyContent: 'flex-start',
+                width: '100%',
+              }}>
+              <View
+                style={{
+                  width: scalableheight.three,
+                  height: scalableheight.three,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#E14E4E',
+                  borderRadius: fontSize.borderradius,
+                }}>
+                <MaterialIcons
+                  name="local-fire-department"
+                  color={'white'}
+                  size={fontSize.fifteen}
+                />
+              </View>
+              <Text
+                style={{
+                  marginLeft: scalableheight.one,
+                  fontFamily: 'Inter-ExtraBold',
+                  fontSize: fontSize.sixteen,
+                  color: '#29262A',
+                }}>
+                Popular Categories
+              </Text>
+            </Animatable.View>
 
-              <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={popularservicedatahome}
-                renderItem={renderpopularcategories}
-                // onEndReached={() => LoadFeaturedProjectPagination()}
-                // onEndReachedThreshold={0.1}
-              />
+            <FlatList
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={popularservicedatahome}
+              renderItem={renderpopularcategories}
+              // onEndReached={() => LoadFeaturedProjectPagination()}
+              // onEndReachedThreshold={0.1}
+            />
 
 <SearchBar search={search} onchange={(val) => {setsearch(val)}}/>
 </View>

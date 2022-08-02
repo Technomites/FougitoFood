@@ -40,6 +40,26 @@
     {
       "path": "Fonts/Inter-Thin.ttf",
       "sha1": "297919d59c9ba4fa17251cdb9f06c26ca906e593"
+    },
+    {
+      "path": "Fonts/Rubik-BoldItalic.ttf",
+      "sha1": "a61934a5b45096f2575080d82e114d4d1cfe3ba1"
+    },
+    {
+      "path": "Fonts/Rubik-Italic.ttf",
+      "sha1": "6c91a29e57c7bb357fef68432aaad36f551f2c7d"
+    },
+    {
+      "path": "Fonts/Rubik-LightItalic.ttf",
+      "sha1": "341c26d1014ba3fd058ad448348ddd501d21e75d"
+    },
+    {
+      "path": "Fonts/Rubik-MediumItalic.ttf",
+      "sha1": "f8d7b93df1aeb1567eaaf13c2ad3fc9f92c2e223"
+    },
+    {
+      "path": "Fonts/Rubik-SemiBoldItalic.ttf",
+      "sha1": "f47a6630a86eb4c5a6d0fe64fe8f4f0d260a0f47"
     }
   ]
 }
