@@ -271,9 +271,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
           // padding:scalableheight.one
         }}>
         <PlainHeader title={'My Orders'} />
-        <ScrollView 
-        showsVerticalScrollIndicator={false}
-        style={{}}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{}}>
           <View
             style={{
               padding: scalableheight.one,
@@ -496,13 +494,12 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
               </Text>
               <View style={{marginTop: scalableheight.one}}></View>
               <Addresstile
-                style={{ }}
+                style={{}}
                 icon={require('../Resources/images/Homeicon.png')}
-                                    place={'Home'}
-                                    address={'7399 Stefan Trace Joanne Ligh Street No.85'}
-                                    note={'4th floor, Take a left, 2nd brown Door on your right'}
+                place={'Home'}
+                address={'7399 Stefan Trace Joanne Ligh Street No.85'}
+                note={'4th floor, Take a left, 2nd brown Door on your right'}
               />
-             
             </View>
 
             <View
@@ -584,27 +581,31 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
             </View>
 
             <View>
-            <View style={{height: scalableheight.three}} />
-                        <Bll label={"Sub Total"} price={"AED 209.00"}/>
-                        <Bll label={"Delivery Charges"} price={"AED 209.00"}/>
-                     
-                        
-                          <View style={styles.Container}>
-                            <View style={{flexDirection:"row"}}>
-                          <Text style={styles.Text3}>Vat Amount</Text>
-                          <Text style={styles.Text4}>{"(4%)"}</Text>
-                          </View>
-                          <Text style={styles.Text3}>AED 209.00</Text>
-                          </View>
-                          <View style={{height: scalableheight.one}} />
-                          <Text style={{...styles.Text4, textAlign:"right"}} >I HAVE A COUPON</Text>
-                         <View style={{borderTopColor: "rgba(211,211,211, 0.5)", borderTopWidth: scalableheight.borderTopWidth, marginVertical: scalableheight.one}}></View>
-                          <Bll label={"Total"} price={"AED 222.00"}/>
-                          <View style={{height: scalableheight.two}} />
-                          <MYButton   title={'Cancel'}
-                    color="black"
-                    textcolor="white"/>
-                        <View style={{height: scalableheight.ten}} />
+              <View style={{height: scalableheight.three}} />
+              <Bll label={'Sub Total'} price={'AED 209.00'} />
+              <Bll label={'Delivery Charges'} price={'AED 209.00'} />
+
+              <View style={styles.Container}>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={styles.Text3}>Vat Amount</Text>
+                  <Text style={styles.Text4}>{'(4%)'}</Text>
+                </View>
+                <Text style={styles.Text3}>AED 209.00</Text>
+              </View>
+              <View style={{height: scalableheight.one}} />
+              <Text style={{...styles.Text4, textAlign: 'right'}}>
+                I HAVE A COUPON
+              </Text>
+              <View
+                style={{
+                  borderTopColor: 'rgba(211,211,211, 0.5)',
+                  borderTopWidth: scalableheight.borderTopWidth,
+                  marginVertical: scalableheight.one,
+                }}></View>
+              <Bll label={'Total'} price={'AED 222.00'} />
+              <View style={{height: scalableheight.two}} />
+              <MYButton title={'Cancel'} color="black" textcolor="white" />
+              <View style={{height: scalableheight.ten}} />
             </View>
           </View>
         </ScrollView>
@@ -624,7 +625,7 @@ const styles = StyleSheet.create({
     shadowColor: '#470000',
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
-    elevation: 2
+    elevation: 2,
   },
   centeredView: {
     flex: 1,
@@ -650,31 +651,33 @@ const styles = StyleSheet.create({
   Text1: {
     fontFamily: 'Inter-Bold',
     fontSize: fontSize.fifteen,
-    color:"black"
+    color: 'black',
   },
   Text2: {
-     fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Inter-SemiBold',
     fontSize: fontSize.ten,
-    color:"#29262A", opacity: 0.4
+    color: '#29262A',
+    opacity: 0.4,
   },
   Text3: {
     fontFamily: 'Inter-Bold',
-   fontSize: fontSize.fourteen,
-   color:"black"
- },
- Text4: {
+    fontSize: fontSize.fourteen,
+    color: 'black',
+  },
+  Text4: {
     fontFamily: 'Inter-SemiBold',
-   fontSize: fontSize.fourteen,
-   color:"#E14E4E"
- },
- Text4: {
+    fontSize: fontSize.fourteen,
+    color: '#E14E4E',
+  },
+  Text4: {
     fontFamily: 'Inter-SemiBold',
-   fontSize: fontSize.fifteen,
-   color:"#E14E4E"
- },
- Container:{
-    flexDirection:"row", alignItems:"center", justifyContent:"space-between"
- },
-
+    fontSize: fontSize.fifteen,
+    color: '#E14E4E',
+  },
+  Container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
 });
 export default OrderDetails;
