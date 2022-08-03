@@ -273,7 +273,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
         <PlainHeader title={'My Orders'} />
         <ScrollView 
         showsVerticalScrollIndicator={false}
-        style={{}}>
+        style={{paddingBottom: scalableheight.fifteen}}>
           <View
             style={{
               padding: scalableheight.one,
@@ -518,7 +518,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 Payment Method
               </Text>
               <View style={{marginTop: scalableheight.one}}></View>
-              <View style={{...styles.shadow, ...styles.MainContainer}}>
+              <View style={{...styles.shadow, ...styles.MainContainer,  paddingVertical: scalableheight.two}}>
                 <View
                   style={{
                     ...styles.topViewContainer,
@@ -624,7 +624,8 @@ const styles = StyleSheet.create({
     shadowColor: '#470000',
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
-    elevation: 2
+    elevation: 2,
+   
   },
   centeredView: {
     flex: 1,

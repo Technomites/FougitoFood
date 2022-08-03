@@ -59,6 +59,42 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
       address: '7399 Stefan Trace Joanne Ligh Street No.85',
       Note: '4th floor, Take a left, 2nd brown Door on your right',
     },
+    {
+      Icon: require('../Resources/images/Homeicon.png'),
+      Place: 'Home',
+      address: '7399 Stefan Trace Joanne Ligh Street No.85',
+      Note: '4th floor, Take a left, 2nd brown Door on your right',
+    },
+    {
+      Icon: require('../Resources/images/Homeicon.png'),
+      Place: 'Work',
+      address: '7399 Stefan Trace Joanne Ligh Street No.85',
+      Note: '4th floor, Take a left, 2nd brown Door on your right',
+    },
+    {
+      Icon: require('../Resources/images/Othericon.png'),
+      Place: 'Other',
+      address: '7399 Stefan Trace Joanne Ligh Street No.85',
+      Note: '4th floor, Take a left, 2nd brown Door on your right',
+    },
+    {
+      Icon: require('../Resources/images/Homeicon.png'),
+      Place: 'Home',
+      address: '7399 Stefan Trace Joanne Ligh Street No.85',
+      Note: '4th floor, Take a left, 2nd brown Door on your right',
+    },
+    {
+      Icon: require('../Resources/images/Homeicon.png'),
+      Place: 'Work',
+      address: '7399 Stefan Trace Joanne Ligh Street No.85',
+      Note: '4th floor, Take a left, 2nd brown Door on your right',
+    },
+    {
+      Icon: require('../Resources/images/Othericon.png'),
+      Place: 'Other',
+      address: '7399 Stefan Trace Joanne Ligh Street No.85',
+      Note: '4th floor, Take a left, 2nd brown Door on your right',
+    },
   ]);
 
   return (
@@ -72,18 +108,15 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
           paddingTop: getStatusBarHeight(),
         }}>
         <PlainHeader title={'My Address'} />
-        <View style={{height: scalableheight.three}} />
+   
         <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
           <FlatList
             data={addresses}
             showsVerticalScrollIndicator={false}
-            style={{
-              width: '100%',
-              marginBottom: 20,
-              height: '75%',
-            }}
+          contentContainerStyle={{ paddingBottom: scalableheight.twentytwo}}
             renderItem={({item, i}) => {
               return (
+              <View style={{marginBottom: scalableheight.one}}>
                 <Addresstile
                   onPress={() =>
                     navigation.navigate('EditAddress', {
@@ -97,10 +130,15 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
                   address={item.address}
                   note={item.Note}
                 />
+                </View>
               );
             }}
           />
-          <View style={{marginBottom: scalableheight.six}}>
+      
+        </View>
+      
+      </View>
+      <View style={{bottom: 0, position:"absolute", width:"100%", paddingHorizontal: scalableheight.two, backgroundColor:"white", height: scalableheight.fifteen, justifyContent:"center"}}>
             <MYButton
               onPress={() => {
                 navigation.navigate('EditAddress');
@@ -111,8 +149,6 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
               textcolor={'white'}
             />
           </View>
-        </View>
-      </View>
     </Animated.View>
   );
 };

@@ -771,6 +771,8 @@ const Home = ({navigation, drawerAnimationStyle}) => {
               paddingHorizontal: scalableheight.one,
               position: 'absolute',
               bottom: scalableheight.twentyfour,
+              elevation: 5,
+              zIndex:5
             }}>
             <Infobar
               onPress={() => {
@@ -788,13 +790,14 @@ const Home = ({navigation, drawerAnimationStyle}) => {
               zIndex: 200,
               elevation: 200,
             }}>
+              {popularservicedatahome?.length > 0 ?
             <Animatable.View
-        animation="zoomIn"
+        animation="bounceInRight"
              easing="ease"
-             //  iterationCount="infinite"
+            
              iterationCount={1}
              
-  style={{ flexDirection:"row", alignItems:"center",paddingTop: scalableheight.pointfive, paddingBottom: scalableheight.one, justifyContent:"flex-start", width:"100%"}}>
+  style={{  paddingTop: scalableheight.pointfive, paddingBottom: scalableheight.one, justifyContent:"center"}}>
  
 <Text style={{
                 fontFamily: 'Inter-ExtraBold',
@@ -802,7 +805,7 @@ const Home = ({navigation, drawerAnimationStyle}) => {
                 color:"#29262A"
               }}>RESTAURANTS NEARBY</Text>
               </Animatable.View>
-             
+             :null}
 <FlatList
 key = {"1"}
 showsHorizontalScrollIndicator={false}

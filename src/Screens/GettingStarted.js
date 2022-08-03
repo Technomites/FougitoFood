@@ -34,6 +34,8 @@ const GettingStarted = props => {
     // changeNavigationBarColor("white");
   }, []);
   const [count, setcount] = useState(0);
+  const [animationstate, setanimationstate] = useState(true);
+
   const [getstarted, SetGetstarted] = useState([
     {
       image: require('../Resources/images/GetstartedS1.png'),
@@ -69,7 +71,9 @@ const GettingStarted = props => {
       source={getstarted[count]?.image}
       style={styleSheet.BackgroundImage}>
       <Animatable.View
-        animation={count ? 'bounceInRight' : undefined}
+        animation={ animationstate ? 'bounceInRight' : undefined}
+        onAnimationEnd={()=>{ setanimationstate(false)}}
+        // animation={ getstart1  ? 'bounceInRight' :  getstart2  ? 'bounceInRight':  getstart3 ? 'bounceInRight' : undefined}
         //animation="bounceInRight"
         easing="ease"
         // iterationCount="infinite"
@@ -146,11 +150,13 @@ const GettingStarted = props => {
               textcolor={'white'}
               onPress={
                 () =>
+               {
+                setanimationstate(true);
                   count < 2
                     ? setcount(count + 1)
                     : props.navigation.replace('Drawernavigator')
                 // getstarted[count]?.onPress
-              }
+              }}
             />
             {getstarted[count]?.buttontitle2 ? (
               <MYButton
