@@ -611,21 +611,23 @@ const Home = ({navigation, drawerAnimationStyle}) => {
       />
 
       <View style={{flex: 1, borderRadius: 10}}>
-        <View style={{ backgroundColor: 'white', height: "100%", width: "100%"}}>
+        <View style={{backgroundColor: 'white', height: '100%', width: '100%'}}>
           <ImageBackground
-          resizeMode="cover"
-         
-          style={{
-         
-            width:"100%", height: scalableheight.seventeen + getStatusBarHeight(), zIndex:1
-          
-          }}
-          imageStyle={{borderBottomLeftRadius: fontSize.twenty, borderBottomRightRadius: fontSize.twenty,}}
-          source={require('../Resources/images/homebackground.png')}>
-            <View style={{ marginTop: getStatusBarHeight()}}></View>
-             <HeaderComponent newNotificationCount={newNotificationCount} />
-             <View style={{paddingHorizontal: scalableheight.one,}}>
-             {/* <Transparentinfobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
+            resizeMode="cover"
+            style={{
+              width: '100%',
+              height: scalableheight.seventeen + getStatusBarHeight(),
+              zIndex: 1,
+            }}
+            imageStyle={{
+              borderBottomLeftRadius: fontSize.twenty,
+              borderBottomRightRadius: fontSize.twenty,
+            }}
+            source={require('../Resources/images/homebackground.png')}>
+            <View style={{marginTop: getStatusBarHeight()}}></View>
+            <HeaderComponent newNotificationCount={newNotificationCount} />
+            <View style={{paddingHorizontal: scalableheight.one}}>
+              {/* <Transparentinfobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
              <View style={{marginTop: scalableheight.one}}></View> */}
               <Transparentsearch
                 search={search}
@@ -638,17 +640,16 @@ const Home = ({navigation, drawerAnimationStyle}) => {
           <View
             style={{
               ...styleSheet.shadow,
-             
+
               height: scalableheight.seventy,
-       
-             
+
               width: '100%',
               backgroundColor: '#F5F5F5',
               borderRadius: fontSize.fifteen,
-              overflow: 'hidden' ,
-            
-              position: "absolute",
-              bottom:scalableheight.twentythree
+              overflow: 'hidden',
+
+              position: 'absolute',
+              bottom: scalableheight.twentythree,
             }}>
             {lat != null && long != null ? (
               <MapView

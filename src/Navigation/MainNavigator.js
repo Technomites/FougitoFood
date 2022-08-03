@@ -443,9 +443,10 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
               flexDirection: 'row',
               alignItems: 'center',
 
-              borderTopWidth: scalableheight.borderTopWidth,
-              borderColor: '#adadad',
+              // borderTopWidth: scalableheight.borderTopWidth,
+              // borderColor: '#adadad',
               height: Dimensions.get('window').height / 12,
+              marginHorizontal: scalableheight.two,
             }}>
             <View
               style={{
@@ -455,7 +456,6 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 backgroundColor: '#F9F9F9',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginLeft: scalableheight.two,
               }}>
               <MaterialCommunityIcons
                 name={'home-outline'}
@@ -487,6 +487,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
               borderTopWidth: scalableheight.borderTopWidth,
               borderColor: '#adadad',
               height: Dimensions.get('window').height / 12,
+              marginHorizontal: scalableheight.two,
             }}>
             <View
               style={{
@@ -496,7 +497,6 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 backgroundColor: '#F9F9F9',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginLeft: scalableheight.two,
               }}>
               <MaterialIcons
                 name={'history'}
@@ -526,6 +526,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
               borderTopWidth: scalableheight.borderTopWidth,
               borderColor: '#adadad',
               height: Dimensions.get('window').height / 12,
+              marginHorizontal: scalableheight.two,
             }}>
             <View
               style={{
@@ -535,7 +536,6 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 backgroundColor: '#F9F9F9',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginLeft: scalableheight.two,
               }}>
               <AntDesign
                 name={'tagso'}
@@ -564,6 +564,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
               borderTopWidth: scalableheight.borderTopWidth,
               borderColor: '#adadad',
               height: Dimensions.get('window').height / 12,
+              marginHorizontal: scalableheight.two,
             }}>
             <View
               style={{
@@ -573,7 +574,6 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 backgroundColor: '#F9F9F9',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginLeft: scalableheight.two,
               }}>
               <AntDesign
                 name={'hearto'}
@@ -603,6 +603,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
               borderTopWidth: scalableheight.borderTopWidth,
               borderColor: '#adadad',
               height: Dimensions.get('window').height / 12,
+              marginHorizontal: scalableheight.two,
             }}>
             <View
               style={{
@@ -612,7 +613,6 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 backgroundColor: '#F9F9F9',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginLeft: scalableheight.two,
               }}>
               <Ionicons
                 name={'location-outline'}
@@ -643,6 +643,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                     borderTopWidth: scalableheight.borderTopWidth,
                     borderColor: '#adadad',
                     height: Dimensions.get('window').height / 12,
+                    marginHorizontal: scalableheight.two,
                   }}>
                   <View
                     style={{
@@ -652,7 +653,6 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                       backgroundColor: '#F9F9F9',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      marginLeft: scalableheight.two,
                     }}>
                     {item.type == 1 ? (
                       <Ionicons
@@ -710,6 +710,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 borderTopWidth: scalableheight.borderTopWidth,
                 borderColor: '#adadad',
                 height: Dimensions.get('window').height / 12,
+                marginHorizontal: scalableheight.two,
               }}>
               <View
                 style={{
@@ -719,7 +720,6 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   backgroundColor: '#F9F9F9',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginLeft: scalableheight.two,
                 }}>
                 <MaterialIcons
                   name={'logout'}
@@ -748,6 +748,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 borderTopWidth: scalableheight.borderTopWidth,
                 borderColor: '#adadad',
                 height: Dimensions.get('window').height / 12,
+                marginHorizontal: scalableheight.two,
               }}>
               <View
                 style={{
@@ -757,7 +758,6 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   backgroundColor: '#F9F9F9',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginLeft: scalableheight.two,
                 }}>
                 <MaterialIcons
                   name={'login'}
@@ -772,7 +772,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   fontSize: fontSize.fourteen,
                   marginLeft: scalableheight.two,
                 }}>
-                {'Login'}
+                {'Logout'}
               </Text>
             </TouchableOpacity>,
           )}
@@ -826,7 +826,6 @@ const Drawernavigator = props => {
 
         return <CustomDrawerStyle navigation={props.navigation} />;
       }}>
-           
       <Drawer.Screen name="Home" options={{headerShown: false}}>
         {props => <Home {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
@@ -836,9 +835,7 @@ const Drawernavigator = props => {
         )}
       </Drawer.Screen>
       <Drawer.Screen name="Checkout" options={{headerShown: false}}>
-        {props => (
-          <Checkout {...props} drawerAnimationStyle={animatedStyle} />
-        )}
+        {props => <Checkout {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
 
       <Drawer.Screen name="Changepassword" options={{headerShown: false}}>
@@ -854,8 +851,7 @@ const Drawernavigator = props => {
           <MyFavourite {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
-   
-      
+
       <Drawer.Screen name="MyAddresses" options={{headerShown: false}}>
         {props => (
           <MyAddresses {...props} drawerAnimationStyle={animatedStyle} />
