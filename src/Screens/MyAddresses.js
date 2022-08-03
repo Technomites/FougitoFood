@@ -85,12 +85,12 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
             renderItem={({item, i}) => {
               return (
                 <Addresstile
-                  //   onPress={() =>
-                  //     navigation.navigate('OrderDetails', {
-                  //       orderId: item.OrderNo,
-                  //       completedetails: Order,
-                  //     })
-                  //   }
+                  onPress={() =>
+                    navigation.navigate('EditAddress', {
+                      // orderId: item.OrderNo,
+                      // completedetails: Order,
+                    })
+                  }
                   //   // onModelPopUp={changestatus}
                   icon={item.Icon}
                   place={item.Place}
@@ -104,7 +104,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
             <MYButton
               onPress={() => {
                 navigation.navigate('EditAddress');
-                navigation.goBack();
+                // navigation.goBack();
               }}
               color={'rgba(225, 78, 78, 1)'}
               title={'ADD NEW'}

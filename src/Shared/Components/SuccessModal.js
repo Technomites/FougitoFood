@@ -9,7 +9,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import IoIcon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Fontisto';
 import {useSelector} from 'react-redux';
+import {fontSize, scalableheight} from '../../Utilities/fonts';
+import MYButton from './MYButton';
 const SuccessModal = props => {
   const {FeaturedProjectHome, EventsHome, Lang} = useSelector(
     state => state.userReducer,
@@ -20,30 +24,41 @@ const SuccessModal = props => {
       transparent={true}
       visible={props.successModalShown}
       onRequestClose={() => {}}>
-      <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.8)'}}>
+      <View
+        style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', height: '100%'}}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View
               style={{
                 width: '100%',
-                height: '5%',
                 alignItems: 'center',
+                // backgroundColor: 'red',
+                height: scalableheight.three,
               }}></View>
-            <View style={{width: '100%', height: '35%', alignItems: 'center'}}>
-              <FontAwesome5 name="check-circle" size={70} color={'#F9B35E'} />
+            <View
+              style={{
+                width: '100%',
+                height: scalableheight.thirteen,
+                alignItems: 'center',
+              }}>
+              <FontAwesome5
+                name="check-circle"
+                size={scalableheight.thirteen}
+                color={'#000'}
+              />
             </View>
             <View
               style={{
                 width: '100%',
-                height: '25%',
+                //    height: scalableheight.thirteen,
                 alignItems: 'center',
-                paddingTop: 10,
+                paddingTop: fontSize.ten,
               }}>
               {props.msg ? (
                 <Text
                   style={{
                     fontFamily: 'Rubik-Medium',
-                    fontSize: 18,
+                    fontSize: fontSize.fifteen,
                     color: 'black',
                     textAlign: 'center',
                   }}>
@@ -52,44 +67,29 @@ const SuccessModal = props => {
               ) : (
                 <Text
                   style={{
-                    fontFamily: 'Rubik-Medium',
-                    fontSize: 18,
-                    color: 'black',
+                    fontFamily: 'Inter-SemiBold',
+                    fontSize: fontSize.twentytwo,
+                    color: 'rgba(41, 38, 42, 1)',
                     textAlign: 'center',
                   }}>
-                  {Lang == 'en'
-                    ? 'Appointment has been booked  \n successfully'
-                    : 'تم تسجيل الحساب بنجاح'}
+                  Your Address has been Saved Successfully.
                 </Text>
               )}
             </View>
 
             <View
               style={{
-                width: '100%',
-                height: '40%',
+                width: '90%',
+                height: scalableheight.thirteen,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <TouchableOpacity
-                style={{
-                  width: '70%',
-                  height: '47%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 8,
-                  backgroundColor: '#B10071',
-                }}
-                onPress={props.onClose}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: 'white',
-                    fontFamily: 'Rubik-SemiBold',
-                  }}>
-                  {Lang == 'en' ? 'OK' : 'نعم'}
-                </Text>
-              </TouchableOpacity>
+              <MYButton
+                onPress={props.onNoPress}
+                color={'rgba(225, 78, 78, 1)'}
+                title={'ADD NEW'}
+                textcolor={'white'}
+              />
             </View>
           </View>
         </View>
@@ -103,16 +103,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
+    marginTop: scalableheight.ten,
   },
   modalView: {
-    height: 250,
+    height: scalableheight.fourty,
     width: '90%',
-
-    margin: 20,
+    margin: scalableheight.two,
     backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 10,
+    borderRadius: fontSize.twentyfive,
+    padding: scalableheight.one,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {

@@ -14,8 +14,11 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 export default function Addresstile(props) {
   return (
-    <View>
-      <View style={styles.MainConatiner}>
+    <View style={{...styles.shadow, ...styles.MainContainer}}>
+      <View
+        style={{
+          ...styles.topViewContainer,
+        }}>
         <View
           style={{
             flexDirection: 'row',
@@ -50,7 +53,7 @@ export default function Addresstile(props) {
                 }}>
                 {props?.place}
               </Text>
-              <TouchableOpacity activeOpacity={0.9}>
+              <TouchableOpacity onPress={props.onPress} activeOpacity={0.9}>
                 <Entypo
                   style={{alignSelf: 'center'}}
                   name="edit"
@@ -89,16 +92,15 @@ export default function Addresstile(props) {
           </View>
         </View>
       </View>
-     
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  MainConatiner: {
-    backgroundColor: 'white',
+  MainContainer: {
+    borderRadius: fontSize.eleven,
+    paddingVertical: fontSize.fifteen,
     width: '99%',
-    justifyContent: 'center',
     alignSelf: 'center',
     borderRadius: fontSize.eleven,
     padding: scalableheight.two,

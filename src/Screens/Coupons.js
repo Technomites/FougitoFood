@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StatusBar,
-
   Image,
   Button,
   ImageBackground,
@@ -16,12 +15,10 @@ import {
   FlatList,
   RefreshControl,
   Modal,
-  Platform
+  Platform,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {
-  getcoupons
-} from '../Actions/actions';
+import {getcoupons} from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
@@ -35,145 +32,130 @@ import Couponscomponent from '../Shared/Components/Couponscomponent';
 import BottomTab from '../Shared/Components/BottomTab';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {GToastContainer, showToast} from 'react-native-gtoast';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Animated from 'react-native-reanimated';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import NetInfo from '@react-native-community/netinfo';
 
-const Coupons = ({navigation,drawerAnimationStyle}) => {
+const Coupons = ({navigation, drawerAnimationStyle}) => {
   const [Loading, setLoading] = useState(false);
   const [Bookingdata, setBookingdata] = useState([
     {
-        title: 'Weekend Special Discount',
-        discountprice: "100",
-        vailidity: "30/01/2022",
-        percentage: '10%',
-        code: "FLAWQDVHH",
-    
+      title: 'Weekend Special Discount',
+      discountprice: '100',
+      vailidity: '30/01/2022',
+      percentage: '10%',
+      code: 'FLAWQDVHH',
     },
     {
-        title: 'Holiday Special Discount',
-        discountprice: "100",
-        vailidity: "30/01/2022",
-        percentage: '10%',
-        code: "FLAWQDVHH",
-    
+      title: 'Holiday Special Discount',
+      discountprice: '100',
+      vailidity: '30/01/2022',
+      percentage: '10%',
+      code: 'FLAWQDVHH',
     },
     {
-        title: 'Weekend Special Discount',
-        discountprice: "100",
-        vailidity: "30/01/2022",
-        percentage: '10%',
-        code: "FLAWQDVHH",
-    
+      title: 'Weekend Special Discount',
+      discountprice: '100',
+      vailidity: '30/01/2022',
+      percentage: '10%',
+      code: 'FLAWQDVHH',
     },
     {
-        title: 'Weekend Special Discount',
-        discountprice: "100",
-        vailidity: "30/01/2022",
-        percentage: '10%',
-        code: "FLAWQDVHH",
-    
+      title: 'Weekend Special Discount',
+      discountprice: '100',
+      vailidity: '30/01/2022',
+      percentage: '10%',
+      code: 'FLAWQDVHH',
     },
     {
-        title: 'Weekend Special Discount',
-        discountprice: "100",
-        vailidity: "30/01/2022",
-        percentage: '10%',
-        code: "FLAWQDVHH",
-    
+      title: 'Weekend Special Discount',
+      discountprice: '100',
+      vailidity: '30/01/2022',
+      percentage: '10%',
+      code: 'FLAWQDVHH',
     },
     {
-        title: 'Weekend Special Discount',
-        discountprice: "100",
-        vailidity: "30/01/2022",
-        percentage: '10%',
-        code: "FLAWQDVHH",
-    
+      title: 'Weekend Special Discount',
+      discountprice: '100',
+      vailidity: '30/01/2022',
+      percentage: '10%',
+      code: 'FLAWQDVHH',
     },
- 
   ]);
   const dispatch = useDispatch();
   const {Lang, coupons} = useSelector(state => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
-
-    dispatch(getcoupons())
+    dispatch(getcoupons());
   }, []);
 
-function copied(){
-    showToast(
-        'Copied to clipboard',
-        {
+  function copied() {
+    showToast('Copied to clipboard', {
+      duration: 500,
+    });
+  }
+  function onRefresh() {
+    NetInfo.fetch().then(state => {
+      if (state.isConnected == true && state.isInternetReachable == true) {
+        dispatch(getcoupons());
+      } else {
+        showToast('No Internet Connection', {
           duration: 500,
-        },
-      );
-}
-function onRefresh() {
-  NetInfo.fetch().then(state => {
-    if (state.isConnected == true && state.isInternetReachable == true) {
-      dispatch(getcoupons())
-    } else {
-      showToast(
-         'No Internet Connection',
-        {
-          duration: 500,
-        },
-      );
-    }
-  });
-}
+        });
+      }
+    });
+  }
   return (
-    <Animated.View style={{flex:1,...drawerAnimationStyle,  backgroundColor: 'white'}}>
-
-           
+    <Animated.View
+      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
       <View
         style={{
-         flex:1,
-      
-          alignSelf: 'center', marginTop: getStatusBarHeight(),
-         
+          flex: 1,
+
+          alignSelf: 'center',
+          marginTop: getStatusBarHeight(),
         }}>
-       
         <PlainHeader title={'My Coupons'} />
-      
-       
-       
-    <FlatList
-   
-    refreshControl={
-      <RefreshControl
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-      />
-    }
-    
-       keyExtractor={(item, index) => index.toString()}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ alignSelf:"center" , width: "100%", paddingBottom: scalableheight.two}}
 
-        data={Bookingdata}
-        renderItem={({item}) => {
-          return (
-            <View style={{alignItems:"center", paddingHorizontal: scalableheight.two,marginTop:"5%",}}>
-        <Couponscomponent sale={"40% OFF"} title= {"EidSpecial40"} minorder= {"AED 100"} daysleft= {"3 days left"} title= {item.name} discountprice= {item.dicountAmount}/>
-      
-    
-    
+        <FlatList
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          keyExtractor={(item, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            alignSelf: 'center',
+            width: '100%',
+            paddingBottom: scalableheight.two,
+          }}
+          data={Bookingdata}
+          renderItem={({item}) => {
+            return (
+              <View
+                style={{
+                  alignItems: 'center',
+                  paddingHorizontal: scalableheight.two,
+                  marginTop: '5%',
+                }}>
+                <Couponscomponent
+                  sale={'40% OFF'}
+                  title={'EidSpecial40'}
+                  minorder={'AED 100'}
+                  daysleft={'3 days left'}
+                  title={item.name}
+                  discountprice={item.dicountAmount}
+                />
+              </View>
+            );
+          }}
+          // onEndReached={() => LoadVRTourPagination()}
+          // onEndReachedThreshold={0.1}
+        />
       </View>
 
-
-          );
-        }}
-        // onEndReached={() => LoadVRTourPagination()}
-        // onEndReachedThreshold={0.1}
-      />
-    
- 
-      </View>
-    
       <GToastContainer paddingBottom={100} style={{height: 50, width: 60}} />
-      </Animated.View>
+    </Animated.View>
   );
 };
 
@@ -205,7 +187,7 @@ const styleSheet = StyleSheet.create({
   TextInput: {
     width: '100%',
     backgroundColor: '#F5F5F5',
-    textAlignVertical:'top',
+    textAlignVertical: 'top',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
@@ -216,6 +198,18 @@ const styleSheet = StyleSheet.create({
     alignSelf: 'center',
     marginTop: '4%',
   },
+  MainContainer: {
+    borderRadius: fontSize.eleven,
+    paddingVertical: fontSize.fifteen,
+    width: '99%',
+    alignSelf: 'center',
+    marginVertical: scalableheight.one,
+    backgroundColor: 'white',
+  },
+  topViewContainer: {
+    paddingHorizontal: fontSize.eight,
+    flexDirection: 'row',
+  },
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
@@ -224,8 +218,7 @@ const styleSheet = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-
-    elevation: 8,
+    elevation: 4,
   },
 });
 export default Coupons;

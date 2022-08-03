@@ -377,7 +377,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   fontFamily: 'Inter-Medium',
                   opacity: 0.8,
                 }}>
-                {'View Profile'}
+                {'Account Settings'}
               </Text>
             </TouchableOpacity>
           </View>
