@@ -159,7 +159,20 @@ const GettingStarted = props => {
                 onPress={getstarted[count]?.press2}
               />
             ) : (
-              <MYButton title={'SKIP'} textcolor={'white'} onPress={null} />
+             <View style={{  width: '100%',
+
+             justifyContent: 'center',
+             alignItems: 'center',
+         
+             height: scalableheight.seven,
+         
+             borderRadius: fontSize.borderradiusmedium,
+         
+             marginTop: '1%',
+             marginBottom: '1%',}}>
+
+           
+             </View>
             )}
           </View>
         </View>

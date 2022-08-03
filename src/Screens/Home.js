@@ -622,7 +622,7 @@ const Home = ({navigation, drawerAnimationStyle}) => {
           }}
           imageStyle={{borderBottomLeftRadius: fontSize.twenty, borderBottomRightRadius: fontSize.twenty,}}
           source={require('../Resources/images/homebackground.png')}>
-            <View style={{ paddingTop: getStatusBarHeight()}}></View>
+            <View style={{ marginTop: getStatusBarHeight()}}></View>
              <HeaderComponent newNotificationCount={newNotificationCount} />
              <View style={{paddingHorizontal: scalableheight.one,}}>
              {/* <Transparentinfobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
@@ -638,15 +638,17 @@ const Home = ({navigation, drawerAnimationStyle}) => {
           <View
             style={{
               ...styleSheet.shadow,
-
-              height:
-                Dimensions.get('window').height / 1 -
-                scalableheight.twentythree -
-                getStatusBarHeight(),
+             
+              height: scalableheight.seventy,
+       
+             
               width: '100%',
               backgroundColor: '#F5F5F5',
               borderRadius: fontSize.fifteen,
-              overflow: 'hidden',
+              overflow: 'hidden' ,
+            
+              position: "absolute",
+              bottom:scalableheight.twentythree
             }}>
             {lat != null && long != null ? (
               <MapView
@@ -787,22 +789,25 @@ const Home = ({navigation, drawerAnimationStyle}) => {
               elevation: 200,
             }}>
             <Animatable.View
-              animation="zoomIn"
-              easing="ease"
-              //  iterationCount="infinite"
-              iterationCount={1}
-              style={{
-                ...styleSheet.shadow,
-         
-                height:  scalableheight.seventy,
-                width: '100%',
-                backgroundColor: '#F5F5F5',
-                borderRadius: fontSize.fifteen,
-                overflow: 'hidden',
-                position: "absolute",
-                bottom:scalableheight.twentythree
-
-              }}
+        animation="zoomIn"
+             easing="ease"
+             //  iterationCount="infinite"
+             iterationCount={1}
+             
+  style={{ flexDirection:"row", alignItems:"center",paddingTop: scalableheight.pointfive, paddingBottom: scalableheight.one, justifyContent:"flex-start", width:"100%"}}>
+ 
+<Text style={{
+                fontFamily: 'Inter-ExtraBold',
+                fontSize: fontSize.sixteen,
+                color:"#29262A"
+              }}>RESTAURANTS NEARBY</Text>
+              </Animatable.View>
+             
+<FlatList
+key = {"1"}
+showsHorizontalScrollIndicator={false}
+ref={ref}
+style={{zIndex:200, elevation:200}}
               keyExtractor={(item, index) => index.toString()}
               horizontal
               data={popularservicedatahome}

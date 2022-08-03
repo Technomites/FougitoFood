@@ -16,7 +16,7 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import MYButton from '../Shared/Components/MYButton';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Addresstile from '../Shared/Components/Addresstile';
-
+import Bll from '../Shared/Components/Bll';
 const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
@@ -267,11 +267,13 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
           //height: '100%',
           width: '100%',
           alignSelf: 'center',
-          paddingTop: getStatusBarHeight(),
+          marginTop: getStatusBarHeight(),
           // padding:scalableheight.one
         }}>
         <PlainHeader title={'My Orders'} />
-        <ScrollView>
+        <ScrollView 
+        showsVerticalScrollIndicator={false}
+        style={{}}>
           <View
             style={{
               padding: scalableheight.one,
@@ -482,7 +484,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
 
             <View
               style={{
-                marginVertical: scalableheight.two,
+                marginTop: scalableheight.two,
               }}>
               <Text
                 style={{
@@ -492,76 +494,15 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 }}>
                 Delivery Address
               </Text>
+              <View style={{marginTop: scalableheight.one}}></View>
               <Addresstile
-                style={{height: scalableheight.one}}
-                address={'7399 Stefan Trace Joanne Ligh Street No.85'}
-                note={'4th floor, Take a left, 2nd brown Door on your right'}
+                style={{ }}
+                icon={require('../Resources/images/Homeicon.png')}
+                                    place={'Home'}
+                                    address={'7399 Stefan Trace Joanne Ligh Street No.85'}
+                                    note={'4th floor, Take a left, 2nd brown Door on your right'}
               />
-              {/* <View style={styles.MainConatiner}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                  }}>
-                  <View style={{width: '5%'}}>
-                    <Image
-                      style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        height: scalableheight.five,
-                        width: scalableheight.five,
-                      }}
-                      resizeMode={'contain'}
-                      source={require('../Resources/images/Homeicon.png')}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      paddingLeft: scalableheight.five,
-                      justifyContent: 'flex-start',
-                      width: '95%',
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.twelve,
-                        color: '#29262A',
-                      }}>
-                      {'Home'}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.thirteen,
-                        color: '#636363',
-                      }}>
-                      {'7399 Stefan Trace Joanne Ligh Street No.85'}
-                    </Text>
-                    <View>
-                      <Text
-                        style={{
-                          fontFamily: 'Rubik-MediumItalic',
-                          fontSize: fontSize.twelve,
-                          color: '#636363',
-                          textAlign: 'right',
-                        }}>
-                        {'Note to rider'}
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: 'Rubik-Italic',
-                          fontSize: fontSize.eleven,
-                          color: '#636363',
-                        }}>
-                        {
-                          '4th floor, Take a left, 2nd brown Door on your right.'
-                        }
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View> */}
+             
             </View>
 
             <View
@@ -576,6 +517,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 }}>
                 Payment Method
               </Text>
+              <View style={{marginTop: scalableheight.one}}></View>
               <View style={{...styles.shadow, ...styles.MainContainer}}>
                 <View
                   style={{
@@ -642,137 +584,27 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
             </View>
 
             <View>
-              <View style={{flexDirection: 'row', marginBottom: 8}}>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.fifteen,
-                      color: '#29262A',
-                    }}>
-                    {'Sub Total'}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'flex-end',
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.fifteen,
-                      color: '#29262A',
-                    }}>
-                    {'AED ' + '209.00'}
-                  </Text>
-                </View>
-              </View>
-              <View style={{flexDirection: 'row', marginBottom: 8}}>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.fifteen,
-                      color: '#29262A',
-                    }}>
-                    {'Delivery Charges'}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'flex-end',
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.fifteen,
-                      color: '#29262A',
-                    }}>
-                    {'AED ' + '10.00'}
-                  </Text>
-                </View>
-              </View>
-              <View style={{flexDirection: 'row', marginBottom: 8}}>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.fifteen,
-                      color: '#29262A',
-                    }}>
-                    {'VAT Amount'}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'flex-end',
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.fifteen,
-                      color: '#29262A',
-                    }}>
-                    {'AED ' + '13.00'}
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  borderBottomColor: '#707070',
-                  borderBottomWidth: 1,
-                  marginVertical: 2,
-                  opacity: 0.4,
-                }}></View>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.fifteen,
-                      color: '#29262A',
-                    }}>
-                    {'Total'}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'flex-end',
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.fifteen,
-                      color: '#29262A',
-                    }}>
-                    {'AED ' + '222.00'}
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            <View
-              style={{
-                marginBottom: scalableheight.tweleve,
-                marginTop: scalableheight.two,
-              }}>
-              <MYButton
-                onPress={() => {
-                  // navigation.navigate("Home")
-                  navigation.goBack();
-                }}
-                color={'#111111'}
-                title={'CANCEL'}
-                textcolor={'white'}
-              />
+            <View style={{height: scalableheight.three}} />
+                        <Bll label={"Sub Total"} price={"AED 209.00"}/>
+                        <Bll label={"Delivery Charges"} price={"AED 209.00"}/>
+                     
+                        
+                          <View style={styles.Container}>
+                            <View style={{flexDirection:"row"}}>
+                          <Text style={styles.Text3}>Vat Amount</Text>
+                          <Text style={styles.Text4}>{"(4%)"}</Text>
+                          </View>
+                          <Text style={styles.Text3}>AED 209.00</Text>
+                          </View>
+                          <View style={{height: scalableheight.one}} />
+                          <Text style={{...styles.Text4, textAlign:"right"}} >I HAVE A COUPON</Text>
+                         <View style={{borderTopColor: "rgba(211,211,211, 0.5)", borderTopWidth: scalableheight.borderTopWidth, marginVertical: scalableheight.one}}></View>
+                          <Bll label={"Total"} price={"AED 222.00"}/>
+                          <View style={{height: scalableheight.two}} />
+                          <MYButton   title={'Cancel'}
+                    color="black"
+                    textcolor="white"/>
+                        <View style={{height: scalableheight.ten}} />
             </View>
           </View>
         </ScrollView>
@@ -782,7 +614,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
 };
 
 const styles = StyleSheet.create({
-  MainConatiner: {
+  MainContainer: {
     backgroundColor: 'white',
     width: '100%',
     justifyContent: 'center',
@@ -815,5 +647,34 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: '100%',
   },
+  Text1: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    color:"black"
+  },
+  Text2: {
+     fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.ten,
+    color:"#29262A", opacity: 0.4
+  },
+  Text3: {
+    fontFamily: 'Inter-Bold',
+   fontSize: fontSize.fourteen,
+   color:"black"
+ },
+ Text4: {
+    fontFamily: 'Inter-SemiBold',
+   fontSize: fontSize.fourteen,
+   color:"#E14E4E"
+ },
+ Text4: {
+    fontFamily: 'Inter-SemiBold',
+   fontSize: fontSize.fifteen,
+   color:"#E14E4E"
+ },
+ Container:{
+    flexDirection:"row", alignItems:"center", justifyContent:"space-between"
+ },
+
 });
 export default OrderDetails;
