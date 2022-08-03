@@ -13,8 +13,11 @@ import {fontSize, scalableheight} from '../../Utilities/fonts';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 export default function Addressplace(props) {
+  console.log(props?.onPress);
+  console.log(props?.data);
   return (
     <TouchableOpacity
+      onPress={props.onPress}
       style={{
         flexDirection: 'row',
         justifyContent: 'center',
@@ -24,7 +27,10 @@ export default function Addressplace(props) {
       }}>
       <View
         style={{
-          backgroundColor: 'rgba(42, 28, 28, 0.1)',
+          backgroundColor:
+            props?.data?.title === props?.selection?.title
+              ? 'rgba(245, 80, 80, 0.2)'
+              : 'rgba(246, 246, 246, 1)',
           borderRadius: scalableheight.one,
           width: scalableheight.six,
           height: scalableheight.six,
@@ -34,7 +40,9 @@ export default function Addressplace(props) {
         <FontAwesome5
           style={{alignSelf: 'center'}}
           name={props?.data.icon}
-          color={'rgba(41, 38, 42, 0.5)'}
+          color={
+            props?.data?.title === props?.selection?.title ? '#F55050' : 'rgba(17, 17, 17, 0.1)'
+          }
           size={fontSize.twentysix}
         />
       </View>
@@ -43,7 +51,10 @@ export default function Addressplace(props) {
           style={{
             fontFamily: 'Inter-Medium',
             fontSize: fontSize.fifteen,
-            color: '#49454B',
+            color:
+            props?.data?.title === props?.selection?.title
+                ? 'rgba(73, 69, 75, 1)'
+                : 'rgba(73, 69, 75, 0.5))',
           }}>
           {props?.data?.title}
         </Text>

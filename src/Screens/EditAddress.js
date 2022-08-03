@@ -36,7 +36,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import NetInfo from '@react-native-community/netinfo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
+import SuccessModal from '../Shared/Components/SuccessModal';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {Item} from 'react-native-paper/lib/typescript/components/List/List';
 
@@ -44,6 +44,8 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
+  const [placeselected, SetPlaceSelected] = useState('');
+  const [modelpopup, SetModelPopUP] = useState(false);
   const customStyle = [
     {
       elementType: 'geometry',
@@ -382,7 +384,10 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
               </Text>
             </View>
             <View
-              style={{...styleSheet.container, height: scalableheight.tweleve}}>
+              style={{
+                ...styleSheet.container,
+                height: scalableheight.thirteen,
+              }}>
               <View
                 style={{
                   height: '100%',
@@ -408,54 +413,41 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
               flexDirection: 'row',
               justifyContent: 'space-around',
               alignItems: 'center',
+
+              marginVertical: fontSize.nine,
             }}>
             {place.map(item => {
-              return <Addressplace data={item} />;
+              return (
+                <Addressplace
+                  onPress={() => {
+                    SetPlaceSelected(item);
+                  }}
+                  data={item}
+                  selection={placeselected}
+                />
+              );
             })}
-
-            {/* <Addressplace
-              Icon={icon}
-              place={title}
-            <Addresstile
-              //   onPress={() =>
-              //     navigation.navigate('OrderDetails', {
-              //       orderId: item.OrderNo,
-              //       completedetails: Order,
-              //     })
-              //   }
-              //   // onModelPopUp={changestatus}
-            /> */}
-            {/* <FlatList 
-              data={place}
-              // showsHorizontalScrollIndicatorScrollIndicator={false}
-              horizontal={true}
-              style={{
-                width: '100%',
-                //   justifyContent: 'center',
-                //   alignItems: 'center'
-                //   marginBottom: 20,
-              }}
-              renderItem={({item, i}) => {
-                return (
-                 
-                );
-              }}
-            /> */}
           </View>
 
-          <View style={{marginBottom: scalableheight.six}}>
+          <View style={{marginVertical: fontSize.eight}}>
             <MYButton
               onPress={() => {
-                // navigation.navigate("Home")
-                navigation.goBack();
+                SetModelPopUP(true);
               }}
               color={'rgba(225, 78, 78, 1)'}
-              title={'ADD'}
+              title={'SAVE NEW ADDRESS'}
               textcolor={'white'}
             />
           </View>
         </View>
       </View>
+      <SuccessModal
+        successModalShown={modelpopup}
+        onNoPress={() => {
+          SetModelPopUP(false);
+          navigation.navigate('Home');
+        }}
+      />
     </Animated.View>
   );
 };

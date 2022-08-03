@@ -24,7 +24,7 @@ import {
   KeyboardAvoidingView,
   Linking,
   PermissionsAndroid,
-  ActivityIndicatorBase
+  ActivityIndicatorBase,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
@@ -46,8 +46,8 @@ import changeNavigationBarColor, {
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
 
-import RBSheet from "react-native-raw-bottom-sheet";
-import { BottomSheetModalProvider, BottomSheet } from '@gorhom/bottom-sheet'
+import RBSheet from 'react-native-raw-bottom-sheet';
+import {BottomSheetModalProvider, BottomSheet} from '@gorhom/bottom-sheet';
 import RNAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
 import {SliderBox} from 'react-native-image-slider-box';
 import ImagesSwiper from 'react-native-image-swiper';
@@ -62,7 +62,7 @@ import Transparentinfobar from '../Shared/Components/Transparentinfobar';
 import Transparentsearch from '../Shared/Components/Transparentsearch';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from "@react-native-community/geolocation";
+import Geolocation from '@react-native-community/geolocation';
 import SavedAddresses from '../Shared/Components/SavedAddresses';
 import Starters from '../Shared/Components/Starters';
 import Favourites from '../Shared/Components/Favourites';
@@ -91,7 +91,7 @@ const Home = ({navigation, drawerAnimationStyle}) => {
   const [long, setlong] = useState();
   const [inlat, setinlat] = useState();
   const [inlong, setinlong] = useState();
-  const [pinlocation, setpinlocation] = useState("");
+  const [pinlocation, setpinlocation] = useState('');
   const [specialinstructions, setspecialinstructions] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [cartvisible, setcartvisible] = useState(false);
@@ -118,7 +118,7 @@ const Home = ({navigation, drawerAnimationStyle}) => {
     },
   ]);
   const refMap = useRef(null);
-  const ref = useRef()
+  const ref = useRef();
   const refRBSheet = useRef();
 
   const [flavours, setflavours] = useState([
@@ -153,22 +153,21 @@ const Home = ({navigation, drawerAnimationStyle}) => {
       lat: 24.8491,
       long: 67.0281,
       expanded: false,
-      location: "Gymkhana"
+      location: 'Gymkhana',
     },
     {
       lat: 24.8475,
       long: 67.0254,
       expanded: false,
-      location: "PC"
+      location: 'PC',
     },
     {
       lat: 24.8475,
-      long: 67.0330,
+      long: 67.033,
       expanded: false,
-      location: "frere hall"
+      location: 'frere hall',
     },
   ]);
-
 
   const customStyle = [
     {
@@ -391,41 +390,39 @@ const Home = ({navigation, drawerAnimationStyle}) => {
   }, [Lang]);
 
   useEffect(() => {
-    Geocoder.init("AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso")
-  Geolocation.getCurrentPosition((info) => {
-    setlat(info?.coords?.latitude)
-    setlong(info?.coords?.longitude)
-    setinlat(info?.coords?.latitude)
-    setinlong(info?.coords?.longitude)
-    console.log("hello" + info?.coords?.latitude);
-    console.log("hello" + info?.coords?.longitude);})
-    console.log("hello")
-    getLocation()
+    Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
+    Geolocation.getCurrentPosition(info => {
+      setlat(info?.coords?.latitude);
+      setlong(info?.coords?.longitude);
+      setinlat(info?.coords?.latitude);
+      setinlong(info?.coords?.longitude);
+      console.log('hello' + info?.coords?.latitude);
+      console.log('hello' + info?.coords?.longitude);
+    });
+    console.log('hello');
+    getLocation();
   }, []);
 
   useEffect(() => {
-    if(lat != null && long != null){
-    Geocoder.from(lat, long)
-		.then(json => {
-        		var addressComponent = json.results[0].formatted_address;
-			console.log(addressComponent);
-      setpinlocation(addressComponent)
-
-		})
-		.catch(error => console.warn(error));
-   
-  }
+    if (lat != null && long != null) {
+      Geocoder.from(lat, long)
+        .then(json => {
+          var addressComponent = json.results[0].formatted_address;
+          console.log(addressComponent);
+          setpinlocation(addressComponent);
+        })
+        .catch(error => console.warn(error));
+    }
   }, [lat, long]);
 
-  function getnewlocation(){
+  function getnewlocation() {
     Geocoder.from(lat, long)
-		.then(json => {
-        		var addressComponent = json.results[0].formatted_address;
-			console.log(addressComponent);
-      setpinlocation(addressComponent)
-
-		})
-		.catch(error => console.warn(error));
+      .then(json => {
+        var addressComponent = json.results[0].formatted_address;
+        console.log(addressComponent);
+        setpinlocation(addressComponent);
+      })
+      .catch(error => console.warn(error));
   }
   const getLocation = async () => {
     const hasLocationPermission = await hasLocationPermissions();
@@ -525,33 +522,40 @@ const Home = ({navigation, drawerAnimationStyle}) => {
 
   const rendernearby = ({item, index}) => (
     <View
-  
-    style={{width:Dimensions.get('window').width / 1.2, marginRight: scalableheight.two}}>
-<Favourites image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} reviews={"8.9 (350 reviews)"} time={"9:00 AM - 10:00PM"} onPress={()=>{navigation.navigate('Restaurantpage')}} distance={"2.5KM AWAY"}/>
+      style={{
+        width: Dimensions.get('window').width / 1.2,
+        marginRight: scalableheight.two,
+      }}>
+      <Favourites
+        image={require('../Resources/images/food.png')}
+        title={'Mexican Enchiladas'}
+        reviews={'8.9 (350 reviews)'}
+        time={'9:00 AM - 10:00PM'}
+        onPress={() => {
+          navigation.navigate('Restaurantpage');
+        }}
+        distance={'2.5KM AWAY'}
+      />
     </View>
- 
-//  onPress={()=>{activaterestaurant(index, 24.8475, 67.0330 )}}
-   
+
+    //  onPress={()=>{activaterestaurant(index, 24.8475, 67.0330 )}}
   );
 
-  function activaterestaurant(key, lat, long){
-    
-    setinlat(lat)
-    setinlong(long)
-    console.log("selected")
-    let arr =[...pin]
-    for(const index in arr){
-      arr[index].expanded = false
+  function activaterestaurant(key, lat, long) {
+    setinlat(lat);
+    setinlong(long);
+    console.log('selected');
+    let arr = [...pin];
+    for (const index in arr) {
+      arr[index].expanded = false;
     }
-    arr[key].expanded = true
-    setpin(arr)
+    arr[key].expanded = true;
+    setpin(arr);
 
     ref.current?.scrollToIndex({
       index: key,
       animated: true,
-    
-    
-    })
+    });
   }
   const starters = ({item}) => (
     <Starters
@@ -609,266 +613,369 @@ const Home = ({navigation, drawerAnimationStyle}) => {
       <View style={{flex: 1, borderRadius: 10}}>
         <View style={{flex: 1, backgroundColor: 'white'}}>
           <ImageBackground
-          resizeMode="cover"
-         
-          style={{
-         
-            width:"100%", height: scalableheight.twentytwo, zIndex:1
-          
-          }}
-          imageStyle={{borderBottomLeftRadius: fontSize.twenty, borderBottomRightRadius: fontSize.twenty,}}
-          source={require('../Resources/images/homebackground.png')}>
-            <View style={{ marginTop: getStatusBarHeight()}}></View>
-             <HeaderComponent newNotificationCount={newNotificationCount} />
-             <View style={{paddingHorizontal: scalableheight.one}}>
-             {/* <Transparentinfobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
+            resizeMode="cover"
+            style={{
+              width: '100%',
+              height: scalableheight.twentytwo,
+              zIndex: 1,
+            }}
+            imageStyle={{
+              borderBottomLeftRadius: fontSize.twenty,
+              borderBottomRightRadius: fontSize.twenty,
+            }}
+            source={require('../Resources/images/homebackground.png')}>
+            <View style={{marginTop: getStatusBarHeight()}}></View>
+            <HeaderComponent newNotificationCount={newNotificationCount} />
+            <View style={{paddingHorizontal: scalableheight.one}}>
+              {/* <Transparentinfobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
              <View style={{marginTop: scalableheight.one}}></View> */}
-             <Transparentsearch search={search} onchange={(val) => {setsearch(val)}}/>
-            
-             </View>
-             </ImageBackground>
-             <View
-              style={{
-                ...styleSheet.shadow,
-             
-                height: scalableheight.seventy,
-                width: '100%',
-                backgroundColor: '#F5F5F5',
-                borderRadius: fontSize.fifteen,
-                overflow: 'hidden' 
-              }}
-       
-            >
-
-              {lat != null && long != null ? 
-           <MapView
-           provider={PROVIDER_GOOGLE}
-           customMapStyle={customStyle}
-              ref={refMap}
-      style={{ width:"100%", height:"100%",       borderRadius: fontSize.fifteen, }}
-     
-      showsUserLocation
-      
-      region={{
-        latitude: inlat,
-        longitude: inlong,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      }}
-      initialRegion={{
-          latitude: lat,
-          longitude: long,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-      }}
-
-      
-   
-    >
-         
-         {pin.map((item, key) => {
-          return (
-            <Marker 
-      position={center} 
-      coordinate = {{latitude: item.lat,longitude: item.long}}
-      // draggable
-  
-    //  onDragEnd={(e) => {
-
-    //   console.log('longitude', e?.nativeEvent?.coordinate?.longitude )
-    //    console.log('latitude', e?.nativeEvent?.coordinate?.latitude )
-    //   setlat(e?.nativeEvent?.coordinate?.latitude)
-    //   setlong(e?.nativeEvent?.coordinate?.longitude)
-
-    //   }}
-        //  pinColor = {"red"} // any color
-        key={key}
-        title={"Location"}
-        description={item.location}
- 
-        onPress={() => activaterestaurant(key, item.lat, item.long)}
-         >
-          
-         {item.expanded ? 
-         <View  style={{height: scalableheight.six, width: scalableheight.six}}>
-          <Image
-    source={require('../Resources/images/redmarker.png')}
-    style={{height: scalableheight.six, width: scalableheight.six}}
-    resizeMode= "contain"
-   
- />
- </View>
- :
- <View  style={{height: scalableheight.six, width: scalableheight.six}}>
- <Image
-    source={require('../Resources/images/redmarker.png')}
-    style={{height: scalableheight.four, width: scalableheight.four}}
-    resizeMode= "contain"
-
- />
- </View>
- }
-
-         </Marker>
-          )})}
-      <Marker 
-      position={center} 
-      coordinate = {{latitude: lat,longitude: long}}
-      // draggable
-  
-    //  onDragEnd={(e) => {
-
-    //   console.log('longitude', e?.nativeEvent?.coordinate?.longitude )
-    //    console.log('latitude', e?.nativeEvent?.coordinate?.latitude )
-    //   setlat(e?.nativeEvent?.coordinate?.latitude)
-    //   setlong(e?.nativeEvent?.coordinate?.longitude)
-
-    //   }}
-        //  pinColor = {"red"} // any color
-        key={1}
-        title={"Location"}
-        description={pinlocation}
- 
-        onPress={() => console.log("hello")}
-         >
-         
-          <Image
-    source={require('../Resources/images/blackmarker.png')}
-    style={{height: scalableheight.six, width: scalableheight.six}}
-    resizeMode= "contain"
- />
-
-         </Marker>
-         </MapView> 
-         :
-         null}
-            
-            </View>
-            <View style={{ width: '100%',
-    alignSelf: 'center',
-    
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  
-    paddingHorizontal: scalableheight.one,
-    position:"absolute", bottom:scalableheight.twentyfour
-  }}>
- <Infobar onPress={()=>{setshowbottomsheet(true)}} Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
-
-   </View>
-            <View style={{paddingHorizontal: scalableheight.one, position: "absolute", bottom: scalableheight.two, zIndex:200,elevation:200}}>
-
-           
-            <Animatable.View
-        animation="zoomIn"
-             easing="ease"
-             //  iterationCount="infinite"
-             iterationCount={1}
-             
-  style={{ flexDirection:"row", alignItems:"center",paddingTop: scalableheight.pointfive, paddingBottom: scalableheight.one, justifyContent:"flex-start", width:"100%"}}>
- 
-<Text style={{
-                fontFamily: 'Inter-ExtraBold',
-                fontSize: fontSize.sixteen,
-                color:"#29262A"
-              }}>RESTAURANTS NEARBY</Text>
-              </Animatable.View>
-             
-<FlatList
-key = {"1"}
-showsHorizontalScrollIndicator={false}
-ref={ref}
-style={{zIndex:200, elevation:200}}
-contentContainerStyle={{}}
-initialScrollIndex={0}
-onScrollToIndexFailed={({index, averageItemLength, }) => {
- ref.current?.scrollToOffset({ offset: index * averageItemLength, animated: true, });}}
-                keyExtractor={(item, index) => index.toString()}
-                horizontal
-              
-                data={popularservicedatahome}
-                renderItem={rendernearby}
-                // onEndReached={() => LoadFeaturedProjectPagination()}
-                // onEndReachedThreshold={0.1}
+              <Transparentsearch
+                search={search}
+                onchange={val => {
+                  setsearch(val);
+                }}
               />
- </View>
+            </View>
+          </ImageBackground>
+          <View
+            style={{
+              ...styleSheet.shadow,
 
-             
+              height:
+                Dimensions.get('window').height / 1 -
+                scalableheight.twentythree -
+                getStatusBarHeight(),
+              width: '100%',
+              backgroundColor: '#F5F5F5',
+              borderRadius: fontSize.fifteen,
+              overflow: 'hidden',
+            }}>
+            {lat != null && long != null ? (
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                customMapStyle={customStyle}
+                ref={refMap}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: fontSize.fifteen,
+                }}
+                showsUserLocation
+                region={{
+                  latitude: inlat,
+                  longitude: inlong,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+                initialRegion={{
+                  latitude: lat,
+                  longitude: long,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}>
+                {pin.map((item, key) => {
+                  return (
+                    <Marker
+                      position={center}
+                      coordinate={{latitude: item.lat, longitude: item.long}}
+                      // draggable
+
+                      //  onDragEnd={(e) => {
+
+                      //   console.log('longitude', e?.nativeEvent?.coordinate?.longitude )
+                      //    console.log('latitude', e?.nativeEvent?.coordinate?.latitude )
+                      //   setlat(e?.nativeEvent?.coordinate?.latitude)
+                      //   setlong(e?.nativeEvent?.coordinate?.longitude)
+
+                      //   }}
+                      //  pinColor = {"red"} // any color
+                      key={key}
+                      title={'Location'}
+                      description={item.location}
+                      onPress={() =>
+                        activaterestaurant(key, item.lat, item.long)
+                      }>
+                      {item.expanded ? (
+                        <View
+                          style={{
+                            height: scalableheight.six,
+                            width: scalableheight.six,
+                          }}>
+                          <Image
+                            source={require('../Resources/images/redmarker.png')}
+                            style={{
+                              height: scalableheight.six,
+                              width: scalableheight.six,
+                            }}
+                            resizeMode="contain"
+                          />
+                        </View>
+                      ) : (
+                        <View
+                          style={{
+                            height: scalableheight.six,
+                            width: scalableheight.six,
+                          }}>
+                          <Image
+                            source={require('../Resources/images/redmarker.png')}
+                            style={{
+                              height: scalableheight.four,
+                              width: scalableheight.four,
+                            }}
+                            resizeMode="contain"
+                          />
+                        </View>
+                      )}
+                    </Marker>
+                  );
+                })}
+                <Marker
+                  position={center}
+                  coordinate={{latitude: lat, longitude: long}}
+                  // draggable
+
+                  //  onDragEnd={(e) => {
+
+                  //   console.log('longitude', e?.nativeEvent?.coordinate?.longitude )
+                  //    console.log('latitude', e?.nativeEvent?.coordinate?.latitude )
+                  //   setlat(e?.nativeEvent?.coordinate?.latitude)
+                  //   setlong(e?.nativeEvent?.coordinate?.longitude)
+
+                  //   }}
+                  //  pinColor = {"red"} // any color
+                  key={1}
+                  title={'Location'}
+                  description={pinlocation}
+                  onPress={() => console.log('hello')}>
+                  <Image
+                    source={require('../Resources/images/blackmarker.png')}
+                    style={{
+                      height: scalableheight.six,
+                      width: scalableheight.six,
+                    }}
+                    resizeMode="contain"
+                  />
+                </Marker>
+              </MapView>
+            ) : null}
+          </View>
+          <View
+            style={{
+              width: '100%',
+              alignSelf: 'center',
+
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+
+              paddingHorizontal: scalableheight.one,
+              position: 'absolute',
+              bottom: scalableheight.twentyfour,
+            }}>
+            <Infobar
+              onPress={() => {
+                setshowbottomsheet(true);
+              }}
+              Heading={'Home'}
+              Details={'Clifton block 2, plot no 245, near bilawal house'}
+            />
+          </View>
+          <View
+            style={{
+              paddingHorizontal: scalableheight.one,
+              position: 'absolute',
+              bottom: scalableheight.two,
+              zIndex: 200,
+              elevation: 200,
+            }}>
+            <Animatable.View
+              animation="zoomIn"
+              easing="ease"
+              //  iterationCount="infinite"
+              iterationCount={1}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingTop: scalableheight.pointfive,
+                paddingBottom: scalableheight.one,
+                justifyContent: 'flex-start',
+                width: '100%',
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Inter-ExtraBold',
+                  fontSize: fontSize.sixteen,
+                  color: '#29262A',
+                }}>
+                RESTAURANTS NEARBY
+              </Text>
+            </Animatable.View>
+
+            <FlatList
+              key={'1'}
+              showsHorizontalScrollIndicator={false}
+              ref={ref}
+              style={{zIndex: 200, elevation: 200}}
+              contentContainerStyle={{}}
+              initialScrollIndex={0}
+              onScrollToIndexFailed={({index, averageItemLength}) => {
+                ref.current?.scrollToOffset({
+                  offset: index * averageItemLength,
+                  animated: true,
+                });
+              }}
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              data={popularservicedatahome}
+              renderItem={rendernearby}
+              // onEndReached={() => LoadFeaturedProjectPagination()}
+              // onEndReachedThreshold={0.1}
+            />
+          </View>
         </View>
       </View>
-    {showbottomsheet ? 
-              <Animatable.View
-              animation={'fadeInUpBig'}
-   
-                   easing="ease"
-                   //  iterationCount="infinite"
-                   iterationCount={1}
-                   
+      {showbottomsheet ? (
+        <Animatable.View
+          animation={'fadeInUpBig'}
+          easing="ease"
+          //  iterationCount="infinite"
+          iterationCount={1}
+          style={{
+            width: '100%',
+            backgroundColor: 'white',
+            position: 'absolute',
+            bottom: 0,
+            borderTopLeftRadius: fontSize.twenty,
+            borderTopRightRadius: fontSize.twenty,
+            padding: scalableheight.two,
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              setshowbottomsheet(false);
+            }}
+            style={{
+              position: 'absolute',
+              top: scalableheight.one,
+              right: scalableheight.one,
+            }}>
+            <Ionicons
+              name="close-circle"
+              color={'rgba(211,211,211, 0.8)'}
+              size={fontSize.thirtyseven}
+              style={{}}
+            />
+          </TouchableOpacity>
 
-   style={{width:"100%",  backgroundColor:"white", position: "absolute", bottom: 0, borderTopLeftRadius: fontSize.twenty, borderTopRightRadius: fontSize.twenty, padding: scalableheight.two}}>
-    <TouchableOpacity
-                  onPress={() => {
-                    setshowbottomsheet(false);
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: scalableheight.one,
-                    right: scalableheight.one,
-                  }}>
-                  <Ionicons
-                    name="close-circle"
-                    color={"rgba(211,211,211, 0.8)"}
-                    size={fontSize.thirtyseven}
-                    style={{}}
-                  />
-                </TouchableOpacity>
+          <Text
+            style={{
+              color: 'black',
+              fontFamily: 'Inter-Bold',
+              fontSize: fontSize.fifteen,
+              alignSelf: 'center',
+            }}>
+            Select A Delivery Address
+          </Text>
+          <TouchableOpacity
+            disabled={pinlocation == '' ? false : true}
+            onPress={() => {
+              getnewlocation();
+            }}
+            style={{
+              flexDirection: 'row',
+              borderBottomWidth: 1,
+              borderColor: 'rgba(211,211,211, 0.5)',
+              paddingVertical: scalableheight.one,
+            }}>
+            <View style={{justifyContent: 'center'}}>
+              <MaterialCommunityIcons
+                name={'crosshairs-gps'}
+                color={'#F55050'}
+                size={fontSize.twenty}
+              />
+            </View>
+            <View style={{marginLeft: scalableheight.two}}>
+              <Text
+                style={{
+                  color: '#F55050',
+                  fontFamily: 'Inter-SemiBold',
+                  fontSize: fontSize.sixteen,
+                }}>
+                Detect current Location
+              </Text>
+              <Text
+                style={{
+                  color: 'black',
+                  opacity: 0.5,
+                  fontFamily: 'Inter-SemiBold',
+                  fontSize: fontSize.eleven,
+                }}>
+                Use GPS
+              </Text>
+              <Text
+                numberOfLines={2}
+                style={{
+                  color: 'black',
+                  opacity: 0.5,
+                  fontFamily: 'Inter-SemiBold',
+                  fontSize: fontSize.eleven,
+                }}>
+                {pinlocation == '' ? 'Use GPS' : pinlocation}
+              </Text>
+            </View>
+          </TouchableOpacity>
 
-<Text style={{color:"black", fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.fifteen, alignSelf: "center"}}>Select A Delivery Address</Text>
-                    <TouchableOpacity 
-                    disabled={pinlocation == "" ? false : true}
-                    onPress={() => {getnewlocation()}}
-                    style={{flexDirection:"row", borderBottomWidth: 1, borderColor:  "rgba(211,211,211, 0.5)", paddingVertical: scalableheight.one}}>
-                      <View style={{justifyContent:"center"}}>
-                    <MaterialCommunityIcons name={'crosshairs-gps'} color={"#F55050"}   size={fontSize.twenty} />
-                    </View>
-                      <View style={{marginLeft:scalableheight.two}}>
-                    <Text style={{color:"#F55050", fontFamily: 'Inter-SemiBold',
-                    fontSize: fontSize.sixteen,}}>Detect current Location</Text>
-                       <Text style={{color:"black", opacity: 0.5, fontFamily: 'Inter-SemiBold',
-                    fontSize: fontSize.eleven,}}>Use GPS</Text>
-   <Text 
-   numberOfLines={2}
-   style={{color:"black", opacity: 0.5, fontFamily: 'Inter-SemiBold',
-                    fontSize: fontSize.eleven,}}>{pinlocation == "" ? "Use GPS" : pinlocation}</Text>
+          <Text
+            style={{
+              color: 'black',
+              opacity: 0.6,
+              fontFamily: 'Inter-Regular',
+              fontSize: fontSize.sixteen,
+              paddingTop: scalableheight.one,
+            }}>
+            My Saved Addresses
+          </Text>
+          <SavedAddresses
+            title={'Home'}
+            address={'Mann Crossing 332 Ardith Highway'}
+          />
+          <SavedAddresses title={'Home'} address={'Clifton block 2'} />
 
-                    </View>
-</TouchableOpacity>
-
-                  
-                  
-                     
-                     <Text style={{color:"black", opacity: 0.6, fontFamily: 'Inter-Regular',
-                    fontSize: fontSize.sixteen, paddingTop: scalableheight.one}}>My Saved Addresses</Text>
-        <SavedAddresses title={"Home"} address ={"Mann Crossing 332 Ardith Highway"}/>
-        <SavedAddresses title={"Home"} address ={"Clifton block 2"}/>
-                       
-        <View style={{flexDirection:"row", borderBottomWidth: 1, borderColor:  "rgba(211,211,211, 0.5)", paddingVertical: scalableheight.one}}>
-                      <View style={{justifyContent:"center"}}>
-                      <FontAwesome5 name={'map-marked-alt'} color={"#F55050"}   size={fontSize.twenty} />
-                    </View>
-                      <View style={{marginLeft:scalableheight.two}}>
-                      <Text style={{color:"#F55050", fontFamily: 'Inter-SemiBold',
-                    fontSize: fontSize.sixteen,}}>Pin your Location</Text>
-                     <Text style={{color:"black", fontFamily: 'Inter-Regular', opacity:0.5,
-                    fontSize: fontSize.fourteen,}}>Open Map</Text>
-                    </View>
-</View>
-                                 
-                
-                      
-    </Animatable.View> : null}
+          <View
+            style={{
+              flexDirection: 'row',
+              borderBottomWidth: 1,
+              borderColor: 'rgba(211,211,211, 0.5)',
+              paddingVertical: scalableheight.one,
+            }}>
+            <View style={{justifyContent: 'center'}}>
+              <FontAwesome5
+                name={'map-marked-alt'}
+                color={'#F55050'}
+                size={fontSize.twenty}
+              />
+            </View>
+            <View style={{marginLeft: scalableheight.two}}>
+              <Text
+                style={{
+                  color: '#F55050',
+                  fontFamily: 'Inter-SemiBold',
+                  fontSize: fontSize.sixteen,
+                }}>
+                Pin your Location
+              </Text>
+              <Text
+                style={{
+                  color: 'black',
+                  fontFamily: 'Inter-Regular',
+                  opacity: 0.5,
+                  fontSize: fontSize.fourteen,
+                }}>
+                Open Map
+              </Text>
+            </View>
+          </View>
+        </Animatable.View>
+      ) : null}
     </Animated.View>
   );
 };

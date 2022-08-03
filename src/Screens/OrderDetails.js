@@ -20,7 +20,7 @@ import Addresstile from '../Shared/Components/Addresstile';
 const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
- 
+
   const customStyle = [
     {
       elementType: 'geometry',
@@ -276,13 +276,14 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
             style={{
               padding: scalableheight.two,
             }}>
-            <View style={styles.MainConatiner}>
+            <View style={{...styles.shadow, ...styles.MainContainer}}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'center',
                   alignItems: 'center',
                   alignContent: 'center',
+                  height: scalableheight.twenty,
                 }}>
                 <View
                   style={{
@@ -338,8 +339,9 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
               </View>
               <View
                 style={{
-                  height: scalableheight.twenty,
+                  height: scalableheight.twentytwo,
                   borderRadius: fontSize.eight,
+                  marginHorizontal: scalableheight.two,
                   overflow: 'hidden',
                 }}>
                 <MapView
@@ -491,6 +493,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 Delivery Address
               </Text>
               <Addresstile
+                style={{height: scalableheight.one}}
                 address={'7399 Stefan Trace Joanne Ligh Street No.85'}
                 note={'4th floor, Take a left, 2nd brown Door on your right'}
               />
@@ -573,61 +576,66 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 }}>
                 Payment Method
               </Text>
-              <View style={styles.MainConatiner}>
+              <View style={{...styles.shadow, ...styles.MainContainer}}>
                 <View
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
+                    ...styles.topViewContainer,
                   }}>
-                  <View style={{width: '5%'}}>
-                    <Image
-                      style={{
-                        height: scalableheight.five,
-                        width: scalableheight.five,
-                      }}
-                      resizeMode={'contain'}
-                      source={require('../Resources/images/Paymenticon.png')}
-                    />
-                  </View>
                   <View
                     style={{
-                      paddingHorizontal: scalableheight.five,
+                      flexDirection: 'row',
                       justifyContent: 'flex-start',
-                      width: '80%',
+                      alignItems: 'center',
                     }}>
-                    <Text
+                    <View style={{width: '5%'}}>
+                      <Image
+                        style={{
+                          height: scalableheight.five,
+                          width: scalableheight.five,
+                        }}
+                        resizeMode={'contain'}
+                        source={require('../Resources/images/Paymenticon.png')}
+                      />
+                    </View>
+                    <View
                       style={{
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.twelve,
-                        color: '#29262A',
+                        paddingHorizontal: scalableheight.five,
+                        justifyContent: 'flex-start',
+                        width: '80%',
                       }}>
-                      {'Credit/Debit Card'}
-                    </Text>
-                    <Text
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-SemiBold',
+                          fontSize: fontSize.twelve,
+                          color: '#29262A',
+                        }}>
+                        {'Credit/Debit Card'}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-Medium',
+                          fontSize: fontSize.thirteen,
+                          color: '#636363',
+                        }}>
+                        {'Pay Online'}
+                      </Text>
+                    </View>
+                    <View
                       style={{
-                        fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.thirteen,
-                        color: '#636363',
+                        // paddingHorizontal: scalableheight.five,
+                        justifyContent: 'flex-end',
+                        width: '15%',
                       }}>
-                      {'Pay Online'}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      // paddingHorizontal: scalableheight.five,
-                      justifyContent: 'flex-end',
-                      width: '15%',
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Bold',
-                        fontSize: fontSize.thirteen,
-                        color: '#E14E4E',
-                        textAlign: 'right',
-                      }}>
-                      {'Paid'}
-                    </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-Bold',
+                          fontSize: fontSize.thirteen,
+                          color: '#E14E4E',
+                          textAlign: 'right',
+                        }}>
+                        {'Paid'}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -774,16 +782,22 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
 };
 
 const styles = StyleSheet.create({
-  MainConatiner: {
-    backgroundColor: 'white',
-    width: '99%',
-    justifyContent: 'center',
-    alignSelf: 'center',
+  MainContainer: {
     borderRadius: fontSize.eleven,
-    padding: scalableheight.one,
+    paddingVertical: fontSize.fifteen,
+    width: '99%',
+    alignSelf: 'center',
+    marginVertical: scalableheight.one,
+    backgroundColor: 'white',
+  },
+  topViewContainer: {
+    paddingHorizontal: fontSize.eight,
+    flexDirection: 'row',
+  },
+  shadow: {
     shadowColor: '#000',
     shadowOffset: {
-      width: 0,
+      width: 5,
       height: 2,
     },
     shadowOpacity: 0.23,

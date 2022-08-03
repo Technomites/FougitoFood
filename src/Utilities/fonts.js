@@ -32,6 +32,7 @@ const scalableheight = {
   seventeen: height(17),
   twenty: height(20),
   twentytwo: height(22),
+  twentythree: height(23),
   twentyfour: height(24),
   twentysix: height(26),
   thirtytwo: height(32),
