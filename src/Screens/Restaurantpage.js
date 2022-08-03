@@ -82,6 +82,7 @@ import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import { styles } from 'react-native-element-dropdown/src/components/TextInput/styles';
 
 const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   const [searchText, setSearchText] = useState('');
@@ -273,7 +274,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 
   const Starterslabel =  props => {
     return(
-      <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
+      <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one,   }}>
       <FlatList
       keyExtractor={(item, index) => index.toString()}
       showsVerticalScrollIndicator={false}
@@ -496,7 +497,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                   onChangeText={text => setspecialinstructions(text)}
                   placeholder={'Type here'}
                   style={{
-                    width: '100%',
+                    ...styleSheet.shadow,
+                    width: '98%',
                     height: scalableheight.fifteen,
                     fontSize: fontSize.fifteen,
                     backgroundColor: '#F5F5F5',
@@ -591,7 +593,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
             paddingVertical: scalableheight.one,
             paddingHorizontal: scalableheight.two,
           }}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <TouchableOpacity 
+          onPress={() => {navigation.navigate("Checkout")}}
+          style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View
@@ -642,7 +646,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                 Checkout
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         </Animatable.View>
       )}
       <View style={{flex: 1, backgroundColor: '#303030', borderRadius: 10}}>
@@ -720,9 +724,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 </View>
 
         </CollapsibleHeaderContainer>
-        
+      
 <CollapsibleScrollView
-            
+       
           showsVerticalScrollIndicator={false}
          
           style={{  width:"100%", backgroundColor:"white"}}
@@ -736,11 +740,12 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
             tabBarActiveTintColor: "#E14E4E",
             tabBarInactiveTintColor: 'grey',
             tabBarPressColor: 'white',
+          
     
           }}
           tabBarOptions={{
             activeTintColor: "#E14E4E",
-           
+         
             tabStyle: {height: scalableheight.nine},
             labelStyle: {fontSize: fontSize.twelve, fontWeight: 'bold'},
             indicatorStyle: {
@@ -797,6 +802,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
           
        
           </CollapsibleScrollView>
+        
           </CollapsibleContainer>   
 
         </View>
@@ -832,15 +838,10 @@ const styleSheet = StyleSheet.create({
     alignItems: 'center',
   },
   shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 4,
+    shadowColor: '#470000',
+  shadowOffset: {width: 0, height: 1},
+  shadowOpacity: 0.2,
+  elevation: 2
   },
   newsshadow: {
     shadowColor: '#000',

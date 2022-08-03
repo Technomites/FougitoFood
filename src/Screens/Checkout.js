@@ -8,26 +8,20 @@ import {
   FlatList,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {
-  readallnotifications,
-  addReadNotifications,
-  clearNotificationCount,
-  clearNotifications,
-  getAllNotifications,
-  GetNotifications,
-  notificationCountHandle,
-  readNotification,
-  seticonfocus,
-} from '../Actions/actions';
+
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
-import Favourites from '../Shared/Components/Favourites';
+import ItemDetails from '../Shared/Components/ItemDetails';
+import Addresstile from '../Shared/Components/Addresstile';
+import Bll from '../Shared/Components/Bll';
+import MYButton from '../Shared/Components/MYButton';
 
-import BottomTab from '../Shared/Components/BottomTab';
+import PaymentOptions from '../Shared/Components/PaymentOptions';
 import Animated from 'react-native-reanimated';
 import Octicons from 'react-native-vector-icons/Octicons';
 import NetInfo from '@react-native-community/netinfo';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Checkout = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
@@ -53,15 +47,38 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     },
   ]);
 
-  const renderItem = ({item, index}) => (
-    <Favourites
-      image={require('../Resources/images/food.png')}
-      title={'Mexican Enchiladas'}
-      reviews={'8.9 (350 reviews)'}
-      time={'9:00 AM - 10:00PM'}
-      onPress={() => {}}
-      distance={'2.5KM AWAY'}
-    />
+  const [payment, setpayment] = useState([
+    {
+      type: "Credit/Debit Card",
+      payment: 'Pay Online',
+      selected: false,
+      icon: 1
+    },
+    {
+        type: "Credit/Debit Card",
+        payment: 'Cash On Delivery',
+        selected: false,
+        icon: 2
+    },
+   
+  ]);
+
+  function selectpaymentmethod(index){
+console.log("ee" + index)
+let data = [...payment]
+for(const key in payment){
+    if(key == index){
+        data[key].selected = true
+    }else{
+        data[key].selected = false
+    }
+
+}
+setpayment(data)
+  }
+  const renderpayment = ({item, index}) => (
+    
+    <PaymentOptions option ={item.icon} index= {index} title={item.type} payment = {item.payment} selected={item.selected} onPress={()=>{selectpaymentmethod(index)}}/>
   );
 
   return (
@@ -76,9 +93,70 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
 
           paddingTop: getStatusBarHeight(),
         }}>
-        <PlainHeader title={'My Favourites'} />
+        <PlainHeader title={'Cart'} />
         <View style={{height: scalableheight.three}} />
-     
+     <ScrollView 
+     showsVerticalScrollIndicator={false}
+     style={{ paddingHorizontal: scalableheight.one}}>
+        <View style = {{flexDirection:"row", marginBottom: scalableheight.one}}>
+        <Text style={{...styleSheet.Text2, width: "15%", textAlign:"center"}}>QTY</Text>
+       <Text style={{...styleSheet.Text2, width: "55%", paddingHorizontal: scalableheight.two}}>ITEM</Text>
+       <Text style={{...styleSheet.Text2, width: "30%",paddingHorizontal: scalableheight.two}}>Price</Text>
+        </View>
+        {serving.map(item => {
+             
+                return (
+                    <View style={{alignItems:"center"}}>
+     <ItemDetails title={"Mexican Enchiladas"} price={159.40} onPress={()=>{setmodalVisible(true)}}/>
+     </View>
+                  )})}
+                    <View style={{height: scalableheight.two}} />
+                    <Text style={styleSheet.Text1}>Payment Method</Text>
+                    <View style={{height: scalableheight.one}} />
+                    <FlatList
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={payment}
+        
+              renderItem={renderpayment}
+              // onEndReached={() => LoadFeaturedProjectPagination()}
+              // onEndReachedThreshold={0.1}
+            />
+                        <View style={{height: scalableheight.two}} />
+                    <Text style={styleSheet.Text1}>Delivery Address</Text>
+                    <View style={{height: scalableheight.one}} />
+                    
+                  <Addresstile
+                                    icon={require('../Resources/images/Homeicon.png')}
+                                    place={'Home'}
+                                    address={'7399 Stefan Trace Joanne Ligh Street No.85'}
+                                    note={'4th floor, Take a left, 2nd brown Door on your right'}
+
+                        
+                        />
+                             <View style={{height: scalableheight.three}} />
+                        <Bll label={"Sub Total"} price={"AED 209.00"}/>
+                        <Bll label={"Delivery Charges"} price={"AED 209.00"}/>
+                     
+                        
+                          <View style={styleSheet.Container}>
+                            <View style={{flexDirection:"row"}}>
+                          <Text style={styleSheet.Text3}>Vat Amount</Text>
+                          <Text style={styleSheet.Text4}>{"(4%)"}</Text>
+                          </View>
+                          <Text style={styleSheet.Text3}>AED 209.00</Text>
+                          </View>
+                          <View style={{height: scalableheight.one}} />
+                          <Text style={{...styleSheet.Text4, textAlign:"right"}} >I HAVE A COUPON</Text>
+                         <View style={{borderTopColor: "rgba(211,211,211, 0.5)", borderTopWidth: scalableheight.borderTopWidth, marginVertical: scalableheight.one}}></View>
+                          <Bll label={"Total"} price={"AED 222.00"}/>
+                          <View style={{height: scalableheight.two}} />
+                          <MYButton   title={'Login to Place Orderx'}
+                    color="#E14E4E"
+                    textcolor="white"/>
+                        <View style={{height: scalableheight.three}} />
+     </ScrollView>
       </View>
     </Animated.View>
   );
@@ -86,19 +164,36 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
 
 const styleSheet = StyleSheet.create({
   Text1: {
-    color: '#F9B35E',
-    fontSize: 18,
-    paddingBottom: 10,
-    fontFamily: 'Rubik-SemiBold',
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    color:"black"
   },
   Text2: {
-    textAlign: 'center',
-    fontSize: 14,
-    paddingBottom: 20,
-    fontFamily: 'Rubik-Regular',
-    width: '90%',
-    color: 'black',
+     fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.ten,
+    color:"#29262A", opacity: 0.4
   },
+  Text3: {
+    fontFamily: 'Inter-Bold',
+   fontSize: fontSize.fourteen,
+   color:"black"
+ },
+ Text4: {
+    fontFamily: 'Inter-SemiBold',
+   fontSize: fontSize.fourteen,
+   color:"#E14E4E"
+ },
+ Text4: {
+    fontFamily: 'Inter-SemiBold',
+   fontSize: fontSize.fifteen,
+   color:"#E14E4E"
+ },
+ Container:{
+    flexDirection:"row", alignItems:"center", justifyContent:"space-between"
+ },
+
+
+
   Image: {
     width: 241,
     height: 104,

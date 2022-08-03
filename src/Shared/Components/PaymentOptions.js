@@ -18,9 +18,9 @@ import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-export default function Starters(props) {
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+export default function ItemDetails(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
 
@@ -32,63 +32,73 @@ const navigation = useNavigation();
       onPress={props.onPress}
       style={{
         ...styleSheet.shadow,
-        height: scalableheight.fifteen,
-        width: "99%",
+        height: scalableheight.nine,
+        width: scalableheight.fourty,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: scalableheight.one,
-        borderRadius: fontSize.eleven, backgroundColor:"white",
-        flexDirection:"row"
- 
+        borderRadius: fontSize.eleven,
+        backgroundColor:"white",
+        flexDirection:"row",
+        marginTop: scalableheight.one,
+        marginLeft: scalableheight.borderwidth,
+        marginRight: scalableheight.two,
+      
        
       }}>
-     
-     <View style={{height:"100%", width: "75%",justifyContent:"center", padding: scalableheight.two}}>
+      <View style={{height:"100%", width: "20%", alignItems:"center", justifyContent:"center"}}>
+<View style={{height: scalableheight.six, width: scalableheight.six,    backgroundColor: '#F5F5F5', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
+{props.option == 1 ? 
+<FontAwesome5 
+            name="credit-card"
+            color={"#F55050"}
+            size={fontSize.twenty}
+          />
+          : 
+          <Ionicons 
+            name="wallet-sharp"
+            color={"#F55050"}
+            size={fontSize.twenty}
+          />}
+</View>
+
+</View>
+<View style={{height:"100%", width: "60%",justifyContent:"center", padding: scalableheight.two}}>
 <Text style={{
             
-                fontFamily: 'Inter-SemiBold',
+                fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fifteen,
                 color:"#111111",
             
               }}>{props.title}</Text>
               <Text style={{
             
-            fontFamily: 'Inter-Light',
-            fontSize: fontSize.thirteen,
+            fontFamily: 'Inter-Medium',
+            fontSize: fontSize.twelve,
             color:"#636363",
         
-          }}>{props.description}</Text>
-              <Text style={{
+          }}>{props.payment}</Text>
             
-            fontFamily: 'Inter-Medium',
-            fontSize: fontSize.fourteen,
-            color:"#111111",
-        
-          }}>{"AED "}{props.price}</Text>
 </View>
-<View style={{height:"100%", width: "25%", alignItems:"flex-end", justifyContent:"center", paddingRight: scalableheight.one}}>
-<Image
-    resizeMode= "stretch"
-    style={{
-      width: scalableheight.tweleve,
-      height: scalableheight.tweleve,
-      borderRadius: fontSize.eleven
+<View style={{height:"100%", width: "20%",justifyContent:"center", padding: scalableheight.two,}}>
+{props.selected ? 
 
-    }}
-   
-      source={props.image}></Image>
-      <View style={{width:scalableheight.three, height:scalableheight.three, backgroundColor:"red", position:"absolute", bottom: scalableheight.onepointfive ,right: scalableheight.one, borderBottomRightRadius: fontSize.eleven, alignItems:"center", justifyContent:"center"}}>
+<Fontisto 
+            name="radio-btn-active"
+            color={"#F55050"}
+            size={fontSize.twenty}
+          />:
+          <Fontisto 
+            name="radio-btn-passive"
+            color={'rgba(211,211,211, 0.8)'}
+            size={fontSize.twenty}
+          /> 
+          }
 
-      <Entypo 
-                name="plus"
-                color={"white"}
-                size={fontSize.seven}
-                style={{}}
-              />
-      </View>
-     
 
-</View>
+       
+              
+</View> 
    
             
        
@@ -129,10 +139,12 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'center',
 },
 shadow: {
-  shadowColor: '#470000',
-  shadowOffset: {width: 0, height: 1},
-  shadowOpacity: 0.2,
-  elevation: 2
+      shadowColor: '#470000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 3
+
+  
   },
 });
 

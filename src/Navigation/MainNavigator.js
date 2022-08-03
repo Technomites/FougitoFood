@@ -826,12 +826,18 @@ const Drawernavigator = props => {
 
         return <CustomDrawerStyle navigation={props.navigation} />;
       }}>
+           
       <Drawer.Screen name="Home" options={{headerShown: false}}>
         {props => <Home {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
       <Drawer.Screen name="Restaurantpage" options={{headerShown: false}}>
         {props => (
           <Restaurantpage {...props} drawerAnimationStyle={animatedStyle} />
+        )}
+      </Drawer.Screen>
+      <Drawer.Screen name="Checkout" options={{headerShown: false}}>
+        {props => (
+          <Checkout {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
 
@@ -848,11 +854,7 @@ const Drawernavigator = props => {
           <MyFavourite {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
-      <Drawer.Screen name="Checkout" options={{headerShown: false}}>
-        {props => (
-          <Checkout {...props} drawerAnimationStyle={animatedStyle} />
-        )}
-      </Drawer.Screen>
+   
       
       <Drawer.Screen name="MyAddresses" options={{headerShown: false}}>
         {props => (

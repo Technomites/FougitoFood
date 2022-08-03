@@ -9,10 +9,9 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
-  Dimensions,
-  TextInput
+  ImageBackground
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
@@ -21,52 +20,18 @@ import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-export default function SearchBar(props) {
+export default function Bll(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
 
 
   return (
-    <View
-    style={{
-      ...styleSheet.shadow,
-      width: '99%',
-      height: Dimensions.get('window').height / 15,
-      justifyContent: 'center',
-      borderRadius: fontSize.twenty,
-      marginTop: '3%',
-      alignSelf: 'center',
-      marginBottom: '3%',
-    }}>
-    <TextInput
-    value={props.search}
-      onChangeText={text => props.onchange(text)}
-      placeholder={"Search here"}
-      style={{
-        width: '100%',
-        height: '98%',
-fontSize:fontSize.fifteen,
-        backgroundColor:"white",
-        alignSelf: 'center',
-        borderRadius: fontSize.twenty,
-        paddingHorizontal: '5%',
-        alignItems:"center",
-        justifyContent:"center"
-      
-      }}
-    />
-      
-
-<Ionicons
-name="search"
-color={'grey'}
-size={ fontSize.twenty}
-style={{position: 'absolute', right: '5%'}}
-/>
-      
-        
-   
-  </View>   
+    
+  
+    <View style={styleSheet.Container}>
+    <Text style={styleSheet.Text3}>Sub Total</Text>
+    <Text style={styleSheet.Text3}>AED 209.00</Text>
+    </View>
   );
 }
 
@@ -103,11 +68,41 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'center',
 },
 shadow: {
-  shadowColor: '#470000',
-  shadowOffset: {width: 0, height: 1},
-  shadowOpacity: 0.2,
-  elevation: 2
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
+  Text1: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    color:"black"
+  },
+  Text2: {
+     fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.ten,
+    color:"#29262A", opacity: 0.4
+  },
+  Text3: {
+    fontFamily: 'Inter-Bold',
+   fontSize: fontSize.fourteen,
+   color:"black"
+ },
+ Text4: {
+    fontFamily: 'Inter-SemiBold',
+   fontSize: fontSize.fourteen,
+   color:"#E14E4E"
+ },
+ Container:{
+    flexDirection:"row", alignItems:"center", justifyContent:"space-between"
+ },
+
+
 });
 
 

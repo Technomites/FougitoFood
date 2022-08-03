@@ -274,7 +274,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
         <ScrollView>
           <View
             style={{
-              padding: scalableheight.two,
+              padding: scalableheight.one,
             }}>
             <View style={styles.MainConatiner}>
               <View
@@ -776,19 +776,15 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
 const styles = StyleSheet.create({
   MainConatiner: {
     backgroundColor: 'white',
-    width: '99%',
+    width: '100%',
     justifyContent: 'center',
     alignSelf: 'center',
     borderRadius: fontSize.eleven,
     padding: scalableheight.one,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
+    shadowColor: '#470000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 2
   },
   centeredView: {
     flex: 1,

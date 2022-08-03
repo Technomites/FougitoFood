@@ -33,6 +33,7 @@ const navigation = useNavigation();
       
       }}
       style={{
+      
         height: scalableheight.fifteen,
         width: scalableheight.fourty,
         alignItems: 'center',
@@ -41,19 +42,20 @@ const navigation = useNavigation();
        
       }}>
       <>
-        <View
+       <View
           style={{
             ...styleSheet.shadow,
             width: '100%',
             height: '95%',
             borderRadius: fontSize.eleven,
+            justifyContent:"center"
           }}>
 
-    <ImageBackground
+     <ImageBackground
     resizeMode= "stretch"
     style={{
       width: '100%',
-      height: '100%',
+      height: '99.5%',
    justifyContent:"center",
 
 
@@ -74,8 +76,8 @@ const navigation = useNavigation();
                 color:"white",
                 opacity:0.6
               }}>{"Average Price AED "} {props.price}</Text>
-              </ImageBackground>
-        </View>
+              </ImageBackground> 
+        </View> 
        
       </>
     </TouchableOpacity>
@@ -114,6 +116,12 @@ const styleSheet = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 },
+shadow:{
+  shadowColor: '#470000',
+  shadowOffset: {width: 0, height: 1},
+  shadowOpacity: 0.2,
+  elevation: 2
+}
 });
 
 

@@ -20,7 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-export default function Starters(props) {
+export default function ItemDetails(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
 
@@ -32,62 +32,56 @@ const navigation = useNavigation();
       onPress={props.onPress}
       style={{
         ...styleSheet.shadow,
-        height: scalableheight.fifteen,
+        height: scalableheight.nine,
         width: "99%",
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: scalableheight.one,
-        borderRadius: fontSize.eleven, backgroundColor:"white",
-        flexDirection:"row"
+        borderRadius: fontSize.eleven,
+        backgroundColor:"white",
+        flexDirection:"row",
+        marginTop: scalableheight.borderwidth,
  
        
       }}>
-     
-     <View style={{height:"100%", width: "75%",justifyContent:"center", padding: scalableheight.two}}>
+     <View style={{height:"100%", width: "15%", alignItems:"center", justifyContent:"center"}}>
+<View style={{height: scalableheight.four, width: scalableheight.four,    backgroundColor: '#F5F5F5', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
 <Text style={{
             
-                fontFamily: 'Inter-SemiBold',
-                fontSize: fontSize.fifteen,
+            fontFamily: 'Inter-Bold',
+            fontSize: fontSize.fourteen,
+            color:"#111111",
+        
+          }}>1</Text>
+</View>
+
+</View>
+<View style={{height:"100%", width: "55%",justifyContent:"center", padding: scalableheight.two}}>
+<Text style={{
+            
+                fontFamily: 'Inter-Bold',
+                fontSize: fontSize.twelve,
                 color:"#111111",
             
               }}>{props.title}</Text>
               <Text style={{
             
-            fontFamily: 'Inter-Light',
-            fontSize: fontSize.thirteen,
-            color:"#636363",
+            fontFamily: 'Inter-Medium',
+            fontSize: fontSize.ten,
+            color:"#E14E4E",
         
-          }}>{props.description}</Text>
+          }}>View Details</Text>
+            
+</View>
+<View style={{height:"100%", width: "30%",justifyContent:"center", padding: scalableheight.two,}}>
+
               <Text style={{
             
             fontFamily: 'Inter-Medium',
-            fontSize: fontSize.fourteen,
+            fontSize: fontSize.twelve,
             color:"#111111",
         
           }}>{"AED "}{props.price}</Text>
-</View>
-<View style={{height:"100%", width: "25%", alignItems:"flex-end", justifyContent:"center", paddingRight: scalableheight.one}}>
-<Image
-    resizeMode= "stretch"
-    style={{
-      width: scalableheight.tweleve,
-      height: scalableheight.tweleve,
-      borderRadius: fontSize.eleven
-
-    }}
-   
-      source={props.image}></Image>
-      <View style={{width:scalableheight.three, height:scalableheight.three, backgroundColor:"red", position:"absolute", bottom: scalableheight.onepointfive ,right: scalableheight.one, borderBottomRightRadius: fontSize.eleven, alignItems:"center", justifyContent:"center"}}>
-
-      <Entypo 
-                name="plus"
-                color={"white"}
-                size={fontSize.seven}
-                style={{}}
-              />
-      </View>
-     
-
 </View>
    
             
@@ -129,10 +123,10 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'center',
 },
 shadow: {
-  shadowColor: '#470000',
-  shadowOffset: {width: 0, height: 1},
-  shadowOpacity: 0.2,
-  elevation: 2
+    shadowColor: '#470000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 3
   },
 });
 
