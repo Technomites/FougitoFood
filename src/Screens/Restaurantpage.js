@@ -501,14 +501,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                     width: '98%',
                     height: scalableheight.fifteen,
                     fontSize: fontSize.fifteen,
-                    backgroundColor: '#F5F5F5',
+                    backgroundColor: 'white',
                     alignSelf: 'center',
                     borderRadius: fontSize.borderradiusmedium,
                     paddingHorizontal: '5%',
                     textAlignVertical: 'top',
                   }}
                 />
-                <View style={{height: scalableheight.one}} />
+                <View style={{height: scalableheight.three}} />
                 <View
                   style={{
                     flexDirection: 'row',
@@ -552,7 +552,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                     />
                   </TouchableOpacity>
                 </View>
-                <View style={{height: scalableheight.one}} />
+                <View style={{height: scalableheight.three}} />
                 <MYButton
                   color={'#E14E4E'}
                   title={'Add To Cart'}
@@ -776,28 +776,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
         </Top.Navigator> 
 
 
-{/* <Animatable.View
-        animation="zoomIn"
-             easing="ease"
-             //  iterationCount="infinite"
-             iterationCount={1}
-             
-  style={{ flexDirection:"row", alignItems:"center",paddingTop: scalableheight.pointfive, paddingBottom: scalableheight.one, justifyContent:"flex-start", width:"100%"}}>
- 
-<Text style={{
-                fontFamily: 'Inter-ExtraBold',
-                fontSize: fontSize.sixteen,
-                color:"#29262A"
-              }}>STARTERS</Text>
-              </Animatable.View>
-              <FlatList
-              keyExtractor={(item, index) => index.toString()}
-              showsVerticalScrollIndicator={false}
-              data={popularservicedatahome}
-              renderItem={starters}
-              // onEndReached={() => LoadFeaturedProjectPagination()}
-              // onEndReachedThreshold={0.1}
-            /> */}
+
              
           
        
@@ -841,7 +820,8 @@ const styleSheet = StyleSheet.create({
     shadowColor: '#470000',
   shadowOffset: {width: 0, height: 1},
   shadowOpacity: 0.2,
-  elevation: 2
+  elevation: 2,
+  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
   newsshadow: {
     shadowColor: '#000',

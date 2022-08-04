@@ -251,9 +251,9 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 marginBottom: scalableheight.three,
               }}>
               <Text style={styleSheet.modalDetailStyle}>
-                {Lang == 'en'
-                  ? 'Are you sure you want \n to Logout ?'
-                  : 'هل أنت متأكد أنك تريد \n تسجيل الخروج؟'}
+                {
+                  'Are you sure you want \n to Logout ?'
+                 }
               </Text>
             </View>
             <View
@@ -268,7 +268,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   Loading={false}
                   style={{height: scalableheight.five}}
                   activeOpacity={0.7}
-                  title={Lang == 'en' ? 'Yes' : 'نعم'}
+                  title={'Yes'}
                   onPress={() => logoutHandle()}
                   customButtonStyle={styleSheet.submitButton}
                   containerstyle={{height: scalableheight.five}}
@@ -282,7 +282,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                     backgroundColor: 'white',
                   }}
                   activeOpacity={0.7}
-                  title={Lang == 'en' ? 'No' : 'رقم'}
+                  title={ 'No'}
                   onPress={() => setModalVisible(false)}
                   customButtonTextStyle={{color: 'black'}}
                   customButtonStyle={styleSheet.filterButton}
@@ -482,7 +482,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
               navigation.dispatch(DrawerActions.closeDrawer());
             }}
             style={{
-              flexDirection: Lang == 'en' ? 'row' : 'row-reverse',
+              flexDirection: 'row',
               alignItems: 'center',
               borderTopWidth: scalableheight.borderTopWidth,
               borderColor: '#adadad',
@@ -786,13 +786,13 @@ const Drawernavigator = props => {
   const [progress, setprogress] = React.useState(new Animated.Value(0));
   const {Lang} = useSelector(state => state.userReducer);
   const scale = Animated.interpolateNode(progress, {
-    inputRange: [0, 1],
+    inputRange: [0, 1.3],
     outputRange: [1, 0.6],
   });
 
   const borderRadius = Animated.interpolateNode(progress, {
     inputRange: [0, 1],
-    outputRange: [0, 10],
+    outputRange: [0, 45],
   });
 
   const animatedStyle = {borderRadius, transform: [{scale}]};
@@ -804,7 +804,7 @@ const Drawernavigator = props => {
       // screenOptions={TransitionScreenOptions}
       overlayColor="transparent"
       initialRouteName="DrawerStack"
-      drawerPosition={Lang == 'en' ? 'left' : 'right'}
+      drawerPosition={'left'}
       drawerType="back"
       screenOptions={TransitionScreenOptions}
       drawerStyle={{
@@ -829,6 +829,9 @@ const Drawernavigator = props => {
       <Drawer.Screen name="Home" options={{headerShown: false}}>
         {props => <Home {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
+      <Drawer.Screen name="MyOrders" options={{headerShown: false}}>
+        {props => <MyOrders {...props} drawerAnimationStyle={animatedStyle} />}
+      </Drawer.Screen>
       <Drawer.Screen name="Restaurantpage" options={{headerShown: false}}>
         {props => (
           <Restaurantpage {...props} drawerAnimationStyle={animatedStyle} />
@@ -843,9 +846,7 @@ const Drawernavigator = props => {
           <Changepassword {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
-      <Drawer.Screen name="MyOrders" options={{headerShown: false}}>
-        {props => <MyOrders {...props} drawerAnimationStyle={animatedStyle} />}
-      </Drawer.Screen>
+   
       <Drawer.Screen name="MyFavourite" options={{headerShown: false}}>
         {props => (
           <MyFavourite {...props} drawerAnimationStyle={animatedStyle} />

@@ -84,7 +84,7 @@ import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
 
-const Home = ({navigation, drawerAnimationStyle}) => {
+const Home = ({props, navigation, drawerAnimationStyle})=> {
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
   const [lat, setlat] = useState();
@@ -610,7 +610,9 @@ const Home = ({navigation, drawerAnimationStyle}) => {
         barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
       />
 
-      <View style={{flex: 1, borderRadius: 10}}>
+      <View style={{ height: '100%',
+          width: '100%',
+          alignSelf: 'center',}}>
         <View style={{backgroundColor: 'white', height: '100%', width: '100%'}}>
           <ImageBackground
             resizeMode="cover"
@@ -637,6 +639,7 @@ const Home = ({navigation, drawerAnimationStyle}) => {
               />
             </View>
           </ImageBackground>
+
           <View
             style={{
               ...styleSheet.shadow,

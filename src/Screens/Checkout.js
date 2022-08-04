@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,9 +6,17 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  KeyboardAvoidingView,
+  Image,
+  TextInput,
+  ImageBackground,
+  ScrollView
+  
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import renderIf from 'render-if';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
@@ -16,15 +24,45 @@ import ItemDetails from '../Shared/Components/ItemDetails';
 import Addresstile from '../Shared/Components/Addresstile';
 import Bll from '../Shared/Components/Bll';
 import MYButton from '../Shared/Components/MYButton';
+import AuthenticationModel from '../Shared/Components/AuthenticationModel';
 
+import * as Animatable from 'react-native-animatable';
 import PaymentOptions from '../Shared/Components/PaymentOptions';
 import Animated from 'react-native-reanimated';
+import CountDown from 'react-native-countdown-component';
 import Octicons from 'react-native-vector-icons/Octicons';
 import NetInfo from '@react-native-community/netinfo';
-import { ScrollView } from 'react-native-gesture-handler';
+
 
 const Checkout = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
+  const [modalVisible, setmodalVisible] = useState(false);
+  const [number, setnumber] = useState("");
+  const [fullname, setfullname] = useState("");
+  const [password, setpassword] = useState("");
+  const [newpasswordshow, setnewpasswordshow] = useState(false);
+  const [loginvisible, setloginvisible] = useState(true);
+  const [signupvisible, setsignupvisible] = useState(false);
+  const [otpvisible, setotpvisible] = useState(false);
+  const [timeractive, settimeractive] = useState(false);
+  
+  const [forgetpasswordvisible, setforgetpasswordvisible] = useState(false);
+  const [animationstate, setanimationstate] = useState(true);
+  const [codeOneActive, setCodeOneActive] = useState(false);
+  const [codeTwoActive, setCodeTwoActive] = useState(false);
+  const [codeThreeActive, setCodeThreeActive] = useState(false);
+  const [codeFourActive, setCodeFourActive] = useState(false);
+  const [codeOne, setCodeOne] = useState("");
+  const [codeTwo, setCodeTwo] = useState("");
+  const [codeThree, setCodeThree] = useState("");
+
+
+  const [codeFour, setCodeFour] = useState("");
+  const input_1 = useRef();
+  const input_2 = useRef();  
+  const input_3 = useRef();
+  const input_4 = useRef();
+
   const {notificationList, notificationCount} = useSelector(
     state => state.userReducer,
   );
@@ -63,6 +101,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
    
   ]);
 
+
   function selectpaymentmethod(index){
 console.log("ee" + index)
 let data = [...payment]
@@ -81,9 +120,13 @@ setpayment(data)
     <PaymentOptions option ={item.icon} index= {index} title={item.type} payment = {item.payment} selected={item.selected} onPress={()=>{selectpaymentmethod(index)}}/>
   );
 
+ 
+ 
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+<AuthenticationModel state ={modalVisible} togglemodel ={() => {setmodalVisible(false)}}/>
+   
       <View
         style={{
           height: '100%',
@@ -152,7 +195,7 @@ setpayment(data)
                          <View style={{borderTopColor: "rgba(211,211,211, 0.5)", borderTopWidth: scalableheight.borderTopWidth, marginVertical: scalableheight.one}}></View>
                           <Bll label={"Total"} price={"AED 222.00"}/>
                           <View style={{height: scalableheight.two}} />
-                          <MYButton   title={'Login to Place Orderx'}
+                          <MYButton   title={'Login to Place Order'} onPress={()=>{setmodalVisible(true)}}
                     color="#E14E4E"
                     textcolor="white"/>
                         <View style={{height: scalableheight.three}} />
@@ -188,10 +231,39 @@ const styleSheet = StyleSheet.create({
    fontSize: fontSize.fifteen,
    color:"#E14E4E"
  },
+ Text5: {
+  fontFamily: 'Inter-SemiBold',
+  fontSize: fontSize.thirteen,
+  color:"black", opacity:0.4
+ },
+
+ Text6: {
+  fontFamily: 'Inter-SemiBold',
+  fontSize: fontSize.fourteen,
+  color:"black", opacity:0.8
+ },
  Container:{
     flexDirection:"row", alignItems:"center", justifyContent:"space-between"
  },
+ inputStyle: {
+  fontFamily: "Inter-Regular",
+  fontSize: fontSize.twenty,
+  color: "#000000",
+  borderRadius: fontSize.eleven,
+ 
+  textAlign: "center",
+  justifyContent: "center",
+  width: "100%",
+  borderColor: "#A0A0A0",
+  borderWidth: scalableheight.borderTopWidth,
+  padding:scalableheight.onepointfive
+},
+placeholderStyle: {
+  color: "#818181",
+  fontFamily: "Inter-Regular",
+  fontSize: fontSize.twelve,
 
+},
 
 
   Image: {
@@ -206,7 +278,7 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
 
-    marginTop: '4%',
+    marginTop:  scalableheight.two,
     height: scalableheight.six,
     paddingHorizontal: scalableheight.two,
   },
@@ -214,6 +286,42 @@ const styleSheet = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  shadow: {
+    shadowColor: '#470000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 3
+  },
+  scrollcontainer:{ flexGrow: 1,  paddingVertical: scalableheight.two},
+  // TextInput: {
+  //   width: '95%',
+  //   backgroundColor: '#F5F5F5',
+  //   fontSize: fontSize.fifteen,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   borderRadius: fontSize.eleven,
+  //   height: scalableheight.seven,
+  //   color: '#8c8c8c',
+
+  //   paddingHorizontal: scalableheight.two,
+  //   alignSelf: 'center',
+  //   marginTop: '4%',
+  // },
+  TextInput: {
+    width: '100%',
+    backgroundColor: 'white',
+    fontSize: fontSize.fifteen,
+    color: '#8c8c8c',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: fontSize.borderradiusmedium,
+    height: scalableheight.seven,
+
+ 
+    paddingHorizontal: scalableheight.two,
+    alignSelf: 'center',
+    marginTop: scalableheight.one,
   },
   shadow: {
     shadowColor: '#000',
@@ -224,22 +332,7 @@ const styleSheet = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
 
-    elevation: 3,
-    shadowRadius: 18,
-  },
-  TextInput: {
-    width: '95%',
-    backgroundColor: '#F5F5F5',
-    fontSize: fontSize.fifteen,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: fontSize.eleven,
-    height: scalableheight.seven,
-    color: '#8c8c8c',
-
-    paddingHorizontal: scalableheight.two,
-    alignSelf: 'center',
-    marginTop: '4%',
+    elevation: 2,
   },
   RenderItemView: {
     borderTopColor: '#EFEFEF',
