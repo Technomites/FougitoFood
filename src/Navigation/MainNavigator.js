@@ -69,6 +69,7 @@ import OrderDetails from '../Screens/OrderDetails';
 import EditAddress from '../Screens/EditAddress';
 import AccountSettings from '../Screens/AccountSettings';
 import Legal from '../Screens/Legal';
+import TermsCondition from '../Screens/Terms&Condition';
 import AccountInfo from '../Screens/AccountInfo';
 import Changepasswordforgot from '../Screens/Changepasswordforgot';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -871,6 +872,11 @@ const Drawernavigator = props => {
           <Legal {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
+      <Drawer.Screen name="TermsCondition" options={{headerShown: false}}>
+        {props => (
+          <TermsCondition {...props} drawerAnimationStyle={animatedStyle} />
+        )}
+      </Drawer.Screen>
       <Drawer.Screen name="Settings" options={{headerShown: false}}>
         {props => <Settings {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
@@ -1063,6 +1069,11 @@ const MainNavigator = () => {
           <Stack.Screen
             name="Legal"
             component={Legal}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="TermsCondition"
+            component={TermsCondition}
             options={{headerShown: false}}
           />
           <Stack.Screen
