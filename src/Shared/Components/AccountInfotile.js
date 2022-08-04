@@ -18,7 +18,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 export default function AccountInfotile(props) {
-  console.log(props?.onPress);
+  console.log(props?.data.onPress);
   console.log(props?.data);
   return (
     <View>

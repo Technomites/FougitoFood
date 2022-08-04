@@ -67,6 +67,8 @@ import MyAddresses from '../Screens/MyAddresses';
 import Changepassword from '../Screens/Changepassword';
 import OrderDetails from '../Screens/OrderDetails';
 import EditAddress from '../Screens/EditAddress';
+import AccountSettings from '../Screens/AccountSettings';
+import Legal from '../Screens/Legal';
 import AccountInfo from '../Screens/AccountInfo';
 import Changepasswordforgot from '../Screens/Changepasswordforgot';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -359,9 +361,7 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                   : require('../Resources/images/logoguest.png')
               }
             />
-            <TouchableOpacity
-              style={{alignItems: 'center', marginTop: scalableheight.one}}
-              onPress={() => navigation.navigate('AccountInfo')}>
+            <View style={{alignItems: 'center', marginTop: scalableheight.one}}>
               <Text
                 style={{
                   color: 'white',
@@ -370,16 +370,19 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
                 }}>
                 Humza Samiullah
               </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: fontSize.twelve,
-                  fontFamily: 'Inter-Medium',
-                  opacity: 0.8,
-                }}>
-                {'Account Settings'}
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.9}
+                onPress={() => navigation.navigate('AccountSettings')}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: fontSize.twelve,
+                    fontFamily: 'Inter-Medium',
+                    opacity: 0.8,
+                  }}>
+                  Account Settings
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* {renderIf(ProfileInfo != '')(
@@ -857,7 +860,16 @@ const Drawernavigator = props => {
           <MyAddresses {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
-
+      <Drawer.Screen name="AccountSettings" options={{headerShown: false}}>
+        {props => (
+          <AccountSettings {...props} drawerAnimationStyle={animatedStyle} />
+        )}
+      </Drawer.Screen>
+      <Drawer.Screen name="Legal" options={{headerShown: false}}>
+        {props => (
+          <Legal {...props} drawerAnimationStyle={animatedStyle} />
+        )}
+      </Drawer.Screen>
       <Drawer.Screen name="Settings" options={{headerShown: false}}>
         {props => <Settings {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
@@ -1040,6 +1052,16 @@ const MainNavigator = () => {
           <Stack.Screen
             name="EditAddress"
             component={EditAddress}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="AccountSettings"
+            component={AccountSettings}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Legal"
+            component={Legal}
             options={{headerShown: false}}
           />
           <Stack.Screen
