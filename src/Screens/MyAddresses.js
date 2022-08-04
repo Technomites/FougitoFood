@@ -108,47 +108,54 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
           paddingTop: getStatusBarHeight(),
         }}>
         <PlainHeader title={'My Address'} />
-   
+
         <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
           <FlatList
             data={addresses}
             showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: scalableheight.twentytwo}}
+            contentContainerStyle={{paddingBottom: scalableheight.twentytwo}}
             renderItem={({item, i}) => {
               return (
-              <View style={{marginBottom: scalableheight.one}}>
-                <Addresstile
-                  onPress={() =>
-                    navigation.navigate('EditAddress', {
-                      // orderId: item.OrderNo,
-                      // completedetails: Order,
-                    })
-                  }
-                  //   // onModelPopUp={changestatus}
-                  icon={item.Icon}
-                  place={item.Place}
-                  address={item.address}
-                  note={item.Note}
-                />
+                <View style={{marginBottom: scalableheight.one}}>
+                  <Addresstile
+                    onPress={() =>
+                      navigation.navigate('EditAddress', {
+                        // orderId: item.OrderNo,
+                        // completedetails: Order,
+                      })
+                    }
+                    //   // onModelPopUp={changestatus}
+                    icon={item.Icon}
+                    place={item.Place}
+                    address={item.address}
+                    note={item.Note}
+                  />
                 </View>
               );
             }}
           />
-      
         </View>
-      
       </View>
-      <View style={{bottom: 0, position:"absolute", width:"100%", paddingHorizontal: scalableheight.two, backgroundColor:"white", height: scalableheight.fifteen, justifyContent:"center"}}>
-            <MYButton
-              onPress={() => {
-                navigation.navigate('EditAddress');
-                // navigation.goBack();
-              }}
-              color={'rgba(225, 78, 78, 1)'}
-              title={'ADD NEW'}
-              textcolor={'white'}
-            />
-          </View>
+      <View
+        style={{
+          bottom: 0,
+          position: 'absolute',
+          width: '100%',
+          paddingHorizontal: scalableheight.two,
+          backgroundColor: 'white',
+          height: scalableheight.fifteen,
+          justifyContent: 'center',
+        }}>
+        <MYButton
+          onPress={() => {
+            navigation.navigate('EditAddress');
+            // navigation.goBack();
+          }}
+          color={'rgba(225, 78, 78, 1)'}
+          title={'ADD NEW'}
+          textcolor={'white'}
+        />
+      </View>
     </Animated.View>
   );
 };

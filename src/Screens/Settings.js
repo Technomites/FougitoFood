@@ -23,7 +23,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
       icon: 'person-outline',
       title: 'Account Info',
       onPress: () => {
-        navigation.navigate('Home');
+        navigation.navigate('AccountSettings');
         // navigation.dispatch(DrawerActions.closeDrawer());
       },
       type: 1,
@@ -41,7 +41,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
       icon: 'briefcase-outline',
       title: 'Contact Us',
       onPress: () => {
-        navigation.navigate('Home');
+        navigation.navigate('ContactUs');
         //  navigation.dispatch(DrawerActions.closeDrawer());
       },
       type: 1,
@@ -59,7 +59,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
       icon: 'information-variant',
       title: 'About Us',
       onPress: () => {
-        navigation.navigate('Home');
+        navigation.navigate('Aboutus');
         //   navigation.dispatch(DrawerActions.closeDrawer());
       },
       type: 5,
@@ -77,7 +77,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
       icon: 'briefcase-outline',
       title: 'Legal',
       onPress: () => {
-        navigation.navigate('Home');
+        navigation.navigate('Legal');
         //  navigation.dispatch(DrawerActions.closeDrawer());
       },
       type: 1,
@@ -144,7 +144,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
           flex: 12,
           paddingTop: getStatusBarHeight(),
         }}>
-        <PlainHeader title={Lang == 'en' ? 'Settings' : 'إعدادات'} />
+        <PlainHeader title={'Settings'} />
         {/* <View style={{height: scalableheight.three}}></View> */}
         <View
           style={{
@@ -191,14 +191,17 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
               }}>
               Tom Lucas
             </Text>
-            <Text
-              style={{
-                fontSize: fontSize.thirteen,
-                color: '#E14E4E',
-                fontFamily: 'Inter-SemiBold',
-              }}>
-              ACCOUNT SETTINGS
-            </Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AccountSettings')}>
+              <Text
+                style={{
+                  fontSize: fontSize.thirteen,
+                  color: '#E14E4E',
+                  fontFamily: 'Inter-SemiBold',
+                }}>
+                ACCOUNT SETTINGS
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View

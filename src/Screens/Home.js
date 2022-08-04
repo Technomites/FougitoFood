@@ -776,7 +776,7 @@ const Home = ({props, navigation, drawerAnimationStyle})=> {
               position: 'absolute',
               bottom: scalableheight.twentyfour,
               elevation: 5,
-              zIndex:5
+              zIndex: 5,
             }}>
             <Infobar
               onPress={() => {
@@ -794,27 +794,31 @@ const Home = ({props, navigation, drawerAnimationStyle})=> {
               zIndex: 200,
               elevation: 200,
             }}>
-              {popularservicedatahome?.length > 0 ?
-            <Animatable.View
-        animation="bounceInRight"
-             easing="ease"
-            
-             iterationCount={1}
-             
-  style={{  paddingTop: scalableheight.pointfive, paddingBottom: scalableheight.one, justifyContent:"center"}}>
- 
-<Text style={{
-                fontFamily: 'Inter-ExtraBold',
-                fontSize: fontSize.sixteen,
-                color:"#29262A"
-              }}>RESTAURANTS NEARBY</Text>
+            {popularservicedatahome?.length > 0 ? (
+              <Animatable.View
+                animation="bounceInRight"
+                easing="ease"
+                iterationCount={1}
+                style={{
+                  paddingTop: scalableheight.pointfive,
+                  paddingBottom: scalableheight.one,
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Inter-ExtraBold',
+                    fontSize: fontSize.sixteen,
+                    color: '#29262A',
+                  }}>
+                  RESTAURANTS NEARBY
+                </Text>
               </Animatable.View>
-             :null}
-<FlatList
-key = {"1"}
-showsHorizontalScrollIndicator={false}
-ref={ref}
-style={{zIndex:200, elevation:200}}
+            ) : null}
+            <FlatList
+              key={'1'}
+              showsHorizontalScrollIndicator={false}
+              ref={ref}
+              style={{zIndex: 200, elevation: 200}}
               keyExtractor={(item, index) => index.toString()}
               horizontal
               data={popularservicedatahome}

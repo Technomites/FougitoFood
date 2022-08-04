@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StatusBar,
-  
   Image,
   Button,
   ImageBackground,
@@ -26,13 +25,12 @@ import Animated from 'react-native-reanimated';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PlainHeader from '../Shared/Components/PlainHeader';
 import Whyuscomponent from '../Shared/Components/Whyuscomponent';
 import BottomTab from '../Shared/Components/BottomTab';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
-
 
 const Aboutus = ({navigation, drawerAnimationStyle}) => {
   const [LocationData, setLocationData] = useState([
@@ -70,305 +68,209 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
     dispatch(seticonfocus('home'));
   }, []);
 
-  const renderItem = ({item}) => (
-    <View
-      //   activeOpacity={0.9}
-      //   onPress={() => {
-      //     navigation.navigate('PopularServices');
-      //   }}
-      style={{
-        height: '100%',
-        width: Dimensions.get('window').width / 2.1,
-        alignItems: 'center',
-
-        marginRight: Dimensions.get('window').width / 25,
-
-        borderRadius: 10,
-      }}>
-      <View
-        style={{
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.23,
-          shadowRadius: 2.62,
-
-          elevation: 2,
-          backgroundColor: 'white',
-          width: '100%',
-          height: '95%',
-          borderRadius: 10,
-        }}>
-        <Image
-          resizeMode="stretch"
-          style={{
-            width: '100%',
-            height: '100%',
-            alignSelf: 'center',
-            borderRadius: 10,
-          }}
-          source={item.image}
-        />
-
-        <Text
-          style={{
-            color: 'white',
-
-            fontSize: fontSize.fourteen,
-            fontFamily: 'Rubik-Medium',
-            bottom: '15%',
-            position: 'absolute',
-            alignSelf: 'center',
-            width: '90%',
-          }}>
-          {item.name}
-        </Text>
-        <Text
-          style={{
-            color: '#FFFFFF',
-
-            fontSize:  fontSize.twelve,
-            fontFamily: 'Rubik-Regular',
-            bottom: '5%',
-            position: 'absolute',
-            alignSelf: 'center',
-            width: '90%',
-          }}>
-          {item.designation}
-        </Text>
-      </View>
-    </View>
-  );
   return (
-    <Animated.View style={{flex: 1, backgroundColor: 'white', ...drawerAnimationStyle}}>
+    <Animated.View
+      style={{flex: 1, backgroundColor: 'white', ...drawerAnimationStyle}}>
       <View
         style={{
           alignSelf: 'center',
           paddingTop: getStatusBarHeight(),
           flex: 12,
         }}>
-        <PlainHeader title={Lang == 'en' ? 'About Us' : 'معلومات عنا'} />
-        <ScrollView showsVerticalScrollIndicator={false}
-        style={{     paddingHorizontal: scalableheight.one}}>
-          <View
-            style={{
-              width: '100%',
-              height: Dimensions.get('window').height / 4,
-
-              alignItems: 'center',
-              justifyContent: 'center',
-         
-         
-            }}>
-            <Image
-              resizeMode="cover"
-              style={{width: '95%', height: '90%', borderRadius: 15}}
-              source={require('../Resources/images/aboutusbanner.png')}
-            />
-          </View>
-          <View
-            style={{
-              width: '100%',
-              // height: Dimensions.get('window').height / 4,
-
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingLeft: '3%',
-              paddingRight: '3%',
-            }}>
-            <Text
-              style={{
-                fontSize:  fontSize.thirty,
-                fontFamily: 'Rubik-Medium',
-                color: 'black',
-                alignSelf: Lang == 'en' ? 'flex-start' : 'flex-end',
-              }}>
-              {Lang == 'en' ? 'ORO 24' : 'أورو 24'}{' '}
-            </Text>
-            <Text
-              style={{
-                fontSize:  fontSize.thirty,
-                fontFamily: 'Rubik-Medium',
-                color: '#C59E6E',
-                alignSelf: Lang == 'en' ? 'flex-start' : 'flex-end',
-              }}>
-              {Lang == 'en' ? 'FACILITIES' : 'خدمات'}
-            </Text>
-            <Text
-              style={{
-                fontSize:  fontSize.fourteen,
-                fontFamily: 'Rubik-Medium',
-                color: 'black',
-                alignSelf: Lang == 'en' ? 'flex-start' : 'flex-end',
-                marginTop: Dimensions.get('window').height / 150,
-              }}>
-              {Lang == 'en' ? 'Few Words Our Company' : 'بضع كلمات شركتنا'}
-            </Text>
-            <Text
-              style={{
-                fontSize:  fontSize.twelve,
-                fontFamily: 'Rubik-Regular',
-                color: '#797979',
-                alignSelf: 'flex-start',
-                marginTop: Dimensions.get('window').height / 150,
-              }}>
-              {Lang == 'en'
-                ? "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.\n\nThe point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages"
-                : "هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على تخطيطها.  n  n الهدف من استخدام لوريم إيبسوم هو أن له توزيعًا طبيعيًا إلى حد ما للأحرف مثل يعارض استخدام 'يوجد محتوى هنا ، يوجد محتوى هنا' ، مما يجعلها تبدو سهلة القراءة بالإنجليزية. العديد من حزم النشر المكتبي "}
-            </Text>
-          </View>
-          <View
-            style={{
-              width: '100%',
-              // height: Dimensions.get('window').height / 4,
-
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingLeft: '3%',
-              paddingRight: '3%',
-              marginTop: '5%',
-            }}>
+        <PlainHeader title={'About Us'} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            paddingHorizontal: scalableheight.three,
+          }}>
+          <View>
             <View
               style={{
-                flexDirection: 'row',
-                alignSelf: 'flex-start',
-                width: '100%',
-                justifyContent: Lang == 'en' ? 'flex-start' : 'flex-end',
+                ...styleSheet.shadow,
+                ...styleSheet.MainContainer,
               }}>
-              <Text
-                style={{
-                  fontSize:  fontSize.eightteen,
-                  fontFamily: 'Rubik-Medium',
-                  color: 'black',
-                }}>
-                {Lang == 'en' ? 'Why' : 'لماذا'}
-              </Text>
-              <Text
-                style={{
-                  fontSize:  fontSize.eightteen,
-                  fontFamily: 'Rubik-Medium',
-                  color: '#C59E6E',
-                  marginLeft: '1%',
-                }}>
-                {Lang == 'en' ? 'Us' : 'نحن'}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                width: '100%',
-                flexDirection: Lang == 'en' ? 'row' : 'row-reverse',
-              }}>
-              <View style={{width: '65%'}}>
-                <Whyuscomponent
-                  text={
-                    Lang == 'en'
-                      ? 'The customer is why we exist'
-                      : 'الزبون هو سبب وجودنا'
-                  }
-                />
-                <Whyuscomponent
-                  text={
-                    Lang == 'en' ? 'Take no short cuts' : 'لا تتخذ طرق مختصرة'
-                  }
-                />
-                <Whyuscomponent
-                  text={
-                    Lang == 'en'
-                      ? 'Maintain accurate records'
-                      : 'الاحتفاظ بسجلات دقيقة'
-                  }
-                />
-                <Whyuscomponent
-                  text={
-                    Lang == 'en'
-                      ? 'Leave work area clean'
-                      : 'اترك منطقة العمل نظيفة'
-                  }
-                />
-                <Whyuscomponent
-                  text={
-                    Lang == 'en'
-                      ? 'Meet obligations no matter what'
-                      : 'الوفاء بالالتزامات مهما كانت'
-                  }
-                />
-              </View>
-              <View style={{width: '35%'}}>
-                <Whyuscomponent
-                  text={Lang == 'en' ? 'Arrive on time' : 'الوصول في الموعد'}
-                />
-                <Whyuscomponent
-                  text={Lang == 'en' ? 'Be trustful' : 'كن واثقا'}
-                />
-                <Whyuscomponent
-                  text={
-                    Lang == 'en' ? 'Finish on time' : 'الانتهاء في الوقت المحدد'
-                  }
-                />
-              </View>
-            </View>
-          </View>
-
-          <View
-            style={{
-              width: '100%',
-              // height: Dimensions.get('window').height / 4,
-
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingLeft: '3%',
-              paddingRight: '3%',
-              marginTop: '5%',
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignSelf: 'flex-start',
-                width: '100%',
-                justifyContent: Lang == 'en' ? 'flex-start' : 'flex-end',
-              }}>
-              <Text
-                style={{
-                  fontSize:  fontSize.eightteen,
-                  fontFamily: 'Rubik-Medium',
-                  color: 'black',
-                }}>
-                {Lang == 'en' ? 'OUR' : 'لنا'}
-              </Text>
-              <Text
-                style={{
-                  fontSize:  fontSize.eightteen,
-                  fontFamily: 'Rubik-Medium',
-                  color: '#C59E6E',
-                  marginLeft: '1%',
-                }}>
-                {Lang == 'en' ? 'TEAM' : 'فريق'}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                height: Dimensions.get('window').height / 5,
-                marginTop: '3%',
-              }}>
-              <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={LocationData}
-                renderItem={renderItem}
-                // onEndReached={() => LoadFeaturedProjectPagination()}
-                // onEndReachedThreshold={0.1}
+              <Image
+                resizeMode="contain"
+                style={{width: '100%', height: scalableheight.twenty}}
+                source={require('../Resources/images/fougitocover.png')}
               />
+            </View>
+            <View style={{marginVertical: scalableheight.one}}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontSize: fontSize.fourteen,
+                    fontFamily: 'Inter-Bold',
+                    color: '#29262A',
+                    alignSelf: 'flex-start',
+                  }}>
+                  Welcome to Fougito!
+                </Text>
+                <Text
+                  style={{
+                    fontSize: fontSize.twelve,
+                    fontFamily: 'Inter-Medium',
+                    color: 'rgba(41, 38, 42, 0.5)',
+                    textAlign: 'justify',
+                  }}>
+                  You can refer to a specific region of Mexico where your food
+                  comes from, or use some common Mexican terms in your tagline.
+                  Make sure that they’re terms most people would know, to avoid
+                  confusionSo encourage them to think of your restaurant as a
+                  place where they can enjoy a delicious meal that won’t derail
+                  their fitness goals
+                </Text>
+              </View>
+              <View
+                style={{
+                  width: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginVertical: scalableheight.one,
+                }}>
+                <View
+                  style={{
+                    alignSelf: 'flex-start',
+                    width: '100%',
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: fontSize.fourteen,
+                      fontFamily: 'Inter-Bold',
+                      color: '#29262A',
+                      alignSelf: 'flex-start',
+                    }}>
+                    Come Sit With Us
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: fontSize.twelve,
+                      fontFamily: 'Inter-Medium',
+                      color: 'rgba(41, 38, 42, 0.5)',
+                      // alignSelf: 'flex-start',
+                      textAlign: 'justify',
+                    }}>
+                    You could also draw attention to an open-fire grill or
+                    unique cooking method, or your particularly speedy service.
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                  }}>
+                  <View>
+                    <Whyuscomponent text={'Amet curabitur loborti'} />
+                    <Whyuscomponent text={'Purus purus'} />
+                    <Whyuscomponent text={'Malesuada nisl'} />
+                    <Whyuscomponent text={'Morbi proin'} />
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                marginVertical: scalableheight.two,
+              }}>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={{
+                  backgroundColor: '#e4e4e4',
+                  borderRadius: scalableheight.one,
+                  width: scalableheight.six,
+                  height: scalableheight.six,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <FontAwesome
+                  style={{alignSelf: 'center'}}
+                  name={'facebook'}
+                  color={'#1980e7'}
+                  size={fontSize.twentysix}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={{
+                  backgroundColor: '#e4e4e4',
+                  borderRadius: scalableheight.one,
+                  width: scalableheight.six,
+                  height: scalableheight.six,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <FontAwesome
+                  style={{alignSelf: 'center'}}
+                  name={'instagram'}
+                  color={'#d72e75'}
+                  size={fontSize.twentysix}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={{
+                  backgroundColor: '#e4e4e4',
+                  borderRadius: scalableheight.one,
+                  width: scalableheight.six,
+                  height: scalableheight.six,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <FontAwesome
+                  style={{alignSelf: 'center'}}
+                  name={'twitter'}
+                  color={'#7fcdf8'}
+                  size={fontSize.twentysix}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={{
+                  backgroundColor: '#e4e4e4',
+                  borderRadius: scalableheight.one,
+                  width: scalableheight.six,
+                  height: scalableheight.six,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <FontAwesome
+                  style={{alignSelf: 'center'}}
+                  name={'linkedin'}
+                  color={'#1980e7'}
+                  size={fontSize.twentysix}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={{
+                  backgroundColor: '#e4e4e4',
+                  borderRadius: scalableheight.one,
+                  width: scalableheight.six,
+                  height: scalableheight.six,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <FontAwesome
+                  style={{alignSelf: 'center'}}
+                  name={'whatsapp'}
+                  color={'#26c54b'}
+                  size={fontSize.twentysix}
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
-      </View>
-      <View style={{flex: 1, backgroundColor: 'white',        borderBottomLeftRadius:10, borderBottomRightRadius:10}}>
-        <BottomTab />
       </View>
     </Animated.View>
   );
@@ -377,13 +279,13 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
 const styleSheet = StyleSheet.create({
   Text1: {
     color: '#F9B35E',
-    fontSize:  fontSize.eightteen,
+    fontSize: fontSize.eightteen,
     paddingBottom: 10,
     fontFamily: 'Rubik-SemiBold',
   },
   Text2: {
     textAlign: 'center',
-    fontSize:  fontSize.eightteen,
+    fontSize: fontSize.eightteen,
     paddingBottom: 20,
     fontFamily: 'Rubik-Regular',
     width: '90%',
@@ -399,6 +301,15 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  MainContainer: {
+    borderRadius: fontSize.eleven,
+    paddingVertical: fontSize.fifteen,
+    width: '99%',
+    alignSelf: 'center',
+    marginVertical: scalableheight.one,
+    backgroundColor: 'white',
+  },
+
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
@@ -407,13 +318,11 @@ const styleSheet = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-
-    elevation: 3,
-    shadowRadius: 18,
+    elevation: 4,
   },
   inputStyle: {
     fontFamily: 'Rubik-Regular',
-    fontSize:  fontSize.twelve,
+    fontSize: fontSize.twelve,
     color: '#000000',
     borderRadius: 6,
     paddingHorizontal: 18,
@@ -426,7 +335,7 @@ const styleSheet = StyleSheet.create({
   placeholderStyle: {
     color: '#818181',
     fontFamily: 'Rubik-Regular',
-    fontSize:  fontSize.twelve,
+    fontSize: fontSize.twelve,
   },
   inputIconStyle: {
     position: 'absolute',

@@ -71,8 +71,10 @@ const GettingStarted = props => {
       source={getstarted[count]?.image}
       style={styleSheet.BackgroundImage}>
       <Animatable.View
-        animation={ animationstate ? 'bounceInRight' : undefined}
-        onAnimationEnd={()=>{ setanimationstate(false)}}
+        animation={animationstate ? 'bounceInRight' : undefined}
+        onAnimationEnd={() => {
+          setanimationstate(false);
+        }}
         // animation={ getstart1  ? 'bounceInRight' :  getstart2  ? 'bounceInRight':  getstart3 ? 'bounceInRight' : undefined}
         //animation="bounceInRight"
         easing="ease"
@@ -148,13 +150,11 @@ const GettingStarted = props => {
               color={'#E14E4E'}
               title={getstarted[count]?.buttontitle}
               textcolor={'white'}
-              onPress={
-                () =>
-               {
+              onPress={() => {
                 setanimationstate(true);
-                  count < 2
-                    ? setcount(count + 1)
-                    : props.navigation.replace('Drawernavigator')
+                count < 2
+                  ? setcount(count + 1)
+                  : props.navigation.replace('Drawernavigator');
                 // getstarted[count]?.onPress
               }}
             />
@@ -165,20 +165,20 @@ const GettingStarted = props => {
                 onPress={getstarted[count]?.press2}
               />
             ) : (
-             <View style={{  width: '100%',
+              <View
+                style={{
+                  width: '100%',
 
-             justifyContent: 'center',
-             alignItems: 'center',
-         
-             height: scalableheight.seven,
-         
-             borderRadius: fontSize.borderradiusmedium,
-         
-             marginTop: '1%',
-             marginBottom: '1%',}}>
+                  justifyContent: 'center',
+                  alignItems: 'center',
 
-           
-             </View>
+                  height: scalableheight.seven,
+
+                  borderRadius: fontSize.borderradiusmedium,
+
+                  marginTop: '1%',
+                  marginBottom: '1%',
+                }}></View>
             )}
           </View>
         </View>
