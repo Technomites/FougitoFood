@@ -70,6 +70,7 @@ import EditAddress from '../Screens/EditAddress';
 import AccountSettings from '../Screens/AccountSettings';
 import Legal from '../Screens/Legal';
 import Faqs from '../Screens/Faqs';
+import Qrcode from '../Screens/Qrcode';
 import TermsCondition from '../Screens/Terms&Condition';
 import AccountInfo from '../Screens/AccountInfo';
 import Changepasswordforgot from '../Screens/Changepasswordforgot';
@@ -883,6 +884,11 @@ const Drawernavigator = props => {
           <Faqs {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
+      <Drawer.Screen name="Qrcode" options={{headerShown: false}}>
+        {props => (
+          <Qrcode {...props} drawerAnimationStyle={animatedStyle} />
+        )}
+      </Drawer.Screen>
       <Drawer.Screen name="Settings" options={{headerShown: false}}>
         {props => <Settings {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
@@ -1085,6 +1091,11 @@ const MainNavigator = () => {
           <Stack.Screen
             name="Faqs"
             component={Faqs}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Qrcode"
+            component={Qrcode}
             options={{headerShown: false}}
           />
           <Stack.Screen
