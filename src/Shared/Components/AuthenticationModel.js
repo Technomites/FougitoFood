@@ -612,7 +612,7 @@ const styleSheet = StyleSheet.create({
     // },
     TextInput: {
       width: '100%',
-      backgroundColor: 'white',
+      backgroundColor:'#F9F9F9', 
       fontSize: fontSize.fifteen,
       color: '#8c8c8c',
       justifyContent: 'center',
@@ -624,7 +624,7 @@ const styleSheet = StyleSheet.create({
       paddingHorizontal: scalableheight.two,
       alignSelf: 'center',
       marginTop: scalableheight.one,
-      borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+     
     },
     shadow: {
       shadowColor: '#000',

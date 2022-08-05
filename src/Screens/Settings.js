@@ -161,19 +161,12 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
               style={{
                 height: scalableheight.fifteen,
                 width: scalableheight.fifteen,
-                borderRadius: scalableheight.twenty,
+                borderRadius: fontSize.circle,
                 resizeMode: 'contain',
 
                 // marginBottom: scalableheight.one,
               }}
-              source={{
-                uri:
-                  // userInfo?.Result?.Logo === null ||
-                  // userInfo?.Result?.Logo === ''
-                  //?
-                  'https://img.freepik.com/free-vector/automotive-auto-repair-logo_160069-1.jpg',
-                // : userInfo?.Result?.Logo,
-              }}
+              source={require('../Resources/images/logoguest.png')}
             />
           </View>
           <View
@@ -207,18 +200,15 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
         <View
           style={{
             height: '100%',
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.23,
-            shadowRadius: 2.62,
-            elevation: 4,
+            borderTopLeftRadius: fontSize.fourtyeight,
+            borderTopRightRadius: fontSize.fourtyeight,
+            // shadowColor: '#470000',
+            // shadowOffset: {width: 0, height: 1},
+            // shadowOpacity: 0.2,
+            // elevation: 1,
+            borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
           }}>
-          <View style={{padding: scalableheight.two}}>
+          <View style={{paddingHorizontal: scalableheight.two, paddingTop: scalableheight.four,}}>
             {setting.map(item => {
               return (
                 <AccountInfotile

@@ -143,7 +143,7 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
                   title={'EidSpecial40'}
                   minorder={'AED 100'}
                   daysleft={'3 days left'}
-                  title={item.name}
+                
                   discountprice={item.dicountAmount}
                 />
               </View>

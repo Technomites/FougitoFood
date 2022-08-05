@@ -341,6 +341,231 @@ const Home = ({props, navigation, drawerAnimationStyle})=> {
       ],
     },
   ];
+
+  const DarkStyle= [
+    {
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#f5f5f5"
+        }
+      ]
+    },
+    {
+      "elementType": "labels.icon",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    },
+    {
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#616161"
+        }
+      ]
+    },
+    {
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        {
+          "color": "#f5f5f5"
+        }
+      ]
+    },
+    {
+      "featureType": "administrative.land_parcel",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#bdbdbd"
+        }
+      ]
+    },
+    {
+      "featureType": "poi",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#eeeeee"
+        }
+      ]
+    },
+    {
+      "featureType": "poi",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#757575"
+        }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#e5e5e5"
+        }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#9e9e9e"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#ffffff"
+        }
+      ]
+    },
+    {
+      "featureType": "road.arterial",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#757575"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#dadada"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#616161"
+        }
+      ]
+    },
+    {
+      "featureType": "road.local",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#9e9e9e"
+        }
+      ]
+    },
+    {
+      "featureType": "transit.line",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#e5e5e5"
+        }
+      ]
+    },
+    {
+      "featureType": "transit.station",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#eeeeee"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#c9c9c9"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#9e9e9e"
+        }
+      ]
+    }
+  ]
+
+  const [dished, setdisdhed] = useState([
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+    {
+      selected: false,
+      serving: 'Chicken Munchurian',
+    },
+    {
+      selected: false,
+      serving: 'Pasta',
+    },
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+    {
+      selected: false,
+      serving: 'Chicken Munchurian',
+    },
+    {
+      selected: false,
+      serving: 'Pasta',
+    },
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+    {
+      selected: false,
+      serving: 'Chicken Munchurian',
+    },
+    {
+      selected: false,
+      serving: 'Pasta',
+    },
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+    {
+      selected: false,
+      serving: 'Chicken Munchurian',
+    },
+    {
+      selected: false,
+      serving: 'Pasta',
+    },
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+    {
+      selected: false,
+      serving: 'Chicken Munchurian',
+    },
+    {
+      selected: false,
+      serving: 'Pasta',
+    },
+  
+]);
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
@@ -644,7 +869,7 @@ const Home = ({props, navigation, drawerAnimationStyle})=> {
             style={{
               ...styleSheet.shadow,
 
-              height: scalableheight.seventy,
+              height: scalableheight.eighty,
 
               width: '100%',
               backgroundColor: '#F5F5F5',
@@ -658,6 +883,7 @@ const Home = ({props, navigation, drawerAnimationStyle})=> {
               <MapView
                 provider={PROVIDER_GOOGLE}
                 customMapStyle={customStyle}
+                // userInterfaceStyle={"dark"}
                 ref={refMap}
                 style={{
                   width: '100%',
@@ -668,8 +894,8 @@ const Home = ({props, navigation, drawerAnimationStyle})=> {
                 region={{
                   latitude: inlat,
                   longitude: inlong,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
+                  longitudeDelta:0.08,
+                  latitudeDelta:0.08
                 }}
                 initialRegion={{
                   latitude: lat,
@@ -794,7 +1020,7 @@ const Home = ({props, navigation, drawerAnimationStyle})=> {
               zIndex: 200,
               elevation: 200,
             }}>
-            {popularservicedatahome?.length > 0 ? (
+            {dished?.length > 0 ? (
               <Animatable.View
                 animation="bounceInRight"
                 easing="ease"
@@ -821,7 +1047,7 @@ const Home = ({props, navigation, drawerAnimationStyle})=> {
               style={{zIndex: 200, elevation: 200}}
               keyExtractor={(item, index) => index.toString()}
               horizontal
-              data={popularservicedatahome}
+              data={dished}
               renderItem={rendernearby}
               // onEndReached={() => LoadFeaturedProjectPagination()}
               // onEndReachedThreshold={0.1}

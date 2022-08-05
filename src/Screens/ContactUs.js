@@ -299,12 +299,23 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor: '#e4e4e4',
+                  backgroundColor:'#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.23,
+                  shadowRadius: 2.62,
+              
+                  elevation: 2,
+                  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+                  
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
@@ -317,12 +328,22 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor: '#e4e4e4',
+                  backgroundColor:'#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.23,
+                  shadowRadius: 2.62,
+              
+                  elevation: 2,
+                  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
@@ -335,12 +356,22 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor: '#e4e4e4',
+                  backgroundColor:'#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.23,
+                  shadowRadius: 2.62,
+              
+                  elevation: 2,
+                  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
@@ -353,12 +384,22 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor: '#e4e4e4',
+                  backgroundColor:'#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.23,
+                  shadowRadius: 2.62,
+              
+                  elevation: 2,
+                  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
@@ -371,12 +412,22 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor: '#e4e4e4',
+                  backgroundColor:'#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.23,
+                  shadowRadius: 2.62,
+              
+                  elevation: 2,
+                  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
@@ -420,14 +471,22 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
             {/* <MyFormInputTile placeHolder="Type Here" /> */}
             <View
               style={{
-                backgroundColor: '#8E7C7C14',
+                backgroundColor:'#F9F9F9',
                 height: scalableheight.twenty,
                 borderRadius: scalableheight.one,
                 paddingHorizontal: scalableheight.one,
                 width: '100%',
 
-                borderWidth: 0.5,
-                borderColor: 'lightgray',
+                shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 2,
+    borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
               }}>
               <TextInput
                 value={message}

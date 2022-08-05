@@ -343,7 +343,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 style={{
                   height: scalableheight.twentytwo,
                   borderRadius: fontSize.eight,
-                  marginHorizontal: scalableheight.two,
+                
                   overflow: 'hidden',
                 }}>
                 <MapView
@@ -527,6 +527,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       flexDirection: 'row',
                       justifyContent: 'flex-start',
                       alignItems: 'center',
+                     
                     }}>
                     <View style={{width: '5%'}}>
                       <Image
@@ -589,7 +590,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
 
               <View style={styles.Container}>
                 <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.Text3}>Vat Amount</Text>
+                  <Text style={styles.Text3}>Vat Amount </Text>
                   <Text style={styles.Text4}>{'(4%)'}</Text>
                 </View>
                 <Text style={styles.Text3}>AED 209.00</Text>
@@ -623,11 +624,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     borderRadius: fontSize.eleven,
-    padding: scalableheight.one,
+    padding: scalableheight.two,
     shadowColor: '#470000',
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 2,
+    borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
    
   },
   centeredView: {

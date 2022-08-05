@@ -32,7 +32,7 @@ export default function AccountInfotile(props) {
         }}>
         <View
           style={{
-            backgroundColor: '#EFF1F3',
+            backgroundColor: '#F5F5F5',
             borderRadius: scalableheight.one,
             width: scalableheight.six,
             height: scalableheight.six,

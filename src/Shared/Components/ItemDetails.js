@@ -45,7 +45,7 @@ const navigation = useNavigation();
        
       }}>
      <View style={{height:"100%", width: "15%", alignItems:"center", justifyContent:"center"}}>
-<View style={{height: scalableheight.four, width: scalableheight.four,    backgroundColor: '#F5F5F5', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
+<View style={{height: scalableheight.six, width: scalableheight.six,     backgroundColor:'#F9F9F9', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
 <Text style={{
             
             fontFamily: 'Inter-Bold',

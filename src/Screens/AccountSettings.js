@@ -27,7 +27,7 @@ import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MYButton from '../Shared/Components/MYButton';
 import Animated from 'react-native-reanimated';
 import {fontSize, scalableheight} from '../Utilities/fonts';
@@ -45,7 +45,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
   const [PhoneNumber, setPhoneNumber] = useState('');
   const phoneInput = useRef(null);
   const [Password, setPassword] = useState('');
-
+  const [newpasswordshow, setnewpasswordshow] = useState(false);
   const [Loader, setLoader] = useState(false);
   const {Lang, ProfileInfo, profileupdated, profileimage, profilemessage} =
     useSelector(state => state.userReducer);
@@ -212,92 +212,92 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                 color: 'rgba(41, 38, 42, 0.6)',
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fifteen,
+                marginBottom: scalableheight.pointfive
               }}>
               Full Name
             </Text>
-            <View style={styleSheet.container}>
-              <View
-                style={{
-                  height: '100%',
-                  width: '85%',
-                  justifyContent: 'center',
-                }}>
-                <TextInput
-                  returnKeyType="next"
-                  onChangeText={text => setName(text)}
-                  defaultValue={Name}
-                  placeholderTextColor={'lightgray'}
-                  placeholder={'Tom Lucas'}
-                  style={styleSheet.textInput}
-                />
-              </View>
-            </View>
+          
+            <TextInput
+              style={{
+                ...styleSheet.TextInput,
+                ...styleSheet.shadow,
+              }}
+              placeholderTextColor="#8c8c8c"
+              placeholder={"Enter Full Name"}
+              onChangeText={text => setName(text)}
+              defaultValue={Name}
+            />
           </View>
-          <View style={{marginBottom: scalableheight.one}}>
+          <View style={{marginVertical: scalableheight.one}}>
             <Text
               style={{
                 color: 'rgba(41, 38, 42, 0.6)',
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fifteen,
+                marginBottom: scalableheight.pointfive
               }}>
               Email Address
             </Text>
-            <View style={styleSheet.container}>
-              <View
-                style={{
-                  height: '100%',
-                  width: '85%',
-                  justifyContent: 'center',
-                }}>
-                <TextInput
-                  returnKeyType="next"
-                  onChangeText={text => setEmailAddress(text)}
-                  defaultValue={EmailAddress}
-                  placeholderTextColor={'lightgray'}
-                  placeholder={'Tom Lucas'}
-                  style={styleSheet.textInput}
-                />
-              </View>
-            </View>
+          
+            <TextInput
+              style={{
+                ...styleSheet.TextInput,
+                ...styleSheet.shadow,
+              }}
+              placeholderTextColor="#8c8c8c"
+              placeholder={"Enter Email Address"}
+              onChangeText={text => setEmailAddress(text)}
+              defaultValue={EmailAddress}
+            />
           </View>
-          <View style={{marginBottom: scalableheight.one}}>
+          <View style={{marginVertical: scalableheight.one}}>
             <Text
               style={{
                 color: 'rgba(41, 38, 42, 0.6)',
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fifteen,
+                marginBottom: scalableheight.pointfive
               }}>
               Password
             </Text>
-            <View style={styleSheet.container}>
-              <View
-                style={{
-                  height: '100%',
-                  width: '100%',
-                  justifyContent: 'center',
-                }}>
-                <TextInput
-                  returnKeyType="next"
-                  onChangeText={text => setPassword(text)}
-                  defaultValue={Password}
-                  placeholderTextColor={'lightgray'}
-                  placeholder={'Tom Lucas'}
-                  style={styleSheet.textInput}
-                />
-              </View>
-            </View>
+         
+            <View style={{width: '100%'}}>
+          <TextInput
+            style={{
+              ...styleSheet.TextInput,
+              ...styleSheet.shadow,
+            }}
+            secureTextEntry={newpasswordshow}
+            placeholderTextColor="#8c8c8c"
+            placeholder={'Password'}
+            onChangeText={text => setPassword(text)}
+            defaultValue={Password}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              setnewpasswordshow(!newpasswordshow);
+            }}
+            style={styleSheet.inputIconStyle}>
+            <Ionicons
+              color={'#8c8c8c'}
+              name={newpasswordshow ? 'eye-off' : 'eye'}
+              size={fontSize.twentytwo}
+            />
+          </TouchableOpacity>
+        </View>
           </View>
-          <View style={{marginBottom: scalableheight.one}}>
+          <View style={{marginVertical: scalableheight.one}}>
             <Text
               style={{
                 color: 'rgba(41, 38, 42, 0.6)',
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fifteen,
+                marginBottom: scalableheight.pointfive
               }}>
               Phone Number
             </Text>
-            <View style={styleSheet.container}>
-              <View
+            {/* <View style={styleSheet.container}> */}
+              {/* <View
                 style={{
                   height: '100%',
                   width: '100%',
@@ -318,7 +318,45 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                     }
                   }}
                 />
-              </View>
+              </View> */}
+              <View style={{justifyContent:"center"}}>
+                <TextInput
+              style={{
+                ...styleSheet.TextInput,
+                ...styleSheet.shadow,
+                paddingLeft: scalableheight.fourteen
+              }}
+              keyboardType = 'numeric'
+              placeholderTextColor="#8c8c8c"
+              placeholder={"Enter Phone Number"}
+              onChangeText={text => setPhoneNumber(text)}
+              defaultValue={PhoneNumber}
+            />
+               <Image
+          style={{
+            height: scalableheight.three,
+            width: scalableheight.four,
+            resizeMode: 'stretch',
+            position: "absolute",
+            left: scalableheight.one,
+      
+            
+     
+       
+          }}
+          source={require('../Resources/images/uaeFlag.png')}
+        />
+           <Text
+              style={{
+                color: 'rgba(41, 38, 42, 0.6)',
+                fontFamily: 'Inter-Bold',
+                fontSize: fontSize.fifteen,
+                position: "absolute",
+                left: scalableheight.six,
+               
+              }}>
+            +971
+            </Text>
             </View>
           </View>
         </View>
@@ -337,7 +375,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
               SetModelPopUP(true);
             }}
             color={'rgba(225, 78, 78, 1)'}
-            title={'EDIT'}
+            title={'UPDATE'}
             textcolor={'white'}
           />
         </View>
@@ -361,20 +399,7 @@ const styleSheet = StyleSheet.create({
     color: 'black',
   },
 
-  TextInput: {
-    width: '90%',
-    backgroundColor: '#F5F5F5',
-    fontSize: fontSize.fifteen,
-    color: '#8c8c8c',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: fontSize.borderradiusmedium,
-    height: scalableheight.seven,
 
-    paddingHorizontal: scalableheight.two,
-    alignSelf: 'center',
-    marginTop: '4%',
-  },
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
@@ -385,6 +410,36 @@ const styleSheet = StyleSheet.create({
     shadowRadius: 2.62,
 
     elevation: 2,
+  
   },
+  TextInput: {
+    width: '100%',
+  
+    backgroundColor:'#F9F9F9',
+    fontSize: fontSize.fifteen,
+    color: '#8c8c8c',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: fontSize.borderradiusmedium,
+    height: scalableheight.seven,
+
+ 
+    paddingHorizontal: scalableheight.two,
+    alignSelf: 'center',
+    
+
+  },
+  inputIconStyle: {
+    position: 'absolute',
+    right: scalableheight.two,
+
+    justifyContent: 'center',
+    alignSelf: 'center',
+
+    marginTop:  scalableheight.one,
+    height: scalableheight.six,
+    paddingHorizontal: scalableheight.two,
+  },
+  
 });
 export default AccountSettings;

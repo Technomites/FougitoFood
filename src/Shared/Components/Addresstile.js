@@ -11,7 +11,7 @@ import {
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import Entypo from 'react-native-vector-icons/Entypo';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 export default function Addresstile(props) {
   return (
     <View style={{...styles.shadow, ...styles.MainContainer}}>
@@ -25,17 +25,16 @@ export default function Addresstile(props) {
             justifyContent: 'flex-start',
             alignItems: 'center',
           }}>
-          <View style={{width: '5%'}}>
-            <Image
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                height: scalableheight.five,
-                width: scalableheight.five,
-              }}
-              resizeMode={'contain'}
-              source={props?.icon}
-            />
+          <View style={{width: '5%', alignSelf:"flex-start"  }}>
+           
+            <View style={{height: scalableheight.six, width: scalableheight.six,      backgroundColor:'#F9F9F9', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
+
+          <Ionicons 
+            name="home"
+            color={"#F55050"}
+            size={fontSize.twenty}
+          />
+</View>
           </View>
           <View
             style={{
@@ -103,7 +102,7 @@ const styles = StyleSheet.create({
     width: '99%',
     alignSelf: 'center',
     borderRadius: fontSize.eleven,
-    padding: scalableheight.two,
+    padding: scalableheight.one,
     shadowColor: '#470000',
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,

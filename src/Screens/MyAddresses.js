@@ -109,14 +109,14 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
         }}>
         <PlainHeader title={'My Address'} />
 
-        <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
+        <View style={{width: '100%', paddingHorizontal: scalableheight.two, paddingBottom: "5%"}}>
           <FlatList
             data={addresses}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: scalableheight.twentytwo}}
             renderItem={({item, i}) => {
               return (
-                <View style={{marginBottom: scalableheight.one}}>
+                <View style={{   marginTop: '5%',}}>
                   <Addresstile
                     onPress={() =>
                       navigation.navigate('EditAddress', {

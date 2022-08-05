@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -85,6 +85,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import { styles } from 'react-native-element-dropdown/src/components/TextInput/styles';
 
 const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
+  const [dataSourceCords, setDataSourceCords] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
   const [specialinstructions, setspecialinstructions] = useState('');
@@ -96,6 +97,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   const [isCollapsed, setisCollapsed] = useState(false);
   const Top = createMaterialTopTabNavigator();
   const [count, setcount] = useState(0);
+
+  const scrollviewref = useRef()
+  const drinksref = useRef()
   const [serving, setserving] = useState([
     {
       selected: false,
@@ -127,7 +131,61 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       selected: false,
       serving: 'Pasta',
     },
-  ]);
+  ])
+  const [types, settypes] = useState([
+    {
+      title: "Starters",
+      visible: true
+   
+    },
+    {
+      title: "Main Food",
+      visible: false
+   
+    },
+    {
+      title: "Desert",
+      visible: false
+   
+    },
+    {
+      title: "Drinks",
+      visible: false
+   
+    },
+   
+  ])
+  const [dished, setdisdhed] = useState([
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+    {
+      selected: false,
+      serving: 'Chicken Munchurian',
+    },
+    {
+      selected: false,
+      serving: 'Pasta',
+    },
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+    {
+      selected: false,
+      serving: 'Chicken Munchurian',
+    },
+    {
+      selected: false,
+      serving: 'Pasta',
+    },
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+  
+]);
   const {
     blogsdatahome,
     newsfeedshomedata,
@@ -145,6 +203,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     expand,     // <-- Expand header
     scrollY,    // <-- Animated scroll position. In case you need to do some animation in your header or somewhere else
   } = useCollapsibleContext();
+
+  const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
@@ -274,16 +335,21 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 
   const Starterslabel =  props => {
     return(
-      <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one,   }}>
-      <FlatList
-      keyExtractor={(item, index) => index.toString()}
-      showsVerticalScrollIndicator={false}
-      data={popularservicedatahome}
-      renderItem={starters}
-      // onEndReached={() => LoadFeaturedProjectPagination()}
-      // onEndReachedThreshold={0.1}
-    /> 
-    </View>
+    //   <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one,   }}>
+    //   <FlatList
+    //   keyExtractor={(item, index) => index.toString()}
+    //   showsVerticalScrollIndicator={false}
+    //   data={dished}
+    //   renderItem={starters}
+    //   // onEndReached={() => LoadFeaturedProjectPagination()}
+    //   // onEndReachedThreshold={0.1}
+    // /> 
+    // </View>
+    <CollapsibleFlatList          // 4️⃣ (Required) Your FlatList/ScrollView
+    data={dished}
+    renderItem={starters}
+    // headerSnappable={false} // <-- should header auto snap when you release the finger
+  />
     )
    };
  
@@ -293,7 +359,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       <FlatList
       keyExtractor={(item, index) => index.toString()}
       showsVerticalScrollIndicator={false}
-      data={popularservicedatahome}
+      data={dished}
       renderItem={starters}
       // onEndReached={() => LoadFeaturedProjectPagination()}
       // onEndReachedThreshold={0.1}
@@ -309,7 +375,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
      <FlatList
      keyExtractor={(item, index) => index.toString()}
      showsVerticalScrollIndicator={false}
-     data={popularservicedatahome}
+     data={dished}
      renderItem={starters}
      // onEndReached={() => LoadFeaturedProjectPagination()}
      // onEndReachedThreshold={0.1}
@@ -325,7 +391,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
      <FlatList
      keyExtractor={(item, index) => index.toString()}
      showsVerticalScrollIndicator={false}
-     data={popularservicedatahome}
+     data={dished}
      renderItem={starters}
      // onEndReached={() => LoadFeaturedProjectPagination()}
      // onEndReachedThreshold={0.1}
@@ -467,7 +533,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                   Special mouth watering Chicken Fillet served with fresh vegies
                   and special sauce.
                 </Text>
-                <View style={{height: scalableheight.one}} />
+                <View style={{height: scalableheight.one, }} />
                 <MultiChoiceDropDown
                   title={'Choose Serving'}
                   data={serving}
@@ -501,7 +567,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                     width: '98%',
                     height: scalableheight.fifteen,
                     fontSize: fontSize.fifteen,
-                    backgroundColor: 'white',
+                    backgroundColor:'#F9F9F9',
                     alignSelf: 'center',
                     borderRadius: fontSize.borderradiusmedium,
                     paddingHorizontal: '5%',
@@ -651,14 +717,23 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       )}
       <View style={{flex: 1, backgroundColor: '#303030', borderRadius: 10}}>
         <View style={{flex: 1, marginTop: getStatusBarHeight(), }}>
-        <CollapsibleContainer>   
-        <CollapsibleHeaderContainer>
-    <StickyView>
-          <HeaderComponentRestaurant newNotificationCount={newNotificationCount}  isEnabled={isEnabled}
-          toggleSwitch={toggleSwitch}/>
-          </StickyView>
        
-   <View style={{ width: '100%',
+
+
+          <CollapsibleContainer>
+      
+         
+      
+         
+  
+  
+ 
+          <CollapsibleHeaderContainer>
+   <StickyView>
+   <HeaderComponentRestaurant newNotificationCount={newNotificationCount}  isEnabled={isEnabled}
+          toggleSwitch={toggleSwitch}/>
+   </StickyView>
+          <View style={{ width: '100%',
     alignSelf: 'center',
     height: scalableheight.tweleve,
     flexDirection: 'row',
@@ -722,68 +797,95 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 
 <SearchBar search={search} onchange={(val) => {setsearch(val)}}/>
 </View>
+<StickyView>
+  <ScrollView
 
-        </CollapsibleHeaderContainer>
-      
-<CollapsibleScrollView
-       
-          showsVerticalScrollIndicator={false}
-         
-          style={{  width:"100%", backgroundColor:"white"}}
-
-       >
-
-<Top.Navigator
-     
+  horizontal
+  showsHorizontalScrollIndicator ={false}
+  style={{ width: "100%", height: scalableheight.seven, flexDirection: "row"}}>
+  {types.map((item, key) => {
+          return (
+            <TouchableOpacity 
+            onPress={() => {   
+             let data = [...types]
+             for(const index in data){
+              data[index].visible = false
+             }
+             data[key].visible = true
+             settypes(data)
+              }}
+            style={{paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
+       <Text style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
+          </TouchableOpacity>
+          );
+        })}
+  </ScrollView>
+</StickyView>
+      </CollapsibleHeaderContainer>
   
-          screenOptions={{
-            tabBarActiveTintColor: "#E14E4E",
-            tabBarInactiveTintColor: 'grey',
-            tabBarPressColor: 'white',
-          
-    
-          }}
-          tabBarOptions={{
-            activeTintColor: "#E14E4E",
-         
-            tabStyle: {height: scalableheight.nine},
-            labelStyle: {fontSize: fontSize.twelve, fontWeight: 'bold'},
-            indicatorStyle: {
-              height: scalableheight.borderwidth,
-              backgroundColor: "#E14E4E",
-              borderRadius: 5,
-            },
-          }}>
-          <Top.Screen
-            name={'Starters'}
-            component={Starterslabel}
-          />
-          <Top.Screen
-          
-            name={'Main Course'}
-            component={MainCourselabel}
-          />
+      
+  <CollapsibleScrollView 
+    ref ={scrollviewref}
+  showsVerticalScrollIndicator={false}
+  style={{backgroundColor:"white", paddingHorizontal: scalableheight.one}}>
+  
+  {renderIf(types[0].visible == true)(
+    <>
+  <Text style={styleSheet.heading}>Starters </Text>
+  {dished.map((item, key) => {
+          return (
+            <View style={{width:"100%", alignItems:"center",}}>
+            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+          </View>
+          );
+        })}
+        </>
+  )}
+{renderIf(types[1].visible == true)(
+    <>
+<Text style={styleSheet.heading}>Main Meal </Text>
+  {dished.map((item, key) => {
+          return (
+            <View style={{width:"100%", alignItems:"center",}}>
+            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+          </View>
+          );
+        })}
+        </>)}
+        {renderIf(types[2].visible == true)(
+    <>
+<Text style={styleSheet.heading}>Desert </Text>
+  {dished.map((item, key) => {
+          return (
+            <View style={{width:"100%", alignItems:"center",}}>
+            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+          </View>
+          );
+        })}
+        </>)}
 
-<Top.Screen
-            name={'Desert'}
-            component={Desert}
-          />
-          <Top.Screen
-          
-            name={'Drinks'}
-            component={Drinks}
-          />
-        </Top.Navigator> 
+        {renderIf(types[3].visible == true)(
+    <>
+<Text style={styleSheet.heading}
 
-
-
-             
-          
+>Drinks </Text>
+  {dished.map((item, key) => {
+          return (
+            <View style={{width:"100%", alignItems:"center",}}>
+            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+          </View>
+          );
+        })}
+        </>
+        )}
        
-          </CollapsibleScrollView>
-        
-          </CollapsibleContainer>   
+  </CollapsibleScrollView>
 
+
+
+
+
+    </CollapsibleContainer>
         </View>
         
       </View>
@@ -817,11 +919,12 @@ const styleSheet = StyleSheet.create({
     alignItems: 'center',
   },
   shadow: {
+    
     shadowColor: '#470000',
   shadowOffset: {width: 0, height: 1},
   shadowOpacity: 0.2,
   elevation: 2,
-  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+ 
   },
   newsshadow: {
     shadowColor: '#000',
@@ -833,5 +936,8 @@ const styleSheet = StyleSheet.create({
     shadowRadius: 1.0,
     elevation: 3,
   },
+  heading: {
+    fontFamily: 'Inter-Bold', color: "black", fontSize: fontSize.twenty, paddingVertical: scalableheight.one
+  }
 });
 export default withCollapsibleContext(Restaurantpage);
