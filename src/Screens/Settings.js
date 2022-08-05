@@ -68,7 +68,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
       icon: 'question',
       title: 'Frequently Asked Questions',
       onPress: () => {
-        navigation.navigate('Home');
+        navigation.navigate('Faqs');
         //   navigation.dispatch(DrawerActions.closeDrawer());
       },
       type: 6,

@@ -11,13 +11,9 @@ export default function Whyuscomponent(props) {
   return (
     <View
       style={{
-        flexDirection: 'row',
         alignSelf: 'flex-start',
         alignItems: 'center',
       }}>
-      <Text style={{color: '#111111', marginRight: scalableheight.one}}>
-        {'\u2022'}
-      </Text>
       <Text
         style={{
           fontSize: fontSize.twelve,
@@ -25,7 +21,7 @@ export default function Whyuscomponent(props) {
           color: 'rgba(41, 38, 42, 0.5)',
           alignSelf: 'flex-start',
         }}>
-        {props.text}
+        {'\u2022'} {props.text}
       </Text>
     </View>
   );

@@ -59,6 +59,7 @@ export default function Transparentsearch(props) {
       />
 
       <TouchableOpacity
+        onPress={props.OnPress}
         style={{
           height: '100%',
           width: scalableheight.six,
