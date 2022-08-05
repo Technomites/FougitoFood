@@ -22,15 +22,11 @@ import changeNavigationBarColor, {
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
 import Animated from 'react-native-reanimated';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 import PlainHeader from '../Shared/Components/PlainHeader';
-import Whyuscomponent from '../Shared/Components/Whyuscomponent';
-import BottomTab from '../Shared/Components/BottomTab';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
+import MYButton from '../Shared/Components/MYButton';
 
 const Legal = ({navigation, drawerAnimationStyle}) => {
   return (
@@ -46,49 +42,160 @@ const Legal = ({navigation, drawerAnimationStyle}) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{
-            paddingHorizontal: scalableheight.three,
+            paddingHorizontal: scalableheight.two,
           }}>
-        
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('TermsCondition');
+              }}
+              activeOpacity={0.9}
+              style={{
+                ...styles.shadow,
+                ...styles.MainContainer,
+                paddingVertical: scalableheight.two,
+              }}>
+              <View
+                style={{
+                  ...styles.topViewContainer,
+                }}>
+                <Text
+                  style={{
+                    color: '#29262A',
+                    fontFamily: 'Inter-Bold',
+                    fontSize: fontSize.fifteen,
+                    paddingHorizontal: scalableheight.one,
+                  }}>
+                  Terms & Conditions
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={{
+                ...styles.shadow,
+                ...styles.MainContainer,
+                paddingVertical: scalableheight.two,
+              }}>
+              <View
+                style={{
+                  ...styles.topViewContainer,
+                }}>
+                <Text
+                  style={{
+                    color: '#29262A',
+                    fontFamily: 'Inter-Bold',
+                    fontSize: fontSize.fifteen,
+                    paddingHorizontal: scalableheight.one,
+                  }}>
+                  Privacy Policy
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={{
+                ...styles.shadow,
+                ...styles.MainContainer,
+                paddingVertical: scalableheight.two,
+              }}>
+              <View
+                style={{
+                  ...styles.topViewContainer,
+                }}>
+                <Text
+                  style={{
+                    color: '#29262A',
+                    fontFamily: 'Inter-Bold',
+                    fontSize: fontSize.fifteen,
+                    paddingHorizontal: scalableheight.one,
+                  }}>
+                  Return Policy
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginVertical: scalableheight.twenty,
+              }}>
+              <Text
+                style={{
+                  color: '#29262A',
+                  fontFamily: 'Inter-Bold',
+                  fontSize: fontSize.twenty,
+                }}>
+                Want To Know More?
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'Rubik-MediumItalic',
+                  fontSize: fontSize.twelve,
+                  color: '#636363',
+                  textAlign: 'center',
+                }}>
+                For any further queries,{'\n'} Feel free to reach out to us.
+              </Text>
+              <View style={{width: '50%'}}>
+                <TouchableOpacity
+                  activeOpacity={0.9}
+                  onPress={() => {
+                    navigation.navigate('ContactUs');
+                  }}
+                  style={{
+                    ...styles.Loginbutton,
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: fontSize.fifteen,
+                      color: 'white',
+                      fontFamily: 'Inter-SemiBold',
+                      width: '75%',
+                      textAlign: 'center',
+                    }}>
+                    CONTACT US
+                  </Text>
+                  <Text style={{width: '25%'}}>
+                    <Entypo
+                      name="phone"
+                      size={scalableheight.three}
+                      color={'white'}
+                    />
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
         </ScrollView>
       </View>
     </Animated.View>
   );
 };
 
-const styleSheet = StyleSheet.create({
-  Text1: {
-    color: '#F9B35E',
-    fontSize: fontSize.eightteen,
-    paddingBottom: 10,
-    fontFamily: 'Rubik-SemiBold',
-  },
-  Text2: {
-    textAlign: 'center',
-    fontSize: fontSize.eightteen,
-    paddingBottom: 20,
-    fontFamily: 'Rubik-Regular',
-    width: '90%',
-    color: 'black',
-  },
-  Image: {
-    width: 241,
-    height: 104,
-    marginBottom: '10%',
-  },
-  BackgroundImage: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+const styles = StyleSheet.create({
   MainContainer: {
     borderRadius: fontSize.eleven,
-    paddingVertical: fontSize.fifteen,
+    // paddingVertical: fontSize.fifteen,
     width: '99%',
     alignSelf: 'center',
     marginVertical: scalableheight.one,
-    backgroundColor: 'white',
+    backgroundColor: '#e8e8e8',
   },
-
+  Loginbutton: {
+    // width: '100%',
+    backgroundColor: '#E14E4E',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: scalableheight.seven,
+    borderRadius: fontSize.borderradiusmedium,
+    marginTop: '1%',
+    marginBottom: '1%',
+    flexDirection: 'row',
+  },
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
@@ -98,29 +205,6 @@ const styleSheet = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 4,
-  },
-  inputStyle: {
-    fontFamily: 'Rubik-Regular',
-    fontSize: fontSize.twelve,
-    color: '#000000',
-    borderRadius: 6,
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    justifyContent: 'center',
-    width: '100%',
-    borderColor: '#A0A0A0',
-    borderWidth: 1,
-  },
-  placeholderStyle: {
-    color: '#818181',
-    fontFamily: 'Rubik-Regular',
-    fontSize: fontSize.twelve,
-  },
-  inputIconStyle: {
-    position: 'absolute',
-    right: 10,
-    height: '100%',
-    justifyContent: 'center',
   },
 });
 export default Legal;

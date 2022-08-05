@@ -69,6 +69,7 @@ import OrderDetails from '../Screens/OrderDetails';
 import EditAddress from '../Screens/EditAddress';
 import AccountSettings from '../Screens/AccountSettings';
 import Legal from '../Screens/Legal';
+import Faqs from '../Screens/Faqs';
 import TermsCondition from '../Screens/Terms&Condition';
 import AccountInfo from '../Screens/AccountInfo';
 import Changepasswordforgot from '../Screens/Changepasswordforgot';
@@ -877,6 +878,11 @@ const Drawernavigator = props => {
           <TermsCondition {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
+      <Drawer.Screen name="Faqs" options={{headerShown: false}}>
+        {props => (
+          <Faqs {...props} drawerAnimationStyle={animatedStyle} />
+        )}
+      </Drawer.Screen>
       <Drawer.Screen name="Settings" options={{headerShown: false}}>
         {props => <Settings {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
@@ -1074,6 +1080,11 @@ const MainNavigator = () => {
           <Stack.Screen
             name="TermsCondition"
             component={TermsCondition}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Faqs"
+            component={Faqs}
             options={{headerShown: false}}
           />
           <Stack.Screen
