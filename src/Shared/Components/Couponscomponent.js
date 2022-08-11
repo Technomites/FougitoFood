@@ -99,13 +99,18 @@ export default function Couponscomponent(props) {
           {props.daysleft}
         </Text>
       </View>
+     
       <View style={{height: '35%', width: '100%'}}>
-        <View
+      <View
           style={{
             borderTopWidth: 1,
-            width: '85%',
+            width: '90%',
             borderColor: '#707070',
             alignSelf: 'center',
+           paddingVertical:scalableheight.one,
+           position:"absolute",
+           top: scalableheight.pointfive,
+           opacity: 0.6
           }}></View>
         <View style={{width: '100%', padding: scalableheight.two}}>
           <Text
@@ -126,28 +131,7 @@ export default function Couponscomponent(props) {
           </Text>
         </View>
       </View>
-      {/* <View style={{ width :"25%", height:"100%", backgroundColor:"#F9F9F9", borderTopLeftRadius: fontSize.borderradiuslarge, borderBottomLeftRadius:fontSize.borderradiuslarge, alignItems:"center", justifyContent:"center"}}>
-    <FontAwesome5 name="ticket-alt" size={fontSize.thirtyfive} color={"rgba(192,192,192, 0.8)"} />
-        </View>
-        <View style={{width :"75%", height:"100%", justifyContent:"space-evenly", padding:10,backgroundColor:"white", borderBottomRightRadius :fontSize.borderradiuslarge, borderTopRightRadius:fontSize.borderradiuslarge,}}>
-            <Text style={{fontFamily:"Rubik-Medium", fontSize:fontSize.fourteen, color: "#000000"}}>{props.title}</Text>
-            <Text style={{fontFamily:"Rubik-Regular", fontSize:fontSize.twelve, color: "#000000", opacity:  0.4}}>Max Discount AED {props.discountprice}</Text>
-            <Text style={{fontFamily:"Rubik-Regular", fontSize:fontSize.twelve, color: "#000000", opacity:  0.4}}>Valid till {props.vailidity}</Text> 
-          <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
-          <View style={{backgroundColor:"#EEEBE7", alignItems:"center", justifyContent:"center", padding:5, borderRadius:fontSize.borderradius}}>
-            <Text  style={{fontFamily:"Rubik-Medium", fontSize:fontSize.twelve, color: "#707070"}}>{props.percentage} Off</Text>
-            </View>
-            <TouchableOpacity
-            onPress={() => {
-                Clipboard.setString(props.code)
-              props.copy()
-            }}
-            style={{flexDirection:"row"}}>
-            <Text  style={{fontFamily:"Rubik-Medium", fontSize:fontSize.fourteen, color: "#C59E6E"}}>{props.code}</Text>
-            <FontAwesome5 name="copy" size={fontSize.thirteen} color={"#C59E6E"} style={{marginLeft:"4%"}} />
-        </TouchableOpacity>
-            </View>
-        </View> */}
+
     </View>
   );
 }
@@ -177,7 +161,7 @@ const styleSheet = StyleSheet.create({
   },
   MainContainer: {
     borderRadius: fontSize.eleven,
-    paddingVertical: fontSize.fifteen,
+    paddingVertical: fontSize.ten,
     width: '99%',
     alignSelf: 'center',
     marginVertical: scalableheight.one,
@@ -192,6 +176,6 @@ const styleSheet = StyleSheet.create({
   shadowOffset: {width: 0, height: 1},
   shadowOpacity: 0.2,
   elevation: 2,
-  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+  // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
 });

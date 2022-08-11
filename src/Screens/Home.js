@@ -67,6 +67,8 @@ import SavedAddresses from '../Shared/Components/SavedAddresses';
 import Starters from '../Shared/Components/Starters';
 import Favourites from '../Shared/Components/Favourites';
 import MYButton from '../Shared/Components/MYButton';
+import Custombottomsheet from '../Shared/Components/Custombottomsheet';
+
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -1056,148 +1058,12 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
           </View>
         </View>
       </View>
-      {showbottomsheet ? (
-        <Animatable.View
-          animation={'fadeInUpBig'}
-          easing="ease"
-          //  iterationCount="infinite"
-          iterationCount={1}
-          style={{
-            width: '100%',
-            backgroundColor: 'white',
-            position: 'absolute',
-            bottom: 0,
-            borderTopLeftRadius: fontSize.twenty,
-            borderTopRightRadius: fontSize.twenty,
-            padding: scalableheight.two,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
+<Custombottomsheet state ={showbottomsheet} locationpin ={pinlocation} onPress={() => {
               setshowbottomsheet(false);
-            }}
-            style={{
-              position: 'absolute',
-              top: scalableheight.one,
-              right: scalableheight.one,
-            }}>
-            <Ionicons
-              name="close-circle"
-              color={'rgba(211,211,211, 0.8)'}
-              size={fontSize.thirtyseven}
-              style={{}}
-            />
-          </TouchableOpacity>
-
-          <Text
-            style={{
-              color: 'black',
-              fontFamily: 'Inter-Bold',
-              fontSize: fontSize.fifteen,
-              alignSelf: 'center',
-            }}>
-            Select A Delivery Address
-          </Text>
-          <TouchableOpacity
-            disabled={pinlocation == '' ? false : true}
-            onPress={() => {
-              getnewlocation();
-            }}
-            style={{
-              flexDirection: 'row',
-              borderBottomWidth: 1,
-              borderColor: 'rgba(211,211,211, 0.5)',
-              paddingVertical: scalableheight.one,
-            }}>
-            <View style={{justifyContent: 'center'}}>
-              <MaterialCommunityIcons
-                name={'crosshairs-gps'}
-                color={'#F55050'}
-                size={fontSize.twenty}
-              />
-            </View>
-            <View style={{marginLeft: scalableheight.two}}>
-              <Text
-                style={{
-                  color: '#F55050',
-                  fontFamily: 'Inter-SemiBold',
-                  fontSize: fontSize.sixteen,
-                }}>
-                Detect current Location
-              </Text>
-              <Text
-                style={{
-                  color: 'black',
-                  opacity: 0.5,
-                  fontFamily: 'Inter-SemiBold',
-                  fontSize: fontSize.eleven,
-                }}>
-                Use GPS
-              </Text>
-              <Text
-                numberOfLines={2}
-                style={{
-                  color: 'black',
-                  opacity: 0.5,
-                  fontFamily: 'Inter-SemiBold',
-                  fontSize: fontSize.eleven,
-                }}>
-                {pinlocation == '' ? 'Use GPS' : pinlocation}
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <Text
-            style={{
-              color: 'black',
-              opacity: 0.6,
-              fontFamily: 'Inter-Regular',
-              fontSize: fontSize.sixteen,
-              paddingTop: scalableheight.one,
-            }}>
-            My Saved Addresses
-          </Text>
-          <SavedAddresses
-            title={'Home'}
-            address={'Mann Crossing 332 Ardith Highway'}
-          />
-          <SavedAddresses title={'Home'} address={'Clifton block 2'} />
-
-          <View
-            style={{
-              flexDirection: 'row',
-              borderBottomWidth: 1,
-              borderColor: 'rgba(211,211,211, 0.5)',
-              paddingVertical: scalableheight.one,
-            }}>
-            <View style={{justifyContent: 'center'}}>
-              <FontAwesome5
-                name={'map-marked-alt'}
-                color={'#F55050'}
-                size={fontSize.twenty}
-              />
-            </View>
-            <View style={{marginLeft: scalableheight.two}}>
-              <Text
-                style={{
-                  color: '#F55050',
-                  fontFamily: 'Inter-SemiBold',
-                  fontSize: fontSize.sixteen,
-                }}>
-                Pin your Location
-              </Text>
-              <Text
-                style={{
-                  color: 'black',
-                  fontFamily: 'Inter-Regular',
-                  opacity: 0.5,
-                  fontSize: fontSize.fourteen,
-                }}>
-                Open Map
-              </Text>
-            </View>
-          </View>
-        </Animatable.View>
-      ) : null}
+            }}  
+            onPressnewlocation={() => {
+              getnewlocation()
+            }}       />    
     </Animated.View>
   );
 };

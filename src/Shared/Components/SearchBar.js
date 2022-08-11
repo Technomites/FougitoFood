@@ -30,7 +30,7 @@ const navigation = useNavigation();
     <View
     style={{
       ...styleSheet.shadow,
-      width: '99%',
+      width: '100%',
       height: Dimensions.get('window').height / 15,
       justifyContent: 'center',
       borderRadius: fontSize.twenty,
@@ -107,7 +107,7 @@ shadow: {
   shadowOffset: {width: 0, height: 1},
   shadowOpacity: 0.2,
   elevation: 2,
-  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+  // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
 });
 

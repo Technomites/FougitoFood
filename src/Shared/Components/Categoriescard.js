@@ -55,7 +55,7 @@ const navigation = useNavigation();
     resizeMode= "stretch"
     style={{
       width: '100%',
-      height: '99.5%',
+      height: '100%',
    justifyContent:"center",
 
 

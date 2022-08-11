@@ -485,8 +485,8 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
 
-    elevation: 2,
-    borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+    elevation: 1,
+    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
               }}>
               <TextInput
                 value={message}
@@ -505,7 +505,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 <ActivityIndicator size={'large'} color={Color.btnBgColor} />
               ) : ( */}
               <MYButton
-                onPress={{}}
+                onPress={() => {}}
                 title="SEND"
                 color={'#E14E4E'}
                 textcolor={'white'}

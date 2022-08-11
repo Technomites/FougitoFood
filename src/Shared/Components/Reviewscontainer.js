@@ -29,13 +29,18 @@ const navigation = useNavigation();
         ...styleSheet.shadow,
         width: '100%',
         alignSelf: 'center',
-        height: scalableheight.fourteen,
+        height: scalableheight.fifteen,
        flexDirection:"row",
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',
+        paddingVertical: scalableheight.one,
+  
+        paddingHorizontal: scalableheight.one,
+        borderBottomLeftRadius: fontSize.twenty,
+        borderBottomRightRadius: fontSize.twenty,
         zIndex:1}}>
-          <View style= {{height:"100%", width: "60%", padding: scalableheight.one}}>
+          <View style= {{height:"100%", width: "60%",}}>
       <View style={{flexDirection:"row", paddingVertical: scalableheight.one, alignItems:"center",}}>
           <View style={{height:scalableheight.three, backgroundColor:"#E14E4E", width: scalableheight.eight , flexDirection:"row", alignItems:"center", justifyContent:"space-evenly", borderRadius: fontSize.borderradius}}>
           <FontAwesome 
@@ -54,10 +59,10 @@ const navigation = useNavigation();
     <Text style={{ color:"#303030", fontFamily: 'Inter-Medium',
                     fontSize: fontSize.twelve, opacity: 0.4}}>{props.description}</Text>
           </View>
-          <View style= {{height:"100%", width: "40%",  alignItems:"center",justifyContent:"center"}}>
+          <View style= {{height:"100%", width: "40%",  alignItems:"flex-end",justifyContent:"center",}}>
           <Image
               resizeMode="contain"
-              style={{ height: "90%", width:"85%"}}
+              style={{ height: "90%", width:"100%",}}
               source={props.image}
             />
             </View>

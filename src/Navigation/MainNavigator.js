@@ -142,6 +142,7 @@ const CustomDrawerStyle = ({navigation}) => {
     },
   ];
   const [modalVisible, setModalVisible] = useState(false);
+  const [logoutmodal, setlogoutmodal] = useState(false);
   const [nointernet, setnointernet] = useState(false);
   const dispatch = useDispatch();
 
@@ -193,127 +194,9 @@ const CustomDrawerStyle = ({navigation}) => {
         Alert.alert('Modal has been closed.');
         setmodalVisible(!modalVisible);
       }}>
-      <View
-        style={{
-          height: "100%",
-          width: '100%',
-          backgroundColor: 'rgba(0,0,0,0.8)',
-          alignItems:"center",
-          justifyContent:"center"
-          
-        }}>
-        <View style={{width: "90%", height: "30%", borderRadius:fontSize.borderradius, padding:10, position:"absolute", bottom:scalableheight.three, justifyContent:"space-evenly"}}>
-   <View style={{...styleSheet.shadow,width:"100%", height: "50%", backgroundColor:"white", borderRadius: fontSize.borderradiuslarge}}>
-<View style={{  height:"50%", width:"100%", borderBottomWidth:1, borderColor:"#DBDB DB", alignItems:"center", justifyContent:"center"}}>
-<Text style= {{    fontFamily: 'Rubik-Regular',
-                      fontSize: fontSize.twelve}}>Are you sure you want to log out?</Text>
-</View>
-<TouchableOpacity
-activeOpacity={.7}
- onPress={() => {
-  navigation.navigate('Login');
-  navigation.dispatch(DrawerActions.closeDrawer());
- }}
-style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"}}>
-  <Text style= {{color:"red",     fontFamily: 'Rubik-Regular',
-                      fontSize: fontSize.eightteen,}}>Log Out</Text>
-</TouchableOpacity>
-   </View>
-   <TouchableOpacity 
-   activeOpacity={.7}
-    onPress={() => setmodalVisible(false)}
-   style={{...styleSheet.shadow, width:"100%", height: "25%", backgroundColor:"white", borderRadius: fontSize.borderradiuslarge, alignItems:"center", justifyContent:"center"}}>
-   <Text style= {{   fontFamily: 'Rubik-Regular',
-                      fontSize: fontSize.fourteen}}>Cancel</Text>
-     </TouchableOpacity>
-      </View>
-      </View>
+   
     </Modal> */}
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        statusBarTranslucent>
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={() => setModalVisible(false)}
-          style={styleSheet.centeredView}>
-          <View style={styleSheet.modalView}>
-            {/* <Image 
-            resizeMode='contain'
-              source={require('../Resources/images/info.png')}
-              style={styleSheet.infoIconStyle}
-            /> */}
-            <AntDesign
-              name="exclamationcircleo"
-              color={'#AB8651'}
-              size={fontSize.thirtyeight}
-              style={{alignSelf: 'center'}}
-            />
-            <View
-              style={{
-                marginTop: scalableheight.two,
-                marginBottom: scalableheight.three,
-              }}>
-              <Text style={styleSheet.modalDetailStyle}>
-                {
-                  'Are you sure you want \n to Logout ?'
-                 }
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignSelf: 'center',
-                width: '100%',
-                justifyContent: 'space-evenly',
-              }}>
-              <View style={{width: '40%'}}>
-                <CustomButton
-                  Loading={false}
-                  style={{height: scalableheight.five}}
-                  activeOpacity={0.7}
-                  title={'Yes'}
-                  onPress={() => logoutHandle()}
-                  customButtonStyle={styleSheet.submitButton}
-                  containerstyle={{height: scalableheight.five}}
-                />
-              </View>
-              <View style={{width: '40%'}}>
-                <CustomButton
-                  Loading={false}
-                  style={{
-                    height: scalableheight.five,
-                    backgroundColor: 'white',
-                  }}
-                  activeOpacity={0.7}
-                  title={ 'No'}
-                  onPress={() => setModalVisible(false)}
-                  customButtonTextStyle={{color: 'black'}}
-                  customButtonStyle={styleSheet.filterButton}
-                  containerstyle={{
-                    height: scalableheight.five,
-                    backgroundColor: 'white',
-                  }}
-                />
-              </View>
-            </View>
-            {nointernet == true ? (
-              <Text
-                style={{
-                  color: 'red',
-                  fontFamily: 'Rubik-Medium',
-                  fontSize: fontSize.ten,
-                  alignSelf: 'center',
-                  textAlign: 'center',
-                }}>
-                Your device Internet connection appears to be offline. Please
-                connect to a stabe netwok.
-              </Text>
-            ) : null}
-          </View>
-        </TouchableOpacity>
-      </Modal>
+
       <View
         style={{
           flex: 1,
@@ -746,7 +629,9 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
           )}
           {renderIf(ProfileInfo == '')(
             <TouchableOpacity
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => {
+            
+                setlogoutmodal(true)}}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -784,6 +669,52 @@ style={{height:"50%", width:"100%", alignItems:"center", justifyContent:"center"
           )}
         </ScrollView>
       </View>
+      {logoutmodal &&
+     <Animatable.View
+  animation={'fadeInUpBig'}
+
+       easing="ease"
+       //  iterationCount="infinite"
+       iterationCount={1}
+      
+    style={{
+      bottom: scalableheight.two,
+      position: 'absolute',
+      width:Dimensions.get('window').width / 1,
+ alignItems: "center",
+ justifyContent: "center",
+ height: scalableheight.fifteen,
+
+
+     
+    }}>
+       <View style={{  backgroundColor: '#303030',
+      height: "100%", width: "90%", borderRadius: fontSize.eleven, alignItems: "center", justifyContent:"center"}}>
+
+<AntDesign
+                name={'exclamationcircle'}
+                color={'white'}
+                size={fontSize.thirtytwo}
+              />
+<Text style={{fontFamily: 'Inter-SemiBold', color: "white", fontSize: fontSize.fifteen, paddingTop: scalableheight.pointfive }}>Are you sure you want to logout?</Text>
+  
+  <View style={{flexDirection: "row", alignItems:"center", justifyContent: "center", paddingVertical: scalableheight.one}}>
+     <TouchableOpacity 
+       onPress={() => {setlogoutmodal(false)}}
+     style={{backgroundColor:"#E14E4E", width: scalableheight.seven, height: scalableheight.four, borderRadius: fontSize.borderradiusmedium,alignItems: "center", justifyContent:"center"}}>
+<Text style={{fontFamily: 'Inter-SemiBold', color: "white", fontSize: fontSize.fifteen, }}>Yes</Text>
+     </TouchableOpacity>
+     <TouchableOpacity 
+               onPress={() => {setlogoutmodal(false)}}
+    
+     style={{marginLeft:scalableheight.one, width: scalableheight.seven, height: scalableheight.four, borderRadius: fontSize.borderradiusmedium,alignItems: "center", justifyContent:"center",}}>
+<Text style={{fontFamily: 'Inter-SemiBold', color: "#E14E4E", fontSize: fontSize.fifteen, }}>No</Text>
+     </TouchableOpacity>
+     </View>
+       </View>
+    
+    </Animatable.View>
+}
     </>
   );
 };

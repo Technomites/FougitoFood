@@ -78,7 +78,7 @@ const Faqs = ({navigation, drawerAnimationStyle}) => {
           style={{
             paddingHorizontal: scalableheight.two,
           }}>
-          <View style={styles.container}>
+          <View style={{...styles.shadow, ...styles.container}}>
             <View
               style={{
                 justifyContent: 'center',
@@ -128,10 +128,10 @@ const styles = StyleSheet.create({
   },
   container: {
     height: scalableheight.six,
-    backgroundColor: 'rgba(42, 28, 28, 0.1)',
+    backgroundColor: '#F5F5F5',
     width: '100%',
     flexDirection: 'row',
-    borderRadius: fontSize.eight,
+    borderRadius: fontSize.eleven,
     marginBottom: scalableheight.one,
   },
   textInput: {
@@ -140,14 +140,11 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
+    shadowColor: '#470000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 2,
+    
   },
 });
 export default Faqs;

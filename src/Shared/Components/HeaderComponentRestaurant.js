@@ -45,17 +45,17 @@ const navigation = useNavigation();
           <TouchableOpacity
           onPress={openMenu}
           style={{
-            height:  scalableheight.seven,
-            width:  scalableheight.five,
+           padding: scalableheight.one,
             justifyContent: 'center',
             alignItems: 'center',
-    
-           
+
+     
           }}>
           <MaterialCommunityIcons 
               name="menu"
               color={'white'}
               size={fontSize.twentyeight}
+              
             />
         </TouchableOpacity>
 
@@ -114,9 +114,10 @@ const styleSheet = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-   
-    backgroundColor: '#303030',
-
+    zIndex:1,
+    elevation:1,
+    // backgroundColor: '#303030',
+    backgroundColor: 'transparent',
   },
 
   text: {

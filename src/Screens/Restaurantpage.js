@@ -41,14 +41,15 @@ import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
-
+import Geocoder from 'react-native-geocoding';
+import Geolocation from '@react-native-community/geolocation';
 import RNAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
 import {SliderBox} from 'react-native-image-slider-box';
 import ImagesSwiper from 'react-native-image-swiper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import NetInfo from '@react-native-community/netinfo';
 import HeaderComponentRestaurant from '../Shared/Components/HeaderComponentRestaurant';
-import HeaderComponent from '../Shared/Components/HeaderComponent';
+import Mltichoicehorizontallist from '../Shared/Components/Mltichoicehorizontallist';
 import Reviewscontainer from '../Shared/Components/Reviewscontainer';
 import Categoriescard from '../Shared/Components/Categoriescard';
 import Animated from 'react-native-reanimated';
@@ -83,8 +84,13 @@ import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import { styles } from 'react-native-element-dropdown/src/components/TextInput/styles';
+import Custombottomsheet from '../Shared/Components/Custombottomsheet';
+
+
 
 const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
+ 
+
   const [dataSourceCords, setDataSourceCords] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
@@ -97,7 +103,12 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   const [isCollapsed, setisCollapsed] = useState(false);
   const Top = createMaterialTopTabNavigator();
   const [count, setcount] = useState(0);
-
+  const [lat, setlat] = useState();
+  const [long, setlong] = useState();
+  const [inlat, setinlat] = useState();
+  const [showbottomsheet, setshowbottomsheet] = useState(false);
+  const [inlong, setinlong] = useState();
+  const [pinlocation, setpinlocation] = useState('');
   const scrollviewref = useRef()
   const drinksref = useRef()
   const [serving, setserving] = useState([
@@ -130,6 +141,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     {
       selected: false,
       serving: 'Pasta',
+    },
+    {
+      selected: false,
+      serving: 'Onion',
+    },
+    {
+      selected: false,
+      serving: 'Lettuce',
     },
   ])
   const [types, settypes] = useState([
@@ -201,10 +220,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   const {
     collapse,   // <-- Collapse header
     expand,     // <-- Expand header
-    scrollY,    // <-- Animated scroll position. In case you need to do some animation in your header or somewhere else
+    scrollY   // <-- Animated scroll position. In case you need to do some animation in your header or somewhere else
   } = useCollapsibleContext();
 
-  const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+ 
+
+ 
+
+
 
   useEffect(() => {
     StatusBar.setHidden(false);
@@ -261,7 +284,102 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
    
   }, [modalVisible]);
 
-  
+  useEffect(() => {
+    if (lat != null && long != null) {
+      Geocoder.from(lat, long)
+        .then(json => {
+          var addressComponent = json.results[0].formatted_address;
+          console.log(addressComponent);
+          setpinlocation(addressComponent);
+        })
+        .catch(error => console.warn(error));
+    }
+  }, [lat, long]);
+
+  function getnewlocation() {
+    Geocoder.from(lat, long)
+      .then(json => {
+        var addressComponent = json.results[0].formatted_address;
+        console.log(addressComponent);
+        setpinlocation(addressComponent);
+      })
+      .catch(error => console.warn(error));
+  }
+  const getLocation = async () => {
+    const hasLocationPermission = await hasLocationPermissions();
+    if (!hasLocationPermission) {
+      return;
+    }
+  };
+  const hasLocationPermissions = async () => {
+    if (Platform.OS === 'ios') {
+      const hasPermission = await hasLocationPermissionIOS();
+      return hasPermission;
+    }
+
+    if (Platform.OS === 'android' && Platform.Version < 23) {
+      return true;
+    }
+
+    const hasPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (hasPermission) {
+      return true;
+    }
+
+    const status = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (status === PermissionsAndroid.RESULTS.GRANTED) {
+      return true;
+    }
+
+    if (status === PermissionsAndroid.RESULTS.DENIED) {
+      // ToastAndroid.show(
+      //   'Location permission denied by user.',
+      //   ToastAndroid.LONG,
+      // );
+    } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+      // ToastAndroid.show(
+      //   'Location permission revoked by user.',
+      //   ToastAndroid.LONG,
+      // );
+    }
+    return false;
+  };
+  const hasLocationPermissionIOS = async () => {
+    const openSetting = () => {
+      Linking.openSettings().catch(() => {
+        ToastMessage('success', 'Success', 'Unable to open settings');
+      });
+    };
+    const status = await Geolocation.requestAuthorization('whenInUse');
+
+    if (status === 'granted') {
+      return true;
+    }
+
+    if (status === 'denied') {
+      ToastMessage('error', 'Error', 'Location permission denied');
+    }
+
+    if (status === 'disabled') {
+      Alert.alert(
+        `Turn on Location Services to allow Bakery App to determine your location.`,
+        '',
+        [
+          {text: 'Go to Settings', onPress: openSetting},
+          {text: "Don't Use Location", onPress: () => {}},
+        ],
+      );
+    }
+    return false;
+  };
+
+
   function onRefresh() {
     NetInfo.fetch().then(state => {
       if (state.isConnected == true && state.isInternetReachable == true) {
@@ -405,6 +523,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     setisEnabled(!isEnabled)
   };
 
+
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
        {modalVisible && (
@@ -540,7 +659,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                   update={updateservingstate}
                 />
                 <View style={{height: scalableheight.one}} />
-                <MultiChoiceDropDown
+                <Mltichoicehorizontallist
                   title={'Choose Serving'}
                   data={flavours}
                   update={updateflavourstate}
@@ -715,12 +834,15 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
           </TouchableOpacity>
         </Animatable.View>
       )}
-      <View style={{flex: 1, backgroundColor: '#303030', borderRadius: 10}}>
-        <View style={{flex: 1, marginTop: getStatusBarHeight(), }}>
+      <View style={{height: "100%", width: "100%", borderRadius: 10,  alignSelf: 'center',
+
+}}>
        
+     
+     
 
 
-          <CollapsibleContainer>
+          <CollapsibleContainer style={{ }}>
       
          
       
@@ -729,23 +851,71 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   
  
           <CollapsibleHeaderContainer>
-   <StickyView>
+          <StickyView>
+         <View style={{  width: "100%", backgroundColor:"#303030", position: "absolute", top:0, zIndex: -10, elevation: -10, height: scalableheight.seven +  getStatusBarHeight(),}}>
+            
+                  
+               
+                {/* <HeaderComponentRestaurant newNotificationCount={newNotificationCount}  isEnabled={isEnabled}
+                       toggleSwitch={toggleSwitch}/>  */}
+              
+               
+                  </View> 
+                  </StickyView>
+          <ImageBackground
+            resizeMode="cover"
+            style={{
+              width: '100%',
+              height: scalableheight.twenty + getStatusBarHeight(),
+              zIndex:2000,
+              elevation:2000
+              // scalableheight.twenty + getStatusBarHeight()
+            }}
+            imageStyle={{
+              borderBottomLeftRadius: fontSize.twenty,
+              borderBottomRightRadius: fontSize.twenty,
+           
+              
+            }}
+            source={require('../Resources/images/homebackground.png')}>
+         
+{/* 
+                 <StickyView style={{backgroundColor:"transparent", paddingTop: getStatusBarHeight(),}}>
+                
    <HeaderComponentRestaurant newNotificationCount={newNotificationCount}  isEnabled={isEnabled}
           toggleSwitch={toggleSwitch}/>
-   </StickyView>
+
+   </StickyView> */}
+   <StickyView style={{backgroundColor:"transparent",}}>
+                 <View style={{backgroundColor:"transparent", marginTop: getStatusBarHeight(),}}>
+                <HeaderComponentRestaurant newNotificationCount={newNotificationCount}  isEnabled={isEnabled}
+          toggleSwitch={toggleSwitch}/>
+          </View>
+          </StickyView>
           <View style={{ width: '100%',
     alignSelf: 'center',
     height: scalableheight.tweleve,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#303030',
+    backgroundColor: 'transparent',
     paddingHorizontal: scalableheight.one,
+
   }}>
- <Infobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
+    <View style={{width: "95%",}}>
+ <Infobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}
+     onPress={() => {
+      setshowbottomsheet(true);
+    }}
+ />
    </View>
-  
+   </View> 
+            </ImageBackground>
+
+
+
 <Reviewscontainer rating={"8.9"} reviews={"350"} title={"Perfect Grill"} description={"Its the food you love"} image={require('../Resources/images/grill.png')}/>
+
 <View style={{paddingHorizontal: scalableheight.one}}>
 <Animatable.View
         animation="bounceInRight"
@@ -802,7 +972,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 
   horizontal
   showsHorizontalScrollIndicator ={false}
-  style={{ width: "100%", height: scalableheight.seven, flexDirection: "row"}}>
+  style={{ width: "100%", height: scalableheight.seven, flexDirection: "row", zIndex: 10, elevation:10}}>
   {types.map((item, key) => {
           return (
             <TouchableOpacity 
@@ -819,22 +989,25 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
           </TouchableOpacity>
           );
         })}
+   
   </ScrollView>
 </StickyView>
       </CollapsibleHeaderContainer>
   
       
   <CollapsibleScrollView 
+     
+
     ref ={scrollviewref}
   showsVerticalScrollIndicator={false}
-  style={{backgroundColor:"white", paddingHorizontal: scalableheight.one}}>
+  style={{backgroundColor:"white", paddingHorizontal: scalableheight.one,}}>
   
   {renderIf(types[0].visible == true)(
     <>
   <Text style={styleSheet.heading}>Starters </Text>
   {dished.map((item, key) => {
           return (
-            <View style={{width:"100%", alignItems:"center",}}>
+            <View style={{width:"100%", alignItems:"center"}}>
             <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
           </View>
           );
@@ -886,9 +1059,15 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 
 
     </CollapsibleContainer>
-        </View>
+      
         
       </View>
+      <Custombottomsheet state ={showbottomsheet} locationpin ={pinlocation} onPress={() => {
+              setshowbottomsheet(false);
+            }}  
+            onPressnewlocation={() => {
+              getnewlocation()
+            }}       />    
     </Animated.View>
   );
 };

@@ -29,7 +29,7 @@ const navigation = useNavigation();
     
     <View style={{flexDirection:"row", borderBottomWidth: 1, borderColor:  "rgba(211,211,211, 0.5)", paddingVertical: scalableheight.one}}>
     <View style={{justifyContent:"center"}}>
-    <FontAwesome name={'home'} color={"#F55050"}   size={fontSize.twenty} />
+    <FontAwesome name={'home'} color={"#F55050"}   size={fontSize.twentyfour} />
   </View>
     <View style={{marginLeft:scalableheight.two}}>
     <Text style={{color:"black", fontFamily: 'Inter-SemiBold',

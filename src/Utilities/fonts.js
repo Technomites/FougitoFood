@@ -11,6 +11,7 @@ const scalableheight = {
   zeropointsix: height(0.6),
   zeropointeight: height(0.8),
   one: height(1),
+
   onepointfive: height(1.5),
   two: height(2),
   three: height(3),
@@ -18,6 +19,7 @@ const scalableheight = {
   four: height(4),
   fourpoint: height(4.8),
   five: height(5),
+  fivefive: height(5.3),
   six: height(6),
   seven: height(7),
   eight: height(8),

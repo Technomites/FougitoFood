@@ -61,19 +61,20 @@ export default function Transparentsearch(props) {
       <TouchableOpacity
         onPress={props.OnPress}
         style={{
-          height: '100%',
-          width: scalableheight.six,
+          height: '95%',
+          width: scalableheight.fivefive,
           backgroundColor: '#E14E4E',
           position: 'absolute',
-          right: 0,
+          right: scalableheight.borderwidth ,
           borderRadius: fontSize.borderradiusmedium,
           alignItems: 'center',
           justifyContent: 'center',
+          alignSelf: "center"
         }}>
         <FontAwesome5
           name="qrcode"
           color={'white'}
-          size={fontSize.fourty}
+          size={fontSize.thirtyfive}
           style={{alignSelf: 'center'}}
         />
       </TouchableOpacity>

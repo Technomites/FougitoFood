@@ -36,7 +36,7 @@ export default function ActiveRequestTile(props) {
             }}
           />
         </View>
-        <View style={{paddingHorizontal: scalableheight.two}}>
+        <View style={{paddingHorizontal: scalableheight.two, justifyContent:"center"}}>
           <View>
             <Text
               style={{
@@ -92,10 +92,12 @@ export default function ActiveRequestTile(props) {
 
       <View
         style={{
-          borderBottomColor: '#707070',
+          borderBottomColor:  '#707070',
           borderBottomWidth: scalableheight.borderwidth,
           margin: scalableheight.two,
-          opacity: 0.2,
+       width:"90%",
+       alignSelf:"center",
+       opacity: 0.6
         }}></View>
       <View
         style={{flexDirection: 'row', marginHorizontal: scalableheight.two}}>
@@ -164,7 +166,7 @@ export default function ActiveRequestTile(props) {
 const style = StyleSheet.create({
   MainContainer: {
     borderRadius: fontSize.eleven,
-    paddingVertical: fontSize.fifteen,
+    paddingVertical: fontSize.ten,
     width: '99%',
     alignSelf: 'center',
     marginVertical: scalableheight.one,
@@ -179,7 +181,7 @@ const style = StyleSheet.create({
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 2,
-    borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
 
   // modalView: {
