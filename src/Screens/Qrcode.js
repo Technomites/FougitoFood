@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -18,7 +18,7 @@ import changeNavigationBarColor, {
 } from 'react-native-navigation-bar-color';
 
 import Animated from 'react-native-reanimated';
-import PlainHeader from '../Shared/Components/PlainHeader';
+import TransparentHeader from '../Shared/Components/TransparentHeader';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 
@@ -28,7 +28,20 @@ import {CameraScreen} from 'react-native-camera-kit';
 const Qrcode = ({navigation, drawerAnimationStyle}) => {
   const [qrvalue, setQrvalue] = useState('');
   const [opneScanner, setOpneScanner] = useState(false);
+  const [camscanner, setCamScanner] = useState(false);
 
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('hehhehehehh');
+      setCamScanner(false);
+      setTimeout(async () => {
+        setCamScanner(true);
+      }, 500);
+    });
+
+    //  Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
   const onOpenlink = () => {
     // If scanned then function to open URL in Browser
     Linking.openURL(qrvalue);
@@ -56,7 +69,7 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             // If CAMERA Permission is granted
 
-            setQrvalue('');
+            // setQrvalue('');
             setOpneScanner(true);
           } else {
             alert('CAMERA permission denied');
@@ -75,57 +88,33 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
   };
 
   return (
-    // <Animated.View
-    //   style={{flex: 1, backgroundColor: 'white', ...drawerAnimationStyle}}>
-    <View
-      style={{
-        alignSelf: 'center',
-        paddingTop: getStatusBarHeight(),
-        flex: 12,
-      }}>
-      <PlainHeader title={'Scan QR Code'} />
-      <SafeAreaView style={{flex: 1}}>
-        {opneScanner ? (
-          <View style={{flex: 1, backgroundColor: 'red'}}>
-            <CameraScreen
-              // Barcode props
-              scanBarcode={true}
-              onReadCode={event =>{
-                setQrvalue(event.nativeEvent.codeStringValue);
-                console.log('QR code found' + event.nativeEvent.codeStringValue)
-              }} // optional
-              showFrame={true} // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
-              laserColor="red" // (default red) optional, color of laser in scanner frame
-              frameColor="white" // (default white) optional, color of border of scanner frame
-            />
-          </View>
-        ) : (
-          <View style={styles.container}>
-            <Text style={styles.titleText}>
-              Barcode and QR Code Scanner using Camera in React Native
-            </Text>
-            <Text style={styles.textStyle}>
-              {qrvalue ? 'Scanned Result: ' + qrvalue : ''}
-            </Text>
-            {qrvalue.includes('https://') ||
-            qrvalue.includes('http://') ||
-            qrvalue.includes('geo:') ? (
-              <TouchableHighlight onPress={onOpenlink}>
-                <Text style={styles.textLinkStyle}>
-                  {qrvalue.includes('geo:') ? 'Open in Map' : 'Open Link'}
-                </Text>
-              </TouchableHighlight>
-            ) : null}
-            <TouchableHighlight
-              onPress={onOpneScanner}
-              style={styles.buttonStyle}>
-              <Text style={styles.buttonTextStyle}>Open QR Scanner</Text>
-            </TouchableHighlight>
-          </View>
+    <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
+      <View
+        style={{
+          alignSelf: 'center',
+          height: '100%',
+          width: '100%',
+          backgroundColor: '#000',
+        }}>
+        <View style={{position: 'absolute', top: getStatusBarHeight()}}>
+          <TransparentHeader title={'Scan QR Code'} />
+        </View>
+        {camscanner && (
+          <CameraScreen
+            // Barcode props
+            scanBarcode={true}
+            onReadCode={event => {
+              //  setQrvalue(event.nativeEvent.codeStringValue);
+              //  onOpenlink();
+              console.log('QR code found' + event.nativeEvent.codeStringValue);
+            }} // optional
+            showFrame={true} // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
+            laserColor="red" // (default red) optional, color of laser in scanner frame
+            frameColor="white" // (default white) optional, color of border of scanner frame
+          />
         )}
-      </SafeAreaView>
-    </View>
-    // </Animated.View>
+      </View>
+    </Animated.View>
   );
 };
 
