@@ -69,7 +69,6 @@ import Favourites from '../Shared/Components/Favourites';
 import MYButton from '../Shared/Components/MYButton';
 import Custombottomsheet from '../Shared/Components/Custombottomsheet';
 
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import * as Animatable from 'react-native-animatable';
@@ -344,166 +343,166 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     },
   ];
 
-  const DarkStyle= [
+  const DarkStyle = [
     {
-      "elementType": "geometry",
-      "stylers": [
+      elementType: 'geometry',
+      stylers: [
         {
-          "color": "#f5f5f5"
-        }
-      ]
+          color: '#f5f5f5',
+        },
+      ],
     },
     {
-      "elementType": "labels.icon",
-      "stylers": [
+      elementType: 'labels.icon',
+      stylers: [
         {
-          "visibility": "off"
-        }
-      ]
+          visibility: 'off',
+        },
+      ],
     },
     {
-      "elementType": "labels.text.fill",
-      "stylers": [
+      elementType: 'labels.text.fill',
+      stylers: [
         {
-          "color": "#616161"
-        }
-      ]
+          color: '#616161',
+        },
+      ],
     },
     {
-      "elementType": "labels.text.stroke",
-      "stylers": [
+      elementType: 'labels.text.stroke',
+      stylers: [
         {
-          "color": "#f5f5f5"
-        }
-      ]
+          color: '#f5f5f5',
+        },
+      ],
     },
     {
-      "featureType": "administrative.land_parcel",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: 'administrative.land_parcel',
+      elementType: 'labels.text.fill',
+      stylers: [
         {
-          "color": "#bdbdbd"
-        }
-      ]
+          color: '#bdbdbd',
+        },
+      ],
     },
     {
-      "featureType": "poi",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: 'poi',
+      elementType: 'geometry',
+      stylers: [
         {
-          "color": "#eeeeee"
-        }
-      ]
+          color: '#eeeeee',
+        },
+      ],
     },
     {
-      "featureType": "poi",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [
         {
-          "color": "#757575"
-        }
-      ]
+          color: '#757575',
+        },
+      ],
     },
     {
-      "featureType": "poi.park",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [
         {
-          "color": "#e5e5e5"
-        }
-      ]
+          color: '#e5e5e5',
+        },
+      ],
     },
     {
-      "featureType": "poi.park",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [
         {
-          "color": "#9e9e9e"
-        }
-      ]
+          color: '#9e9e9e',
+        },
+      ],
     },
     {
-      "featureType": "road",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [
         {
-          "color": "#ffffff"
-        }
-      ]
+          color: '#ffffff',
+        },
+      ],
     },
     {
-      "featureType": "road.arterial",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: 'road.arterial',
+      elementType: 'labels.text.fill',
+      stylers: [
         {
-          "color": "#757575"
-        }
-      ]
+          color: '#757575',
+        },
+      ],
     },
     {
-      "featureType": "road.highway",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [
         {
-          "color": "#dadada"
-        }
-      ]
+          color: '#dadada',
+        },
+      ],
     },
     {
-      "featureType": "road.highway",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [
         {
-          "color": "#616161"
-        }
-      ]
+          color: '#616161',
+        },
+      ],
     },
     {
-      "featureType": "road.local",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: 'road.local',
+      elementType: 'labels.text.fill',
+      stylers: [
         {
-          "color": "#9e9e9e"
-        }
-      ]
+          color: '#9e9e9e',
+        },
+      ],
     },
     {
-      "featureType": "transit.line",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: 'transit.line',
+      elementType: 'geometry',
+      stylers: [
         {
-          "color": "#e5e5e5"
-        }
-      ]
+          color: '#e5e5e5',
+        },
+      ],
     },
     {
-      "featureType": "transit.station",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: 'transit.station',
+      elementType: 'geometry',
+      stylers: [
         {
-          "color": "#eeeeee"
-        }
-      ]
+          color: '#eeeeee',
+        },
+      ],
     },
     {
-      "featureType": "water",
-      "elementType": "geometry",
-      "stylers": [
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [
         {
-          "color": "#c9c9c9"
-        }
-      ]
+          color: '#c9c9c9',
+        },
+      ],
     },
     {
-      "featureType": "water",
-      "elementType": "labels.text.fill",
-      "stylers": [
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [
         {
-          "color": "#9e9e9e"
-        }
-      ]
-    }
-  ]
+          color: '#9e9e9e',
+        },
+      ],
+    },
+  ];
 
   const [dished, setdisdhed] = useState([
     {
@@ -566,8 +565,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       selected: false,
       serving: 'Pasta',
     },
-  
-]);
+  ]);
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
@@ -897,8 +895,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                 region={{
                   latitude: inlat,
                   longitude: inlong,
-                  longitudeDelta:0.08,
-                  latitudeDelta:0.08
+                  longitudeDelta: 0.08,
+                  latitudeDelta: 0.08,
                 }}
                 initialRegion={{
                   latitude: lat,
@@ -1058,12 +1056,16 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
           </View>
         </View>
       </View>
-<Custombottomsheet state ={showbottomsheet} locationpin ={pinlocation} onPress={() => {
-              setshowbottomsheet(false);
-            }}  
-            onPressnewlocation={() => {
-              getnewlocation()
-            }}       />    
+      <Custombottomsheet
+        state={showbottomsheet}
+        locationpin={pinlocation}
+        onPress={() => {
+          setshowbottomsheet(false);
+        }}
+        onPressnewlocation={() => {
+          getnewlocation();
+        }}
+      />
     </Animated.View>
   );
 };
