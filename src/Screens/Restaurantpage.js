@@ -20,6 +20,7 @@ import {
   ActivityIndicator,
   Keyboard,
   Modal,
+  SectionList,
   KeyboardAvoidingView,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -408,6 +409,21 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       type={'Pizza'}
       price={20}
     />
+  );
+
+  const menu = ({item, key}) => (
+    <TouchableOpacity 
+    onPress={() => {   
+     let data = [...types]
+     for(const index in data){
+      data[index].visible = false
+     }
+     data[key].visible = true
+     settypes(data)
+      }}
+    style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
+<Text style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
+  </TouchableOpacity>
   );
   const starters = ({item}) => (
 <View style={{width:"100%", alignItems:"center"}}>
@@ -837,30 +853,54 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       <View style={{height: "100%", width: "100%", borderRadius: 10,  alignSelf: 'center',
 
 }}>
-       
      
-     
+ 
+     {/* <ScrollView
 
+horizontal
+showsHorizontalScrollIndicator ={false}
+style={{position:"absolute" , top: scalableheight.seven +  getStatusBarHeight(),    width: "100%", height: scalableheight.seven, flexDirection: "row", backgroundColor:"transparent", elevation: -10, zIndex: -10}}>
+{types.map((item, key) => {
+        return (
+          <TouchableOpacity 
+          onPress={() => {   
+           let data = [...types]
+           for(const index in data){
+            data[index].visible = false
+           }
+           data[key].visible = true
+           settypes(data)
+            }}
+          style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
+     <Text style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
+        </TouchableOpacity>
+        );
+      })}
+ 
+</ScrollView>  */}
 
-          <CollapsibleContainer style={{ }}>
+          <CollapsibleContainer 
+         directionalLockEnabled={false}
+          style={{}}>
       
-         
-      
+ 
+   
          
   
   
  
           <CollapsibleHeaderContainer>
           <StickyView>
-         <View style={{  width: "100%", backgroundColor:"#303030", position: "absolute", top:0, zIndex: -10, elevation: -10, height: scalableheight.seven +  getStatusBarHeight(),}}>
+         <View style={{  width: "100%", backgroundColor:"#303030", position: "absolute", top:0, elevation: -10, zIndex:-10,  height: scalableheight.seven +  getStatusBarHeight() + scalableheight.seven,}}>
             
-                  
+    
                
                 {/* <HeaderComponentRestaurant newNotificationCount={newNotificationCount}  isEnabled={isEnabled}
                        toggleSwitch={toggleSwitch}/>  */}
               
                
                   </View> 
+      
                   </StickyView>
           <ImageBackground
             resizeMode="cover"
@@ -879,19 +919,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
             }}
             source={require('../Resources/images/homebackground.png')}>
          
-{/* 
+
                  <StickyView style={{backgroundColor:"transparent", paddingTop: getStatusBarHeight(),}}>
                 
    <HeaderComponentRestaurant newNotificationCount={newNotificationCount}  isEnabled={isEnabled}
           toggleSwitch={toggleSwitch}/>
 
-   </StickyView> */}
-   <StickyView style={{backgroundColor:"transparent",}}>
-                 <View style={{backgroundColor:"transparent", marginTop: getStatusBarHeight(),}}>
-                <HeaderComponentRestaurant newNotificationCount={newNotificationCount}  isEnabled={isEnabled}
-          toggleSwitch={toggleSwitch}/>
-          </View>
-          </StickyView>
+   </StickyView>
+
           <View style={{ width: '100%',
     alignSelf: 'center',
     height: scalableheight.tweleve,
@@ -954,7 +989,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                 Popular Categories
               </Text>
             </Animatable.View>
-
+          
             <FlatList
               keyExtractor={(item, index) => index.toString()}
               horizontal
@@ -967,12 +1002,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 
 <SearchBar search={search} onchange={(val) => {setsearch(val)}}/>
 </View>
-<StickyView>
+<StickyView 
+style={{backgroundColor:"transparent",}}>
   <ScrollView
 
+overflow={"hidden"}
   horizontal
   showsHorizontalScrollIndicator ={false}
-  style={{ width: "100%", height: scalableheight.seven, flexDirection: "row", zIndex: 10, elevation:10}}>
+  style={{ width: "100%", height: scalableheight.seven, flexDirection: "row", backgroundColor:"transparent"}}>
   {types.map((item, key) => {
           return (
             <TouchableOpacity 
@@ -984,19 +1021,21 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
              data[key].visible = true
              settypes(data)
               }}
-            style={{paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
+            style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
        <Text style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
           </TouchableOpacity>
           );
         })}
    
   </ScrollView>
+
 </StickyView>
+
       </CollapsibleHeaderContainer>
   
       
   <CollapsibleScrollView 
-     
+
 
     ref ={scrollviewref}
   showsVerticalScrollIndicator={false}
@@ -1059,7 +1098,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 
 
     </CollapsibleContainer>
-      
+
+
         
       </View>
       <Custombottomsheet state ={showbottomsheet} locationpin ={pinlocation} onPress={() => {
