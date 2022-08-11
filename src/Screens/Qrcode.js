@@ -6,6 +6,7 @@ import {
   Linking,
   TouchableHighlight,
   PermissionsAndroid,
+  Dimensions,
   Alert,
   Platform,
   StyleSheet,
@@ -16,19 +17,20 @@ import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
-
+import * as Animatable from 'react-native-animatable';
 import Animated from 'react-native-reanimated';
 import TransparentHeader from '../Shared/Components/TransparentHeader';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
+import Favourites from '../Shared/Components/Favourites';
 
-//import {RNCamera} from 'react-native-camera';
 import {CameraScreen} from 'react-native-camera-kit';
 
 const Qrcode = ({navigation, drawerAnimationStyle}) => {
   const [qrvalue, setQrvalue] = useState('');
-  const [opneScanner, setOpneScanner] = useState(false);
   const [camscanner, setCamScanner] = useState(false);
+  const [scanpermission, setScanPermission] = useState(true);
+  const [animationstate, setanimationstate] = useState(true);
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -39,53 +41,8 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
       }, 500);
     });
 
-    //  Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
-  const onOpenlink = () => {
-    // If scanned then function to open URL in Browser
-    Linking.openURL(qrvalue);
-  };
-
-  const onBarcodeScan = qrvalue => {
-    // Called after te successful scanning of QRCode/Barcode
-    setQrvalue(qrvalue);
-    setOpneScanner(false);
-  };
-
-  const onOpneScanner = () => {
-    alert('hello');
-    // To Start Scanning
-    if (Platform.OS === 'android') {
-      async function requestCameraPermission() {
-        try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.CAMERA,
-            {
-              title: 'Camera Permission',
-              message: 'App needs permission for camera access',
-            },
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            // If CAMERA Permission is granted
-
-            // setQrvalue('');
-            setOpneScanner(true);
-          } else {
-            alert('CAMERA permission denied');
-          }
-        } catch (err) {
-          alert('Camera permission err', err);
-          console.warn(err);
-        }
-      }
-      // Calling the camera permission function
-      requestCameraPermission();
-    } else {
-      setQrvalue('');
-      setOpneScanner(true);
-    }
-  };
 
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
@@ -97,22 +54,62 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
           backgroundColor: '#000',
         }}>
         <View style={{position: 'absolute', top: getStatusBarHeight()}}>
-          <TransparentHeader title={'Scan QR Code'} />
+          <TransparentHeader
+            title={'Scan QR Code'}
+            refresh={qrvalue}
+            onpress={() => {
+              setScanPermission(true);
+              setQrvalue('');
+            }}
+          />
         </View>
         {camscanner && (
           <CameraScreen
-            // Barcode props
-            scanBarcode={true}
+            scanBarcode={scanpermission}
             onReadCode={event => {
-              //  setQrvalue(event.nativeEvent.codeStringValue);
-              //  onOpenlink();
-              console.log('QR code found' + event.nativeEvent.codeStringValue);
-            }} // optional
+              setQrvalue(event.nativeEvent.codeStringValue),
+                setScanPermission(false);
+            }}
             showFrame={true} // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
             laserColor="red" // (default red) optional, color of laser in scanner frame
-            frameColor="white" // (default white) optional, color of border of scanner frame
+            frameColor="#962E2B" // (default white) optional, color of border of scanner frame
           />
         )}
+
+        <Animatable.View
+          animation={qrvalue !== '' ? 'fadeInUpBig' : 'slideOutDown'}
+          onAnimationEnd={() => {
+            setanimationstate(false);
+          }}
+          easing="ease"
+          iterationCount={1}>
+          <View
+            style={{
+              width: '100%',
+              paddingHorizontal: scalableheight.three,
+
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'absolute',
+              bottom:
+                qrvalue != '' ? scalableheight.five : -scalableheight.five,
+              elevation: 100000,
+              zIndex: 1000000,
+            }}>
+            <Favourites
+              image={require('../Resources/images/food.png')}
+              title={'Mexican Enchiladas'}
+              reviews={'8.9 (350 reviews)'}
+              time={'9:00 AM - 10:00PM'}
+              onPress={() => {
+                navigation.navigate('Restaurantpage');
+                setQrvalue('');
+                setScanPermission(true);
+              }}
+              distance={'2.5KM AWAY'}
+            />
+          </View>
+        </Animatable.View>
       </View>
     </Animated.View>
   );
@@ -126,14 +123,7 @@ const styles = StyleSheet.create({
     marginVertical: scalableheight.one,
     backgroundColor: '#e8e8e8',
   },
-  // container: {
-  //   height: scalableheight.six,
-  //   backgroundColor: 'rgba(42, 28, 28, 0.1)',
-  //   width: '100%',
-  //   flexDirection: 'row',
-  //   borderRadius: fontSize.eight,
-  //   marginBottom: scalableheight.one,
-  // },
+
   textInput: {
     marginLeft: scalableheight.one,
     width: '100%',

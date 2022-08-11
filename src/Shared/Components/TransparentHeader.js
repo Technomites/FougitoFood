@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -60,13 +60,23 @@ export default function TransparentHeader(props) {
           {props.title}
         </Text>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
-            style={{
-              height: scalableheight.seven,
-              width: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}></TouchableOpacity>
+          {props?.refresh != '' && (
+            <TouchableOpacity
+              onPress={props.onpress}
+              style={{
+                height: scalableheight.seven,
+                width: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Fontisto
+                style={{alignSelf: 'center'}}
+                name="spinner-refresh"
+                color={'white'}
+                size={fontSize.twentyfour}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>
@@ -83,8 +93,8 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent',
     paddingHorizontal: scalableheight.one,
-    elevation:100000,
-    zIndex:1000000
+    elevation: 100000,
+    zIndex: 1000000,
   },
 
   text: {
