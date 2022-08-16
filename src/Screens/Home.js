@@ -569,7 +569,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle('dark-content');
+    StatusBar.setBarStyle('light-content');
     dispatch(seticonfocus('home'));
     // listeners()
   }, []);
@@ -738,7 +738,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
       StatusBar.setBackgroundColor('transparent');
-      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBarStyle('light-content');
     });
 
     //  Return the function to unsubscribe from the event so it gets removed on unmount
@@ -757,7 +757,9 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         reviews={'8.9 (350 reviews)'}
         time={'9:00 AM - 10:00PM'}
         onPress={() => {
-          navigation.navigate('Restaurantpage');
+          // navigation.navigate('Restaurantpage');
+          navigation.navigate('RestaurantPageAnimation');
+          
         }}
         distance={'2.5KM AWAY'}
       />
@@ -830,7 +832,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     console.log('arr' + JSON.stringify(arr));
   }
   return (
-    <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
+    <Animated.View style={{flex: 1, ...drawerAnimationStyle,  overflow:"hidden",}}>
       <StatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
       />
@@ -841,7 +843,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             resizeMode="cover"
             style={{
               width: '100%',
-              height: scalableheight.seventeen + getStatusBarHeight(),
+              height: scalableheight.fifteen + getStatusBarHeight(),
               zIndex: 1,
             }}
             imageStyle={{

@@ -1364,11 +1364,11 @@ const ForgotPassword = ({navigation}) => {
             />
                  <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
-            <Image
+            {/* <Image
                 resizeMode= "contain"
                 style={styles.imageStyle}
                 source={require('../Resources/images/GettingStartedLogo.png')}
-            />
+            /> */}
             <Text style={styles.mainTextStyle}>
                  {Lang == "en" ? "Forgot Password" : "هل نسيت كلمة السر"}
             </Text>

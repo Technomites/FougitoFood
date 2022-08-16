@@ -163,11 +163,11 @@ dispatch(clearotpreset())
           />
         </View>
             </TouchableOpacity>
-            <Image
+            {/* <Image
                 resizeMode= "contain"
                 style={styles.imageStyle}
                 source={require('../Resources/images/GettingStartedLogo.png')}
-            />
+            /> */}
             <Text style={styles.mainTextStyle}>
                           {Lang == "en" ? "Verification" : "تَحَقّق"}
             </Text>

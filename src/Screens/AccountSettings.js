@@ -54,7 +54,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle('dark-content');
+    StatusBar.setBarStyle('light-content');
   }, []);
 
   function UpdateProfile() {

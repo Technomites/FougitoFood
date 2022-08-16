@@ -1431,11 +1431,11 @@ const Login = ({navigation}) => {
             /> */}
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
-          <Image
+          {/* <Image
             resizeMode="contain"
             style={styles.imageStyle}
             source={require('../Resources/images/loginlogo.png')}
-          />
+          /> */}
           <Text style={styles.mainTextStyle}>
             {Lang == 'en' ? 'Login' : 'تسجيل الدخول'}
           </Text>

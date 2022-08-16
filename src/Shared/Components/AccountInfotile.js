@@ -11,7 +11,7 @@ import {
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-AntDesign;
+
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';

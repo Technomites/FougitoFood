@@ -157,10 +157,10 @@ const Changepasswordforgot = ({navigation, route}) => {
     
        
 
-<Image
+{/* <Image
                 resizeMode= "contain"
                 style={styleSheet.imageStyle}
-                source={require('../Resources/images/GettingStartedLogo.png')}            />
+                source={require('../Resources/images/GettingStartedLogo.png')}            /> */}
             <Text style={styleSheet.mainTextStyle}>
                  {Lang == "en" ? "Change Password" : "غير كلمة السر"}
             </Text>

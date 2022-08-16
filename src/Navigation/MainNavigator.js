@@ -50,7 +50,7 @@ import * as Animatable from 'react-native-animatable';
 import Home from '../Screens/Home';
 import Restaurantpage from '../Screens/Restaurantpage';
 import Checkout from '../Screens/Checkout';
-
+import RestaurantPageAnimation from '../Screens/RestaurantPageAnimation';
 import Settings from '../Screens/Settings';
 import Help from '../Screens/Help';
 import Coupons from '../Screens/Coupons';
@@ -72,7 +72,7 @@ import Legal from '../Screens/Legal';
 import Faqs from '../Screens/Faqs';
 import Qrcode from '../Screens/Qrcode';
 import TermsCondition from '../Screens/Terms&Condition';
-import AccountInfo from '../Screens/AccountInfo';
+
 import Changepasswordforgot from '../Screens/Changepasswordforgot';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {useNavigation} from '@react-navigation/native';
@@ -732,11 +732,11 @@ const Drawernavigator = props => {
     outputRange: [0, 45],
   });
 
-  const animatedStyle = {borderRadius, transform: [{scale}]};
+  const animatedStyle = {...styleSheet.shadow, borderRadius, transform: [{scale}]};
   return (
     <Drawer.Navigator
       // contentContainerStyle={{flex:1, backgroundColor:"red", borderWidth:10, borderColor:"blue"}}
-      contentContainerStyle={{flex: 1}}
+      contentContainerStyle={{flex: 1,}}
       drawerType="slide"
       // screenOptions={TransitionScreenOptions}
       overlayColor="transparent"
@@ -753,7 +753,7 @@ const Drawernavigator = props => {
       }}
       sceneContainerStyle={{
         // backgroundColor: "rgba(0,0,0,0.9)",
-
+       
         backgroundColor: 'transparent',
       }}
       drawerContent={props => {
@@ -820,6 +820,13 @@ const Drawernavigator = props => {
           <Qrcode {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
+      <Drawer.Screen name="RestaurantPageAnimation" options={{headerShown: false}}>
+        {props => (
+          <RestaurantPageAnimation {...props} drawerAnimationStyle={animatedStyle} />
+        )}
+      </Drawer.Screen>
+
+    
       <Drawer.Screen name="Settings" options={{headerShown: false}}>
         {props => <Settings {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
@@ -1054,6 +1061,7 @@ const MainNavigator = () => {
             component={Aboutus}
             options={{headerShown: false}}
           />
+       
 
           <Stack.Screen
             name="Drawernavigator"

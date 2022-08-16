@@ -61,11 +61,11 @@ export default function Transparentsearch(props) {
       <TouchableOpacity
         onPress={props.OnPress}
         style={{
-          height: '95%',
+          height: '90%',
           width: scalableheight.fivefive,
           backgroundColor: '#E14E4E',
           position: 'absolute',
-          right: scalableheight.borderwidth ,
+          right: scalableheight.borderwidth3 ,
           borderRadius: fontSize.borderradiusmedium,
           alignItems: 'center',
           justifyContent: 'center',

@@ -9,11 +9,11 @@ const color = {
     errorColor: '#BC5B6C',
 };
 const images = {
-    mainLogo: require('../assets/LOGO.png'),
-    homeLogo: require('../assets/home-logo.png'),
-    loader: require('../assets/loader.gif'),
-    splashBgImage: require('../assets/splash.png'),
-    toggle: require('../assets/toggle.png'),
+    // mainLogo: require('../assets/LOGO.png'),
+    // homeLogo: require('../assets/home-logo.png'),
+    // loader: require('../assets/loader.gif'),
+    // splashBgImage: require('../assets/splash.png'),
+    // toggle: require('../assets/toggle.png'),
 };
 
 const theme = { color, images };

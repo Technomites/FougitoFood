@@ -27,7 +27,7 @@ const SplashScreen = props => {
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle('dark-content');
+    StatusBar.setBarStyle("light-content");
     hideNavigationBar();
   }, []);
 

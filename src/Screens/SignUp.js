@@ -1440,14 +1440,14 @@ const SignUp = ({ navigation }) => {
               <KeyboardAvoidingView
               style={{height:"100%", width:"100%"}}
       behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
-          <Image
+          {/* <Image
             resizeMode="contain"
 
             style={styles.imageStyle}
             // source={theme.images.mainLogo}
             source={require('../Resources/images/GettingStartedLogo.png')}
 
-          />
+          /> */}
           <Text style={styles.mainTextStyle}>
             {Lang == "en" ? "Sign Up" : "اشتراك"}
           </Text>

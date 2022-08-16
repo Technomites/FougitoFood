@@ -66,13 +66,14 @@ import {
   useCollapsibleContext,
   CollapsibleHeaderContainer,
   withCollapsibleContext,
-  StickyView,
+  StickyView
 } from '@r0b0t3d/react-native-collapsible';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   createDrawerNavigator,
@@ -84,30 +85,39 @@ import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {styles} from 'react-native-element-dropdown/src/components/TextInput/styles';
+import { styles } from 'react-native-element-dropdown/src/components/TextInput/styles';
 import Custombottomsheet from '../Shared/Components/Custombottomsheet';
 
+
+
 const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
+ 
+
   const [dataSourceCords, setDataSourceCords] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
-  const [specialinstructions, setspecialinstructions] = useState('');
+
   const [refreshing, setRefreshing] = useState(false);
+  const [specialinstructions, setspecialinstructions] = useState('');
   const [cartvisible, setcartvisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
+  const [count, setcount] = useState(0);
+  const [lat, setlat] = useState();
+  const [long, setlong] = useState();
+  const [showbottomsheet, setshowbottomsheet] = useState(false);
+  const [pinlocation, setpinlocation] = useState('');
+
   const [search, setsearch] = useState('');
   const [isEnabled, setisEnabled] = useState(false);
   const [isCollapsed, setisCollapsed] = useState(false);
   const Top = createMaterialTopTabNavigator();
-  const [count, setcount] = useState(0);
-  const [lat, setlat] = useState();
-  const [long, setlong] = useState();
+
   const [inlat, setinlat] = useState();
-  const [showbottomsheet, setshowbottomsheet] = useState(false);
+ 
   const [inlong, setinlong] = useState();
-  const [pinlocation, setpinlocation] = useState('');
-  const scrollviewref = useRef();
-  const drinksref = useRef();
+  
+  const scrollviewref = useRef()
+  const drinksref = useRef()
   const [serving, setserving] = useState([
     {
       selected: false,
@@ -147,25 +157,30 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       selected: false,
       serving: 'Lettuce',
     },
-  ]);
+  ])
   const [types, settypes] = useState([
     {
-      title: 'Starters',
-      visible: true,
+      title: "Starters",
+      visible: true
+   
     },
     {
-      title: 'Main Food',
-      visible: false,
+      title: "Main Food",
+      visible: false
+   
     },
     {
-      title: 'Desert',
-      visible: false,
+      title: "Desert",
+      visible: false
+   
     },
     {
-      title: 'Drinks',
-      visible: false,
+      title: "Drinks",
+      visible: false
+   
     },
-  ]);
+   
+  ])
   const [dished, setdisdhed] = useState([
     {
       selected: false,
@@ -195,7 +210,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       selected: false,
       serving: 'Hummus',
     },
-  ]);
+  
+]);
   const {
     blogsdatahome,
     newsfeedshomedata,
@@ -209,15 +225,21 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   const {
-    collapse, // <-- Collapse header
-    expand, // <-- Expand header
-    scrollY, // <-- Animated scroll position. In case you need to do some animation in your header or somewhere else
+    collapse,   // <-- Collapse header
+    expand,     // <-- Expand header
+    scrollY   // <-- Animated scroll position. In case you need to do some animation in your header or somewhere else
   } = useCollapsibleContext();
+
+ 
+
+ 
+
+
 
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle('dark-content');
+    StatusBar.setBarStyle('light-content');
     dispatch(seticonfocus('home'));
     // listeners()
   }, []);
@@ -263,7 +285,10 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   }, [Lang]);
 
   useEffect(() => {
-    hideNavigationBar();
+   
+        hideNavigationBar();
+       
+   
   }, [modalVisible]);
 
   useEffect(() => {
@@ -361,6 +386,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     return false;
   };
 
+
   function onRefresh() {
     NetInfo.fetch().then(state => {
       if (state.isConnected == true && state.isInternetReachable == true) {
@@ -376,7 +402,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
       StatusBar.setBackgroundColor('transparent');
-      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBarStyle('light-content');
     });
 
     //  Return the function to unsubscribe from the event so it gets removed on unmount
@@ -406,20 +432,12 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   </TouchableOpacity>
   );
   const starters = ({item}) => (
-    <View style={{width: '100%', alignItems: 'center'}}>
-      <Starters
-        image={require('../Resources/images/food.png')}
-        title={'Mexican Enchiladas'}
-        description={
-          'The original French toast! Thick slices of our signature jumbo...'
-        }
-        price={9.4}
-        onPress={() => {
-          setmodalVisible(true);
-        }}
-      />
-    </View>
-  );
+<View style={{width:"100%", alignItems:"center"}}>
+    <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+  </View>
+    );
+ 
+  
 
   function updateservingstate(index) {
     let arr = [...serving];
@@ -455,92 +473,82 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     console.log('arr' + JSON.stringify(arr));
   }
 
-  const Starterslabel = props => {
-    return (
-      //   <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one,   }}>
-      //   <FlatList
-      //   keyExtractor={(item, index) => index.toString()}
-      //   showsVerticalScrollIndicator={false}
-      //   data={dished}
-      //   renderItem={starters}
-      //   // onEndReached={() => LoadFeaturedProjectPagination()}
-      //   // onEndReachedThreshold={0.1}
-      // />
-      // </View>
-      <CollapsibleFlatList // 4️⃣ (Required) Your FlatList/ScrollView
-        data={dished}
-        renderItem={starters}
-        // headerSnappable={false} // <-- should header auto snap when you release the finger
-      />
-    );
-  };
+  const Starterslabel =  props => {
+    return(
+    //   <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one,   }}>
+    //   <FlatList
+    //   keyExtractor={(item, index) => index.toString()}
+    //   showsVerticalScrollIndicator={false}
+    //   data={dished}
+    //   renderItem={starters}
+    //   // onEndReached={() => LoadFeaturedProjectPagination()}
+    //   // onEndReachedThreshold={0.1}
+    // /> 
+    // </View>
+    <CollapsibleFlatList          // 4️⃣ (Required) Your FlatList/ScrollView
+    data={dished}
+    renderItem={starters}
+    // headerSnappable={false} // <-- should header auto snap when you release the finger
+  />
+    )
+   };
+ 
+   const MainCourselabel = props => {
+     return (
+      <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
+      <FlatList
+      keyExtractor={(item, index) => index.toString()}
+      showsVerticalScrollIndicator={false}
+      data={dished}
+      renderItem={starters}
+      // onEndReached={() => LoadFeaturedProjectPagination()}
+      // onEndReachedThreshold={0.1}
+    /> 
+    </View>
+    )
+     
+   };
 
-  const MainCourselabel = props => {
+   const Desert = props => {
     return (
-      <View
-        style={{
-          width: '100%',
-          marginTop: scalableheight.one,
-          paddingHorizontal: scalableheight.one,
-        }}>
-        <FlatList
-          keyExtractor={(item, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-          data={dished}
-          renderItem={starters}
-          // onEndReached={() => LoadFeaturedProjectPagination()}
-          // onEndReachedThreshold={0.1}
-        />
-      </View>
-    );
-  };
-
-  const Desert = props => {
-    return (
-      <View
-        style={{
-          width: '100%',
-          marginTop: scalableheight.one,
-          paddingHorizontal: scalableheight.one,
-        }}>
-        <FlatList
-          keyExtractor={(item, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-          data={dished}
-          renderItem={starters}
-          // onEndReached={() => LoadFeaturedProjectPagination()}
-          // onEndReachedThreshold={0.1}
-        />
-      </View>
-    );
+     <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
+     <FlatList
+     keyExtractor={(item, index) => index.toString()}
+     showsVerticalScrollIndicator={false}
+     data={dished}
+     renderItem={starters}
+     // onEndReached={() => LoadFeaturedProjectPagination()}
+     // onEndReachedThreshold={0.1}
+   /> 
+   </View>
+   )
+    
   };
 
   const Drinks = props => {
     return (
-      <View
-        style={{
-          width: '100%',
-          marginTop: scalableheight.one,
-          paddingHorizontal: scalableheight.one,
-        }}>
-        <FlatList
-          keyExtractor={(item, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-          data={dished}
-          renderItem={starters}
-          // onEndReached={() => LoadFeaturedProjectPagination()}
-          // onEndReachedThreshold={0.1}
-        />
-      </View>
-    );
+     <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
+     <FlatList
+     keyExtractor={(item, index) => index.toString()}
+     showsVerticalScrollIndicator={false}
+     data={dished}
+     renderItem={starters}
+     // onEndReached={() => LoadFeaturedProjectPagination()}
+     // onEndReachedThreshold={0.1}
+   /> 
+   </View>
+   )
+    
   };
   const toggleSwitch = async () => {
-    setisEnabled(!isEnabled);
+
+    setisEnabled(!isEnabled)
   };
+
 
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
-      {modalVisible && (
+       {modalVisible && (
         <View
           style={{
             position: 'absolute',
@@ -550,237 +558,237 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
             zIndex: 1,
           }}></View>
       )}
-      {modalVisible && (
-        <Animatable.View
-          animation={'fadeInUpBig'}
-          easing="ease"
-          //  iterationCount="infinite"
-          iterationCount={1}
-          style={{elevation: 4, zIndex: 4}}>
-          <KeyboardAvoidingView
-            style={{width: '100%', height: '100%'}}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
+   {modalVisible  &&  (  <Animatable.View
+              animation={'fadeInUpBig'}
+   
+                   easing="ease"
+                   //  iterationCount="infinite"
+                   iterationCount={1}
+                   style={{elevation: 4, zIndex:4}}>
+        <KeyboardAvoidingView
+          style={{width: '100%', height: '100%'}}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             <View
               style={{
-                width: '100%',
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'center',
+                width: '95%',
+                height: '90%',
+                borderRadius: fontSize.eleven,
+                backgroundColor: 'white',
               }}>
-              <View
-                style={{
-                  width: '95%',
-                  height: '90%',
-                  borderRadius: fontSize.eleven,
-                  backgroundColor: 'white',
-                }}>
-                <View style={{width: '100%', height: '35%'}}>
-                  <Image
-                    resizeMode="stretch"
+              <View style={{width: '100%', height: '35%'}}>
+                <Image
+                  resizeMode="stretch"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                  }}
+                  source={require('../Resources/images/food.png')}
+                />
+                {renderIf(serving?.filter(item => item.selected == true) != '')(
+                  <View
                     style={{
-                      width: '100%',
-                      height: '100%',
-                    }}
-                    source={require('../Resources/images/food.png')}
-                  />
-                  {renderIf(
-                    serving?.filter(item => item.selected == true) != '',
-                  )(
-                    <View
+                      flexDirection: 'row',
+                      paddingHorizontal: scalableheight.two,
+                      height: scalableheight.four,
+                      backgroundColor: '#E14E4E',
+                      position: 'absolute',
+                      bottom: 0,
+                      right: 0,
+                      borderTopLeftRadius: fontSize.eleven,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text
                       style={{
-                        flexDirection: 'row',
-                        paddingHorizontal: scalableheight.two,
-                        height: scalableheight.four,
-                        backgroundColor: '#E14E4E',
-                        position: 'absolute',
-                        bottom: 0,
-                        right: 0,
-                        borderTopLeftRadius: fontSize.eleven,
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        color: 'white',
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: fontSize.ten,
                       }}>
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontFamily: 'Inter-SemiBold',
-                          fontSize: fontSize.ten,
-                        }}>
-                        AED{' '}
-                      </Text>
+                      AED{' '}
+                    </Text>
 
-                      {serving
-                        ?.filter(function (item) {
-                          return item.selected == true;
-                        })
-                        .map(function ({price}) {
-                          return (
-                            <Text
-                              style={{
-                                color: 'white',
-                                fontFamily: 'Inter-SemiBold',
-                                fontSize: fontSize.fourteen,
-                              }}>
-                              {price}
-                            </Text>
-                          );
-                        })}
-                    </View>,
-                  )}
+                    {serving
+                      ?.filter(function (item) {
+                        return item.selected == true;
+                      })
+                      .map(function ({price}) {
+                        return (
+                          <Text
+                            style={{
+                              color: 'white',
+                              fontFamily: 'Inter-SemiBold',
+                              fontSize: fontSize.fourteen,
+                            }}>
+                            {price}
+                          </Text>
+                        );
+                      })}
+                  </View>,
+                )}
+                <TouchableOpacity
+                  onPress={() => {
+                    setmodalVisible(false);
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: scalableheight.one,
+                    right: scalableheight.one,
+                  }}>
+                  <Ionicons
+                    name="close-circle"
+                    color={'#F5F5F5'}
+                    size={fontSize.thirtyseven}
+                    style={{}}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
+                  width: '100%',
+                  height: '65%',
+                  padding: scalableheight.two,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Inter-Bold',
+                    fontSize: fontSize.sixteen,
+                    color: 'black',
+                  }}>
+                  Chicken Shawarma
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: 'Inter-Medium',
+                    fontSize: fontSize.fourteen,
+                    color: 'black',
+                  }}>
+                  Special mouth watering Chicken Fillet served with fresh vegies
+                  and special sauce.
+                </Text>
+                <View style={{height: scalableheight.one, }} />
+                <MultiChoiceDropDown
+                  title={'Choose Serving'}
+                  data={serving}
+                  update={updateservingstate}
+                />
+                <View style={{height: scalableheight.one}} />
+                <Mltichoicehorizontallist
+                  title={'Choose Serving'}
+                  data={flavours}
+                  update={updateflavourstate}
+                />
+
+                <View style={{height: scalableheight.one}} />
+                <Text
+                  style={{
+                    fontFamily: 'Inter-SemiBold',
+                    fontSize: fontSize.thirteen,
+                    color: 'black',
+                    opacity: 0.4,
+                  }}>
+                  Special Instructions
+                </Text>
+                <View style={{height: scalableheight.one}} />
+                <TextInput
+                  multiline
+                  value={specialinstructions}
+                  onChangeText={text => setspecialinstructions(text)}
+                  placeholder={'Type here'}
+                  style={{
+                    ...styleSheet.shadow,
+                    width: '98%',
+                    height: scalableheight.fifteen,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor:'#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    textAlignVertical: 'top',
+                  }}
+                />
+                <View style={{height: scalableheight.three}} />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: '50%',
+                    justifyContent: 'space-evenly',
+                    alignSelf: 'center',
+                  }}>
                   <TouchableOpacity
                     onPress={() => {
-                      setmodalVisible(false);
-                    }}
-                    style={{
-                      position: 'absolute',
-                      top: scalableheight.one,
-                      right: scalableheight.one,
+                      count > 1 ? setcount(count - 1) : null;
                     }}>
-                    <Ionicons
-                      name="close-circle"
-                      color={'#F5F5F5'}
-                      size={fontSize.thirtyseven}
+                    <AntDesign
+                      name="minuscircle"
+                      color={'#E14E4E'}
+                      size={fontSize.twentyseven}
+                      style={{}}
+                    />
+                  </TouchableOpacity>
+                  <View
+                    style={{
+                      backgroundColor: '#F5F5F5',
+                      width: scalableheight.six,
+                      height: scalableheight.four,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: fontSize.eight,
+                    }}>
+                    <Text>{count}</Text>
+                  </View>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      setcount(count + 1);
+                    }}>
+                    <AntDesign
+                      name="pluscircle"
+                      color={'#E14E4E'}
+                      size={fontSize.twentyseven}
                       style={{}}
                     />
                   </TouchableOpacity>
                 </View>
+                <View style={{height: scalableheight.three}} />
+                <MYButton
+                  color={'#E14E4E'}
+                  title={'Add To Cart'}
+                  textcolor={'white'}
+                  onPress={() => {
+                    setmodalVisible(false);
+                    setcartvisible(true)
+                  }}
+                />
 
-                <ScrollView
-                  showsVerticalScrollIndicator={false}
-                  style={{
-                    width: '100%',
-                    height: '65%',
-                    padding: scalableheight.two,
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-Bold',
-                      fontSize: fontSize.sixteen,
-                      color: 'black',
-                    }}>
-                    Chicken Shawarma
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-Medium',
-                      fontSize: fontSize.fourteen,
-                      color: 'black',
-                    }}>
-                    Special mouth watering Chicken Fillet served with fresh
-                    vegies and special sauce.
-                  </Text>
-                  <View style={{height: scalableheight.one}} />
-                  <MultiChoiceDropDown
-                    title={'Choose Serving'}
-                    data={serving}
-                    update={updateservingstate}
-                  />
-                  <View style={{height: scalableheight.one}} />
-                  <Mltichoicehorizontallist
-                    title={'Choose Serving'}
-                    data={flavours}
-                    update={updateflavourstate}
-                  />
-
-                  <View style={{height: scalableheight.one}} />
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.thirteen,
-                      color: 'black',
-                      opacity: 0.4,
-                    }}>
-                    Special Instructions
-                  </Text>
-                  <View style={{height: scalableheight.one}} />
-                  <TextInput
-                    multiline
-                    value={specialinstructions}
-                    onChangeText={text => setspecialinstructions(text)}
-                    placeholder={'Type here'}
-                    style={{
-                      ...styleSheet.shadow,
-                      width: '98%',
-                      height: scalableheight.fifteen,
-                      fontSize: fontSize.fifteen,
-                      backgroundColor: '#F9F9F9',
-                      alignSelf: 'center',
-                      borderRadius: fontSize.borderradiusmedium,
-                      paddingHorizontal: '5%',
-                      textAlignVertical: 'top',
-                    }}
-                  />
-                  <View style={{height: scalableheight.three}} />
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '50%',
-                      justifyContent: 'space-evenly',
-                      alignSelf: 'center',
-                    }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        count > 1 ? setcount(count - 1) : null;
-                      }}>
-                      <AntDesign
-                        name="minuscircle"
-                        color={'#E14E4E'}
-                        size={fontSize.twentyseven}
-                        style={{}}
-                      />
-                    </TouchableOpacity>
-                    <View
-                      style={{
-                        backgroundColor: '#F5F5F5',
-                        width: scalableheight.six,
-                        height: scalableheight.four,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: fontSize.eight,
-                      }}>
-                      <Text>{count}</Text>
-                    </View>
-
-                    <TouchableOpacity
-                      onPress={() => {
-                        setcount(count + 1);
-                      }}>
-                      <AntDesign
-                        name="pluscircle"
-                        color={'#E14E4E'}
-                        size={fontSize.twentyseven}
-                        style={{}}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={{height: scalableheight.three}} />
-                  <MYButton
-                    color={'#E14E4E'}
-                    title={'Add To Cart'}
-                    textcolor={'white'}
-                    onPress={() => {
-                      setmodalVisible(false);
-                      setcartvisible(true);
-                    }}
-                  />
-
-                  <View style={{height: scalableheight.three}} />
-                </ScrollView>
-              </View>
+                <View style={{height: scalableheight.three}} />
+              </ScrollView>
             </View>
-          </KeyboardAvoidingView>
-        </Animatable.View>
-      )}
+          </View>
+        </KeyboardAvoidingView>
+      </Animatable.View>)}
       <StatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
       />
+  
 
       {cartvisible && (
         <Animatable.View
-          animation={'fadeInUpBig'}
-          easing="ease"
-          //  iterationCount="infinite"
-          iterationCount={1}
+        animation={'fadeInUpBig'}
+
+             easing="ease"
+             //  iterationCount="infinite"
+             iterationCount={1}
+            
           style={{
             bottom: scalableheight.two,
             position: 'absolute',
@@ -792,11 +800,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
             paddingVertical: scalableheight.one,
             paddingHorizontal: scalableheight.two,
           }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Checkout');
-            }}
-            style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <TouchableOpacity 
+          onPress={() => {navigation.navigate("Checkout")}}
+          style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View
@@ -880,7 +886,7 @@ style={{position:"absolute" , top: scalableheight.seven +  getStatusBarHeight(),
 </ScrollView>  */}
 
           <CollapsibleContainer 
-         directionalLockEnabled={false}
+        
           style={{}}>
       
  
@@ -940,7 +946,7 @@ style={{position:"absolute" , top: scalableheight.seven +  getStatusBarHeight(),
     <View style={{width: "95%",}}>
  <Infobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}
      onPress={() => {
-      setshowbottomsheet(true);
+      setshowbottomsheet(true); 
     }}
  />
    </View>
@@ -966,24 +972,18 @@ style={{position:"absolute" , top: scalableheight.seven +  getStatusBarHeight(),
               }}>
               <View
                 style={{
-                  width: '100%',
-                  alignSelf: 'center',
-                  height: scalableheight.tweleve,
-                  flexDirection: 'row',
+                  width: scalableheight.three,
+                  height: scalableheight.three,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: 'transparent',
-                  paddingHorizontal: scalableheight.one,
+                  backgroundColor: '#E14E4E',
+                  borderRadius: fontSize.borderradius,
                 }}>
-                <View style={{width: '95%'}}>
-                  <Infobar
-                    Heading={'Home'}
-                    Details={'Clifton block 2, plot no 245, near bilawal house'}
-                    onPress={() => {
-                      setshowbottomsheet(true);
-                    }}
-                  />
-                </View>
+                <MaterialIcons
+                  name="local-fire-department"
+                  color={'white'}
+                  size={fontSize.fifteen}
+                />
               </View>
               <Text
                 style={{
@@ -1041,7 +1041,7 @@ overflow={"hidden"}
   
       
   <CollapsibleScrollView 
-
+ 
 
     ref ={scrollviewref}
   showsVerticalScrollIndicator={false}
@@ -1108,16 +1108,12 @@ overflow={"hidden"}
 
         
       </View>
-      <Custombottomsheet
-        state={showbottomsheet}
-        locationpin={pinlocation}
-        onPress={() => {
-          setshowbottomsheet(false);
-        }}
-        onPressnewlocation={() => {
-          getnewlocation();
-        }}
-      />
+      <Custombottomsheet state ={showbottomsheet} locationpin ={pinlocation} onPress={() => {
+              setshowbottomsheet(false);
+            }}  
+            onPressnewlocation={() => {
+              getnewlocation()
+            }}       />    
     </Animated.View>
   );
 };
@@ -1148,10 +1144,12 @@ const styleSheet = StyleSheet.create({
     alignItems: 'center',
   },
   shadow: {
+    
     shadowColor: '#470000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.2,
-    elevation: 2,
+  shadowOffset: {width: 0, height: 1},
+  shadowOpacity: 0.2,
+  elevation: 2,
+ 
   },
   newsshadow: {
     shadowColor: '#000',
@@ -1164,10 +1162,7 @@ const styleSheet = StyleSheet.create({
     elevation: 3,
   },
   heading: {
-    fontFamily: 'Inter-Bold',
-    color: 'black',
-    fontSize: fontSize.twenty,
-    paddingVertical: scalableheight.one,
-  },
+    fontFamily: 'Inter-Bold', color: "black", fontSize: fontSize.twenty, paddingVertical: scalableheight.one
+  }
 });
 export default withCollapsibleContext(Restaurantpage);

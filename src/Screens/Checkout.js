@@ -195,11 +195,14 @@ setpayment(data)
                          <View style={{borderTopColor: "rgba(211,211,211, 0.5)", borderTopWidth: scalableheight.borderTopWidth, marginVertical: scalableheight.one}}></View>
                           <Bll label={"Total"} price={"AED 222.00"}/>
                           <View style={{height: scalableheight.two}} />
-                          <MYButton   title={'Login to Place Order'} onPress={()=>{setmodalVisible(true)}}
+                        
+                        <View style={{height: scalableheight.ten}} />
+     </ScrollView>
+<View style={{paddingHorizontal: scalableheight.one, position:"absolute", bottom: scalableheight.two, width:"100%"}}>
+     <MYButton   title={'Login to Place Order'} onPress={()=>{setmodalVisible(true)}}
                     color="#E14E4E"
                     textcolor="white"/>
-                        <View style={{height: scalableheight.three}} />
-     </ScrollView>
+                    </View>
       </View>
     </Animated.View>
   );
