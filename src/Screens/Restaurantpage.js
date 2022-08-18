@@ -22,8 +22,10 @@ import {
   Modal,
   SectionList,
   KeyboardAvoidingView,
+  
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import ScreenWrapper from '../Shared/Components/ScreenWrapper';
 import renderIf from 'render-if';
 // import Modal from "react-native-modal";
 import {
@@ -37,6 +39,7 @@ import {
   getcategories,
   getcategoriesbyid,
   getNewNotificationCount,
+
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -66,7 +69,10 @@ import {
   useCollapsibleContext,
   CollapsibleHeaderContainer,
   withCollapsibleContext,
-  StickyView
+  StickyView,
+  
+  
+  
 } from '@r0b0t3d/react-native-collapsible';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -88,12 +94,14 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import { styles } from 'react-native-element-dropdown/src/components/TextInput/styles';
 import Custombottomsheet from '../Shared/Components/Custombottomsheet';
 
-
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
  
 
   const [dataSourceCords, setDataSourceCords] = useState([]);
+
+  const [dataSourceCordsHorizontal, setdataSourceCordsHorizontal] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
 
@@ -115,7 +123,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   const [inlat, setinlat] = useState();
  
   const [inlong, setinlong] = useState();
-  
+  const scrollviewhorizontalref = useRef()
   const scrollviewref = useRef()
   const drinksref = useRef()
   const [serving, setserving] = useState([
@@ -224,23 +232,23 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     popularservicedatahome,
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
+
   const {
     collapse,   // <-- Collapse header
-    expand,     // <-- Expand header
-    scrollY   // <-- Animated scroll position. In case you need to do some animation in your header or somewhere else
+    expand,  
+    scrollTo,
+    scrollToIndex, 
+    scrollHandler,
+  
+    scrollY // <-- Animated scroll position. In case you need to do some animation in your header or somewhere else
   } = useCollapsibleContext();
-
- 
-
- 
-
 
 
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
     StatusBar.setBarStyle('light-content');
-    dispatch(seticonfocus('home'));
+   
     // listeners()
   }, []);
   useEffect(() => {
@@ -248,8 +256,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   }, []);
 
   useEffect(() => {
-    dispatch(getNewNotificationCount());
-  }, [newNotificationCount]);
+   console.log("dataSourceCordsHorizontal" + JSON.stringify(dataSourceCordsHorizontal))
+  }, [dataSourceCordsHorizontal]);
+  
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -272,18 +281,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     };
   }, []);
 
-  useEffect(() => {
-    dispatch(getProfileInformation());
-    dispatch(getbanner());
-  }, []);
+ 
 
-  useEffect(() => {
-    dispatch(getcategories(Lang));
-    dispatch(getpopularserviceshome(Lang));
-    dispatch(getnewsfeedshome(Lang));
-    dispatch(getblogshome(Lang));
-  }, [Lang]);
-
+  
   useEffect(() => {
    
         hideNavigationBar();
@@ -312,12 +312,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       })
       .catch(error => console.warn(error));
   }
-  const getLocation = async () => {
-    const hasLocationPermission = await hasLocationPermissions();
-    if (!hasLocationPermission) {
-      return;
-    }
-  };
+ 
   const hasLocationPermissions = async () => {
     if (Platform.OS === 'ios') {
       const hasPermission = await hasLocationPermissionIOS();
@@ -387,19 +382,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   };
 
 
-  function onRefresh() {
-    NetInfo.fetch().then(state => {
-      if (state.isConnected == true && state.isInternetReachable == true) {
-      } else {
-        showToast('No Internet Connection', {
-          duration: 500,
-        });
-      }
-    });
-  }
+  
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
       StatusBar.setBackgroundColor('transparent');
       StatusBar.setBarStyle('light-content');
@@ -417,25 +402,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     />
   );
 
-  const menu = ({item, key}) => (
-    <TouchableOpacity 
-    onPress={() => {   
-     let data = [...types]
-     for(const index in data){
-      data[index].visible = false
-     }
-     data[key].visible = true
-     settypes(data)
-      }}
-    style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
-<Text style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
-  </TouchableOpacity>
-  );
-  const starters = ({item}) => (
-<View style={{width:"100%", alignItems:"center"}}>
-    <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
-  </View>
-    );
+
+
  
   
 
@@ -473,73 +441,11 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     console.log('arr' + JSON.stringify(arr));
   }
 
-  const Starterslabel =  props => {
-    return(
-    //   <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one,   }}>
-    //   <FlatList
-    //   keyExtractor={(item, index) => index.toString()}
-    //   showsVerticalScrollIndicator={false}
-    //   data={dished}
-    //   renderItem={starters}
-    //   // onEndReached={() => LoadFeaturedProjectPagination()}
-    //   // onEndReachedThreshold={0.1}
-    // /> 
-    // </View>
-    <CollapsibleFlatList          // 4️⃣ (Required) Your FlatList/ScrollView
-    data={dished}
-    renderItem={starters}
-    // headerSnappable={false} // <-- should header auto snap when you release the finger
-  />
-    )
-   };
+  
  
-   const MainCourselabel = props => {
-     return (
-      <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
-      <FlatList
-      keyExtractor={(item, index) => index.toString()}
-      showsVerticalScrollIndicator={false}
-      data={dished}
-      renderItem={starters}
-      // onEndReached={() => LoadFeaturedProjectPagination()}
-      // onEndReachedThreshold={0.1}
-    /> 
-    </View>
-    )
-     
-   };
+  
 
-   const Desert = props => {
-    return (
-     <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
-     <FlatList
-     keyExtractor={(item, index) => index.toString()}
-     showsVerticalScrollIndicator={false}
-     data={dished}
-     renderItem={starters}
-     // onEndReached={() => LoadFeaturedProjectPagination()}
-     // onEndReachedThreshold={0.1}
-   /> 
-   </View>
-   )
-    
-  };
 
-  const Drinks = props => {
-    return (
-     <View style={{width: "100%", marginTop: scalableheight.one, paddingHorizontal: scalableheight.one}}>
-     <FlatList
-     keyExtractor={(item, index) => index.toString()}
-     showsVerticalScrollIndicator={false}
-     data={dished}
-     renderItem={starters}
-     // onEndReached={() => LoadFeaturedProjectPagination()}
-     // onEndReachedThreshold={0.1}
-   /> 
-   </View>
-   )
-    
-  };
   const toggleSwitch = async () => {
 
     setisEnabled(!isEnabled)
@@ -547,7 +453,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 
 
   return (
-    <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
+    <ScreenWrapper
+    drawer={drawerAnimationStyle}
+    style={{flex: 1, }}>
        {modalVisible && (
         <View
           style={{
@@ -759,8 +667,13 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                     />
                   </TouchableOpacity>
                 </View>
-                <View style={{height: scalableheight.three}} />
-                <MYButton
+                <View style={{height: scalableheight.twenty}} />
+             
+
+            
+              </ScrollView>
+              <View style={{position:"absolute", bottom:scalableheight.two, width:"100%", paddingHorizontal: scalableheight.two}}>
+              <MYButton
                   color={'#E14E4E'}
                   title={'Add To Cart'}
                   textcolor={'white'}
@@ -768,10 +681,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                     setmodalVisible(false);
                     setcartvisible(true)
                   }}
-                />
-
-                <View style={{height: scalableheight.three}} />
-              </ScrollView>
+                /></View>
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -861,30 +771,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 }}>
      
  
-     {/* <ScrollView
-
-horizontal
-showsHorizontalScrollIndicator ={false}
-style={{position:"absolute" , top: scalableheight.seven +  getStatusBarHeight(),    width: "100%", height: scalableheight.seven, flexDirection: "row", backgroundColor:"transparent", elevation: -10, zIndex: -10}}>
-{types.map((item, key) => {
-        return (
-          <TouchableOpacity 
-          onPress={() => {   
-           let data = [...types]
-           for(const index in data){
-            data[index].visible = false
-           }
-           data[key].visible = true
-           settypes(data)
-            }}
-          style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
-     <Text style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
-        </TouchableOpacity>
-        );
-      })}
- 
-</ScrollView>  */}
-
+     
           <CollapsibleContainer 
         
           style={{}}>
@@ -897,7 +784,7 @@ style={{position:"absolute" , top: scalableheight.seven +  getStatusBarHeight(),
  
           <CollapsibleHeaderContainer>
           <StickyView>
-         <View style={{  width: "100%", backgroundColor:"#303030", position: "absolute", top:0, elevation: -10, zIndex:-10,  height: scalableheight.seven +  getStatusBarHeight() + scalableheight.seven,}}>
+         <View style={{  width: "100%", backgroundColor:"#201F1F", position: "absolute", top:0, elevation: -10, zIndex:-10,  height: scalableheight.seven +  getStatusBarHeight() + scalableheight.seven,}}>
             
     
                
@@ -1010,8 +897,8 @@ style={{position:"absolute" , top: scalableheight.seven +  getStatusBarHeight(),
 </View>
 <StickyView 
 style={{backgroundColor:"transparent",}}>
-  <ScrollView
-
+  <AnimatedScrollView
+  ref={scrollviewhorizontalref}
 overflow={"hidden"}
   horizontal
   showsHorizontalScrollIndicator ={false}
@@ -1019,7 +906,14 @@ overflow={"hidden"}
   {types.map((item, key) => {
           return (
             <TouchableOpacity 
+            onLayout={event => {
+              const layout = event.nativeEvent.layout;
+              dataSourceCordsHorizontal[key] = layout.x; // we store this offset values in an array
+              }}
             onPress={() => {   
+             console.log(scrollY)
+            scrollTo(dataSourceCords[key + 1] - 150, true)
+         
              let data = [...types]
              for(const index in data){
               data[index].visible = false
@@ -1028,12 +922,14 @@ overflow={"hidden"}
              settypes(data)
               }}
             style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
-       <Text style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
+       <Text 
+ 
+       style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
           </TouchableOpacity>
           );
         })}
    
-  </ScrollView>
+  </AnimatedScrollView>
 
 </StickyView>
 
@@ -1041,15 +937,90 @@ overflow={"hidden"}
   
       
   <CollapsibleScrollView 
- 
 
-    ref ={scrollviewref}
+
+
+
+     ref ={scrollviewref}
+ scrollEventThrottle={16}
+
+onScrollBeginDrag={(event) => {
+  console.log("3eeee" + event.nativeEvent?.contentOffset?.y)
+  let y = event.nativeEvent.contentOffset.y 
+    
+  // let num = scrollOffsetY
+  console.log("a" + JSON.stringify(dataSourceCords) )
+  console.log("a" + JSON.stringify(types) )
+  
+  if( y < dataSourceCords[2] - 150){
+
+    if(types[0].visible != true){
+      let data = [...types]
+               for(const index in data){
+                data[index].visible = false
+               }
+               data[0].visible = true
+               settypes(data)
+               scrollviewhorizontalref.current.scrollTo({ y: 0, animated: true });
+      
+    }
+    // console.log(JSON.stringify(scrollOffsetY))
+    // console.log("helle")
+   } 
+   else  if(y > dataSourceCords[2] - 150 && y < dataSourceCords[3] - 150  ){
+
+    if(types[1].visible != true){
+      let data = [...types]
+               for(const index in data){
+                data[index].visible = false
+               }
+               data[1].visible = true
+               settypes(data)
+               scrollviewhorizontalref.current.scrollTo({ y: 50, animated: true });
+    }
+    // console.log(JSON.stringify(scrollOffsetY))
+    // console.log("helle")
+  } else  if(y > dataSourceCords[3] - 150 && y < dataSourceCords[4] - 150 ){
+
+    if(types[2].visible != true){
+      let data = [...types]
+               for(const index in data){
+                data[index].visible = false
+               }
+               data[2].visible = true
+               settypes(data)
+               scrollviewhorizontalref.current.scrollTo({ y: 50, animated: true });
+    }
+    // console.log(JSON.stringify(scrollOffsetY))
+    // console.log("helle")
+  } else  if(y > dataSourceCords[4]- 150){
+
+    if(types[3].visible != true){
+      let data = [...types]
+               for(const index in data){
+                data[index].visible = false
+               }
+               data[3].visible = true
+               settypes(data)
+               
+              //  scrollviewhorizontalref.current.scrollTo({ y: scalableheight.fifteen, animated: true });
+              scrollviewhorizontalref.current.scrollTo({ y: 50, animated: true });
+    }
+    // console.log(JSON.stringify(scrollOffsetY))
+    // console.log("helle")
+  }
+}}
+
   showsVerticalScrollIndicator={false}
   style={{backgroundColor:"white", paddingHorizontal: scalableheight.one,}}>
   
-  {renderIf(types[0].visible == true)(
-    <>
-  <Text style={styleSheet.heading}>Starters </Text>
+  
+  <Text 
+  onLayout={event => {
+    const layout = event.nativeEvent.layout;
+    dataSourceCords[1] = layout.y ; // we store this offset values in an array
+    }}
+  style={styleSheet.heading}>Starters </Text>
   {dished.map((item, key) => {
           return (
             <View style={{width:"100%", alignItems:"center"}}>
@@ -1057,34 +1028,46 @@ overflow={"hidden"}
           </View>
           );
         })}
-        </>
-  )}
-{renderIf(types[1].visible == true)(
-    <>
-<Text style={styleSheet.heading}>Main Meal </Text>
-  {dished.map((item, key) => {
-          return (
-            <View style={{width:"100%", alignItems:"center",}}>
-            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
-          </View>
-          );
-        })}
-        </>)}
-        {renderIf(types[2].visible == true)(
-    <>
-<Text style={styleSheet.heading}>Desert </Text>
-  {dished.map((item, key) => {
-          return (
-            <View style={{width:"100%", alignItems:"center",}}>
-            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
-          </View>
-          );
-        })}
-        </>)}
+     
+ 
 
-        {renderIf(types[3].visible == true)(
-    <>
-<Text style={styleSheet.heading}
+<Text
+ onLayout={event => {
+  const layout = event.nativeEvent.layout;
+  dataSourceCords[2] = layout.y; // we store this offset values in an array
+  }}
+style={styleSheet.heading}>Main Meal </Text>
+  {dished.map((item, key) => {
+          return (
+            <View style={{width:"100%", alignItems:"center",}}>
+            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+          </View>
+          );
+        })}
+      
+       
+<Text 
+ onLayout={event => {
+  const layout = event.nativeEvent.layout;
+  dataSourceCords[3] = layout.y ;  // we store this offset values in an array
+  }}
+style={styleSheet.heading}>Desert </Text>
+  {dished.map((item, key) => {
+          return (
+            <View style={{width:"100%", alignItems:"center",}}>
+            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+          </View>
+          );
+        })}
+    
+
+      
+<Text 
+ onLayout={event => {
+  const layout = event.nativeEvent.layout;
+  dataSourceCords[4] = layout.y; // we store this offset values in an array
+  }}
+style={styleSheet.heading}
 
 >Drinks </Text>
   {dished.map((item, key) => {
@@ -1094,8 +1077,7 @@ overflow={"hidden"}
           </View>
           );
         })}
-        </>
-        )}
+      
        
   </CollapsibleScrollView>
 
@@ -1114,7 +1096,7 @@ overflow={"hidden"}
             onPressnewlocation={() => {
               getnewlocation()
             }}       />    
-    </Animated.View>
+    </ScreenWrapper>
   );
 };
 

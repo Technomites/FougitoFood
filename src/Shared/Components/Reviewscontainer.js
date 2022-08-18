@@ -36,11 +36,11 @@ const navigation = useNavigation();
         backgroundColor: 'white',
         paddingVertical: scalableheight.one,
   
-        paddingHorizontal: scalableheight.one,
+        paddingHorizontal: scalableheight.three,
         borderBottomLeftRadius: fontSize.twenty,
         borderBottomRightRadius: fontSize.twenty,
         zIndex:1}}>
-          <View style= {{height:"100%", width: "60%",}}>
+          <View style= {{height:"100%", width: "50%",}}>
       <View style={{flexDirection:"row", paddingVertical: scalableheight.one, alignItems:"center",}}>
           <View style={{height:scalableheight.three, backgroundColor:"#E14E4E", width: scalableheight.eight , flexDirection:"row", alignItems:"center", justifyContent:"space-evenly", borderRadius: fontSize.borderradius}}>
           <FontAwesome 
@@ -59,10 +59,10 @@ const navigation = useNavigation();
     <Text style={{ color:"#303030", fontFamily: 'Inter-Medium',
                     fontSize: fontSize.twelve, opacity: 0.4}}>{props.description}</Text>
           </View>
-          <View style= {{height:"100%", width: "40%",  alignItems:"flex-end",justifyContent:"center",}}>
+          <View style= {{height:"100%", width: "50%",  alignItems:"flex-end",justifyContent:"center", }}>
           <Image
               resizeMode="contain"
-              style={{ height: "90%", width:"100%",}}
+              style={{ height: "100%", width:"60%"}}
               source={props.image}
             />
             </View>

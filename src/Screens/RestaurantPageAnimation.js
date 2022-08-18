@@ -663,8 +663,8 @@ overflow={"hidden"}
               //   x: 0,
               //   y: dataSourceCords[1], //we get the offset value from array based on key
               //   animated: true,});
-            
-
+      
+         
               scrollviewref.current.scrollTo({ y: dataSourceCords[key + 1], animated: true, });
               
              let data = [...types]

@@ -101,7 +101,7 @@ const renderpopularcategories = ({item}) => (
             source={require('../../Resources/images/homebackground.png')}>
               
              
-    <View style={{width: "95%", backgroundColor:"black", height:"35%", alignSelf:"center" , marginBottom: scalableheight.onepointfive}}>
+    <View style={{width: "95%", backgroundColor:"black", height:"33%", alignSelf:"center" , marginBottom: scalableheight.onepointfive}}>
  <AnimatableInfoBar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}
     onPress={
      props.showlocation

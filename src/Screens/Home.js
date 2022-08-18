@@ -570,16 +570,13 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
     StatusBar.setBarStyle('light-content');
-    dispatch(seticonfocus('home'));
-    // listeners()
+   
   }, []);
   useEffect(() => {
     listeners();
   }, []);
 
-  useEffect(() => {
-    dispatch(getNewNotificationCount());
-  }, [newNotificationCount]);
+
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -602,17 +599,9 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     };
   }, []);
 
-  useEffect(() => {
-    dispatch(getProfileInformation());
-    dispatch(getbanner());
-  }, []);
+ 
 
-  useEffect(() => {
-    dispatch(getcategories(Lang));
-    dispatch(getpopularserviceshome(Lang));
-    dispatch(getnewsfeedshome(Lang));
-    dispatch(getblogshome(Lang));
-  }, [Lang]);
+ 
 
   useEffect(() => {
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
@@ -757,8 +746,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         reviews={'8.9 (350 reviews)'}
         time={'9:00 AM - 10:00PM'}
         onPress={() => {
-          // navigation.navigate('Restaurantpage');
-          navigation.navigate('RestaurantPageAnimation');
+          navigation.navigate('Restaurantpage');
+           //navigation.navigate('RestaurantPageAnimation');
           
         }}
         distance={'2.5KM AWAY'}
@@ -784,53 +773,9 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       animated: true,
     });
   }
-  const starters = ({item}) => (
-    <Starters
-      image={require('../Resources/images/food.png')}
-      title={'Mexican Enchiladas'}
-      description={
-        'The original French toast! Thick slices of our signature jumbo...'
-      }
-      price={9.4}
-      onPress={() => {
-        setmodalVisible(true);
-      }}
-    />
-  );
+ 
 
-  function updateservingstate(index) {
-    let arr = [...serving];
-    for (const key in arr) {
-      if (key == index) {
-        if (arr[key].selected == true) {
-          arr[key].selected = false;
-        } else {
-          arr[key].selected = true;
-        }
-      } else {
-        arr[key].selected = false;
-      }
-    }
-    setserving(arr);
-    console.log('arr' + JSON.stringify(arr));
-  }
 
-  function updateflavourstate(index) {
-    let arr = [...flavours];
-    for (const key in arr) {
-      if (key == index) {
-        if (arr[key].selected == true) {
-          arr[key].selected = false;
-        } else {
-          arr[key].selected = true;
-        }
-      } else {
-        arr[key].selected = false;
-      }
-    }
-    setflavours(arr);
-    console.log('arr' + JSON.stringify(arr));
-  }
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle,  overflow:"hidden",}}>
       <StatusBar
