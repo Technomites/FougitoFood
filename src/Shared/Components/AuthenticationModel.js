@@ -39,9 +39,11 @@ export default function AuthenticationModel(props) {
     const [signupvisible, setsignupvisible] = useState(false);
     const [otpvisible, setotpvisible] = useState(false);
     const [timeractive, settimeractive] = useState(false);
+    const [animationtype, setanimationtype] = useState("fadeInUpBig");
+
     
     const [forgetpasswordvisible, setforgetpasswordvisible] = useState(false);
-    const [animationstate, setanimationstate] = useState(true);
+    const [animationstate, setanimationstate] = useState(false);
     const [codeOneActive, setCodeOneActive] = useState(false);
     const [codeTwoActive, setCodeTwoActive] = useState(false);
     const [codeThreeActive, setCodeThreeActive] = useState(false);
@@ -58,10 +60,28 @@ export default function AuthenticationModel(props) {
     const input_4 = useRef();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  function toggleanimation() {
+    if (animationtype == 'fadeInUpBig') {
+   
+      setanimationtype('fadeOutDownBig');
+    } else {
+    
+      setanimationtype('fadeInUpBig');
+    }
+  }
 
 
 
+ 
+  useEffect(() => {
+    if(props.state == true){
+      setanimationstate(true);
+    }
+ 
+  }, [props.state]);
   function clearandclose(){
+    toggleanimation()
+    setanimationstate(true)
     setnumber("")
     setfullname("")
     setpassword("")
@@ -71,11 +91,11 @@ export default function AuthenticationModel(props) {
     setotpvisible(false)
     settimeractive(false)
     setforgetpasswordvisible(false)
-    setanimationstate(true)
+  
     setCodeOneActive(false)
     setCodeTwoActive(false)
-    props.togglemodel()
-                  
+
+
   }
 
   function togglescreen(index){
@@ -119,23 +139,27 @@ export default function AuthenticationModel(props) {
 
   return (
   <>
-    {props.state && (
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            zIndex: 1,
-          }}></View>
-      )}
-   {props.state  &&  (  <Animatable.View
-              animation={'fadeInUpBig'}
-   
+   {props.state  &&  (  
+   <Animatable.View
+            
+              animation={animationstate ? animationtype : null}
+              onAnimationEnd={() => {
+                setanimationstate(false);
+                if(animationtype == "fadeOutDownBig"){
+                  setanimationtype("fadeInUpBig")
+                 
+                  props.togglemodel()
+                }
+              
+              }}
                    easing="ease"
                    //  iterationCount="infinite"
                    iterationCount={1}
-                   style={{elevation: 4, zIndex:4}}>
+                    style={{ zIndex: 3,
+                      elevation:3,
+                      position: 'absolute',
+                      width: '100%', height: '100%'}}
+                   >
         <KeyboardAvoidingView
           style={{width: '100%', height: '100%'}}
           behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
@@ -499,8 +523,24 @@ export default function AuthenticationModel(props) {
           
           </View>
         </KeyboardAvoidingView>
-      </Animatable.View>)} 
-  
+      </Animatable.View>
+        )} 
+    {props.state && animationtype == "fadeInUpBig" && (
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.8)',
+             zIndex: 2,
+             elevation:2
+          }}></View>
+      )}
+      
+   {/* {props.state  &&  (   */}
+
+      {/* // )}  */}
+    
   
   
   </>

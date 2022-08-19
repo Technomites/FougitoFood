@@ -125,13 +125,13 @@ setpayment(data)
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
-<AuthenticationModel state ={modalVisible} togglemodel ={() => {setmodalVisible(false)}}/>
+       
    
       <View
         style={{
           height: '100%',
           width: '100%',
-
+          elevation: 1, zIndex:1,
           alignSelf: 'center',
 
           paddingTop: getStatusBarHeight(),
@@ -204,6 +204,8 @@ setpayment(data)
                     textcolor="white"/>
                     </View>
       </View>
+   
+      <AuthenticationModel state ={modalVisible} togglemodel ={() => {setmodalVisible(false)}}/>
     </Animated.View>
   );
 };
