@@ -363,7 +363,7 @@ const RestaurantPageAnimation = ({navigation, drawerAnimationStyle}) => {
                     width: '100%',
                     height: '100%',
                   }}
-                  source={require('../Resources/images/food.png')}
+                  source={require('../Resources/images/food.jpg')}
                 />
                 {renderIf(serving?.filter(item => item.selected == true) != '')(
                   <View
@@ -775,7 +775,7 @@ style={styleSheet.heading}>Starters </Text>
 {dished.map((item, key) => {
        return (
          <View style={{width:"100%", alignItems:"center"}}>
-         <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+         <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
        </View>
        );
      })}
@@ -791,7 +791,7 @@ style={styleSheet.heading}>Main Meal </Text>
 {dished.map((item, key) => {
        return (
          <View style={{width:"100%", alignItems:"center",}}>
-         <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+         <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
        </View>
        );
      })}
@@ -806,7 +806,7 @@ style={styleSheet.heading}>Desert </Text>
 {dished.map((item, key) => {
        return (
          <View style={{width:"100%", alignItems:"center",}}>
-         <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+         <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
        </View>
        );
      })}
@@ -821,7 +821,7 @@ onLayout={event => {
 {dished.map((item, key) => {
        return (
          <View style={{width:"100%", alignItems:"center",}}>
-         <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+         <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
        </View>
        );
      })}

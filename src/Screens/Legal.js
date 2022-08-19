@@ -52,6 +52,7 @@ const Legal = ({navigation, drawerAnimationStyle}) => {
               activeOpacity={0.9}
               style={{
                 ...styles.shadow,
+            
                 ...styles.MainContainer,
                 paddingVertical: scalableheight.two,
               }}>
@@ -64,7 +65,7 @@ const Legal = ({navigation, drawerAnimationStyle}) => {
                     color: '#29262A',
                     fontFamily: 'Inter-Bold',
                     fontSize: fontSize.fifteen,
-                    paddingHorizontal: scalableheight.one,
+                    paddingHorizontal: scalableheight.two,
                   }}>
                   Terms & Conditions
                 </Text>
@@ -87,7 +88,7 @@ const Legal = ({navigation, drawerAnimationStyle}) => {
                     color: '#29262A',
                     fontFamily: 'Inter-Bold',
                     fontSize: fontSize.fifteen,
-                    paddingHorizontal: scalableheight.one,
+                    paddingHorizontal: scalableheight.two,
                   }}>
                   Privacy Policy
                 </Text>
@@ -110,7 +111,7 @@ const Legal = ({navigation, drawerAnimationStyle}) => {
                     color: '#29262A',
                     fontFamily: 'Inter-Bold',
                     fontSize: fontSize.fifteen,
-                    paddingHorizontal: scalableheight.one,
+                    paddingHorizontal: scalableheight.two,
                   }}>
                   Return Policy
                 </Text>
@@ -148,6 +149,7 @@ const Legal = ({navigation, drawerAnimationStyle}) => {
                   }}
                   style={{
                     ...styles.Loginbutton,
+                    marginTop: scalableheight.one
                   }}>
                   <Text
                     style={{
@@ -183,28 +185,25 @@ const styles = StyleSheet.create({
     width: '99%',
     alignSelf: 'center',
     marginVertical: scalableheight.one,
-    backgroundColor: '#e8e8e8',
+    backgroundColor: '#F5F5F5',
   },
   Loginbutton: {
     // width: '100%',
     backgroundColor: '#E14E4E',
     justifyContent: 'center',
     alignItems: 'center',
-    height: scalableheight.seven,
+    height: scalableheight.six,
     borderRadius: fontSize.borderradiusmedium,
-    marginTop: '1%',
-    marginBottom: '1%',
+    
+   paddingHorizontal:scalableheight.pointfive,
     flexDirection: 'row',
   },
   shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
+    shadowColor: '#470000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    elevation: 2,
+    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
 });
 export default Legal;

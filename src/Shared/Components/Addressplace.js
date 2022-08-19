@@ -23,14 +23,14 @@ export default function Addressplace(props) {
         justifyContent: 'center',
         alignItems: 'center',
         alignContent: 'center',
-        marginVertical: scalableheight.one,
+        marginVertical: scalableheight.one, 
       }}>
       <View
         style={{
           backgroundColor:
             props?.data?.title === props?.selection?.title
               ? 'rgba(245, 80, 80, 0.2)'
-              : 'rgba(246, 246, 246, 1)',
+              : '#F9F9F9',
           borderRadius: scalableheight.one,
           width: scalableheight.six,
           height: scalableheight.six,

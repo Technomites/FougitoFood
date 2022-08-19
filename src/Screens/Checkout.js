@@ -137,7 +137,7 @@ setpayment(data)
           paddingTop: getStatusBarHeight(),
         }}>
         <PlainHeader title={'Cart'} />
-        <View style={{height: scalableheight.three}} />
+     
      <ScrollView 
      showsVerticalScrollIndicator={false}
      style={{ paddingHorizontal: scalableheight.one}}>

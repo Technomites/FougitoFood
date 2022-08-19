@@ -54,7 +54,7 @@ const animateHeaderBackgroundColor = props.animHeaderValue.interpolate({
 
 const renderpopularcategories = ({item}) => (
   <Categoriescard
-    image={require('../../Resources/images/food.png')}
+    image={require('../../Resources/images/food.jpg')}
     type={'Pizza'}
     price={20}
   />

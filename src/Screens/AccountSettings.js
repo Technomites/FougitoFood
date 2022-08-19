@@ -179,30 +179,12 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
             </TouchableOpacity>
           </View>
 
-          {/* <TouchableOpacity
-            onPress={() => {
-              imagePicker();
-            }}
-            style={{
-              backgroundColor: '#C51B83',
-              height: scalableheight.four,
-              width: scalableheight.four,
-              position: 'absolute',
-              right: scalableheight.pointfive,
-              borderRadius: fontSize.circle,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <MaterialIcons
-              color={'white'}
-              name="edit"
-              size={fontSize.twentyfour}
-            />
-          </TouchableOpacity> */}
+         
         </View>
 
         <View
           style={{
+      
             paddingHorizontal: scalableheight.two,
             marginVertical: scalableheight.ten,
           }}>

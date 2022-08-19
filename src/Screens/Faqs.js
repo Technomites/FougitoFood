@@ -129,10 +129,11 @@ const styles = StyleSheet.create({
   container: {
     height: scalableheight.six,
     backgroundColor: '#F5F5F5',
-    width: '100%',
+    width: '99.5%',
     flexDirection: 'row',
     borderRadius: fontSize.eleven,
     marginBottom: scalableheight.one,
+    alignSelf:"center"
   },
   textInput: {
     marginLeft: scalableheight.one,
@@ -141,10 +142,10 @@ const styles = StyleSheet.create({
   },
   shadow: {
     shadowColor: '#470000',
-    shadowOffset: {width: 0, height: 1},
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     elevation: 2,
-    
+    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
 });
 export default Faqs;

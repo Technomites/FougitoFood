@@ -396,14 +396,36 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 
   const renderpopularcategories = ({item}) => (
     <Categoriescard
-      image={require('../Resources/images/food.png')}
+      image={require('../Resources/images/food.jpg')}
       type={'Pizza'}
       price={20}
     />
   );
 
 
+const rendertypes =({item, index}) => (
+  <TouchableOpacity 
+           
+  onPress={() => {   
+    console.log(index)
+  scrollTo(dataSourceCords[index + 1] - 150, true)
 
+   let data = [...types]
+   for(const index in data){
+    data[index].visible = false
+   }
+   data[index].visible = true
+   settypes(data)
+    }}
+  style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
+<Text 
+onLayout={event => {
+const layout = event.nativeEvent.layout;
+dataSourceCordsHorizontal[index] = layout.x; // we store this offset values in an array
+}}
+style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
+</TouchableOpacity>
+)
  
   
 
@@ -497,7 +519,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
                     width: '100%',
                     height: '100%',
                   }}
-                  source={require('../Resources/images/food.png')}
+                  source={require('../Resources/images/foods.png')}
                 />
                 {renderIf(serving?.filter(item => item.selected == true) != '')(
                   <View
@@ -887,7 +909,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
               keyExtractor={(item, index) => index.toString()}
               horizontal
               showsHorizontalScrollIndicator={false}
-              data={popularservicedatahome}
+              data={flavours}
               renderItem={renderpopularcategories}
               // onEndReached={() => LoadFeaturedProjectPagination()}
               // onEndReachedThreshold={0.1}
@@ -897,8 +919,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 </View>
 <StickyView 
 style={{backgroundColor:"transparent",}}>
-  <AnimatedScrollView
-  ref={scrollviewhorizontalref}
+  {/* <AnimatedScrollView
+  // ref={scrollviewhorizontalref}
 overflow={"hidden"}
   horizontal
   showsHorizontalScrollIndicator ={false}
@@ -906,10 +928,7 @@ overflow={"hidden"}
   {types.map((item, key) => {
           return (
             <TouchableOpacity 
-            onLayout={event => {
-              const layout = event.nativeEvent.layout;
-              dataSourceCordsHorizontal[key] = layout.x; // we store this offset values in an array
-              }}
+           
             onPress={() => {   
              console.log(scrollY)
             scrollTo(dataSourceCords[key + 1] - 150, true)
@@ -923,13 +942,28 @@ overflow={"hidden"}
               }}
             style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
        <Text 
- 
+  onLayout={event => {
+    const layout = event.nativeEvent.layout;
+    dataSourceCordsHorizontal[key] = layout.x; // we store this offset values in an array
+    }}
        style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
           </TouchableOpacity>
           );
         })}
    
-  </AnimatedScrollView>
+  </AnimatedScrollView> */}
+  <FlatList
+              keyExtractor={(item, index) => index.toString()}
+              ref={scrollviewhorizontalref}
+              overflow={"hidden"}
+                horizontal
+                showsHorizontalScrollIndicator ={false}
+                style={{ width: "100%", height: scalableheight.seven, flexDirection: "row", backgroundColor:"transparent"}}
+              data={types}
+              renderItem={rendertypes}
+              // onEndReached={() => LoadFeaturedProjectPagination()}
+              // onEndReachedThreshold={0.1}
+            />
 
 </StickyView>
 
@@ -944,13 +978,13 @@ overflow={"hidden"}
      ref ={scrollviewref}
  scrollEventThrottle={16}
 
-onScrollBeginDrag={(event) => {
-  console.log("3eeee" + event.nativeEvent?.contentOffset?.y)
+ onMomentumScrollEnd={(event) => {
+  // console.log("3eeee" + event.nativeEvent?.contentOffset?.y)
   let y = event.nativeEvent.contentOffset.y 
     
   // let num = scrollOffsetY
-  console.log("a" + JSON.stringify(dataSourceCords) )
-  console.log("a" + JSON.stringify(types) )
+  // console.log("a" + JSON.stringify(dataSourceCords) )
+  // console.log("a" + JSON.stringify(types) )
   
   if( y < dataSourceCords[2] - 150){
 
@@ -961,7 +995,13 @@ onScrollBeginDrag={(event) => {
                }
                data[0].visible = true
                settypes(data)
-               scrollviewhorizontalref.current.scrollTo({ y: 0, animated: true });
+               scrollviewhorizontalref.current?.scrollToIndex({
+                index: 0,
+                animated: true,
+              
+              
+              })
+              //  scrollviewhorizontalref.current.scrollTo({ y: dataSourceCordsHorizontal[0], animated: true });
       
     }
     // console.log(JSON.stringify(scrollOffsetY))
@@ -976,7 +1016,13 @@ onScrollBeginDrag={(event) => {
                }
                data[1].visible = true
                settypes(data)
-               scrollviewhorizontalref.current.scrollTo({ y: 50, animated: true });
+               scrollviewhorizontalref.current?.scrollToIndex({
+                index: 1,
+                animated: true,
+              
+              
+              })
+              //  scrollviewhorizontalref.current.scrollTo({ y: dataSourceCordsHorizontal[1], animated: true });
     }
     // console.log(JSON.stringify(scrollOffsetY))
     // console.log("helle")
@@ -989,7 +1035,13 @@ onScrollBeginDrag={(event) => {
                }
                data[2].visible = true
                settypes(data)
-               scrollviewhorizontalref.current.scrollTo({ y: 50, animated: true });
+               scrollviewhorizontalref.current?.scrollToIndex({
+                index: 2,
+                animated: true,
+              
+              
+              })
+              //  scrollviewhorizontalref.current.scrollTo({ y: dataSourceCordsHorizontal[2], animated: true });
     }
     // console.log(JSON.stringify(scrollOffsetY))
     // console.log("helle")
@@ -1004,12 +1056,22 @@ onScrollBeginDrag={(event) => {
                settypes(data)
                
               //  scrollviewhorizontalref.current.scrollTo({ y: scalableheight.fifteen, animated: true });
-              scrollviewhorizontalref.current.scrollTo({ y: 50, animated: true });
+              // scrollviewhorizontalref.current.scrollTo({ y: dataSourceCordsHorizontal[3], animated: true });
+              scrollviewhorizontalref.current?.scrollToIndex({
+                index: 3,
+                animated: true,
+              
+              
+              })
+             
     }
     // console.log(JSON.stringify(scrollOffsetY))
     // console.log("helle")
   }
 }}
+
+
+
 
   showsVerticalScrollIndicator={false}
   style={{backgroundColor:"white", paddingHorizontal: scalableheight.one,}}>
@@ -1024,7 +1086,7 @@ onScrollBeginDrag={(event) => {
   {dished.map((item, key) => {
           return (
             <View style={{width:"100%", alignItems:"center"}}>
-            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+            <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
           </View>
           );
         })}
@@ -1040,7 +1102,7 @@ style={styleSheet.heading}>Main Meal </Text>
   {dished.map((item, key) => {
           return (
             <View style={{width:"100%", alignItems:"center",}}>
-            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+            <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
           </View>
           );
         })}
@@ -1055,7 +1117,7 @@ style={styleSheet.heading}>Desert </Text>
   {dished.map((item, key) => {
           return (
             <View style={{width:"100%", alignItems:"center",}}>
-            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+            <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
           </View>
           );
         })}
@@ -1073,7 +1135,7 @@ style={styleSheet.heading}
   {dished.map((item, key) => {
           return (
             <View style={{width:"100%", alignItems:"center",}}>
-            <Starters image={require('../Resources/images/food.png')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
+            <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
           </View>
           );
         })}

@@ -136,7 +136,7 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
                 style={{
                   alignItems: 'center',
                   paddingHorizontal: scalableheight.two,
-                  marginTop: '5%',
+             
                 }}>
                 <Couponscomponent
                   sale={'40% OFF'}

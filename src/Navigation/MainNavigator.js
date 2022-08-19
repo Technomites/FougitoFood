@@ -324,6 +324,7 @@ const CustomDrawerStyle = ({navigation}) => {
           </View>*/}
 
           <TouchableOpacity
+          activeOpacity={0.9}
             onPress={() => {
               navigation.navigate('Home');
               navigation.dispatch(DrawerActions.closeDrawer());
@@ -339,6 +340,7 @@ const CustomDrawerStyle = ({navigation}) => {
             }}>
             <View
               style={{
+                ...styleSheet.shadowicon,
                 width: scalableheight.five,
                 height: scalableheight.five,
                 borderRadius: fontSize.nine,
@@ -366,6 +368,7 @@ const CustomDrawerStyle = ({navigation}) => {
           {/* {renderIf(ProfileInfo != '')(
             <> */}
           <TouchableOpacity
+            activeOpacity={0.9}
             onPress={() => {
               navigation.navigate('MyOrders');
               navigation.dispatch(DrawerActions.closeDrawer());
@@ -380,6 +383,7 @@ const CustomDrawerStyle = ({navigation}) => {
             }}>
             <View
               style={{
+                ...styleSheet.shadowicon,
                 width: scalableheight.five,
                 height: scalableheight.five,
                 borderRadius: fontSize.nine,
@@ -405,6 +409,7 @@ const CustomDrawerStyle = ({navigation}) => {
           </TouchableOpacity>
 
           <TouchableOpacity
+            activeOpacity={0.9}
             onPress={() => {
               navigation.navigate('Coupons');
               navigation.dispatch(DrawerActions.closeDrawer());
@@ -419,6 +424,7 @@ const CustomDrawerStyle = ({navigation}) => {
             }}>
             <View
               style={{
+                ...styleSheet.shadowicon,
                 width: scalableheight.five,
                 height: scalableheight.five,
                 borderRadius: fontSize.nine,
@@ -443,11 +449,13 @@ const CustomDrawerStyle = ({navigation}) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
+            activeOpacity={0.9}
             onPress={() => {
               navigation.navigate('MyFavourite');
               navigation.dispatch(DrawerActions.closeDrawer());
             }}
             style={{
+              
               flexDirection: 'row',
               alignItems: 'center',
               borderTopWidth: scalableheight.borderTopWidth,
@@ -457,6 +465,7 @@ const CustomDrawerStyle = ({navigation}) => {
             }}>
             <View
               style={{
+                ...styleSheet.shadowicon,
                 width: scalableheight.five,
                 height: scalableheight.five,
                 borderRadius: fontSize.nine,
@@ -482,6 +491,7 @@ const CustomDrawerStyle = ({navigation}) => {
           </TouchableOpacity>
 
           <TouchableOpacity
+            activeOpacity={0.9}
             onPress={() => {
               navigation.navigate('MyAddresses');
               navigation.dispatch(DrawerActions.closeDrawer());
@@ -496,6 +506,7 @@ const CustomDrawerStyle = ({navigation}) => {
             }}>
             <View
               style={{
+                ...styleSheet.shadowicon,
                 width: scalableheight.five,
                 height: scalableheight.five,
                 borderRadius: fontSize.nine,
@@ -524,6 +535,7 @@ const CustomDrawerStyle = ({navigation}) => {
             {options.map(item => {
               return (
                 <TouchableOpacity
+                activeOpacity={0.9}
                   onPress={() => item.onPress()}
                   style={{
                     flexDirection: 'row',
@@ -536,6 +548,7 @@ const CustomDrawerStyle = ({navigation}) => {
                   }}>
                   <View
                     style={{
+                      ...styleSheet.shadowicon,
                       width: scalableheight.five,
                       height: scalableheight.five,
                       borderRadius: fontSize.nine,
@@ -591,6 +604,7 @@ const CustomDrawerStyle = ({navigation}) => {
 
           {renderIf(ProfileInfo != '')(
             <TouchableOpacity
+            activeOpacity={0.9}
               onPress={() => setModalVisible(true)}
               style={{
                 flexDirection: 'row',
@@ -603,6 +617,7 @@ const CustomDrawerStyle = ({navigation}) => {
               }}>
               <View
                 style={{
+                  ...styleSheet.shadowicon,
                   width: scalableheight.five,
                   height: scalableheight.five,
                   borderRadius: fontSize.nine,
@@ -629,6 +644,7 @@ const CustomDrawerStyle = ({navigation}) => {
           )}
           {renderIf(ProfileInfo == '')(
             <TouchableOpacity
+            activeOpacity={0.9}
               onPress={() => {
             
                 setlogoutmodal(true)}}
@@ -643,6 +659,7 @@ const CustomDrawerStyle = ({navigation}) => {
               }}>
               <View
                 style={{
+                  ...styleSheet.shadowicon,
                   width: scalableheight.five,
                   height: scalableheight.five,
                   borderRadius: fontSize.nine,
@@ -732,7 +749,7 @@ const Drawernavigator = props => {
     outputRange: [0, 45],
   });
 
-  const animatedStyle = {...styleSheet.shadow, borderRadius, transform: [{scale}]};
+  const animatedStyle = {...styleSheet.shadow1, borderRadius, transform: [{scale}]};
   return (
     <Drawer.Navigator
       // contentContainerStyle={{flex:1, backgroundColor:"red", borderWidth:10, borderColor:"blue"}}
@@ -747,7 +764,7 @@ const Drawernavigator = props => {
       drawerStyle={{
         //   drawerContentOptions={{
 
-        width: '65%',
+        width: '63%',
 
         backgroundColor: 'transparent',
       }}
@@ -1084,6 +1101,23 @@ const styleSheet = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.5,
     elevation: 5,
+  },
+  shadow1: {
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 35,
+  },
+  shadowicon: {
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    elevation: 5,
+    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
   smallshadow: {
     shadowColor: '#000',

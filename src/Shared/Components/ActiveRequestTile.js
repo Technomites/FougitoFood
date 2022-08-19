@@ -27,7 +27,7 @@ export default function ActiveRequestTile(props) {
         }}>
         <View style={{}}>
           <Image
-            source={require('../../Resources/images/food.png')}
+            source={require('../../Resources/images/food.jpg')}
             style={{
               height: scalableheight.ten,
               width: scalableheight.ten,

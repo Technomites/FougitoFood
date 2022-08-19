@@ -741,13 +741,13 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         marginRight: scalableheight.two,
       }}>
       <Favourites
-        image={require('../Resources/images/food.png')}
+        image={require('../Resources/images/food.jpg')}
         title={'Mexican Enchiladas'}
         reviews={'8.9 (350 reviews)'}
         time={'9:00 AM - 10:00PM'}
         onPress={() => {
-          navigation.navigate('Restaurantpage');
-           //navigation.navigate('RestaurantPageAnimation');
+           navigation.navigate('Restaurantpage');
+          // navigation.navigate('RestaurantPageAnimation');
           
         }}
         distance={'2.5KM AWAY'}
@@ -974,8 +974,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                 easing="ease"
                 iterationCount={1}
                 style={{
-                  paddingTop: scalableheight.pointfive,
-                  paddingBottom: scalableheight.one,
+                  paddingTop: scalableheight.one,
+                  paddingBottom: scalableheight.pointfive,
                   justifyContent: 'center',
                 }}>
                 <Text

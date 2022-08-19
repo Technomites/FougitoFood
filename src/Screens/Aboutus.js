@@ -81,7 +81,7 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{
-            paddingHorizontal: scalableheight.three,
+            paddingHorizontal: scalableheight.two,
           }}>
           <View>
             <View
@@ -116,6 +116,7 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
                     fontFamily: 'Inter-Medium',
                     color: 'rgba(41, 38, 42, 0.5)',
                     textAlign: 'justify',
+                    alignSelf: 'flex-start',
                   }}>
                   You can refer to a specific region of Mexico where your food
                   comes from, or use some common Mexican terms in your tagline.
@@ -182,7 +183,8 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor: '#e4e4e4',
+                  ...styleSheet.shadow,
+                  backgroundColor: '#F5F5F5',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
@@ -200,7 +202,8 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor: '#e4e4e4',
+                  ...styleSheet.shadow,
+                  backgroundColor: '#F5F5F5',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
@@ -218,7 +221,8 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor: '#e4e4e4',
+                  ...styleSheet.shadow,
+                  backgroundColor: '#F5F5F5',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
@@ -236,7 +240,8 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor: '#e4e4e4',
+                  ...styleSheet.shadow,
+                  backgroundColor: '#F5F5F5',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
@@ -254,7 +259,8 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor: '#e4e4e4',
+                  ...styleSheet.shadow,
+                  backgroundColor: '#F5F5F5',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
@@ -311,14 +317,11 @@ const styleSheet = StyleSheet.create({
   },
 
   shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
+    shadowColor: '#470000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    elevation: 2,
+    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
   inputStyle: {
     fontFamily: 'Rubik-Regular',

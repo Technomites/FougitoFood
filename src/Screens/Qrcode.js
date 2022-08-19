@@ -97,7 +97,7 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
               zIndex: 1000000,
             }}>
             <Favourites
-              image={require('../Resources/images/food.png')}
+              image={require('../Resources/images/food.jpg')}
               title={'Mexican Enchiladas'}
               reviews={'8.9 (350 reviews)'}
               time={'9:00 AM - 10:00PM'}

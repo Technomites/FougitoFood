@@ -55,7 +55,7 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
 
   const renderItem = ({item, index}) => (
     <Favourites
-      image={require('../Resources/images/food.png')}
+      image={require('../Resources/images/food.jpg')}
       title={'Mexican Enchiladas'}
       reviews={'8.9 (350 reviews)'}
       time={'9:00 AM - 10:00PM'}
@@ -77,7 +77,7 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
           paddingTop: getStatusBarHeight(),
         }}>
         <PlainHeader title={'My Favourites'} />
-        <View style={{height: scalableheight.three}} />
+    
         <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
           <FlatList
             data={serving}

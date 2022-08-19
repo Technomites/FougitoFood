@@ -64,16 +64,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
 
-  //   const renderItem = ({item, index}) => (
-  //     <Favourites
-  //       image={require('../Resources/images/food.png')}
-  //       title={'Mexican Enchiladas'}
-  //       reviews={'8.9 (350 reviews)'}
-  //       time={'9:00 AM - 10:00PM'}
-  //       onPress={() => {}}
-  //       distance={'2.5KM AWAY'}
-  //     />
-  //   );
+
 
   return (
     <Animated.View
@@ -86,7 +77,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
           paddingTop: getStatusBarHeight(),
         }}>
         <PlainHeader title={'My Orders'} />
-        <View style={{height: scalableheight.three}} />
+  
         <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
           <FlatList
             data={Order}

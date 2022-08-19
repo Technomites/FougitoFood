@@ -156,11 +156,16 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
             alignItems: 'center',
           }}>
           <View
-            style={{width: '50%', alignItems: 'center', alignItems: 'center'}}>
-            <Image
-              style={{
+            style={{   width: '50%', alignItems: 'center', alignItems: 'center'}}>
+         <View style={{  ...styleSheet.shadow,
                 height: scalableheight.fifteen,
                 width: scalableheight.fifteen,
+                borderRadius: fontSize.circle,backgroundColor:"white", overflow:"hidden", alignItems:"center", justifyContent:"center"}}>
+ <Image
+              style={{
+              
+                height: "99.5%",
+                width: "99.5%",
                 borderRadius: fontSize.circle,
                 resizeMode: 'contain',
 
@@ -168,6 +173,8 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
               }}
               source={require('../Resources/images/logoguest.png')}
             />
+         </View>
+           
           </View>
           <View
             style={{
@@ -256,16 +263,11 @@ const styleSheet = StyleSheet.create({
     alignItems: 'center',
   },
   shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 3,
-    shadowRadius: 18,
+    shadowColor: '#470000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    elevation: 7,
+    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
 });
 export default Settings;

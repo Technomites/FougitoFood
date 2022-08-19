@@ -268,6 +268,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '10%',
+               
               }}>
               <MaterialIcons
                 style={{alignSelf: 'center'}}
@@ -331,6 +332,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   //value={props.value}
                   // onChangeText={props.onChangeText}
                   placeholderTextColor={'lightgray'}
+                  placeholder={'Enter Street'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
                   style={styleSheet.textInput}
@@ -364,6 +366,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   //value={props.value}
                   // onChangeText={props.onChangeText}
                   placeholderTextColor={'lightgray'}
+                  placeholder={'Enter Floor'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
                   style={styleSheet.textInput}
@@ -400,10 +403,11 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   // keyboardType={props.keyboardType}
                   //value={props.value}
                   // onChangeText={props.onChangeText}
-                  placeholderTextColor={'#000'}
+                  placeholderTextColor={'lightgray'}
+                  placeholder={'Enter Note to Rider'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
-                  style={styleSheet.textInput}
+                  style={{...styleSheet.textInput, textAlignVertical:"top", height:"100%"}}
                 />
               </View>
             </View>
@@ -455,7 +459,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
 const styleSheet = StyleSheet.create({
   container: {
     height: scalableheight.six,
-    backgroundColor: 'rgba(42, 28, 28, 0.1)',
+    backgroundColor:'#F9F9F9', 
     width: '100%',
     flexDirection: 'row',
     borderRadius: fontSize.eight,
@@ -465,6 +469,22 @@ const styleSheet = StyleSheet.create({
 
     width: '100%',
     color: 'black',
+  
+  },
+  textInput1: {
+    borderRadius: fontSize.eleven,
+    paddingVertical: fontSize.fifteen,
+    width: '99%',
+    alignSelf: 'center',
+    borderRadius: fontSize.eleven,
+    padding: scalableheight.one,
+    shadowColor: '#470000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 2,
+    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)',
+    
+    backgroundColor:"white"
   },
 
   centeredView: {

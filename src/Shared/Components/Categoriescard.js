@@ -35,7 +35,7 @@ const navigation = useNavigation();
       style={{
       
         height: scalableheight.fifteen,
-        width: scalableheight.fourty,
+        width: scalableheight.thirty,
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: scalableheight.two
@@ -47,8 +47,9 @@ const navigation = useNavigation();
             ...styleSheet.shadow,
             width: '100%',
             height: '95%',
-            borderRadius: fontSize.eleven,
-            justifyContent:"center"
+            borderRadius: fontSize.seventeen,
+            justifyContent:"center",
+            overflow:"hidden"
           }}>
 
      <ImageBackground
@@ -57,10 +58,9 @@ const navigation = useNavigation();
       width: '100%',
       height: '100%',
    justifyContent:"center",
-
-
+ 
     }}
-    imageStyle={{    borderRadius: fontSize.eleven,}}
+    imageStyle={{  borderRadius: fontSize.eleven,  }}
       source={props.image}>
         
         <Text style={{
