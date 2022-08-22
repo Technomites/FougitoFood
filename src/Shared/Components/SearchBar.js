@@ -33,7 +33,7 @@ const navigation = useNavigation();
       width: '100%',
       height: Dimensions.get('window').height / 15,
       justifyContent: 'center',
-      borderRadius: fontSize.twenty,
+      borderRadius: fontSize.ten,
       marginTop: '3%',
       alignSelf: 'center',
       marginBottom: '3%',
@@ -48,7 +48,7 @@ const navigation = useNavigation();
 fontSize:fontSize.fifteen,
         backgroundColor:"white",
         alignSelf: 'center',
-        borderRadius: fontSize.twenty,
+        borderRadius: fontSize.ten,
         paddingHorizontal: '5%',
         alignItems:"center",
         justifyContent:"center"
@@ -57,12 +57,7 @@ fontSize:fontSize.fifteen,
     />
       
 
-<Ionicons
-name="search"
-color={'grey'}
-size={ fontSize.twenty}
-style={{position: 'absolute', right: '5%'}}
-/>
+
       
         
    

@@ -93,11 +93,11 @@ export default function ActiveRequestTile(props) {
       <View
         style={{
           borderBottomColor:  '#707070',
-          borderBottomWidth: scalableheight.borderwidth,
+          borderBottomWidth: scalableheight.borderTopWidth,
           margin: scalableheight.two,
        width:"90%",
        alignSelf:"center",
-       opacity: 0.6
+       opacity: 0.4
         }}></View>
       <View
         style={{flexDirection: 'row', marginHorizontal: scalableheight.two}}>

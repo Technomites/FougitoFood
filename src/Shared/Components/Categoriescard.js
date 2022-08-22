@@ -26,7 +26,7 @@ const navigation = useNavigation();
 
 
   return (
-    
+  
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={() => {
@@ -47,11 +47,14 @@ const navigation = useNavigation();
             ...styleSheet.shadow,
             width: '100%',
             height: '95%',
-            borderRadius: fontSize.seventeen,
+            // borderRadius: fontSize.seventeen,
+            borderRadius: fontSize.twelve,
             justifyContent:"center",
             overflow:"hidden"
           }}>
+<View style={{bottom:0, width:"100%", height:"53%", backgroundColor:'rgba(0,0,0,0.2)', position: "absolute", zIndex:10, elevation:10}}>
 
+</View>
      <ImageBackground
     resizeMode= "stretch"
     style={{
@@ -81,6 +84,7 @@ const navigation = useNavigation();
        
       </>
     </TouchableOpacity>
+ 
   );
 }
 

@@ -10,6 +10,7 @@ import {
   StatusBar,
   Platform,
   Dimensions,
+  FlatList,
   TextInput
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -36,57 +37,61 @@ const navigation = useNavigation();
       
       justifyContent: 'center',
       
-     
+  
       alignSelf: 'center',
     
-     
     }}>
     <Text  style={{fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fourteen,
                 color:"black",}}>{props?.title}</Text>
-                
-<ScrollView 
-showsHorizontalScrollIndicator={false}
-horizontal
-contentContainerStyle={{flexDirection:"row"}}>
-{props?.data?.map((item, index) => {
-        return (
-            <TouchableOpacity 
-            onPress={() => {props.update(index)}}
-            style={{flexDirection:"row"}}>
-              {renderIf(item?.selected == true)(
-                <MaterialIcons
-                name="radio-button-checked"
-                color={'#E14E4E'}
-                size={ fontSize.twenty}
-                style={{}}
-                /> 
-              )}
-               {renderIf(item?.selected == false)(
-                 <MaterialIcons
-                 name="radio-button-unchecked"
-                 color={'grey'}
-                 size={ fontSize.twenty}
-                 style={{}}
-                 />
-              )}
-      
-           
-    
-            <Text  style={{fontFamily: 'Inter-Medium',
-                    fontSize: fontSize.thirteen,
-                    color:"black",marginLeft: scalableheight.one, marginRight: scalableheight.one}}>{item.serving}</Text>
-                     <Text  style={{fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.thirteen,
-                    color:"black",position:"absolute", right:0}}>{item.price}</Text>
-         
 
-       
-    </TouchableOpacity>
-        );
-      })}
-      </ScrollView>
+      <FlatList
+              keyExtractor={(item, index) => index.toString()}
+           
+          
+                horizontal
+                showsHorizontalScrollIndicator ={false}
+                style={{width:"100%", flexDirection:"row"}}
+                // contentContainerStyle={{flexDirection:"row"}}
+              data={props?.data}
+              renderItem={({item,index}) => 
+                {  return (
+                <TouchableOpacity 
+                onPress={() => {props.update(index)}}
+                style={{flexDirection:"row", marginTop:scalableheight.pointfive}}>
+                  {renderIf(item?.selected == true)(
+                    <MaterialIcons
+                    name="radio-button-checked"
+                    color={'#E14E4E'}
+                    size={ fontSize.twenty}
+                    style={{}}
+                    /> 
+                  )}
+                   {renderIf(item?.selected == false)(
+                     <MaterialIcons
+                     name="radio-button-unchecked"
+                     color={'grey'}
+                     size={ fontSize.twenty}
+                     style={{}}
+                     />
+                  )}
+          
+               
+        
+                <Text  style={{fontFamily: 'Inter-Medium',
+                        fontSize: fontSize.thirteen,
+                        color:"black",marginLeft: scalableheight.one, marginRight: scalableheight.one}}>{item.serving}</Text>
+                         <Text  style={{fontFamily: 'Inter-Bold',
+                        fontSize: fontSize.thirteen,
+                        color:"black",position:"absolute", right:0}}>{item.price}</Text>
+             
     
+           
+        </TouchableOpacity>
+            )}}
+              // onEndReached={() => LoadFeaturedProjectPagination()}
+              // onEndReachedThreshold={0.1}
+            />
   </View>   
   );
 }

@@ -98,10 +98,36 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const [cartvisible, setcartvisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
   const [search, setsearch] = useState('');
+  const [showmap, setshowmap] = useState(false);
   const [count, setcount] = useState(0);
   const [showbottomsheet, setshowbottomsheet] = useState(false);
   const [center, setCenter] = useState();
   const [serving, setserving] = useState([
+    {
+      selected: false,
+      serving: 'Single Plate',
+      price: 'AED 159.00',
+    },
+    {
+      selected: false,
+      serving: 'Double Plate',
+      price: 'AED 129.00',
+    },
+    {
+      selected: false,
+      serving: 'Triple Plate',
+      price: 'AED 59.00',
+    },
+    {
+      selected: false,
+      serving: 'Double Plate',
+      price: 'AED 129.00',
+    },
+    {
+      selected: false,
+      serving: 'Triple Plate',
+      price: 'AED 59.00',
+    },
     {
       selected: false,
       serving: 'Single Plate',
@@ -725,6 +751,28 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     return false;
   };
 
+  const renderItem = ({item, index}) => (
+    <Animatable.View
+    animation="zoomInLeft"
+    easing="ease"
+    iterationCount={1}
+    style={{
+    
+    }}>
+    <Favourites
+      image={require('../Resources/images/food.jpg')}
+      title={'Mexican Enchiladas'}
+      reviews={'8.9 (350 reviews)'}
+      time={'9:00 AM - 10:00PM'}
+      onPress={() => {
+        navigation.navigate('Restaurantpage');
+       // navigation.navigate('RestaurantPageAnimation');
+       
+     }}
+      distance={'2.5KM AWAY'}
+    />
+    </Animatable.View>
+  );
   function onRefresh() {
     NetInfo.fetch().then(state => {
       if (state.isConnected == true && state.isInternetReachable == true) {
@@ -825,7 +873,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               />
             </View>
           </ImageBackground>
-
+{showmap && 
+<>
           <View
             style={{
               ...styleSheet.shadow,
@@ -1014,7 +1063,36 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               // onEndReachedThreshold={0.1}
             />
           </View>
+</>}
+{showmap != true && 
+<View style={{width: '100%', paddingHorizontal: scalableheight.one, marginTop: scalableheight.two}}>
+          <FlatList
+            data={serving}
+            renderItem={renderItem}
+            // ListFooterComponent={renderFooter}
+            // onEndReached={loadMoreNotifications}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{paddingBottom: 54}}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>}
+
+    
         </View>
+        <TouchableOpacity
+        onPress={() =>{setshowmap(!showmap)}}
+        style={{ alignItems:"center", justifyContent:"center",  borderRadius:fontSize.circle, position:"absolute", right: scalableheight.two, bottom:scalableheight.five, height:scalableheight.seven, width:scalableheight.seven, backgroundColor:"blue"}}>
+        <Image
+          resizeMode="stretch"
+          style={{
+            width: '100%',
+            height: "100%",
+            zIndex:201,
+            elevation:201
+            
+          }}
+          source={showmap ? require('../Resources/images/listicon.png') : require('../Resources/images/mapicon.png')}/>
+        </TouchableOpacity>
       </View>
       <Custombottomsheet
         state={showbottomsheet}

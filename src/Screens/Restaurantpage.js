@@ -105,12 +105,12 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   const [dataSourceCordsHorizontal, setdataSourceCordsHorizontal] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
-
+  const [keyboardopen, setkeyboardopen] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [specialinstructions, setspecialinstructions] = useState('');
   const [cartvisible, setcartvisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
-  const [count, setcount] = useState(0);
+  const [count, setcount] = useState(1);
   const [lat, setlat] = useState();
   const [long, setlong] = useState();
   const [showbottomsheet, setshowbottomsheet] = useState(false);
@@ -143,6 +143,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       serving: 'Triple Plate',
       price: 'AED 59.00',
     },
+  
   ]);
 
   const [flavours, setflavours] = useState([
@@ -158,14 +159,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       selected: false,
       serving: 'Pasta',
     },
-    {
-      selected: false,
-      serving: 'Onion',
-    },
-    {
-      selected: false,
-      serving: 'Lettuce',
-    },
+   
   ])
   const [types, settypes] = useState([
     {
@@ -238,6 +232,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     collapse,   // <-- Collapse header
     expand,  
     scrollTo,
+    
     scrollToIndex, 
     scrollHandler,
   
@@ -246,7 +241,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
     
-   
+      collapse()
       StatusBar.setBarStyle('light-content')
     });
 
@@ -269,6 +264,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   }, [modalVisible]);
 
   function clearandclose() {
+    collapse()
+  Keyboard.dismiss()
     toggleanimation();
     setanimationstate(true);
   }
@@ -295,12 +292,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
       () => {
         hideNavigationBar();
         console.log('Keyboard is open');
+        setkeyboardopen(true)
       },
     );
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
         hideNavigationBar();
+        setkeyboardopen(false)
         console.log('Keyboard is closed');
       },
     );
@@ -437,7 +436,7 @@ const rendertypes =({item, index}) => (
    data[index].visible = true
    settypes(data)
     }}
-  style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
+  style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.three, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
 <Text 
 onLayout={event => {
 const layout = event.nativeEvent.layout;
@@ -534,7 +533,7 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
                 borderRadius: fontSize.eleven,
                 backgroundColor: 'white',
               }}>
-              <View style={{width: '100%', height: '35%'}}>
+              <View style={{width: '100%', height: '30%'}}>
                 <Image
                   resizeMode="stretch"
                   style={{
@@ -595,20 +594,32 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
                   }}>
                   <Ionicons
                     name="close-circle"
-                    color={'#F5F5F5'}
+                    color={'#E14E4E'}
+                    // '#F5F5F5'
                     size={fontSize.thirtyseven}
                     style={{}}
                   />
                 </TouchableOpacity>
               </View>
-
+<View
+  style={{
+    width: '100%',
+     height: '53%',
+    padding: scalableheight.two,
+  
+  
+ 
+  }}>
               <ScrollView
                 showsVerticalScrollIndicator={false}
-                style={{
-                  width: '100%',
-                  height: '65%',
-                  padding: scalableheight.two,
-                }}>
+              nestedScrollEnabled={true}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  justifyContent: 'space-evenly',
+                 
+                  
+                }}
+                >
                 <Text
                   style={{
                     fontFamily: 'Inter-Bold',
@@ -632,7 +643,8 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
                   data={serving}
                   update={updateservingstate}
                 />
-                <View style={{height: scalableheight.one}} />
+                <View style={{height: scalableheight.one, }} />
+               
                 <Mltichoicehorizontallist
                   title={'Choose Serving'}
                   data={flavours}
@@ -665,16 +677,27 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
                     borderRadius: fontSize.borderradiusmedium,
                     paddingHorizontal: '5%',
                     textAlignVertical: 'top',
+                 
                   }}
                 />
-                <View style={{height: scalableheight.three}} />
-                <View
+               
+               {keyboardopen ? 
+               <View style={{height: scalableheight.two }} /> 
+             : null }
+
+            
+              </ScrollView>
+              </View>
+              <View style={{position:"absolute", bottom:scalableheight.two, width:"100%", paddingHorizontal: scalableheight.two}}>
+          {keyboardopen != true ? 
+              <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     width: '50%',
                     justifyContent: 'space-evenly',
                     alignSelf: 'center',
+                    marginBottom: scalableheight.two
                   }}>
                   <TouchableOpacity
                     onPress={() => {
@@ -711,12 +734,9 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
                     />
                   </TouchableOpacity>
                 </View>
-                <View style={{height: scalableheight.twenty}} />
-             
-
-            
-              </ScrollView>
-              <View style={{position:"absolute", bottom:scalableheight.two, width:"100%", paddingHorizontal: scalableheight.two}}>
+                : 
+                null
+                }
               <MYButton
                   color={'#E14E4E'}
                   title={'Add To Cart'}
@@ -929,9 +949,7 @@ position: 'absolute',
               <Text
                 style={{
                   marginLeft: scalableheight.one,
-                  fontFamily: 'Inter-ExtraBold',
-                  fontSize: fontSize.sixteen,
-                  color: '#29262A',
+                  fontFamily: 'Inter-Bold', color: "black", fontSize: fontSize.twenty, 
                 }}>
                 Popular Categories
               </Text>
@@ -989,7 +1007,10 @@ overflow={"hidden"}
               ref={scrollviewhorizontalref}
               overflow={"hidden"}
                 horizontal
+           
                 showsHorizontalScrollIndicator ={false}
+          
+                contentContainerStyle={{ flexGrow: 1, justifyContent:"center"}}
                 style={{ width: "100%", height: scalableheight.seven, flexDirection: "row", backgroundColor:"transparent"}}
               data={types}
               renderItem={rendertypes}
@@ -1013,7 +1034,7 @@ overflow={"hidden"}
  onMomentumScrollEnd={(event) => {
   // console.log("3eeee" + event.nativeEvent?.contentOffset?.y)
   let y = event.nativeEvent.contentOffset.y 
-    
+   
   // let num = scrollOffsetY
   // console.log("a" + JSON.stringify(dataSourceCords) )
   // console.log("a" + JSON.stringify(types) )

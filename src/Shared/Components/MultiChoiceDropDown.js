@@ -47,7 +47,7 @@ const navigation = useNavigation();
         return (
             <TouchableOpacity 
             onPress={() => {props.update(index)}}
-            style={{flexDirection:"row"}}>
+            style={{flexDirection:"row", marginTop:scalableheight.pointfive}}>
               {renderIf(item?.selected == true)(
                 <MaterialIcons
                 name="radio-button-checked"
@@ -69,7 +69,7 @@ const navigation = useNavigation();
     
             <Text  style={{fontFamily: 'Inter-Medium',
                     fontSize: fontSize.thirteen,
-                    color:"black",marginLeft: scalableheight.two}}>{item.serving}</Text>
+                    color:"black",marginLeft: scalableheight.one}}>{item.serving}</Text>
                      <Text  style={{fontFamily: 'Inter-Bold',
                     fontSize: fontSize.thirteen,
                     color:"black",position:"absolute", right:0}}>{item.price}</Text>
