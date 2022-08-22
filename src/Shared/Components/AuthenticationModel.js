@@ -35,6 +35,7 @@ export default function AuthenticationModel(props) {
     const [fullname, setfullname] = useState("");
     const [password, setpassword] = useState("");
     const [newpasswordshow, setnewpasswordshow] = useState(false);
+    const [inscreenanimation, setinscreenanimation] = useState(false);
     const [loginvisible, setloginvisible] = useState(true);
     const [signupvisible, setsignupvisible] = useState(false);
     const [otpvisible, setotpvisible] = useState(false);
@@ -99,8 +100,8 @@ export default function AuthenticationModel(props) {
   }
 
   function togglescreen(index){
-    setanimationstate(true)
-  
+    setinscreenanimation(true)
+   
       if(index == 1){
         setsignupvisible(false)
         setotpvisible(false)
@@ -225,8 +226,8 @@ export default function AuthenticationModel(props) {
                    {renderIf(loginvisible == true)(
                     <>
                       <Animatable.View
-        animation={ animationstate ? 'bounceInRight' : undefined}
-        onAnimationEnd={()=>{ setanimationstate(false)}}
+        animation={ inscreenanimation ? 'bounceInRight' : undefined}
+        onAnimationEnd={()=>{ setinscreenanimation(false)}}
         // animation={ getstart1  ? 'bounceInRight' :  getstart2  ? 'bounceInRight':  getstart3 ? 'bounceInRight' : undefined}
         //animation="bounceInRight"
         easing="ease"
@@ -292,8 +293,8 @@ export default function AuthenticationModel(props) {
                  {renderIf(signupvisible == true)(
                     <>
                       <Animatable.View
-        animation={ animationstate ? 'bounceInRight' : undefined}
-        onAnimationEnd={()=>{ setanimationstate(false)}}
+        animation={ inscreenanimation ? 'bounceInRight' : undefined}
+        onAnimationEnd={()=>{ setinscreenanimation(false)}}
         // animation={ getstart1  ? 'bounceInRight' :  getstart2  ? 'bounceInRight':  getstart3 ? 'bounceInRight' : undefined}
         //animation="bounceInRight"
         easing="ease"
@@ -366,8 +367,8 @@ export default function AuthenticationModel(props) {
                  {renderIf(forgetpasswordvisible == true)(
                     <>
                       <Animatable.View
-        animation={ animationstate ? 'bounceInRight' : undefined}
-        onAnimationEnd={()=>{ setanimationstate(false)}}
+        animation={ inscreenanimation ? 'bounceInRight' : undefined}
+        onAnimationEnd={()=>{ setinscreenanimation(false)}}
         // animation={ getstart1  ? 'bounceInRight' :  getstart2  ? 'bounceInRight':  getstart3 ? 'bounceInRight' : undefined}
         //animation="bounceInRight"
         easing="ease"
@@ -407,8 +408,8 @@ export default function AuthenticationModel(props) {
                  {renderIf(otpvisible == true)(
                     <>
                       <Animatable.View
-        animation={ animationstate ? 'bounceInRight' : undefined}
-        onAnimationEnd={()=>{ setanimationstate(false)}}
+        animation={ inscreenanimation ? 'bounceInRight' : undefined}
+        onAnimationEnd={()=>{ setinscreenanimation(false)}}
         // animation={ getstart1  ? 'bounceInRight' :  getstart2  ? 'bounceInRight':  getstart3 ? 'bounceInRight' : undefined}
         //animation="bounceInRight"
         easing="ease"

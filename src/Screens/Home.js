@@ -566,6 +566,19 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       serving: 'Pasta',
     },
   ]);
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+    
+   
+      StatusBar.setBarStyle('light-content')
+    });
+
+    //  Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
+  
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');

@@ -144,13 +144,16 @@ const CustomDrawerStyle = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [logoutmodal, setlogoutmodal] = useState(false);
   const [nointernet, setnointernet] = useState(false);
+  const [animationtype, setanimationtype] = useState("fadeInUpBig");
+  const [animationstate, setanimationstate] = useState(true);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (Logout) {
       setnointernet(false);
       setModalVisible(false);
-      navigation.replace('Login');
+      
     }
   }, [Logout]);
   const logoutHandle = () => {
@@ -646,7 +649,7 @@ const CustomDrawerStyle = ({navigation}) => {
             <TouchableOpacity
             activeOpacity={0.9}
               onPress={() => {
-            
+                setanimationstate(true);
                 setlogoutmodal(true)}}
               style={{
                 flexDirection: 'row',
@@ -688,8 +691,23 @@ const CustomDrawerStyle = ({navigation}) => {
       </View>
       {logoutmodal &&
      <Animatable.View
-  animation={'fadeInUpBig'}
 
+  animation={animationstate ? animationtype : null}
+  onAnimationEnd={() => {
+    setanimationstate(false);
+   
+
+    if(animationtype == "fadeInUpBig"){
+      setanimationtype("fadeOutDownBig")
+    //  setlogoutmodal(false)
+    
+    }else{
+      setanimationtype("fadeInUpBig")
+      setlogoutmodal(false)
+    }
+   
+  
+  }}
        easing="ease"
        //  iterationCount="infinite"
        iterationCount={1}
@@ -717,12 +735,12 @@ const CustomDrawerStyle = ({navigation}) => {
   
   <View style={{flexDirection: "row", alignItems:"center", justifyContent: "center", paddingVertical: scalableheight.one}}>
      <TouchableOpacity 
-       onPress={() => {setlogoutmodal(false)}}
+       onPress={() => { setanimationstate(true)}}
      style={{backgroundColor:"#E14E4E", width: scalableheight.seven, height: scalableheight.four, borderRadius: fontSize.borderradiusmedium,alignItems: "center", justifyContent:"center"}}>
 <Text style={{fontFamily: 'Inter-SemiBold', color: "white", fontSize: fontSize.fifteen, }}>Yes</Text>
      </TouchableOpacity>
      <TouchableOpacity 
-               onPress={() => {setlogoutmodal(false)}}
+               onPress={() => {setanimationstate(true)}}
     
      style={{marginLeft:scalableheight.one, width: scalableheight.seven, height: scalableheight.four, borderRadius: fontSize.borderradiusmedium,alignItems: "center", justifyContent:"center",}}>
 <Text style={{fontFamily: 'Inter-SemiBold', color: "#E14E4E", fontSize: fontSize.fifteen, }}>No</Text>

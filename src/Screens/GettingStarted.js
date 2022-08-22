@@ -26,13 +26,7 @@ import MYButton from '../Shared/Components/MYButton';
 const GettingStarted = props => {
   const {Lang} = useSelector(state => state.userReducer);
 
-  useEffect(() => {
-    //  StatusBar.setHidden(false);
-    // StatusBar.setBackgroundColor('#363431');
-    // StatusBar.setBarStyle("dark-content")
-    // hideNavigationBar()
-    // changeNavigationBarColor("white");
-  }, []);
+ 
   const [count, setcount] = useState(0);
   const [animationstate, setanimationstate] = useState(true);
 

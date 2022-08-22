@@ -10,7 +10,8 @@ import {
   Image,
   TextInput,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  StatusBar
   
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -32,7 +33,11 @@ import Animated from 'react-native-reanimated';
 import CountDown from 'react-native-countdown-component';
 import Octicons from 'react-native-vector-icons/Octicons';
 import NetInfo from '@react-native-community/netinfo';
-
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
 
 const Checkout = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
@@ -102,6 +107,16 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   ]);
 
 
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log("hehvhjjjv")
+   
+      StatusBar.setBarStyle('dark-content')
+    });
+
+    //  Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
   function selectpaymentmethod(index){
 console.log("ee" + index)
 let data = [...payment]
@@ -123,9 +138,11 @@ setpayment(data)
  
  
   return (
+ 
+   
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
-       
+           <StatusBar barStyle={useIsDrawerOpen() ? "light-content" : "dark-content"} />
    
       <View
         style={{
@@ -207,6 +224,7 @@ setpayment(data)
    
       <AuthenticationModel state ={modalVisible} togglemodel ={() => {setmodalVisible(false)}}/>
     </Animated.View>
+   
   );
 };
 

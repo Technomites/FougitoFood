@@ -242,7 +242,16 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
   
     scrollY // <-- Animated scroll position. In case you need to do some animation in your header or somewhere else
   } = useCollapsibleContext();
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+    
+   
+      StatusBar.setBarStyle('light-content')
+    });
 
+    //  Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     StatusBar.setHidden(false);
@@ -383,16 +392,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
 
 
   
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      StatusBar.setHidden(false);
-      StatusBar.setBackgroundColor('transparent');
-      StatusBar.setBarStyle('light-content');
-    });
-
-    //  Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, [navigation]);
+ 
 
   const renderpopularcategories = ({item}) => (
     <Categoriescard
@@ -708,9 +708,7 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
           </View>
         </KeyboardAvoidingView>
       </Animatable.View>)}
-      <StatusBar
-        barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
-      />
+
   
 
       {cartvisible && (
