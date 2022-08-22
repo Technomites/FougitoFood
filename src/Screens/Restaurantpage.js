@@ -100,7 +100,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
  
 
   const [dataSourceCords, setDataSourceCords] = useState([]);
-
+  const [animationtype, setanimationtype] = useState('fadeInUpBig');
+  const [animationstate, setanimationstate] = useState(false);
   const [dataSourceCordsHorizontal, setdataSourceCordsHorizontal] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
@@ -252,6 +253,25 @@ const Restaurantpage = ({navigation, drawerAnimationStyle}) => {
     //  Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
+
+  function toggleanimation() {
+    if (animationtype == 'fadeInUpBig') {
+      setanimationtype('fadeOutDownBig');
+    } else {
+      setanimationtype('fadeInUpBig');
+    }
+  }
+
+  useEffect(() => {
+    if (modalVisible == true) {
+      setanimationstate(true);
+    }
+  }, [modalVisible]);
+
+  function clearandclose() {
+    toggleanimation();
+    setanimationstate(true);
+  }
 
   useEffect(() => {
     StatusBar.setHidden(false);
@@ -478,18 +498,20 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
     <ScreenWrapper
     drawer={drawerAnimationStyle}
     style={{flex: 1, }}>
-       {modalVisible && (
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            zIndex: 1,
-          }}></View>
-      )}
-   {modalVisible  &&  (  <Animatable.View
-              animation={'fadeInUpBig'}
+  
+ 
+   {
+   modalVisible  &&  (  <Animatable.View
+   animation={animationstate ? animationtype : null}
+   onAnimationEnd={() => {
+     setanimationstate(false);
+     if (animationtype == 'fadeOutDownBig') {
+       setanimationtype('fadeInUpBig');
+
+       setmodalVisible(false);
+     }
+   }}
+            
    
                    easing="ease"
                    //  iterationCount="infinite"
@@ -563,9 +585,9 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
                   </View>,
                 )}
                 <TouchableOpacity
-                  onPress={() => {
-                    setmodalVisible(false);
-                  }}
+                onPress={() => {
+                  clearandclose();
+                }}
                   style={{
                     position: 'absolute',
                     top: scalableheight.one,
@@ -700,7 +722,7 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
                   title={'Add To Cart'}
                   textcolor={'white'}
                   onPress={() => {
-                    setmodalVisible(false);
+                    clearandclose()
                     setcartvisible(true)
                   }}
                 /></View>
@@ -709,7 +731,17 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
         </KeyboardAvoidingView>
       </Animatable.View>)}
 
-  
+      {modalVisible && animationtype == 'fadeInUpBig' && (
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            zIndex: 2,
+            elevation: 2,
+          }}></View>
+      )}
 
       {cartvisible && (
         <Animatable.View
@@ -724,7 +756,7 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
             position: 'absolute',
             width: '90%',
             backgroundColor: '#E14E4E',
-            zIndex: 1,
+            zIndex: 2,
             alignSelf: 'center',
             borderRadius: fontSize.eleven,
             paddingVertical: scalableheight.one,
@@ -787,7 +819,9 @@ style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211
         </Animatable.View>
       )}
       <View style={{height: "100%", width: "100%", borderRadius: 10,  alignSelf: 'center',
-
+zIndex: 1,
+elevation: 1,
+position: 'absolute',
 }}>
      
  
