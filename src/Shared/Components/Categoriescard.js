@@ -52,7 +52,7 @@ const navigation = useNavigation();
             justifyContent:"center",
             overflow:"hidden"
           }}>
-<View style={{bottom:0, width:"100%", height:"53%", backgroundColor:'rgba(0,0,0,0.2)', position: "absolute", zIndex:10, elevation:10}}>
+<View style={{bottom:0, width:"100%", height:"100%", backgroundColor:'rgba(0,0,0,0.2)', position: "absolute", zIndex:10, elevation:10}}>
 
 </View>
      <ImageBackground
