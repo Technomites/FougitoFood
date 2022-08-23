@@ -192,8 +192,13 @@ setpayment(data)
                                     place={'Home'}
                                     address={'7399 Stefan Trace Joanne Ligh Street No.85'}
                                     note={'4th floor, Take a left, 2nd brown Door on your right'}
-
-                        
+                                    onPress={() =>{ 
+                                      navigation.navigate('MyAddresses', {
+                                        screenname: "checkout",
+                                      });
+                                      
+                                    }}
+                                    screenname={""}
                         />
                              <View style={{height: scalableheight.three}} />
                         <Bll label={"Sub Total"} price={"AED 209.00"}/>

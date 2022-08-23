@@ -1080,8 +1080,9 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     
         </View>
         <TouchableOpacity
+        activeOpacity={0.6}
         onPress={() =>{setshowmap(!showmap)}}
-        style={{ alignItems:"center", justifyContent:"center",  borderRadius:fontSize.circle, position:"absolute", right: scalableheight.two, bottom:scalableheight.five, height:scalableheight.seven, width:scalableheight.seven, backgroundColor:"blue"}}>
+        style={{ alignItems:"center", justifyContent:"center",  borderRadius:fontSize.circle, position:"absolute", right: scalableheight.two, bottom:scalableheight.five, height:scalableheight.seven, width:scalableheight.seven,}}>
         <Image
           resizeMode="stretch"
           style={{

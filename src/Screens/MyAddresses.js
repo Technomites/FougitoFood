@@ -34,8 +34,9 @@ import Animated from 'react-native-reanimated';
 import NetInfo from '@react-native-community/netinfo';
 import {styles} from 'react-native-element-dropdown/src/components/TextInput/styles';
 
-const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
+const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   const dispatch = useDispatch();
+  const [screenname, setscreenname] = useState("");
   const {notificationList, notificationCount} = useSelector(
     state => state.userReducer,
   );
@@ -97,6 +98,22 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
 
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+    
+      setscreenname("")
+      console.log(route?.params?.screenname + "name")
+      if(route?.params?.screenname != undefined){
+        setscreenname(route?.params?.screenname)
+      }
+     
+    });
+
+    //  Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation, route]);
+
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -116,9 +133,16 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
             contentContainerStyle={{paddingBottom: scalableheight.twentytwo}}
             renderItem={({item, i}) => {
               return (
-                <View style={{   marginTop: '5%',}}>
+                <TouchableOpacity 
+                activeOpacity={0.8}
+                onPress={() => {   navigation.goBack()}}
+                disabled={screenname == "checkout" ? false : true}
+                style={{   marginTop: '5%',}}>
+               
+               
                   <Addresstile
                     onPress={() =>
+                      
                       navigation.navigate('EditAddress', {
                         // orderId: item.OrderNo,
                         // completedetails: Order,
@@ -129,13 +153,17 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
                     place={item.Place}
                     address={item.address}
                     note={item.Note}
+                    screenname={screenname}
+
+                  
                   />
-                </View>
+                </TouchableOpacity>
               );
             }}
           />
         </View>
       </View>
+      {screenname != "checkout" &&
       <View
         style={{
           bottom: 0,
@@ -155,7 +183,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle}) => {
           title={'ADD NEW'}
           textcolor={'white'}
         />
-      </View>
+      </View>}
     </Animated.View>
   );
 };

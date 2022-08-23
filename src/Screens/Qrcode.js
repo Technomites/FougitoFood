@@ -30,8 +30,10 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
   const [qrvalue, setQrvalue] = useState('');
   const [camscanner, setCamScanner] = useState(false);
   const [scanpermission, setScanPermission] = useState(true);
-  const [animationstate, setanimationstate] = useState(true);
+  const [animationstate, setanimationstate] = useState(false);
+  const [animationtype, setanimationtype] = useState("fadeInUpBig");
 
+  
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('hehhehehehh');
@@ -53,6 +55,7 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
           width: '100%',
           backgroundColor: '#000',
         }}>
+                
         <View style={{position: 'absolute', top: getStatusBarHeight()}}>
           <TransparentHeader
             title={'Scan QR Code'}
@@ -69,47 +72,61 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
             onReadCode={event => {
               setQrvalue(event.nativeEvent.codeStringValue),
                 setScanPermission(false);
+                setanimationstate(true)
             }}
             showFrame={true} // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
             laserColor="red" // (default red) optional, color of laser in scanner frame
             frameColor="#962E2B" // (default white) optional, color of border of scanner frame
           />
         )}
+{animationstate &&
+<Animatable.View
+        
+         
+        animation={animationstate && qrvalue != "" ? "fadeInUpBig" : animationstate && qrvalue == "" ? "fadeOutDownBig" : null}
+        onAnimationEnd={() => {
+          // setanimationstate(false);
+        
+      
+          // if(animationtype == "fadeInUpBig"){
+          //   setanimationtype("fadeOutDownBig")
+          // //  setlogoutmodal(false)
+          
+          // }else{
+          //   setanimationtype("fadeInUpBig")
+       
+          // }
+         
+        
+        }}
+        easing="ease"
+        iterationCount={1}>
+        <View
+          style={{
+            width: '100%',
+            paddingHorizontal: scalableheight.three,
 
-        <Animatable.View
-          animation={qrvalue !== '' ? 'fadeInUpBig' : 'slideOutDown'}
-          onAnimationEnd={() => {
-            setanimationstate(false);
-          }}
-          easing="ease"
-          iterationCount={1}>
-          <View
-            style={{
-              width: '100%',
-              paddingHorizontal: scalableheight.three,
-
-              justifyContent: 'center',
-              alignItems: 'center',
-              position: 'absolute',
-              bottom:
-                qrvalue != '' ? scalableheight.five : -scalableheight.five,
-              elevation: 100000,
-              zIndex: 1000000,
-            }}>
-            <Favourites
-              image={require('../Resources/images/food.jpg')}
-              title={'Mexican Enchiladas'}
-              reviews={'8.9 (350 reviews)'}
-              time={'9:00 AM - 10:00PM'}
-              onPress={() => {
-                navigation.navigate('Restaurantpage');
-                setQrvalue('');
-                setScanPermission(true);
-              }}
-              distance={'2.5KM AWAY'}
-            />
-          </View>
-        </Animatable.View>
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+bottom: scalableheight.three,
+            elevation: 100000,
+            zIndex: 1000000,
+          }}>
+          <Favourites
+            image={require('../Resources/images/food.jpg')}
+            title={'Mexican Enchiladas'}
+            reviews={'8.9 (350 reviews)'}
+            time={'9:00 AM - 10:00PM'}
+            onPress={() => {
+              navigation.navigate('Restaurantpage');
+              setQrvalue('');
+              setScanPermission(true);
+            }}
+            distance={'2.5KM AWAY'}
+          />
+        </View>
+      </Animatable.View>}
       </View>
     </Animated.View>
   );

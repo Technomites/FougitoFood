@@ -496,7 +496,10 @@ const CustomDrawerStyle = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => {
-              navigation.navigate('MyAddresses');
+         
+              navigation.navigate('MyAddresses', {
+                screenname: "drawer",
+              });
               navigation.dispatch(DrawerActions.closeDrawer());
             }}
             style={{
