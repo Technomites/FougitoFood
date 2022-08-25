@@ -52,6 +52,7 @@ import RNAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
 import {SliderBox} from 'react-native-image-slider-box';
 import ImagesSwiper from 'react-native-image-swiper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import NetInfo from '@react-native-community/netinfo';
 import BookingHeader from '../Shared/Components/BookingHeader';
 import HeaderComponent from '../Shared/Components/HeaderComponent';
@@ -88,8 +89,8 @@ import moment from 'moment';
 const Home = ({props, navigation, drawerAnimationStyle}) => {
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
-  const [lat, setlat] = useState();
-  const [long, setlong] = useState();
+  const [lat, setlat] = useState(0);
+  const [long, setlong] = useState(0);
   const [inlat, setinlat] = useState();
   const [inlong, setinlong] = useState();
   const [pinlocation, setpinlocation] = useState('');
@@ -101,6 +102,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const [showmap, setshowmap] = useState(false);
   const [count, setcount] = useState(0);
   const [showbottomsheet, setshowbottomsheet] = useState(false);
+  const [showpinmap, setshowpinmap] = useState(false);
   const [center, setCenter] = useState();
   const [serving, setserving] = useState([
     {
@@ -595,27 +597,21 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-    
-   
-      StatusBar.setBarStyle('light-content')
+      StatusBar.setBarStyle('light-content');
     });
 
     //  Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
 
-  
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
     StatusBar.setBarStyle('light-content');
-   
   }, []);
   useEffect(() => {
     listeners();
   }, []);
-
-
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -637,10 +633,6 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       keyboardDidHideListener.remove();
     };
   }, []);
-
- 
-
- 
 
   useEffect(() => {
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
@@ -753,24 +745,23 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
   const renderItem = ({item, index}) => (
     <Animatable.View
-    animation="zoomInLeft"
-    easing="ease"
-    iterationCount={1}
-    style={{
-    
-    }}>
-    <Favourites
-      image={require('../Resources/images/food.jpg')}
-      title={'Mexican Enchiladas'}
-      reviews={'8.9 (350 reviews)'}
-      time={'9:00 AM - 10:00PM'}
-      onPress={() => {
-        navigation.navigate('Restaurantpage');
-       // navigation.navigate('RestaurantPageAnimation');
-       
-     }}
-      distance={'2.5KM AWAY'}
-    />
+      animation="zoomInLeft"
+      easing="ease"
+      iterationCount={1}
+      style={{}}>
+      <Favourites
+        image={require('../Resources/images/food.jpg')}
+        title={'Mexican Enchiladas'}
+        reviews={'8.9 (350 reviews)'}
+        time={'9:00 AM - 10:00PM'}
+        onPress={() =>
+          navigation.navigate('Restaurantpage', {
+            latitude: lat,
+            longitude: long,
+          })
+        }
+        distance={'2.5KM AWAY'}
+      />
     </Animatable.View>
   );
   function onRefresh() {
@@ -806,11 +797,12 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         title={'Mexican Enchiladas'}
         reviews={'8.9 (350 reviews)'}
         time={'9:00 AM - 10:00PM'}
-        onPress={() => {
-           navigation.navigate('Restaurantpage');
-          // navigation.navigate('RestaurantPageAnimation');
-          
-        }}
+        onPress={() =>
+          navigation.navigate('Restaurantpage', {
+            latitude: lat,
+            longitude: long,
+          })
+        }
         distance={'2.5KM AWAY'}
       />
     </View>
@@ -834,11 +826,10 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       animated: true,
     });
   }
- 
-
 
   return (
-    <Animated.View style={{flex: 1, ...drawerAnimationStyle,  overflow:"hidden",}}>
+    <Animated.View
+      style={{flex: 1, ...drawerAnimationStyle, overflow: 'hidden'}}>
       <StatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
       />
@@ -873,51 +864,105 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               />
             </View>
           </ImageBackground>
-{showmap && 
-<>
-          <View
-            style={{
-              ...styleSheet.shadow,
-
-              height: scalableheight.eighty,
-
-              width: '100%',
-              backgroundColor: '#F5F5F5',
-              borderRadius: fontSize.fifteen,
-              overflow: 'hidden',
-
-              position: 'absolute',
-              bottom: scalableheight.twentythree,
-            }}>
-            {lat != null && long != null ? (
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                customMapStyle={customStyle}
-                // userInterfaceStyle={"dark"}
-                ref={refMap}
+          {showmap && (
+            <>
+              <View
                 style={{
+                  ...styleSheet.shadow,
+                  height: scalableheight.eighty,
                   width: '100%',
-                  height: '100%',
+                  backgroundColor: '#F5F5F5',
                   borderRadius: fontSize.fifteen,
-                }}
-                showsUserLocation
-                region={{
-                  latitude: inlat,
-                  longitude: inlong,
-                  longitudeDelta: 0.08,
-                  latitudeDelta: 0.08,
-                }}
-                initialRegion={{
-                  latitude: lat,
-                  longitude: long,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
+                  overflow: 'hidden',
+                  position: 'absolute',
+                  bottom: scalableheight.twentythree,
                 }}>
-                {pin.map((item, key) => {
-                  return (
+                {lat != null && long != null ? (
+                  <MapView
+                    provider={PROVIDER_GOOGLE}
+                    customMapStyle={customStyle}
+                    // userInterfaceStyle={"dark"}
+                    ref={refMap}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: fontSize.fifteen,
+                    }}
+                    showsUserLocation
+                    region={{
+                      latitude: inlat,
+                      longitude: inlong,
+                      longitudeDelta: 0.08,
+                      latitudeDelta: 0.08,
+                    }}
+                    initialRegion={{
+                      latitude: lat,
+                      longitude: long,
+                      latitudeDelta: 0.0922,
+                      longitudeDelta: 0.0421,
+                    }}>
+                    {pin.map((item, key) => {
+                      return (
+                        <Marker
+                          position={center}
+                          coordinate={{
+                            latitude: item.lat,
+                            longitude: item.long,
+                          }}
+                          // draggable
+
+                          //  onDragEnd={(e) => {
+
+                          //   console.log('longitude', e?.nativeEvent?.coordinate?.longitude )
+                          //    console.log('latitude', e?.nativeEvent?.coordinate?.latitude )
+                          //   setlat(e?.nativeEvent?.coordinate?.latitude)
+                          //   setlong(e?.nativeEvent?.coordinate?.longitude)
+
+                          //   }}
+                          //  pinColor = {"red"} // any color
+                          key={key}
+                          title={'Location'}
+                          description={item.location}
+                          onPress={() =>
+                            activaterestaurant(key, item.lat, item.long)
+                          }>
+                          {item.expanded ? (
+                            <View
+                              style={{
+                                height: scalableheight.six,
+                                width: scalableheight.six,
+                              }}>
+                              <Image
+                                source={require('../Resources/images/redmarker.png')}
+                                style={{
+                                  height: scalableheight.six,
+                                  width: scalableheight.six,
+                                }}
+                                resizeMode="contain"
+                              />
+                            </View>
+                          ) : (
+                            <View
+                              style={{
+                                height: scalableheight.six,
+                                width: scalableheight.six,
+                              }}>
+                              <Image
+                                source={require('../Resources/images/redmarker.png')}
+                                style={{
+                                  height: scalableheight.four,
+                                  width: scalableheight.four,
+                                }}
+                                resizeMode="contain"
+                              />
+                            </View>
+                          )}
+                        </Marker>
+                      );
+                    })}
                     <Marker
                       position={center}
-                      coordinate={{latitude: item.lat, longitude: item.long}}
+                      coordinate={{latitude: lat, longitude: long}}
                       // draggable
 
                       //  onDragEnd={(e) => {
@@ -929,170 +974,170 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
                       //   }}
                       //  pinColor = {"red"} // any color
-                      key={key}
+                      key={1}
                       title={'Location'}
-                      description={item.location}
-                      onPress={() =>
-                        activaterestaurant(key, item.lat, item.long)
-                      }>
-                      {item.expanded ? (
-                        <View
-                          style={{
-                            height: scalableheight.six,
-                            width: scalableheight.six,
-                          }}>
-                          <Image
-                            source={require('../Resources/images/redmarker.png')}
-                            style={{
-                              height: scalableheight.six,
-                              width: scalableheight.six,
-                            }}
-                            resizeMode="contain"
-                          />
-                        </View>
-                      ) : (
-                        <View
-                          style={{
-                            height: scalableheight.six,
-                            width: scalableheight.six,
-                          }}>
-                          <Image
-                            source={require('../Resources/images/redmarker.png')}
-                            style={{
-                              height: scalableheight.four,
-                              width: scalableheight.four,
-                            }}
-                            resizeMode="contain"
-                          />
-                        </View>
-                      )}
+                      description={pinlocation}
+                      onPress={() => console.log('hello')}>
+                      <MaterialIcons
+                        name="location-pin"
+                        color={'#F55050'}
+                        size={scalableheight.six}
+                      />
                     </Marker>
-                  );
-                })}
-                <Marker
-                  position={center}
-                  coordinate={{latitude: lat, longitude: long}}
-                  // draggable
-
-                  //  onDragEnd={(e) => {
-
-                  //   console.log('longitude', e?.nativeEvent?.coordinate?.longitude )
-                  //    console.log('latitude', e?.nativeEvent?.coordinate?.latitude )
-                  //   setlat(e?.nativeEvent?.coordinate?.latitude)
-                  //   setlong(e?.nativeEvent?.coordinate?.longitude)
-
-                  //   }}
-                  //  pinColor = {"red"} // any color
-                  key={1}
-                  title={'Location'}
-                  description={pinlocation}
-                  onPress={() => console.log('hello')}>
-                  <Image
-                    source={require('../Resources/images/blackmarker.png')}
-                    style={{
-                      height: scalableheight.six,
-                      width: scalableheight.six,
-                    }}
-                    resizeMode="contain"
-                  />
-                </Marker>
-              </MapView>
-            ) : null}
-          </View>
-          <View
-            style={{
-              width: '100%',
-              alignSelf: 'center',
-
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-
-              paddingHorizontal: scalableheight.one,
-              position: 'absolute',
-              bottom: scalableheight.twentyfour,
-              elevation: 5,
-              zIndex: 5,
-            }}>
-            <Infobar
-              onPress={() => {
-                setshowbottomsheet(true);
-              }}
-              Heading={'Home'}
-              Details={'Clifton block 2, plot no 245, near bilawal house'}
-            />
-          </View>
-          <View
-            style={{
-              paddingHorizontal: scalableheight.one,
-              position: 'absolute',
-              bottom: scalableheight.two,
-              zIndex: 200,
-              elevation: 200,
-            }}>
-            {dished?.length > 0 ? (
-              <Animatable.View
-                animation="bounceInRight"
-                easing="ease"
-                iterationCount={1}
+                  </MapView>
+                ) : null}
+              </View>
+              <View
                 style={{
-                  paddingTop: scalableheight.one,
-                  paddingBottom: scalableheight.pointfive,
+                  width: scalableheight.six,
+                  height: scalableheight.six,
+                  backgroundColor: 'white',
+                  borderRadius: fontSize.borderradiusmedium,
+                  shadowColor: '#470000',
+                  shadowOffset: {width: 0, height: 1},
+                  shadowOpacity: 0.2,
+                  elevation: 3,
+                  position: 'absolute',
+                  bottom: scalableheight.thirtyfour,
+                  right: scalableheight.one,
+                  elevation: 5,
+                  zIndex: 5,
+                  alignSelf: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
+                  paddingHorizontal: scalableheight.one,
                 }}>
-                <Text
-                  style={{
-                    fontFamily: 'Inter-ExtraBold',
-                    fontSize: fontSize.sixteen,
-                    color: '#29262A',
+                <TouchableOpacity
+                  onPress={() => {
+                    refMap.current.animateToRegion({
+                      latitude: inlat,
+                      longitude: inlong,
+                      longitudeDelta: 0.08,
+                      latitudeDelta: 0.08,
+                    });
                   }}>
-                  RESTAURANTS NEARBY
-                </Text>
-              </Animatable.View>
-            ) : null}
-            <FlatList
-              key={'1'}
-              showsHorizontalScrollIndicator={false}
-              ref={ref}
-              style={{zIndex: 200, elevation: 200}}
-              keyExtractor={(item, index) => index.toString()}
-              horizontal
-              data={dished}
-              renderItem={rendernearby}
-              // onEndReached={() => LoadFeaturedProjectPagination()}
-              // onEndReachedThreshold={0.1}
-            />
-          </View>
-</>}
-{showmap != true && 
-<View style={{width: '100%', paddingHorizontal: scalableheight.one, marginTop: scalableheight.two}}>
-          <FlatList
-            data={serving}
-            renderItem={renderItem}
-            // ListFooterComponent={renderFooter}
-            // onEndReached={loadMoreNotifications}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 54}}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>}
+                  <MaterialIcons
+                    name="my-location"
+                    color={'#F55050'}
+                    size={fontSize.twentyeight}
+                  />
+                </TouchableOpacity>
+              </View>
 
-    
+              <View
+                style={{
+                  width: '100%',
+                  alignSelf: 'center',
+
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+
+                  paddingHorizontal: scalableheight.one,
+                  position: 'absolute',
+                  bottom: scalableheight.twentyfour,
+                  elevation: 5,
+                  zIndex: 5,
+                }}>
+                <Infobar
+                  onPress={() => {
+                    setshowbottomsheet(true);
+                  }}
+                  Heading={'Home'}
+                  Details={'Clifton block 2, plot no 245, near bilawal house'}
+                />
+              </View>
+              <View
+                style={{
+                  paddingHorizontal: scalableheight.one,
+                  position: 'absolute',
+                  bottom: scalableheight.two,
+                  zIndex: 200,
+                  elevation: 200,
+                }}>
+                {dished?.length > 0 ? (
+                  <Animatable.View
+                    animation="bounceInRight"
+                    easing="ease"
+                    iterationCount={1}
+                    style={{
+                      paddingTop: scalableheight.one,
+                      paddingBottom: scalableheight.pointfive,
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter-ExtraBold',
+                        fontSize: fontSize.sixteen,
+                        color: '#29262A',
+                      }}>
+                      RESTAURANTS NEARBY
+                    </Text>
+                  </Animatable.View>
+                ) : null}
+                <FlatList
+                  key={'1'}
+                  showsHorizontalScrollIndicator={false}
+                  ref={ref}
+                  style={{zIndex: 200, elevation: 200}}
+                  keyExtractor={(item, index) => index.toString()}
+                  horizontal
+                  data={dished}
+                  renderItem={rendernearby}
+                  // onEndReached={() => LoadFeaturedProjectPagination()}
+                  // onEndReachedThreshold={0.1}
+                />
+              </View>
+            </>
+          )}
+          {showmap != true && (
+            <View
+              style={{
+                width: '100%',
+                paddingHorizontal: scalableheight.one,
+                marginTop: scalableheight.two,
+              }}>
+              <FlatList
+                data={serving}
+                renderItem={renderItem}
+                // ListFooterComponent={renderFooter}
+                // onEndReached={loadMoreNotifications}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{paddingBottom: 54}}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            </View>
+          )}
         </View>
         <TouchableOpacity
-        activeOpacity={0.6}
-        onPress={() =>{setshowmap(!showmap)}}
-        style={{ alignItems:"center", justifyContent:"center",  borderRadius:fontSize.circle, position:"absolute", right: scalableheight.two, bottom:scalableheight.five, height:scalableheight.seven, width:scalableheight.seven,}}>
-        <Image
-          resizeMode="stretch"
-          style={{
-            width: '100%',
-            height: "100%",
-            zIndex:201,
-            elevation:201
-            
+          activeOpacity={0.6}
+          onPress={() => {
+            setshowmap(!showmap);
           }}
-          source={showmap ? require('../Resources/images/listicon.png') : require('../Resources/images/mapicon.png')}/>
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: fontSize.circle,
+            position: 'absolute',
+            right: scalableheight.two,
+            bottom: scalableheight.five,
+            height: scalableheight.seven,
+            width: scalableheight.seven,
+          }}>
+          <Image
+            resizeMode="stretch"
+            style={{
+              width: '100%',
+              height: '100%',
+              zIndex: 201,
+              elevation: 201,
+            }}
+            source={
+              showmap
+                ? require('../Resources/images/listicon.png')
+                : require('../Resources/images/mapicon.png')
+            }
+          />
         </TouchableOpacity>
       </View>
       <Custombottomsheet
@@ -1104,6 +1149,11 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         onPressnewlocation={() => {
           getnewlocation();
         }}
+        // OnPressPinLocation={() => {
+        //   setshowpinmap(!showpinmap);
+        // }}
+        latitude={lat}
+        longitude={long}
       />
     </Animated.View>
   );

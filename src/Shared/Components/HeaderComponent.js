@@ -16,16 +16,25 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { fontSize, scalableheight } from '../../Utilities/fonts'
+import {useNavigation} from '@react-navigation/native';
+import {fontSize, scalableheight} from '../../Utilities/fonts';
 export default function HeaderComponent(props) {
-  const {blogsdatahome, newsfeedshomedata, Lang, ProfileInfo, profileimage, bannerarray, categories, newNotificationCount, popularservicedatahome} = useSelector(state => state.userReducer);
+  const {
+    blogsdatahome,
+    newsfeedshomedata,
+    Lang,
+    ProfileInfo,
+    profileimage,
+    bannerarray,
+    categories,
+    newNotificationCount,
+    popularservicedatahome,
+  } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
-const navigation = useNavigation();
+  const navigation = useNavigation();
   const openMenu = () => {
     console.log('hello');
-  navigation.openDrawer();
- 
+    navigation.openDrawer();
   };
 
   return (
@@ -35,35 +44,35 @@ const navigation = useNavigation();
           width: '100%',
           alignItems: 'center',
           justifyContent: 'center',
-          flexDirection: "row" ,
-        
+          flexDirection: 'row',
         }}>
-        
-          <TouchableOpacity
+        <TouchableOpacity
           onPress={openMenu}
           style={{
-            height:  scalableheight.seven,
-            width:  scalableheight.five,
+            height: scalableheight.seven,
+            width: scalableheight.five,
             justifyContent: 'center',
             alignItems: 'center',
-       position:"absolute",
-       left: 0
-           
+            position: 'absolute',
+            left: 0,
           }}>
-          <MaterialCommunityIcons 
-              name="menu"
-              color={'white'}
-              size={fontSize.twentyeight}
-            />
+          <MaterialCommunityIcons
+            name="menu"
+            color={'white'}
+            size={fontSize.twentyeight}
+          />
         </TouchableOpacity>
 
         <Image
           resizeMode="contain"
-          style={{  alignSelf: "center", width: scalableheight.thirteen, height: scalableheight.four}}
+          style={{
+            alignSelf: 'center',
+            width: scalableheight.thirteen,
+            height: scalableheight.four,
+          }}
           source={require('../../Resources/images/logo.png')}
         />
-       
-      
+
         {/* <View style={{flexDirection: 'row',justifyContent:"flex-end"}}>
        
         <MaterialIcons 
@@ -92,9 +101,6 @@ const styleSheet = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-   
-
-
   },
 
   text: {

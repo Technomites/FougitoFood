@@ -11,8 +11,7 @@ import {
   TextInput,
   ImageBackground,
   ScrollView,
-  StatusBar
-  
+  StatusBar,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
@@ -42,29 +41,28 @@ import {
 const Checkout = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   const [modalVisible, setmodalVisible] = useState(false);
-  const [number, setnumber] = useState("");
-  const [fullname, setfullname] = useState("");
-  const [password, setpassword] = useState("");
+  const [number, setnumber] = useState('');
+  const [fullname, setfullname] = useState('');
+  const [password, setpassword] = useState('');
   const [newpasswordshow, setnewpasswordshow] = useState(false);
   const [loginvisible, setloginvisible] = useState(true);
   const [signupvisible, setsignupvisible] = useState(false);
   const [otpvisible, setotpvisible] = useState(false);
   const [timeractive, settimeractive] = useState(false);
-  
+
   const [forgetpasswordvisible, setforgetpasswordvisible] = useState(false);
   const [animationstate, setanimationstate] = useState(true);
   const [codeOneActive, setCodeOneActive] = useState(false);
   const [codeTwoActive, setCodeTwoActive] = useState(false);
   const [codeThreeActive, setCodeThreeActive] = useState(false);
   const [codeFourActive, setCodeFourActive] = useState(false);
-  const [codeOne, setCodeOne] = useState("");
-  const [codeTwo, setCodeTwo] = useState("");
-  const [codeThree, setCodeThree] = useState("");
+  const [codeOne, setCodeOne] = useState('');
+  const [codeTwo, setCodeTwo] = useState('');
+  const [codeThree, setCodeThree] = useState('');
 
-
-  const [codeFour, setCodeFour] = useState("");
+  const [codeFour, setCodeFour] = useState('');
   const input_1 = useRef();
-  const input_2 = useRef();  
+  const input_2 = useRef();
   const input_3 = useRef();
   const input_4 = useRef();
 
@@ -92,144 +90,191 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
 
   const [payment, setpayment] = useState([
     {
-      type: "Credit/Debit Card",
+      type: 'Credit/Debit Card',
       payment: 'Pay Online',
       selected: false,
-      icon: 1
+      icon: 1,
     },
     {
-        type: "Credit/Debit Card",
-        payment: 'Cash On Delivery',
-        selected: false,
-        icon: 2
+      type: 'Credit/Debit Card',
+      payment: 'Cash On Delivery',
+      selected: false,
+      icon: 2,
     },
-   
   ]);
-
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log("hehvhjjjv")
-   
-      StatusBar.setBarStyle('dark-content')
+      console.log('hehvhjjjv');
+
+      StatusBar.setBarStyle('dark-content');
     });
 
     //  Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
-  function selectpaymentmethod(index){
-console.log("ee" + index)
-let data = [...payment]
-for(const key in payment){
-    if(key == index){
-        data[key].selected = true
-    }else{
-        data[key].selected = false
+  function selectpaymentmethod(index) {
+    console.log('ee' + index);
+    let data = [...payment];
+    for (const key in payment) {
+      if (key == index) {
+        data[key].selected = true;
+      } else {
+        data[key].selected = false;
+      }
     }
-
-}
-setpayment(data)
+    setpayment(data);
   }
   const renderpayment = ({item, index}) => (
-    
-    <PaymentOptions option ={item.icon} index= {index} title={item.type} payment = {item.payment} selected={item.selected} onPress={()=>{selectpaymentmethod(index)}}/>
+    <PaymentOptions
+      option={item.icon}
+      index={index}
+      title={item.type}
+      payment={item.payment}
+      selected={item.selected}
+      onPress={() => {
+        selectpaymentmethod(index);
+      }}
+    />
   );
 
- 
- 
   return (
- 
-   
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
-           <StatusBar barStyle={useIsDrawerOpen() ? "light-content" : "dark-content"} />
-   
+      <StatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+      />
+
       <View
         style={{
           height: '100%',
           width: '100%',
-          elevation: 1, zIndex:1,
+          elevation: 1,
+          zIndex: 1,
           alignSelf: 'center',
 
           paddingTop: getStatusBarHeight(),
         }}>
         <PlainHeader title={'Cart'} />
-     
-     <ScrollView 
-     showsVerticalScrollIndicator={false}
-     style={{ paddingHorizontal: scalableheight.one}}>
-        <View style = {{flexDirection:"row", marginBottom: scalableheight.one}}>
-        <Text style={{...styleSheet.Text2, width: "15%", textAlign:"center"}}>QTY</Text>
-       <Text style={{...styleSheet.Text2, width: "55%", paddingHorizontal: scalableheight.two}}>ITEM</Text>
-       <Text style={{...styleSheet.Text2, width: "30%",paddingHorizontal: scalableheight.two}}>Price</Text>
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{paddingHorizontal: scalableheight.one}}>
+          <View
+            style={{flexDirection: 'row', marginBottom: scalableheight.one}}>
+            <Text
+              style={{...styleSheet.Text2, width: '15%', textAlign: 'center'}}>
+              QTY
+            </Text>
+            <Text
+              style={{
+                ...styleSheet.Text2,
+                width: '55%',
+                paddingHorizontal: scalableheight.two,
+              }}>
+              ITEM
+            </Text>
+            <Text
+              style={{
+                ...styleSheet.Text2,
+                width: '30%',
+                paddingHorizontal: scalableheight.two,
+              }}>
+              Price
+            </Text>
+          </View>
+          {serving.map(item => {
+            return (
+              <View style={{alignItems: 'center'}}>
+                <ItemDetails
+                  title={'Mexican Enchiladas'}
+                  price={159.4}
+                  onPress={() => {
+                    setmodalVisible(true);
+                  }}
+                />
+              </View>
+            );
+          })}
+          <View style={{height: scalableheight.two}} />
+          <Text style={styleSheet.Text1}>Payment Method</Text>
+          <View style={{height: scalableheight.one}} />
+          <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={payment}
+            renderItem={renderpayment}
+            // onEndReached={() => LoadFeaturedProjectPagination()}
+            // onEndReachedThreshold={0.1}
+          />
+          <View style={{height: scalableheight.two}} />
+          <Text style={styleSheet.Text1}>Delivery Address</Text>
+          <View style={{height: scalableheight.one}} />
+
+          <Addresstile
+            icon={require('../Resources/images/Homeicon.png')}
+            place={'Home'}
+            address={'7399 Stefan Trace Joanne Ligh Street No.85'}
+            note={'4th floor, Take a left, 2nd brown Door on your right'}
+            onPress={() => {
+              navigation.navigate('MyAddresses', {
+                screenname: 'checkout',
+              });
+            }}
+            screenname={''}
+          />
+          <View style={{height: scalableheight.three}} />
+          <Bll label={'Sub Total'} price={'AED 209.00'} />
+          <Bll label={'Delivery Charges'} price={'AED 209.00'} />
+
+          <View style={styleSheet.Container}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={styleSheet.Text3}>Vat Amount</Text>
+              <Text style={styleSheet.Text4}>{'(4%)'}</Text>
+            </View>
+            <Text style={styleSheet.Text3}>AED 209.00</Text>
+          </View>
+          <View style={{height: scalableheight.one}} />
+          <Text style={{...styleSheet.Text4, textAlign: 'right'}}>
+            I HAVE A COUPON
+          </Text>
+          <View
+            style={{
+              borderTopColor: 'rgba(211,211,211, 0.5)',
+              borderTopWidth: scalableheight.borderTopWidth,
+              marginVertical: scalableheight.one,
+            }}></View>
+          <Bll label={'Total'} price={'AED 222.00'} />
+          <View style={{height: scalableheight.two}} />
+
+          <View style={{height: scalableheight.ten}} />
+        </ScrollView>
+        <View
+          style={{
+            paddingHorizontal: scalableheight.one,
+            position: 'absolute',
+            bottom: scalableheight.two,
+            width: '100%',
+          }}>
+          <MYButton
+            title={'Login to Place Order'}
+            onPress={() => {
+              setmodalVisible(true);
+            }}
+            color="#E14E4E"
+            textcolor="white"
+          />
         </View>
-        {serving.map(item => {
-             
-                return (
-                    <View style={{alignItems:"center"}}>
-     <ItemDetails title={"Mexican Enchiladas"} price={159.40} onPress={()=>{setmodalVisible(true)}}/>
-     </View>
-                  )})}
-                    <View style={{height: scalableheight.two}} />
-                    <Text style={styleSheet.Text1}>Payment Method</Text>
-                    <View style={{height: scalableheight.one}} />
-                    <FlatList
-              keyExtractor={(item, index) => index.toString()}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={payment}
-        
-              renderItem={renderpayment}
-              // onEndReached={() => LoadFeaturedProjectPagination()}
-              // onEndReachedThreshold={0.1}
-            />
-                        <View style={{height: scalableheight.two}} />
-                    <Text style={styleSheet.Text1}>Delivery Address</Text>
-                    <View style={{height: scalableheight.one}} />
-                    
-                  <Addresstile
-                                    icon={require('../Resources/images/Homeicon.png')}
-                                    place={'Home'}
-                                    address={'7399 Stefan Trace Joanne Ligh Street No.85'}
-                                    note={'4th floor, Take a left, 2nd brown Door on your right'}
-                                    onPress={() =>{ 
-                                      navigation.navigate('MyAddresses', {
-                                        screenname: "checkout",
-                                      });
-                                      
-                                    }}
-                                    screenname={""}
-                        />
-                             <View style={{height: scalableheight.three}} />
-                        <Bll label={"Sub Total"} price={"AED 209.00"}/>
-                        <Bll label={"Delivery Charges"} price={"AED 209.00"}/>
-                     
-                        
-                          <View style={styleSheet.Container}>
-                            <View style={{flexDirection:"row"}}>
-                          <Text style={styleSheet.Text3}>Vat Amount</Text>
-                          <Text style={styleSheet.Text4}>{"(4%)"}</Text>
-                          </View>
-                          <Text style={styleSheet.Text3}>AED 209.00</Text>
-                          </View>
-                          <View style={{height: scalableheight.one}} />
-                          <Text style={{...styleSheet.Text4, textAlign:"right"}} >I HAVE A COUPON</Text>
-                         <View style={{borderTopColor: "rgba(211,211,211, 0.5)", borderTopWidth: scalableheight.borderTopWidth, marginVertical: scalableheight.one}}></View>
-                          <Bll label={"Total"} price={"AED 222.00"}/>
-                          <View style={{height: scalableheight.two}} />
-                        
-                        <View style={{height: scalableheight.ten}} />
-     </ScrollView>
-<View style={{paddingHorizontal: scalableheight.one, position:"absolute", bottom: scalableheight.two, width:"100%"}}>
-     <MYButton   title={'Login to Place Order'} onPress={()=>{setmodalVisible(true)}}
-                    color="#E14E4E"
-                    textcolor="white"/>
-                    </View>
       </View>
-   
-      <AuthenticationModel state ={modalVisible} togglemodel ={() => {setmodalVisible(false)}}/>
+
+      <AuthenticationModel
+        state={modalVisible}
+        togglemodel={() => {
+          setmodalVisible(false);
+        }}
+      />
     </Animated.View>
-   
   );
 };
 
@@ -237,62 +282,65 @@ const styleSheet = StyleSheet.create({
   Text1: {
     fontFamily: 'Inter-Bold',
     fontSize: fontSize.fifteen,
-    color:"black"
+    color: 'black',
   },
   Text2: {
-     fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Inter-SemiBold',
     fontSize: fontSize.ten,
-    color:"#29262A", opacity: 0.4
+    color: '#29262A',
+    opacity: 0.4,
   },
   Text3: {
     fontFamily: 'Inter-Bold',
-   fontSize: fontSize.fourteen,
-   color:"black"
- },
- Text4: {
+    fontSize: fontSize.fourteen,
+    color: 'black',
+  },
+  Text4: {
     fontFamily: 'Inter-SemiBold',
-   fontSize: fontSize.fourteen,
-   color:"#E14E4E"
- },
- Text4: {
+    fontSize: fontSize.fourteen,
+    color: '#E14E4E',
+  },
+  Text4: {
     fontFamily: 'Inter-SemiBold',
-   fontSize: fontSize.fifteen,
-   color:"#E14E4E"
- },
- Text5: {
-  fontFamily: 'Inter-SemiBold',
-  fontSize: fontSize.thirteen,
-  color:"black", opacity:0.4
- },
+    fontSize: fontSize.fifteen,
+    color: '#E14E4E',
+  },
+  Text5: {
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.thirteen,
+    color: 'black',
+    opacity: 0.4,
+  },
 
- Text6: {
-  fontFamily: 'Inter-SemiBold',
-  fontSize: fontSize.fourteen,
-  color:"black", opacity:0.8
- },
- Container:{
-    flexDirection:"row", alignItems:"center", justifyContent:"space-between"
- },
- inputStyle: {
-  fontFamily: "Inter-Regular",
-  fontSize: fontSize.twenty,
-  color: "#000000",
-  borderRadius: fontSize.eleven,
- 
-  textAlign: "center",
-  justifyContent: "center",
-  width: "100%",
-  borderColor: "#A0A0A0",
-  borderWidth: scalableheight.borderTopWidth,
-  padding:scalableheight.onepointfive
-},
-placeholderStyle: {
-  color: "#818181",
-  fontFamily: "Inter-Regular",
-  fontSize: fontSize.twelve,
+  Text6: {
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.fourteen,
+    color: 'black',
+    opacity: 0.8,
+  },
+  Container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  inputStyle: {
+    fontFamily: 'Inter-Regular',
+    fontSize: fontSize.twenty,
+    color: '#000000',
+    borderRadius: fontSize.eleven,
 
-},
-
+    textAlign: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    borderColor: '#A0A0A0',
+    borderWidth: scalableheight.borderTopWidth,
+    padding: scalableheight.onepointfive,
+  },
+  placeholderStyle: {
+    color: '#818181',
+    fontFamily: 'Inter-Regular',
+    fontSize: fontSize.twelve,
+  },
 
   Image: {
     width: 241,
@@ -306,7 +354,7 @@ placeholderStyle: {
     justifyContent: 'center',
     alignSelf: 'center',
 
-    marginTop:  scalableheight.two,
+    marginTop: scalableheight.two,
     height: scalableheight.six,
     paddingHorizontal: scalableheight.two,
   },
@@ -319,9 +367,9 @@ placeholderStyle: {
     shadowColor: '#470000',
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
-    elevation: 3
+    elevation: 3,
   },
-  scrollcontainer:{ flexGrow: 1,  paddingVertical: scalableheight.two},
+  scrollcontainer: {flexGrow: 1, paddingVertical: scalableheight.two},
   // TextInput: {
   //   width: '95%',
   //   backgroundColor: '#F5F5F5',
@@ -346,7 +394,6 @@ placeholderStyle: {
     borderRadius: fontSize.borderradiusmedium,
     height: scalableheight.seven,
 
- 
     paddingHorizontal: scalableheight.two,
     alignSelf: 'center',
     marginTop: scalableheight.one,
