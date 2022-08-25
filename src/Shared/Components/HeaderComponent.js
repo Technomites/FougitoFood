@@ -101,6 +101,8 @@ const styleSheet = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+
+    // backgroundColor:'red',
   },
 
   text: {

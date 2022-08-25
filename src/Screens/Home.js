@@ -841,7 +841,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             style={{
               width: '100%',
               height: scalableheight.fifteen + getStatusBarHeight(),
-              zIndex: 1,
+              zIndex: 10,
+              elevation: 10,
             }}
             imageStyle={{
               borderBottomLeftRadius: fontSize.twenty,
@@ -876,6 +877,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                   overflow: 'hidden',
                   position: 'absolute',
                   bottom: scalableheight.twentythree,
+                  zIndex: 1,
                 }}>
                 {lat != null && long != null ? (
                   <MapView
