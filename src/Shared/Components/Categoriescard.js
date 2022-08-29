@@ -9,82 +9,85 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { fontSize, scalableheight } from '../../Utilities/fonts'
+import {useNavigation} from '@react-navigation/native';
+import {fontSize, scalableheight} from '../../Utilities/fonts';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 export default function Categoriescard(props) {
   const dispatch = useDispatch();
-const navigation = useNavigation();
-
+  const navigation = useNavigation();
 
   return (
-  
     <TouchableOpacity
       activeOpacity={0.9}
-      onPress={() => {
-      
-      }}
+      onPress={() => {}}
       style={{
-      
         height: scalableheight.fifteen,
         width: scalableheight.thirty,
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: scalableheight.two
-       
+        marginRight: scalableheight.two,
       }}>
       <>
-       <View
+        <View
           style={{
             ...styleSheet.shadow,
             width: '100%',
             height: '95%',
             // borderRadius: fontSize.seventeen,
             borderRadius: fontSize.twelve,
-            justifyContent:"center",
-            overflow:"hidden"
+            justifyContent: 'center',
+            overflow: 'hidden',
           }}>
-<View style={{bottom:0, width:"100%", height:"100%", backgroundColor:'rgba(0,0,0,0.2)', position: "absolute", zIndex:10, elevation:10}}>
-
-</View>
-     <ImageBackground
-    resizeMode= "stretch"
-    style={{
-      width: '100%',
-      height: '100%',
-   justifyContent:"center",
- 
-    }}
-    imageStyle={{  borderRadius: fontSize.eleven,  }}
-      source={props.image}>
-        
-        <Text style={{
-            paddingLeft: scalableheight.two,
+          <View
+            style={{
+              bottom: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0,0,0,0.2)',
+              position: 'absolute',
+              zIndex: 10,
+              elevation: 10,
+            }}></View>
+          <ImageBackground
+            resizeMode="stretch"
+            style={{
+              width: '100%',
+              height: '100%',
+              justifyContent: 'center',
+            }}
+            imageStyle={{borderRadius: fontSize.eleven}}
+            source={props.image}>
+            <Text
+              style={{
+                paddingLeft: scalableheight.two,
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.sixteen,
-                color:"white"
-              }}>{props.type}</Text>
-           <Text style={{
-             paddingLeft: scalableheight.two,
+                color: 'white',
+              }}>
+              {props.type}
+            </Text>
+            <Text
+              style={{
+                paddingLeft: scalableheight.two,
                 fontFamily: 'Inter-medium',
                 fontSize: fontSize.twelve,
-                color:"white",
-                opacity:0.6
-              }}>{"Average Price AED "} {props.price}</Text>
-              </ImageBackground> 
-        </View> 
-       
+                color: 'white',
+                opacity: 0.6,
+              }}>
+              {'Average Price AED '} {props.price}
+            </Text>
+          </ImageBackground>
+        </View>
       </>
     </TouchableOpacity>
- 
   );
 }
 
@@ -97,7 +100,7 @@ const styleSheet = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    paddingHorizontal: scalableheight.one
+    paddingHorizontal: scalableheight.one,
   },
 
   text: {
@@ -113,19 +116,17 @@ const styleSheet = StyleSheet.create({
     right: '-1%',
   },
   backButtonMain: {
-    backgroundColor: "#F9F9F9",
+    backgroundColor: '#F9F9F9',
     height: scalableheight.four,
     width: scalableheight.four,
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
-},
-shadow:{
-  shadowColor: '#470000',
-  shadowOffset: {width: 0, height: 1},
-  shadowOpacity: 0.2,
-  elevation: 2
-}
+  },
+  shadow: {
+    shadowColor: '#470000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 2,
+  },
 });
-
-
