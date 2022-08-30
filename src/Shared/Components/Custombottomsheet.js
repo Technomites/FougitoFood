@@ -15,6 +15,9 @@ import {
 
 import renderIf from 'render-if';
 
+
+
+import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -55,6 +58,8 @@ export default function Custombottomsheet(props) {
   // != null ? props?.latitudepin : 25.2048
   const [pinlatitude, SetPinLatitude] = useState(0);
   const [pinLongitude, SetPinLongitude] = useState(0);
+  const [hidemarker, sethidemarker] = useState(false);
+  const [activatehideshow, setactivatehideshow] = useState(false);
   // != null ? props?.longitude : 55.2708
 
   function toggleanimation() {
@@ -261,6 +266,7 @@ export default function Custombottomsheet(props) {
     },
   ];
 
+
   return (
     <>
       {props.state && (
@@ -421,7 +427,24 @@ export default function Custombottomsheet(props) {
                   marginVertical: scalableheight.two,
                   borderRadius: fontSize.fifteen,
                   overflow: 'hidden',
+                justifyContent:'center',
+                alignItems:'center'
                 }}>
+{hidemarker == false ? 
+                  <MaterialIcons
+                     style={{  position:"absolute", alignSelf:"center", alignContent:"center", zIndex:3, elevation:3}}
+                      name="location-pin"
+                      color={'#F55050'}
+                      size={scalableheight.six}
+                    /> :
+                    <Entypo
+                    style={{  position:"absolute", alignSelf:"center", alignContent:"center", zIndex:3, elevation:3}}
+                     name="dot-single"
+                     color={'#F55050'}
+                     size={scalableheight.six}
+                   />
+}
+                  
                 <MapView
                   provider={PROVIDER_GOOGLE}
                   style={{
@@ -440,8 +463,39 @@ export default function Custombottomsheet(props) {
                     longitude: pinLongitude,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
-                  }}>
-                  <Marker
+                  }}
+          
+                  onRegionChange={(region) => {
+                //  console.log(region)
+                if(region.latitude.toFixed(5) === pinlatitude.toFixed(5)
+                && region.longitude.toFixed(5) === pinLongitude.toFixed(5)){
+                  return;
+              }else{
+                sethidemarker(true)
+              }
+                  }}
+                  onRegionChangeComplete = {(region) => {
+                    // console.log(region)
+                
+               
+    if(region.latitude.toFixed(5) === pinlatitude.toFixed(5)
+    && region.longitude.toFixed(5) === pinLongitude.toFixed(5)){
+      return;
+  }else{
+    sethidemarker(false)
+    SetPinLatitude(region.latitude),
+    SetPinLongitude(region.longitude)
+  }
+
+ 
+                     }}
+
+                    //  onDragEnd={e => (
+                    //   SetPinLatitude(e.nativeEvent.coordinate.latitude),
+                    //   SetPinLongitude(e.nativeEvent.coordinate.longitude)
+                    // )}
+                  >
+                  {/* <Marker
                     draggable
                     onDragEnd={e => (
                       SetPinLatitude(e.nativeEvent.coordinate.latitude),
@@ -458,7 +512,7 @@ export default function Custombottomsheet(props) {
                       color={'#F55050'}
                       size={scalableheight.six}
                     />
-                  </Marker>
+                  </Marker> */}
                 </MapView>
                 <View
                   style={{

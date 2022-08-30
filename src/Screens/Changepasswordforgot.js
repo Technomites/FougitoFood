@@ -131,7 +131,7 @@ const Changepasswordforgot = ({navigation, route}) => {
     <ImageBackground
     resizeMode= "stretch"
     style={styleSheet.backgroundImageStyle}
-    source={require('../Resources/images/Splash.png')}
+    source={require('../Resources/images/loginpicture.png')}
 >
 <TouchableOpacity 
              onPress={() => {

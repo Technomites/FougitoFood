@@ -52,6 +52,7 @@ const GettingStarted = props => {
       },
     },
     {
+
       image: require('../Resources/images/GetstartedS3.png'),
       caption: 'Your Favourite Food Delivered to you',
       buttontitle: 'PROCEED',

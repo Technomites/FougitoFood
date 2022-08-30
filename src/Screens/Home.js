@@ -47,7 +47,7 @@ import changeNavigationBarColor, {
 } from 'react-native-navigation-bar-color';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {BottomSheetModalProvider, BottomSheet} from '@gorhom/bottom-sheet';
+// import {BottomSheetModalProvider, BottomSheet} from '@gorhom/bottom-sheet';
 import RNAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
 import {SliderBox} from 'react-native-image-slider-box';
 import ImagesSwiper from 'react-native-image-swiper';

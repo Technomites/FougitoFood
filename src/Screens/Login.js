@@ -1424,7 +1424,7 @@ const Login = ({navigation}) => {
       <ImageBackground
         resizeMode="cover"
         style={styles.backgroundImageStyle}
-        source={require('../Resources/images/Splash.png')}>
+        source={require('../Resources/images/loginpicture.png')}>
         {/* <CustomStatusBar 
                 barStyle={"light-content"}
                 backgroundColor={"transparent"}

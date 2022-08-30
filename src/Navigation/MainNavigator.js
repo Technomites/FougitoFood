@@ -80,7 +80,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+// import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import renderIf from 'render-if';
 import {totalSize, height} from 'react-native-dimension';

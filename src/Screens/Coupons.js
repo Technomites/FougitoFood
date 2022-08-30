@@ -30,7 +30,7 @@ import PlainHeader from '../Shared/Components/PlainHeader';
 import UpcomingBookingCard from '../Shared/Components/UpcomingBookingCard';
 import Couponscomponent from '../Shared/Components/Couponscomponent';
 import BottomTab from '../Shared/Components/BottomTab';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+// import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {GToastContainer, showToast} from 'react-native-gtoast';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Animated from 'react-native-reanimated';

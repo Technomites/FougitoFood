@@ -85,7 +85,7 @@ import listeners from '../Listener/Listener';
 import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+// import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {styles} from 'react-native-element-dropdown/src/components/TextInput/styles';
 import Custombottomsheet from '../Shared/Components/Custombottomsheet';
 
@@ -116,7 +116,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   const [search, setsearch] = useState('');
   const [isEnabled, setisEnabled] = useState(false);
   const [isCollapsed, setisCollapsed] = useState(false);
-  const Top = createMaterialTopTabNavigator();
+  // const Top = createMaterialTopTabNavigator();
 
   const [inlat, setinlat] = useState();
 

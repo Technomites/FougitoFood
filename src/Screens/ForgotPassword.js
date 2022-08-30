@@ -1290,7 +1290,7 @@ const ForgotPassword = ({navigation}) => {
         <ImageBackground
             resizeMode= "cover"
             style={styles.backgroundImageStyle}
-            source={require('../Resources/images/Splash.png')}
+            source={require('../Resources/images/loginpicture.png')}
         >
                     <View style={{height:"80%", position: 'absolute'}}>
           <PickerModel
