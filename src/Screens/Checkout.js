@@ -137,12 +137,16 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       }}
     />
   );
+// const [status,Setstatus]= useState();
+//   useEffect(() => {
+//     Setstatus)
+//   }, [useIsDrawerOpen]);
 
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
       <StatusBar
-        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        barStyle={(useIsDrawerOpen() ? 'light-content' : 'dark-content')}
       />
 
       <View

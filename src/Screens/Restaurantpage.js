@@ -9,18 +9,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
-  RefreshControl,
   TextInput,
-  Dimensions,
   FlatList,
-  TouchableWithoutFeedback,
   Platform,
-  Vibration,
-  ActivityIndicator,
   Keyboard,
-  Modal,
-  SectionList,
   KeyboardAvoidingView,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -493,6 +485,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
 
   return (
     <ScreenWrapper drawer={drawerAnimationStyle} style={{flex: 1}}>
+      <StatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
+      />
       {modalVisible && (
         <Animatable.View
           animation={animationstate ? animationtype : null}

@@ -144,7 +144,7 @@ const CustomDrawerStyle = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [logoutmodal, setlogoutmodal] = useState(false);
   const [nointernet, setnointernet] = useState(false);
-  const [animationtype, setanimationtype] = useState("fadeInUpBig");
+  const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(true);
 
   const dispatch = useDispatch();
@@ -153,7 +153,6 @@ const CustomDrawerStyle = ({navigation}) => {
     if (Logout) {
       setnointernet(false);
       setModalVisible(false);
-      
     }
   }, [Logout]);
   const logoutHandle = () => {
@@ -259,7 +258,8 @@ const CustomDrawerStyle = ({navigation}) => {
                 }}>
                 Humza Samiullah
               </Text>
-              <TouchableOpacity activeOpacity={0.9}
+              <TouchableOpacity
+                activeOpacity={0.9}
                 onPress={() => navigation.navigate('AccountSettings')}>
                 <Text
                   style={{
@@ -327,7 +327,7 @@ const CustomDrawerStyle = ({navigation}) => {
           </View>*/}
 
           <TouchableOpacity
-          activeOpacity={0.9}
+            activeOpacity={0.9}
             onPress={() => {
               navigation.navigate('Home');
               navigation.dispatch(DrawerActions.closeDrawer());
@@ -458,7 +458,6 @@ const CustomDrawerStyle = ({navigation}) => {
               navigation.dispatch(DrawerActions.closeDrawer());
             }}
             style={{
-              
               flexDirection: 'row',
               alignItems: 'center',
               borderTopWidth: scalableheight.borderTopWidth,
@@ -496,9 +495,8 @@ const CustomDrawerStyle = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => {
-         
               navigation.navigate('MyAddresses', {
-                screenname: "drawer",
+                screenname: 'drawer',
               });
               navigation.dispatch(DrawerActions.closeDrawer());
             }}
@@ -541,7 +539,7 @@ const CustomDrawerStyle = ({navigation}) => {
             {options.map(item => {
               return (
                 <TouchableOpacity
-                activeOpacity={0.9}
+                  activeOpacity={0.9}
                   onPress={() => item.onPress()}
                   style={{
                     flexDirection: 'row',
@@ -610,7 +608,7 @@ const CustomDrawerStyle = ({navigation}) => {
 
           {renderIf(ProfileInfo != '')(
             <TouchableOpacity
-            activeOpacity={0.9}
+              activeOpacity={0.9}
               onPress={() => setModalVisible(true)}
               style={{
                 flexDirection: 'row',
@@ -650,10 +648,11 @@ const CustomDrawerStyle = ({navigation}) => {
           )}
           {renderIf(ProfileInfo == '')(
             <TouchableOpacity
-            activeOpacity={0.9}
+              activeOpacity={0.9}
               onPress={() => {
                 setanimationstate(true);
-                setlogoutmodal(true)}}
+                setlogoutmodal(true);
+              }}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -692,67 +691,108 @@ const CustomDrawerStyle = ({navigation}) => {
           )}
         </ScrollView>
       </View>
-      {logoutmodal &&
-     <Animatable.View
+      {logoutmodal && (
+        <Animatable.View
+          animation={animationstate ? animationtype : null}
+          onAnimationEnd={() => {
+            setanimationstate(false);
 
-  animation={animationstate ? animationtype : null}
-  onAnimationEnd={() => {
-    setanimationstate(false);
-   
+            if (animationtype == 'fadeInUpBig') {
+              setanimationtype('fadeOutDownBig');
+              //  setlogoutmodal(false)
+            } else {
+              setanimationtype('fadeInUpBig');
+              setlogoutmodal(false);
+            }
+          }}
+          easing="ease"
+          //  iterationCount="infinite"
+          iterationCount={1}
+          style={{
+            bottom: scalableheight.two,
+            position: 'absolute',
+            width: Dimensions.get('window').width / 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: scalableheight.fifteen,
+          }}>
+          <View
+            style={{
+              backgroundColor: '#303030',
+              height: '100%',
+              width: '90%',
+              borderRadius: fontSize.eleven,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <AntDesign
+              name={'exclamationcircle'}
+              color={'white'}
+              size={fontSize.thirtytwo}
+            />
+            <Text
+              style={{
+                fontFamily: 'Inter-SemiBold',
+                color: 'white',
+                fontSize: fontSize.fifteen,
+                paddingTop: scalableheight.pointfive,
+              }}>
+              Are you sure you want to logout?
+            </Text>
 
-    if(animationtype == "fadeInUpBig"){
-      setanimationtype("fadeOutDownBig")
-    //  setlogoutmodal(false)
-    
-    }else{
-      setanimationtype("fadeInUpBig")
-      setlogoutmodal(false)
-    }
-   
-  
-  }}
-       easing="ease"
-       //  iterationCount="infinite"
-       iterationCount={1}
-      
-    style={{
-      bottom: scalableheight.two,
-      position: 'absolute',
-      width:Dimensions.get('window').width / 1,
- alignItems: "center",
- justifyContent: "center",
- height: scalableheight.fifteen,
-
-
-     
-    }}>
-       <View style={{  backgroundColor: '#303030',
-      height: "100%", width: "90%", borderRadius: fontSize.eleven, alignItems: "center", justifyContent:"center"}}>
-
-<AntDesign
-                name={'exclamationcircle'}
-                color={'white'}
-                size={fontSize.thirtytwo}
-              />
-<Text style={{fontFamily: 'Inter-SemiBold', color: "white", fontSize: fontSize.fifteen, paddingTop: scalableheight.pointfive }}>Are you sure you want to logout?</Text>
-  
-  <View style={{flexDirection: "row", alignItems:"center", justifyContent: "center", paddingVertical: scalableheight.one}}>
-     <TouchableOpacity 
-       onPress={() => { setanimationstate(true)}}
-     style={{backgroundColor:"#E14E4E", width: scalableheight.seven, height: scalableheight.four, borderRadius: fontSize.borderradiusmedium,alignItems: "center", justifyContent:"center"}}>
-<Text style={{fontFamily: 'Inter-SemiBold', color: "white", fontSize: fontSize.fifteen, }}>Yes</Text>
-     </TouchableOpacity>
-     <TouchableOpacity 
-               onPress={() => {setanimationstate(true)}}
-    
-     style={{marginLeft:scalableheight.one, width: scalableheight.seven, height: scalableheight.four, borderRadius: fontSize.borderradiusmedium,alignItems: "center", justifyContent:"center",}}>
-<Text style={{fontFamily: 'Inter-SemiBold', color: "#E14E4E", fontSize: fontSize.fifteen, }}>No</Text>
-     </TouchableOpacity>
-     </View>
-       </View>
-    
-    </Animatable.View>
-}
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: scalableheight.one,
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setanimationstate(true);
+                }}
+                style={{
+                  backgroundColor: '#E14E4E',
+                  width: scalableheight.seven,
+                  height: scalableheight.four,
+                  borderRadius: fontSize.borderradiusmedium,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Inter-SemiBold',
+                    color: 'white',
+                    fontSize: fontSize.fifteen,
+                  }}>
+                  Yes
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setanimationstate(true);
+                }}
+                style={{
+                  marginLeft: scalableheight.one,
+                  width: scalableheight.seven,
+                  height: scalableheight.four,
+                  borderRadius: fontSize.borderradiusmedium,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Inter-SemiBold',
+                    color: '#E14E4E',
+                    fontSize: fontSize.fifteen,
+                  }}>
+                  No
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Animatable.View>
+      )}
     </>
   );
 };
@@ -770,11 +810,15 @@ const Drawernavigator = props => {
     outputRange: [0, 45],
   });
 
-  const animatedStyle = {...styleSheet.shadow1, borderRadius, transform: [{scale}]};
+  const animatedStyle = {
+    ...styleSheet.shadow1,
+    borderRadius,
+    transform: [{scale}],
+  };
   return (
     <Drawer.Navigator
       // contentContainerStyle={{flex:1, backgroundColor:"red", borderWidth:10, borderColor:"blue"}}
-      contentContainerStyle={{flex: 1,}}
+      contentContainerStyle={{flex: 1}}
       drawerType="slide"
       // screenOptions={TransitionScreenOptions}
       overlayColor="transparent"
@@ -791,7 +835,7 @@ const Drawernavigator = props => {
       }}
       sceneContainerStyle={{
         // backgroundColor: "rgba(0,0,0,0.9)",
-       
+
         backgroundColor: 'transparent',
       }}
       drawerContent={props => {
@@ -821,7 +865,7 @@ const Drawernavigator = props => {
           <Changepassword {...props} drawerAnimationStyle={animatedStyle} />
         )}
       </Drawer.Screen>
-   
+
       <Drawer.Screen name="MyFavourite" options={{headerShown: false}}>
         {props => (
           <MyFavourite {...props} drawerAnimationStyle={animatedStyle} />
@@ -839,9 +883,7 @@ const Drawernavigator = props => {
         )}
       </Drawer.Screen>
       <Drawer.Screen name="Legal" options={{headerShown: false}}>
-        {props => (
-          <Legal {...props} drawerAnimationStyle={animatedStyle} />
-        )}
+        {props => <Legal {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
       <Drawer.Screen name="TermsCondition" options={{headerShown: false}}>
         {props => (
@@ -849,22 +891,22 @@ const Drawernavigator = props => {
         )}
       </Drawer.Screen>
       <Drawer.Screen name="Faqs" options={{headerShown: false}}>
-        {props => (
-          <Faqs {...props} drawerAnimationStyle={animatedStyle} />
-        )}
+        {props => <Faqs {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
       <Drawer.Screen name="Qrcode" options={{headerShown: false}}>
-        {props => (
-          <Qrcode {...props} drawerAnimationStyle={animatedStyle} />
-        )}
+        {props => <Qrcode {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
-      <Drawer.Screen name="RestaurantPageAnimation" options={{headerShown: false}}>
+      <Drawer.Screen
+        name="RestaurantPageAnimation"
+        options={{headerShown: false}}>
         {props => (
-          <RestaurantPageAnimation {...props} drawerAnimationStyle={animatedStyle} />
+          <RestaurantPageAnimation
+            {...props}
+            drawerAnimationStyle={animatedStyle}
+          />
         )}
       </Drawer.Screen>
 
-    
       <Drawer.Screen name="Settings" options={{headerShown: false}}>
         {props => <Settings {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
@@ -1099,7 +1141,6 @@ const MainNavigator = () => {
             component={Aboutus}
             options={{headerShown: false}}
           />
-       
 
           <Stack.Screen
             name="Drawernavigator"
@@ -1135,7 +1176,7 @@ const styleSheet = StyleSheet.create({
   },
   shadowicon: {
     shadowColor: 'black',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 5,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'

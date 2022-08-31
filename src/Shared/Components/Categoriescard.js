@@ -29,42 +29,30 @@ export default function Categoriescard(props) {
       activeOpacity={0.9}
       onPress={() => {}}
       style={{
-        height: scalableheight.fifteen,
-        width: scalableheight.thirty,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: scalableheight.two,
+        height: scalableheight.tweleve,
+        width: scalableheight.twentyeight,
       }}>
-      <>
-        <View
+      <ImageBackground
+        borderRadius={scalableheight.one}
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: scalableheight.one,
+        }}
+        source={props.image}>
+        <ImageBackground
+          borderRadius={scalableheight.one}
+          resizeMode="cover"
           style={{
-            ...styleSheet.shadow,
+            height: '100%',
             width: '100%',
-            height: '95%',
-            // borderRadius: fontSize.seventeen,
-            borderRadius: fontSize.twelve,
             justifyContent: 'center',
-            overflow: 'hidden',
-          }}>
-          <View
-            style={{
-              bottom: 0,
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(0,0,0,0.2)',
-              position: 'absolute',
-              zIndex: 10,
-              elevation: 10,
-            }}></View>
-          <ImageBackground
-            resizeMode="stretch"
-            style={{
-              width: '100%',
-              height: '100%',
-              justifyContent: 'center',
-            }}
-            imageStyle={{borderRadius: fontSize.eleven}}
-            source={props.image}>
+
+            // justifyContent: 'flex-end',
+            // alignItems: 'center',
+          }}
+          source={require('../../Resources/images/Rectangle.png')}>
+          <View style={{position: 'absolute', bottom: scalableheight.two}}>
             <Text
               style={{
                 paddingLeft: scalableheight.two,
@@ -84,9 +72,9 @@ export default function Categoriescard(props) {
               }}>
               {'Average Price AED '} {props.price}
             </Text>
-          </ImageBackground>
-        </View>
-      </>
+          </View>
+        </ImageBackground>
+      </ImageBackground>
     </TouchableOpacity>
   );
 }

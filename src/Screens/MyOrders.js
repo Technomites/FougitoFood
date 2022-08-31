@@ -9,6 +9,7 @@ import {
   Image,
   Modal,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
@@ -33,6 +34,11 @@ import Animated from 'react-native-reanimated';
 import Octicons from 'react-native-vector-icons/Octicons';
 import NetInfo from '@react-native-community/netinfo';
 import {styles} from 'react-native-element-dropdown/src/components/TextInput/styles';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
 
 const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
@@ -64,8 +70,6 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
 
-
-
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -76,8 +80,11 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
           alignSelf: 'center',
           paddingTop: getStatusBarHeight(),
         }}>
+        <StatusBar
+          barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        />
         <PlainHeader title={'My Orders'} />
-  
+
         <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
           <FlatList
             data={Order}
@@ -93,7 +100,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                   onPress={() =>
                     navigation.navigate('OrderDetails', {
                       orderId: item.OrderNo,
-                      completedetails:Order 
+                      completedetails: Order,
                     })
                   }
                   // onModelPopUp={changestatus}

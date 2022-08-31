@@ -607,7 +607,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle('light-content');
+   // StatusBar.setBarStyle('light-content');
   }, []);
   useEffect(() => {
     listeners();
@@ -779,7 +779,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
       StatusBar.setBackgroundColor('transparent');
-      StatusBar.setBarStyle('light-content');
+   //   StatusBar.setBarStyle('light-content');
     });
 
     //  Return the function to unsubscribe from the event so it gets removed on unmount
@@ -826,15 +826,22 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       animated: true,
     });
   }
+  // const [status, Setstatus] = useState('');
+  // const xyz = () => {
+  //   if (useIsDrawerOpen() == true) {
+  //     Setstatus('light-content');
+  //   } else {
+  //     Setstatus('light-content');
+  //   }
+  //   // let abc = useIsDrawerOpen() ? 'light-content' : 'light-content';
+  //   // Setstatus(abc);
+  // };
 
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, overflow: 'hidden'}}>
-      <StatusBar
-        barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
-      />
-
       <View style={{height: '100%', width: '100%', alignSelf: 'center'}}>
+        {/* <StatusBar barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'} /> */}
         <View style={{backgroundColor: 'white', height: '100%', width: '100%'}}>
           <ImageBackground
             resizeMode="cover"

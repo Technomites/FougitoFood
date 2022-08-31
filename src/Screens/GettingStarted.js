@@ -26,7 +26,6 @@ import MYButton from '../Shared/Components/MYButton';
 const GettingStarted = props => {
   const {Lang} = useSelector(state => state.userReducer);
 
- 
   const [count, setcount] = useState(0);
   const [animationstate, setanimationstate] = useState(true);
 
@@ -52,7 +51,6 @@ const GettingStarted = props => {
       },
     },
     {
-
       image: require('../Resources/images/GetstartedS3.png'),
       caption: 'Your Favourite Food Delivered to you',
       buttontitle: 'PROCEED',
@@ -65,6 +63,7 @@ const GettingStarted = props => {
       resizeMode="cover"
       source={getstarted[count]?.image}
       style={styleSheet.BackgroundImage}>
+      <StatusBar barStyle={'dark-content'} />
       <Animatable.View
         animation={animationstate ? 'bounceInRight' : undefined}
         onAnimationEnd={() => {
