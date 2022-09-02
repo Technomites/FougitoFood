@@ -138,10 +138,10 @@ dispatch(clearotpreset())
             style={styles.backgroundImageStyle}
             source={require('../Resources/images/loginpicture.png')}
         >
-            <CustomStatusBar 
+            {/* <CustomStatusBar 
                 barStyle={"light-content"}
                 backgroundColor={"transparent"}
-            />
+            /> */}
             <TouchableOpacity 
              onPress={() => {
                 

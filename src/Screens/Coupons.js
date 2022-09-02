@@ -36,6 +36,12 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Animated from 'react-native-reanimated';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import NetInfo from '@react-native-community/netinfo';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const Coupons = ({navigation, drawerAnimationStyle}) => {
   const [Loading, setLoading] = useState(false);
@@ -106,9 +112,21 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
       }
     });
   }
+  // React.useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     StatusBar.setBarStyle('dark-content');
+  //   });
+
+  //   //  Return the function to unsubscribe from the event so it gets removed on unmount
+  //   return unsubscribe;
+  // }, [navigation]);
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      <FocusAwareStatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+      />
       <View
         style={{
           flex: 1,
@@ -116,6 +134,9 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
           alignSelf: 'center',
           marginTop: getStatusBarHeight(),
         }}>
+        {/* <StatusBar
+          barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        /> */}
         <PlainHeader title={'My Coupons'} />
 
         <FlatList
@@ -136,14 +157,12 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
                 style={{
                   alignItems: 'center',
                   paddingHorizontal: scalableheight.two,
-             
                 }}>
                 <Couponscomponent
                   sale={'40% OFF'}
                   title={'EidSpecial40'}
                   minorder={'AED 100'}
                   daysleft={'3 days left'}
-                
                   discountprice={item.dicountAmount}
                 />
               </View>

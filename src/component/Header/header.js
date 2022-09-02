@@ -6,7 +6,7 @@ import { theme } from "../../constants/styles";
 const Header = ( props ) => {
     return (
         <View style={[styles.headerMain, props.customHeaderStyle]}>
-            <StatusBar backgroundColor={props.statusBarColor} translucent />
+            {/* <StatusBar backgroundColor={props.statusBarColor} translucent /> */}
             <View style={{flexDirection:"row"}}>
                 {props.backArrow ? 
                     <TouchableOpacity 

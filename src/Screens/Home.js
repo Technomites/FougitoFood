@@ -85,6 +85,7 @@ import listeners from '../Listener/Listener';
 import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const Home = ({props, navigation, drawerAnimationStyle}) => {
   const [searchText, setSearchText] = useState('');
@@ -595,19 +596,19 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
 
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      StatusBar.setBarStyle('light-content');
-    });
+  // React.useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     StatusBar.setBarStyle('light-content');
+  //   });
 
-    //  Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, [navigation]);
+  //   //  Return the function to unsubscribe from the event so it gets removed on unmount
+  //   return unsubscribe;
+  // }, [navigation]);
 
   useEffect(() => {
     StatusBar.setHidden(false);
-    StatusBar.setBackgroundColor('transparent');
-   // StatusBar.setBarStyle('light-content');
+    //  StatusBar.setBackgroundColor('transparent');
+    // StatusBar.setBarStyle('light-content');
   }, []);
   useEffect(() => {
     listeners();
@@ -778,8 +779,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     const unsubscribe = navigation.addListener('focus', () => {
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
-      StatusBar.setBackgroundColor('transparent');
-   //   StatusBar.setBarStyle('light-content');
+      //  StatusBar.setBackgroundColor('transparent');
+      //   StatusBar.setBarStyle('light-content');
     });
 
     //  Return the function to unsubscribe from the event so it gets removed on unmount
@@ -826,22 +827,16 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       animated: true,
     });
   }
-  // const [status, Setstatus] = useState('');
-  // const xyz = () => {
-  //   if (useIsDrawerOpen() == true) {
-  //     Setstatus('light-content');
-  //   } else {
-  //     Setstatus('light-content');
-  //   }
-  //   // let abc = useIsDrawerOpen() ? 'light-content' : 'light-content';
-  //   // Setstatus(abc);
-  // };
 
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, overflow: 'hidden'}}>
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
+        backgroundColor="transparent"
+      />
+      {/* <StatusBar barStyle="light-content" /> */}
       <View style={{height: '100%', width: '100%', alignSelf: 'center'}}>
-        {/* <StatusBar barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'} /> */}
         <View style={{backgroundColor: 'white', height: '100%', width: '100%'}}>
           <ImageBackground
             resizeMode="cover"

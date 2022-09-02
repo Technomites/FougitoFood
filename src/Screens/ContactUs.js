@@ -47,6 +47,12 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import BottomTab from '../Shared/Components/BottomTab';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import PickerModel from '../Shared/Components/PickerModel';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const ContactUs = ({navigation, drawerAnimationStyle}) => {
   const [message, setMessage] = useState('');
@@ -148,6 +154,10 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+      />
       <SafeAreaView style={{flex: 1}}>
         <View
           style={{
@@ -299,7 +309,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor:'#F9F9F9',
+                  backgroundColor: '#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
@@ -312,10 +322,10 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                   },
                   shadowOpacity: 0.23,
                   shadowRadius: 2.62,
-              
+
                   elevation: 2,
-                  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
-                  
+                  borderWidth: scalableheight.borderTopWidth,
+                  borderColor: 'rgba(211,211,211, 0.6)',
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
@@ -328,7 +338,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor:'#F9F9F9',
+                  backgroundColor: '#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
@@ -341,9 +351,10 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                   },
                   shadowOpacity: 0.23,
                   shadowRadius: 2.62,
-              
+
                   elevation: 2,
-                  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+                  borderWidth: scalableheight.borderTopWidth,
+                  borderColor: 'rgba(211,211,211, 0.6)',
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
@@ -356,7 +367,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor:'#F9F9F9',
+                  backgroundColor: '#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
@@ -369,9 +380,10 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                   },
                   shadowOpacity: 0.23,
                   shadowRadius: 2.62,
-              
+
                   elevation: 2,
-                  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+                  borderWidth: scalableheight.borderTopWidth,
+                  borderColor: 'rgba(211,211,211, 0.6)',
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
@@ -384,7 +396,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor:'#F9F9F9',
+                  backgroundColor: '#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
@@ -397,9 +409,10 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                   },
                   shadowOpacity: 0.23,
                   shadowRadius: 2.62,
-              
+
                   elevation: 2,
-                  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+                  borderWidth: scalableheight.borderTopWidth,
+                  borderColor: 'rgba(211,211,211, 0.6)',
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
@@ -412,7 +425,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={{
-                  backgroundColor:'#F9F9F9',
+                  backgroundColor: '#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
@@ -425,9 +438,10 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                   },
                   shadowOpacity: 0.23,
                   shadowRadius: 2.62,
-              
+
                   elevation: 2,
-                  borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+                  borderWidth: scalableheight.borderTopWidth,
+                  borderColor: 'rgba(211,211,211, 0.6)',
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
@@ -471,22 +485,22 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
             {/* <MyFormInputTile placeHolder="Type Here" /> */}
             <View
               style={{
-                backgroundColor:'#F9F9F9',
+                backgroundColor: '#F9F9F9',
                 height: scalableheight.twenty,
                 borderRadius: scalableheight.one,
                 paddingHorizontal: scalableheight.one,
                 width: '100%',
 
                 shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.23,
+                shadowRadius: 2.62,
 
-    elevation: 1,
-    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+                elevation: 1,
+                // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
               }}>
               <TextInput
                 value={message}

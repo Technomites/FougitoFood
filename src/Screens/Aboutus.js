@@ -31,6 +31,12 @@ import Whyuscomponent from '../Shared/Components/Whyuscomponent';
 import BottomTab from '../Shared/Components/BottomTab';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const Aboutus = ({navigation, drawerAnimationStyle}) => {
   const [LocationData, setLocationData] = useState([
@@ -63,14 +69,18 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     StatusBar.setHidden(false);
-    StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle('light-content');
+    // StatusBar.setBackgroundColor('transparent');
+    // StatusBar.setBarStyle('light-content');
     dispatch(seticonfocus('home'));
   }, []);
 
   return (
     <Animated.View
       style={{flex: 1, backgroundColor: 'white', ...drawerAnimationStyle}}>
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+      />
       <View
         style={{
           alignSelf: 'center',
@@ -318,7 +328,7 @@ const styleSheet = StyleSheet.create({
 
   shadow: {
     shadowColor: '#470000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'

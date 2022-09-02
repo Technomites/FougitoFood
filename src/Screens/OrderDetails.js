@@ -17,6 +17,9 @@ import MYButton from '../Shared/Components/MYButton';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Addresstile from '../Shared/Components/Addresstile';
 import Bll from '../Shared/Components/Bll';
+
+import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
+
 const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
@@ -262,6 +265,10 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      <FocusAwareStatusBar
+        barStyle={'dark-content'}
+        backgroundColor="transparent"
+      />
       <View
         style={{
           //height: '100%',
@@ -271,9 +278,9 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
           // padding:scalableheight.one
         }}>
         <PlainHeader title={'My Orders'} />
-        <ScrollView 
-        showsVerticalScrollIndicator={false}
-        style={{paddingBottom: scalableheight.fifteen}}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{paddingBottom: scalableheight.fifteen}}>
           <View
             style={{
               padding: scalableheight.one,
@@ -343,7 +350,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 style={{
                   height: scalableheight.twentytwo,
                   borderRadius: fontSize.eight,
-                
+
                   overflow: 'hidden',
                 }}>
                 <MapView
@@ -517,7 +524,12 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 Payment Method
               </Text>
               <View style={{marginTop: scalableheight.one}}></View>
-              <View style={{...styles.shadow, ...styles.MainContainer,  paddingVertical: scalableheight.two}}>
+              <View
+                style={{
+                  ...styles.shadow,
+                  ...styles.MainContainer,
+                  paddingVertical: scalableheight.two,
+                }}>
                 <View
                   style={{
                     ...styles.topViewContainer,
@@ -527,7 +539,6 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       flexDirection: 'row',
                       justifyContent: 'flex-start',
                       alignItems: 'center',
-                     
                     }}>
                     <View style={{width: '5%'}}>
                       <Image
@@ -629,8 +640,8 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 2,
-    borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
-   
+    borderWidth: scalableheight.borderTopWidth,
+    borderColor: 'rgba(211,211,211, 0.6)',
   },
   centeredView: {
     flex: 1,

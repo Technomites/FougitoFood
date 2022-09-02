@@ -39,6 +39,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SuccessModal from '../Shared/Components/SuccessModal';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {Item} from 'react-native-paper/lib/typescript/components/List/List';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
@@ -223,6 +224,10 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      <FocusAwareStatusBar
+        barStyle={'dark-content'}
+        backgroundColor="transparent"
+      />
       <View
         style={{
           height: '100%',
@@ -268,7 +273,6 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '10%',
-               
               }}>
               <MaterialIcons
                 style={{alignSelf: 'center'}}
@@ -407,7 +411,11 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   placeholder={'Enter Note to Rider'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
-                  style={{...styleSheet.textInput, textAlignVertical:"top", height:"100%"}}
+                  style={{
+                    ...styleSheet.textInput,
+                    textAlignVertical: 'top',
+                    height: '100%',
+                  }}
                 />
               </View>
             </View>
@@ -459,7 +467,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
 const styleSheet = StyleSheet.create({
   container: {
     height: scalableheight.six,
-    backgroundColor:'#F9F9F9', 
+    backgroundColor: '#F9F9F9',
     width: '100%',
     flexDirection: 'row',
     borderRadius: fontSize.eight,
@@ -469,7 +477,6 @@ const styleSheet = StyleSheet.create({
 
     width: '100%',
     color: 'black',
-  
   },
   textInput1: {
     borderRadius: fontSize.eleven,
@@ -483,8 +490,8 @@ const styleSheet = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)',
-    
-    backgroundColor:"white"
+
+    backgroundColor: 'white',
   },
 
   centeredView: {

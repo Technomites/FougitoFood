@@ -19,6 +19,12 @@ import PlainHeader from '../Shared/Components/PlainHeader';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import Faqtitle from '../Shared/Components/Faqtitle';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const Faqs = ({navigation, drawerAnimationStyle}) => {
   const [Faqs, SetFaqs] = useState([
@@ -66,6 +72,10 @@ const Faqs = ({navigation, drawerAnimationStyle}) => {
   return (
     <Animated.View
       style={{flex: 1, backgroundColor: 'white', ...drawerAnimationStyle}}>
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+      />
       <View
         style={{
           alignSelf: 'center',
@@ -133,7 +143,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: fontSize.eleven,
     marginBottom: scalableheight.one,
-    alignSelf:"center"
+    alignSelf: 'center',
   },
   textInput: {
     marginLeft: scalableheight.one,
@@ -142,7 +152,7 @@ const styles = StyleSheet.create({
   },
   shadow: {
     shadowColor: '#470000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'

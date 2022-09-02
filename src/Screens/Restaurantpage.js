@@ -80,6 +80,7 @@ import moment from 'moment';
 // import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {styles} from 'react-native-element-dropdown/src/components/TextInput/styles';
 import Custombottomsheet from '../Shared/Components/Custombottomsheet';
+import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -233,15 +234,15 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   //   return unsubscribe;
   // }, [navigation]);
 
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      collapse();
-      StatusBar.setBarStyle('light-content');
-    });
+  // React.useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     collapse();
+  //     StatusBar.setBarStyle('light-content');
+  //   });
 
-    //  Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, [navigation]);
+  //   //  Return the function to unsubscribe from the event so it gets removed on unmount
+  //   return unsubscribe;
+  // }, [navigation]);
 
   function toggleanimation() {
     if (animationtype == 'fadeInUpBig') {
@@ -266,8 +267,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
 
   useEffect(() => {
     StatusBar.setHidden(false);
-    StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle('light-content');
+    // StatusBar.setBackgroundColor('transparent');
+    // StatusBar.setBarStyle('light-content');
 
     // listeners()
   }, []);
@@ -485,9 +486,11 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
 
   return (
     <ScreenWrapper drawer={drawerAnimationStyle} style={{flex: 1}}>
-      <StatusBar
+      <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
+        backgroundColor="transparent"
       />
+      {/* <StatusBar barStyle="light-content" /> */}
       {modalVisible && (
         <Animatable.View
           animation={animationstate ? animationtype : null}

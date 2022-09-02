@@ -27,11 +27,21 @@ import PlainHeader from '../Shared/Components/PlainHeader';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import MYButton from '../Shared/Components/MYButton';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const Legal = ({navigation, drawerAnimationStyle}) => {
   return (
     <Animated.View
       style={{flex: 1, backgroundColor: 'white', ...drawerAnimationStyle}}>
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+      />
       <View
         style={{
           alignSelf: 'center',
@@ -52,7 +62,7 @@ const Legal = ({navigation, drawerAnimationStyle}) => {
               activeOpacity={0.9}
               style={{
                 ...styles.shadow,
-            
+
                 ...styles.MainContainer,
                 paddingVertical: scalableheight.two,
               }}>
@@ -149,7 +159,7 @@ const Legal = ({navigation, drawerAnimationStyle}) => {
                   }}
                   style={{
                     ...styles.Loginbutton,
-                    marginTop: scalableheight.one
+                    marginTop: scalableheight.one,
                   }}>
                   <Text
                     style={{
@@ -194,13 +204,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: scalableheight.six,
     borderRadius: fontSize.borderradiusmedium,
-    
-   paddingHorizontal:scalableheight.pointfive,
+
+    paddingHorizontal: scalableheight.pointfive,
     flexDirection: 'row',
   },
   shadow: {
     shadowColor: '#470000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'

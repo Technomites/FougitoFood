@@ -31,6 +31,12 @@ import Whyuscomponent from '../Shared/Components/Whyuscomponent';
 import BottomTab from '../Shared/Components/BottomTab';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const TermsCondition = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
@@ -38,6 +44,10 @@ const TermsCondition = ({navigation, drawerAnimationStyle}) => {
   return (
     <Animated.View
       style={{flex: 1, backgroundColor: 'white', ...drawerAnimationStyle}}>
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+      />
       <View
         style={{
           alignSelf: 'center',
@@ -107,7 +117,7 @@ const TermsCondition = ({navigation, drawerAnimationStyle}) => {
                 interchangeable and therefore as referring to same.
               </Text>
             </View>
-            <View >
+            <View>
               <Text
                 style={{
                   fontSize: fontSize.fourteen,

@@ -1,26 +1,13 @@
-import React from "react";
-import {View, SafeAreaView, StatusBar, StyleSheet} from "react-native";
+import * as React from 'react';
+import {StatusBar} from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 
-const CustomStatusBar = (props) => {
-    return (
-        <View style={[styles.statusBar, {backgroundColor:props.backgroundColor}]}>
-            <SafeAreaView>
-                <StatusBar 
-                    translucent 
-                    barStyle={props.barStyle}
-                    backgroundColor={props.backgroundColor}
-                />
-            </SafeAreaView>
-        </View>
-    )
+function FocusAwareStatusBar(props) {
+  const isFocused = useIsFocused();
+
+  return isFocused ? <StatusBar barStyle={props?.barStyle} /> : null;
 }
 
-const styles = StyleSheet.create({
-    statusBar: {
-        height: STATUSBAR_HEIGHT,
-    },
-})
-
-export default CustomStatusBar;
+export default FocusAwareStatusBar;

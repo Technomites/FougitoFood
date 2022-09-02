@@ -1252,8 +1252,8 @@ const SignUp = ({ navigation }) => {
   useEffect(() => {
     // resetStates();
     StatusBar.setHidden(false);
-    StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle("light-content");
+    // StatusBar.setBackgroundColor('transparent');
+    // StatusBar.setBarStyle("light-content");
   }, []);
   useEffect(() => {
     setLoader(false);

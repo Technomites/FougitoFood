@@ -39,6 +39,14 @@ import NumberInput from '../Shared/Components/NumberInput';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
+
 const AccountSettings = ({navigation, drawerAnimationStyle}) => {
   const [Name, setName] = useState('');
   const [EmailAddress, setEmailAddress] = useState('');
@@ -53,8 +61,8 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
 
   useEffect(() => {
     StatusBar.setHidden(false);
-    StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle('light-content');
+    // StatusBar.setBackgroundColor('transparent');
+    // StatusBar.setBarStyle('light-content');
   }, []);
 
   function UpdateProfile() {
@@ -112,6 +120,10 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+      />
       <View
         style={{
           height: '100%',
@@ -178,13 +190,10 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
               {/* )} */}
             </TouchableOpacity>
           </View>
-
-         
         </View>
 
         <View
           style={{
-      
             paddingHorizontal: scalableheight.two,
             marginVertical: scalableheight.ten,
           }}>
@@ -194,18 +203,18 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                 color: 'rgba(41, 38, 42, 0.6)',
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fifteen,
-                marginBottom: scalableheight.pointfive
+                marginBottom: scalableheight.pointfive,
               }}>
               Full Name
             </Text>
-          
+
             <TextInput
               style={{
                 ...styleSheet.TextInput,
                 ...styleSheet.shadow,
               }}
               placeholderTextColor="#8c8c8c"
-              placeholder={"Enter Full Name"}
+              placeholder={'Enter Full Name'}
               onChangeText={text => setName(text)}
               defaultValue={Name}
             />
@@ -216,18 +225,18 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                 color: 'rgba(41, 38, 42, 0.6)',
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fifteen,
-                marginBottom: scalableheight.pointfive
+                marginBottom: scalableheight.pointfive,
               }}>
               Email Address
             </Text>
-          
+
             <TextInput
               style={{
                 ...styleSheet.TextInput,
                 ...styleSheet.shadow,
               }}
               placeholderTextColor="#8c8c8c"
-              placeholder={"Enter Email Address"}
+              placeholder={'Enter Email Address'}
               onChangeText={text => setEmailAddress(text)}
               defaultValue={EmailAddress}
             />
@@ -238,35 +247,35 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                 color: 'rgba(41, 38, 42, 0.6)',
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fifteen,
-                marginBottom: scalableheight.pointfive
+                marginBottom: scalableheight.pointfive,
               }}>
               Password
             </Text>
-         
+
             <View style={{width: '100%'}}>
-          <TextInput
-            style={{
-              ...styleSheet.TextInput,
-              ...styleSheet.shadow,
-            }}
-            secureTextEntry={newpasswordshow}
-            placeholderTextColor="#8c8c8c"
-            placeholder={'Password'}
-            onChangeText={text => setPassword(text)}
-            defaultValue={Password}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              setnewpasswordshow(!newpasswordshow);
-            }}
-            style={styleSheet.inputIconStyle}>
-            <Ionicons
-              color={'#8c8c8c'}
-              name={newpasswordshow ? 'eye-off' : 'eye'}
-              size={fontSize.twentytwo}
-            />
-          </TouchableOpacity>
-        </View>
+              <TextInput
+                style={{
+                  ...styleSheet.TextInput,
+                  ...styleSheet.shadow,
+                }}
+                secureTextEntry={newpasswordshow}
+                placeholderTextColor="#8c8c8c"
+                placeholder={'Password'}
+                onChangeText={text => setPassword(text)}
+                defaultValue={Password}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setnewpasswordshow(!newpasswordshow);
+                }}
+                style={styleSheet.inputIconStyle}>
+                <Ionicons
+                  color={'#8c8c8c'}
+                  name={newpasswordshow ? 'eye-off' : 'eye'}
+                  size={fontSize.twentytwo}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={{marginVertical: scalableheight.one}}>
             <Text
@@ -274,12 +283,12 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                 color: 'rgba(41, 38, 42, 0.6)',
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fifteen,
-                marginBottom: scalableheight.pointfive
+                marginBottom: scalableheight.pointfive,
               }}>
               Phone Number
             </Text>
             {/* <View style={styleSheet.container}> */}
-              {/* <View
+            {/* <View
                 style={{
                   height: '100%',
                   width: '100%',
@@ -301,44 +310,39 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                   }}
                 />
               </View> */}
-              <View style={{justifyContent:"center"}}>
-                <TextInput
-              style={{
-                ...styleSheet.TextInput,
-                ...styleSheet.shadow,
-                paddingLeft: scalableheight.fourteen
-              }}
-              keyboardType = 'numeric'
-              placeholderTextColor="#8c8c8c"
-              placeholder={"Enter Phone Number"}
-              onChangeText={text => setPhoneNumber(text)}
-              defaultValue={PhoneNumber}
-            />
-               <Image
-          style={{
-            height: scalableheight.three,
-            width: scalableheight.four,
-            resizeMode: 'stretch',
-            position: "absolute",
-            left: scalableheight.one,
-      
-            
-     
-       
-          }}
-          source={require('../Resources/images/uaeFlag.png')}
-        />
-           <Text
-              style={{
-                color: 'rgba(41, 38, 42, 0.6)',
-                fontFamily: 'Inter-Bold',
-                fontSize: fontSize.fifteen,
-                position: "absolute",
-                left: scalableheight.six,
-               
-              }}>
-            +971
-            </Text>
+            <View style={{justifyContent: 'center'}}>
+              <TextInput
+                style={{
+                  ...styleSheet.TextInput,
+                  ...styleSheet.shadow,
+                  paddingLeft: scalableheight.fourteen,
+                }}
+                keyboardType="numeric"
+                placeholderTextColor="#8c8c8c"
+                placeholder={'Enter Phone Number'}
+                onChangeText={text => setPhoneNumber(text)}
+                defaultValue={PhoneNumber}
+              />
+              <Image
+                style={{
+                  height: scalableheight.three,
+                  width: scalableheight.four,
+                  resizeMode: 'stretch',
+                  position: 'absolute',
+                  left: scalableheight.one,
+                }}
+                source={require('../Resources/images/uaeFlag.png')}
+              />
+              <Text
+                style={{
+                  color: 'rgba(41, 38, 42, 0.6)',
+                  fontFamily: 'Inter-Bold',
+                  fontSize: fontSize.fifteen,
+                  position: 'absolute',
+                  left: scalableheight.six,
+                }}>
+                +971
+              </Text>
             </View>
           </View>
         </View>
@@ -381,7 +385,6 @@ const styleSheet = StyleSheet.create({
     color: 'black',
   },
 
-
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
@@ -392,12 +395,11 @@ const styleSheet = StyleSheet.create({
     shadowRadius: 2.62,
 
     elevation: 1,
-  
   },
   TextInput: {
     width: '100%',
-  
-    backgroundColor:'#F9F9F9',
+
+    backgroundColor: '#F9F9F9',
     fontSize: fontSize.fifteen,
     color: '#8c8c8c',
     justifyContent: 'center',
@@ -405,11 +407,8 @@ const styleSheet = StyleSheet.create({
     borderRadius: fontSize.borderradiusmedium,
     height: scalableheight.seven,
 
- 
     paddingHorizontal: scalableheight.two,
     alignSelf: 'center',
-    
-
   },
   inputIconStyle: {
     position: 'absolute',
@@ -418,10 +417,9 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
 
-    marginTop:  scalableheight.one,
+    marginTop: scalableheight.one,
     height: scalableheight.six,
     paddingHorizontal: scalableheight.two,
   },
-  
 });
 export default AccountSettings;

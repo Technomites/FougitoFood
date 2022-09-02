@@ -37,7 +37,7 @@ import {
   DrawerItemList,
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
-
+import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 const Checkout = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   const [modalVisible, setmodalVisible] = useState(false);
@@ -145,8 +145,9 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
-      <StatusBar
-        barStyle={(useIsDrawerOpen() ? 'light-content' : 'dark-content')}
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
       />
 
       <View

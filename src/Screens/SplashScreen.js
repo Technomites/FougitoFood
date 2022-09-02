@@ -21,13 +21,13 @@ import changeNavigationBarColor, {
 import * as Animatable from 'react-native-animatable';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import LottieView from 'lottie-react-native';
-
+// import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 const SplashScreen = props => {
   const dispatch = useDispatch();
   useEffect(() => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle("light-content");
+    StatusBar.setBarStyle('light-content');
     hideNavigationBar();
   }, []);
 

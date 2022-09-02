@@ -33,10 +33,16 @@ import Animated from 'react-native-reanimated';
 
 import NetInfo from '@react-native-community/netinfo';
 import {styles} from 'react-native-element-dropdown/src/components/TextInput/styles';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   const dispatch = useDispatch();
-  const [screenname, setscreenname] = useState("");
+  const [screenname, setscreenname] = useState('');
   const {notificationList, notificationCount} = useSelector(
     state => state.userReducer,
   );
@@ -98,16 +104,13 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
     },
   ]);
 
-
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-    
-      setscreenname("")
-      console.log(route?.params?.screenname + "name")
-      if(route?.params?.screenname != undefined){
-        setscreenname(route?.params?.screenname)
+      setscreenname('');
+      console.log(route?.params?.screenname + 'name');
+      if (route?.params?.screenname != undefined) {
+        setscreenname(route?.params?.screenname);
       }
-     
     });
 
     //  Return the function to unsubscribe from the event so it gets removed on unmount
@@ -117,6 +120,10 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+      />
       <View
         style={{
           height: '100%',
@@ -126,23 +133,27 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
         }}>
         <PlainHeader title={'My Address'} />
 
-        <View style={{width: '100%', paddingHorizontal: scalableheight.two, paddingBottom: "5%"}}>
+        <View
+          style={{
+            width: '100%',
+            paddingHorizontal: scalableheight.two,
+            paddingBottom: '5%',
+          }}>
           <FlatList
             data={addresses}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: scalableheight.twentytwo}}
             renderItem={({item, i}) => {
               return (
-                <TouchableOpacity 
-                activeOpacity={0.8}
-                onPress={() => {   navigation.goBack()}}
-                disabled={screenname == "checkout" ? false : true}
-                style={{   marginTop: '5%',}}>
-               
-               
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                  disabled={screenname == 'checkout' ? false : true}
+                  style={{marginTop: '5%'}}>
                   <Addresstile
                     onPress={() =>
-                      
                       navigation.navigate('EditAddress', {
                         // orderId: item.OrderNo,
                         // completedetails: Order,
@@ -154,8 +165,6 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
                     address={item.address}
                     note={item.Note}
                     screenname={screenname}
-
-                  
                   />
                 </TouchableOpacity>
               );
@@ -163,27 +172,28 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
           />
         </View>
       </View>
-      {screenname != "checkout" &&
-      <View
-        style={{
-          bottom: 0,
-          position: 'absolute',
-          width: '100%',
-          paddingHorizontal: scalableheight.two,
-          backgroundColor: 'white',
-          height: scalableheight.fifteen,
-          justifyContent: 'center',
-        }}>
-        <MYButton
-          onPress={() => {
-            navigation.navigate('EditAddress');
-            // navigation.goBack();
-          }}
-          color={'rgba(225, 78, 78, 1)'}
-          title={'ADD NEW'}
-          textcolor={'white'}
-        />
-      </View>}
+      {screenname != 'checkout' && (
+        <View
+          style={{
+            bottom: 0,
+            position: 'absolute',
+            width: '100%',
+            paddingHorizontal: scalableheight.two,
+            backgroundColor: 'white',
+            height: scalableheight.fifteen,
+            justifyContent: 'center',
+          }}>
+          <MYButton
+            onPress={() => {
+              navigation.navigate('EditAddress');
+              // navigation.goBack();
+            }}
+            color={'rgba(225, 78, 78, 1)'}
+            title={'ADD NEW'}
+            textcolor={'white'}
+          />
+        </View>
+      )}
     </Animated.View>
   );
 };

@@ -58,12 +58,17 @@ const GettingStarted = props => {
     },
   ]);
 
+  useEffect(() => {
+    StatusBar.setHidden(false);
+    //StatusBar.setBackgroundColor('transparent');
+    // StatusBar.setBarStyle('light-content');
+  }, []);
   return (
     <ImageBackground
       resizeMode="cover"
       source={getstarted[count]?.image}
       style={styleSheet.BackgroundImage}>
-      <StatusBar barStyle={'dark-content'} />
+      <StatusBar backgroundColor="transparent" />
       <Animatable.View
         animation={animationstate ? 'bounceInRight' : undefined}
         onAnimationEnd={() => {

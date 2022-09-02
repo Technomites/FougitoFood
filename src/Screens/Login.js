@@ -1266,8 +1266,8 @@ const Login = ({navigation}) => {
 
   useEffect(() => {
     StatusBar.setHidden(false);
-    StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle('light-content');
+    // StatusBar.setBackgroundColor('transparent');
+    // StatusBar.setBarStyle('light-content');
     hideNavigationBar();
     // changeNavigationBarColor("white");
   }, []);

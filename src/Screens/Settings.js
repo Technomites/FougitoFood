@@ -16,6 +16,12 @@ import {GToastContainer, showToast} from 'react-native-gtoast';
 import renderIf from 'render-if';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AccountInfotile from '../Shared/Components/AccountInfotile';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const Settings = ({navigation, drawerAnimationStyle}) => {
   const [setting, SetSetting] = useState([
@@ -136,6 +142,11 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+      />
+
       <View
         style={{
           height: '100%',
@@ -156,25 +167,30 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
             alignItems: 'center',
           }}>
           <View
-            style={{   width: '50%', alignItems: 'center', alignItems: 'center'}}>
-         <View style={{  ...styleSheet.shadow,
+            style={{width: '50%', alignItems: 'center', alignItems: 'center'}}>
+            <View
+              style={{
+                ...styleSheet.shadow,
                 height: scalableheight.fifteen,
                 width: scalableheight.fifteen,
-                borderRadius: fontSize.circle,backgroundColor:"white", overflow:"hidden", alignItems:"center", justifyContent:"center"}}>
- <Image
-              style={{
-              
-                height: "99.5%",
-                width: "99.5%",
                 borderRadius: fontSize.circle,
-                resizeMode: 'contain',
+                backgroundColor: 'white',
+                overflow: 'hidden',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Image
+                style={{
+                  height: '99.5%',
+                  width: '99.5%',
+                  borderRadius: fontSize.circle,
+                  resizeMode: 'contain',
 
-                // marginBottom: scalableheight.one,
-              }}
-              source={require('../Resources/images/logoguest.png')}
-            />
-         </View>
-           
+                  // marginBottom: scalableheight.one,
+                }}
+                source={require('../Resources/images/logoguest.png')}
+              />
+            </View>
           </View>
           <View
             style={{
@@ -213,9 +229,14 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
             // shadowOffset: {width: 0, height: 1},
             // shadowOpacity: 0.2,
             // elevation: 1,
-            borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+            borderWidth: scalableheight.borderTopWidth,
+            borderColor: 'rgba(211,211,211, 0.6)',
           }}>
-          <View style={{paddingHorizontal: scalableheight.two, paddingTop: scalableheight.four,}}>
+          <View
+            style={{
+              paddingHorizontal: scalableheight.two,
+              paddingTop: scalableheight.four,
+            }}>
             {setting.map(item => {
               return (
                 <AccountInfotile
@@ -264,7 +285,7 @@ const styleSheet = StyleSheet.create({
   },
   shadow: {
     shadowColor: '#470000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 7,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'

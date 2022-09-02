@@ -39,6 +39,7 @@ import {
   DrawerItemList,
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
@@ -73,6 +74,13 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+      />
+      {/* <StatusBar
+        barStyle={ 'dark-content'}
+      /> */}
       <View
         style={{
           height: '100%',
@@ -80,9 +88,6 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
           alignSelf: 'center',
           paddingTop: getStatusBarHeight(),
         }}>
-        <StatusBar
-          barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
-        />
         <PlainHeader title={'My Orders'} />
 
         <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>

@@ -1358,10 +1358,10 @@ const ForgotPassword = ({navigation}) => {
           />
         </View>
             </TouchableOpacity>
-            <CustomStatusBar 
+            {/* <CustomStatusBar 
                 barStyle={"light-content"}
                 backgroundColor={"transparent"}
-            />
+            /> */}
                  <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
             {/* <Image
