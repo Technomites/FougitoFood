@@ -34,12 +34,13 @@ export default function Categoriescard(props) {
       }}>
       <ImageBackground
         borderRadius={scalableheight.one}
+        resizeMode="stretch"
         style={{
           alignItems: 'center',
           justifyContent: 'center',
           marginRight: scalableheight.one,
         }}
-        source={props.image}>
+        source={{uri: props.image}}>
         <ImageBackground
           borderRadius={scalableheight.one}
           resizeMode="cover"

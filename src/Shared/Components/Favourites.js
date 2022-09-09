@@ -135,7 +135,7 @@ export default function Favourites(props) {
             height: scalableheight.tweleve,
             borderRadius: fontSize.eleven,
           }}
-          source={props.image}></Image>
+          source={{uri: props?.image}}></Image>
       </View>
     </TouchableOpacity>
   );

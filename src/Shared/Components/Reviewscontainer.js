@@ -54,7 +54,9 @@ const navigation = useNavigation();
           <Text style={{marginLeft: scalableheight.one, color:"#29262A", fontFamily: 'Inter-Regular',
                     fontSize: fontSize.twelve,}}>{props.reviews}{ " reviews"}</Text>
           </View>
-    <Text style={{ color:"#303030", fontFamily: 'Inter-Bold',
+    <Text
+    numberOfLines={1}
+    style={{ color:"#303030", fontFamily: 'Inter-Bold',
                     fontSize: fontSize.twentytwo,}}>{props.title}</Text>
     <Text style={{ color:"#303030", fontFamily: 'Inter-Medium',
                     fontSize: fontSize.twelve, opacity: 0.4}}>{props.description}</Text>
@@ -63,7 +65,7 @@ const navigation = useNavigation();
           <Image
               resizeMode="contain"
               style={{ height: "100%", width:"60%"}}
-              source={props.image}
+              source={{uri: props.image}}
             />
             </View>
     

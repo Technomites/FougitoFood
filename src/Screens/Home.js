@@ -30,16 +30,13 @@ import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
 // import Modal from "react-native-modal";
 import {
-  getblogshome,
-  getnewsfeedshome,
-  getpopularserviceshome,
-  changelang,
   seticonfocus,
-  getProfileInformation,
-  getbanner,
-  getcategories,
-  getcategoriesbyid,
-  getNewNotificationCount,
+  getallrestraunts,
+  updaterestraunts,
+  getallrestrauntsbyid,
+  storecartprice,
+  storerestrauntid,
+  cleancart
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -166,15 +163,9 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
   const {
-    blogsdatahome,
-    newsfeedshomedata,
-    Lang,
-    ProfileInfo,
-    profileimage,
-    bannerarray,
-    categories,
     newNotificationCount,
-    popularservicedatahome,
+    allrestraunts,
+    currentRestrauntid
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
@@ -613,6 +604,14 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   useEffect(() => {
     listeners();
   }, []);
+  useEffect(() => {
+    if(lat != null && long != null ){
+      dispatch(getallrestraunts(lat, long))
+    }
+
+  }, [lat, long]);
+
+  
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -751,17 +750,23 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       iterationCount={1}
       style={{}}>
       <Favourites
-        image={require('../Resources/images/food.jpg')}
-        title={'Mexican Enchiladas'}
-        reviews={'8.9 (350 reviews)'}
-        time={'9:00 AM - 10:00PM'}
-        onPress={() =>
+        image={item?.Logo}
+        title={item?.NameAsPerTradeLicense}
+        reviews={item?.AvgRating + " (" + item?.RatingCount + " reviews)"}
+        time={item?.OpeningTime + " - " + item?.ClosingTime}
+        onPress={() =>{
+          if(currentRestrauntid != item?.Id){
+            dispatch(storecartprice(0))
+dispatch(cleancart())
+            dispatch(storerestrauntid(item?.Id))
+          }
+          dispatch(getallrestrauntsbyid(item?.Id))
           navigation.navigate('Restaurantpage', {
             latitude: lat,
             longitude: long,
           })
-        }
-        distance={'2.5KM AWAY'}
+        }}
+        distance={item?.Distance + " AWAY"}
       />
     </Animatable.View>
   );
@@ -794,17 +799,26 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         marginRight: scalableheight.two,
       }}>
       <Favourites
-        image={require('../Resources/images/food.jpg')}
-        title={'Mexican Enchiladas'}
-        reviews={'8.9 (350 reviews)'}
-        time={'9:00 AM - 10:00PM'}
-        onPress={() =>
+        image={item?.Logo}
+        title={item?.NameAsPerTradeLicense}
+        reviews={item?.AvgRating + " (" + item?.RatingCount + " reviews)"}
+        time={item?.OpeningTime + " - " + item?.ClosingTime}
+        onPress={() =>{
+          if(currentRestrauntid != item?.Id){
+            dispatch(storecartprice(0))
+            dispatch(cleancart())
+            dispatch(storerestrauntid(item?.Id))
+          }
+          dispatch(getallrestrauntsbyid(item?.Id))
+     
           navigation.navigate('Restaurantpage', {
             latitude: lat,
             longitude: long,
           })
         }
-        distance={'2.5KM AWAY'}
+        
+        }
+        distance={item?.Distance + " AWAY"}
       />
     </View>
 
@@ -812,15 +826,17 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   );
 
   function activaterestaurant(key, lat, long) {
+    console.log("hello")
     setinlat(lat);
     setinlong(long);
     console.log('selected');
-    let arr = [...pin];
+    let arr = [...allrestraunts];
     for (const index in arr) {
       arr[index].expanded = false;
     }
     arr[key].expanded = true;
-    setpin(arr);
+    // setpin(arr);
+    dispatch(updaterestraunts(arr))
 
     ref.current?.scrollToIndex({
       index: key,
@@ -852,7 +868,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             }}
             source={require('../Resources/images/homebackground.png')}>
             <View style={{marginTop: getStatusBarHeight()}}></View>
-            <HeaderComponent newNotificationCount={newNotificationCount} />
+            <HeaderComponent  />
             <View style={{paddingHorizontal: scalableheight.one}}>
               {/* <Transparentinfobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
              <View style={{marginTop: scalableheight.one}}></View> */}
@@ -899,19 +915,22 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                       longitudeDelta: 0.08,
                       latitudeDelta: 0.08,
                     }}
+                   
                     initialRegion={{
                       latitude: lat,
                       longitude: long,
+                     
+                  
                       latitudeDelta: 0.0922,
                       longitudeDelta: 0.0421,
                     }}>
-                    {pin.map((item, key) => {
+                    {allrestraunts.map((item, key) => {
                       return (
                         <Marker
                           position={center}
                           coordinate={{
-                            latitude: item.lat,
-                            longitude: item.long,
+                            latitude: item?.Latitude,
+                            longitude: item?.Longitude,
                           }}
                           // draggable
 
@@ -925,12 +944,12 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                           //   }}
                           //  pinColor = {"red"} // any color
                           key={key}
-                          title={'Location'}
-                          description={item.location}
+                          title={'Restaurant'}
+                          description={item?.NameAsPerTradeLicense}
                           onPress={() =>
-                            activaterestaurant(key, item.lat, item.long)
+                            activaterestaurant(key, item?.Latitude, item?.Longitude)
                           }>
-                          {item.expanded ? (
+                          {item?.expanded ? (
                             <View
                               style={{
                                 height: scalableheight.six,
@@ -1086,7 +1105,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                   style={{zIndex: 200, elevation: 200}}
                   keyExtractor={(item, index) => index.toString()}
                   horizontal
-                  data={dished}
+                  data={allrestraunts}
                   renderItem={rendernearby}
                   // onEndReached={() => LoadFeaturedProjectPagination()}
                   // onEndReachedThreshold={0.1}
@@ -1095,22 +1114,30 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             </>
           )}
           {showmap != true && (
-            <View
-              style={{
-                width: '100%',
-                paddingHorizontal: scalableheight.one,
-                marginTop: scalableheight.two,
-              }}>
+            // <View
+            //   style={{
+            //     width: '100%',
+            //     paddingHorizontal: scalableheight.one,
+            //     marginTop: scalableheight.two,
+          
+            // //  height: Dimensions.get('window').height + scalableheight.five -  scalableheight.fifteen - getStatusBarHeight()
+            //   }}>
               <FlatList
-                data={serving}
+               key = "1"
+                data={allrestraunts}
                 renderItem={renderItem}
                 // ListFooterComponent={renderFooter}
                 // onEndReached={loadMoreNotifications}
+                    style={{
+                width: '100%',
+                paddingHorizontal: scalableheight.one,
+                marginTop: scalableheight.two,}}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{paddingBottom: 54}}
+                contentContainerStyle={{ flexGrow: 1,paddingBottom: 5 }}
+                // contentContainerStyle={{paddingBottom: 54}}
                 keyExtractor={(item, index) => index.toString()}
               />
-            </View>
+            // {/* </View> */}
           )}
         </View>
         <TouchableOpacity

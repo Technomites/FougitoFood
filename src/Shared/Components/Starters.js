@@ -51,20 +51,23 @@ const navigation = useNavigation();
                 color:"#111111",
             
               }}>{props.title}</Text>
-              <Text style={{
+              <Text 
+              numberOfLines={2}
+              style={{
             
             fontFamily: 'Inter-Light',
             fontSize: fontSize.thirteen,
             color:"#636363",
         
           }}>{props.description}</Text>
-              <Text style={{
+        
+        {props.price > 0 ?      <Text style={{
             
             fontFamily: 'Inter-Medium',
             fontSize: fontSize.fourteen,
             color:"#111111",
         
-          }}>{"AED "}{props.price}</Text>
+          }}>{"AED "}{props.price}</Text> : null}
 </View>
 <View style={{height:"100%", width: "25%", alignItems:"flex-end", justifyContent:"center", paddingRight: scalableheight.one}}>
 <Image

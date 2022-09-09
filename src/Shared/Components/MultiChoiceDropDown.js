@@ -46,7 +46,7 @@ const navigation = useNavigation();
 {props?.data?.map((item, index) => {
         return (
             <TouchableOpacity 
-            onPress={() => {props.update(index)}}
+            onPress={() => {props.update(index, props.index)}}
             style={{flexDirection:"row", marginTop:scalableheight.pointfive}}>
               {renderIf(item?.selected == true)(
                 <MaterialIcons
@@ -69,10 +69,10 @@ const navigation = useNavigation();
     
             <Text  style={{fontFamily: 'Inter-Medium',
                     fontSize: fontSize.thirteen,
-                    color:"black",marginLeft: scalableheight.one}}>{item.serving}</Text>
+                    color:"black",marginLeft: scalableheight.one}}>{item?.Value}</Text>
                      <Text  style={{fontFamily: 'Inter-Bold',
                     fontSize: fontSize.thirteen,
-                    color:"black",position:"absolute", right:0}}>{item.price}</Text>
+                    color:"black",position:"absolute", right:0}}>AED {item?.Price}</Text>
          
 
        
