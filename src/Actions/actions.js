@@ -19,8 +19,11 @@ export const CleanCartData = 'CleanCartData';
 export const CARTDataDelete = 'CARTDataDelete';
 export const Login_User = 'Login_User';
 export const SignUP_User = ' SignUP_User';
+export const Login_User2 = 'Login_User2';
+export const SignUP_User2 = ' SignUP_User2';
 export const ChangedPasswordMessage = 'ChangedPasswordMessage';
 export const OTP_Verify = 'OTP_Verify';
+export const OTP_Verify2 = 'OTP_Verify2';
 export const Reset_Password = 'Reset_Password';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
@@ -32,7 +35,7 @@ const header1 = {
 
 var requestOptions = {
   method: 'GET',
-  redirect: 'follow'
+  redirect: 'follow',
 };
 
 export const Signup = (number, fullname, email, password) => {
@@ -61,15 +64,33 @@ export const Signup = (number, fullname, email, password) => {
         requestOptions,
       );
       json = await result.json();
-      console.log(json, 'Register Register Register');
+      console.log(json?.Result, 'Register Register Register');
       if (json.Status == 'Success') {
         dispatch({
           type: SignUP_User,
           SignUpPayLoad: json?.Result,
+          SignUpstatus: json?.Status,
+          SignUpMessage: json?.Message,
         });
-      } else console.log('Unsuccessfull');
+      } else if (json.Status == 'Error') {
+        dispatch({
+          type: SignUP_User,
+          SignUpPayLoad: '',
+          SignUpstatus: json?.Status,
+          SignUpMessage: json?.Message,
+        });
+      }
     };
   } catch (error) {}
+};
+
+export const signupnullstate = () => {
+  return async dispatch => {
+    dispatch({
+      type: SignUP_User2,
+      SignUpstatus: '',
+    });
+  };
 };
 
 export const Verification = (otp, userid) => {
@@ -89,13 +110,13 @@ export const Verification = (otp, userid) => {
       json = await result.json();
       //  console.log(json, 'IF CONDITION OUTER');
       if (json.Status == 'Success') {
-        dispatch({
-          type: Login_User,
-          payload: json?.Result,
-          payloadtoken: json?.Result.AuthData.TokenInfo.Token,
-          payloadCustomer: json?.Result.Customer,
-          LoadLoginStatus: json?.Status,
-        });
+        // dispatch({
+        //   type: Login_User,
+        //   payload: json?.Result,
+        //   payloadtoken: json?.Result.AuthData.TokenInfo.Token,
+        //   payloadCustomer: json?.Result.Customer,
+        //   LoadLoginStatus: json?.Status,
+        // });
         dispatch({
           type: OTP_Verify,
           payloadVerify: json?.Status,
@@ -103,7 +124,7 @@ export const Verification = (otp, userid) => {
         console.log('Success', 'OTP OTP OTP');
       } else if (json.Status == 'Error') {
         dispatch({
-          type: OTP_Verify,
+          type: OTP_Verify2,
           payloadVerify: json?.Status,
         });
       }
@@ -115,12 +136,13 @@ export const ReVerification = number => {
   try {
     return async dispatch => {
       var myHeaders = new Headers();
-
+      console.log(number, 'numbernumbernumbernumbernumber number');
       var requestOptions = {
         method: 'POST',
         headers: myHeaders,
         redirect: 'follow',
       };
+
       const result = await fetch(
         API_URl + `Customer/Account/ResendOTP/${number}`,
         requestOptions,
@@ -190,6 +212,14 @@ export const Login = (number, password) => {
     };
   } catch (error) {}
 };
+export const LoginStateNull = () => {
+  return async dispatch => {
+    dispatch({
+      type: Login_User2,
+      LoadLoginStatus: '',
+    });
+  };
+};
 
 export const ForgetPassword = number => {
   try {
@@ -243,7 +273,7 @@ export const ForgetPasswordNullstate = () => {
 export const OTPNullstate = () => {
   return async dispatch => {
     dispatch({
-      type: OTP_Verify,
+      type: OTP_Verify2,
       payloadVerify: json?.Status,
     });
   };
@@ -254,6 +284,7 @@ export const ChangedPassword = (userid, newpassword, confirmpassword) => {
     return async dispatch => {
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
+      console.log(userid, newpassword, confirmpassword);
 
       var raw = JSON.stringify({
         userId: userid,
@@ -274,16 +305,17 @@ export const ChangedPassword = (userid, newpassword, confirmpassword) => {
       );
       json = await result.json();
       if (json.Status == 'Success') {
+        console.log(json.Status, 'Customer/Account/ResetPassword');
         dispatch({
           type: Reset_Password,
           newPassword: json?.Status,
-          Message: json?.MessageValid,
+          Message: json?.Message,
         });
       } else if (json.Status == 'Error') {
         dispatch({
           type: Reset_Password,
           newPassword: json?.Status,
-          Message: json?.MessageValid,
+          Message: json?.Message,
         });
       }
     };
@@ -292,7 +324,7 @@ export const ChangedPassword = (userid, newpassword, confirmpassword) => {
   }
 };
 
-export const filteredcatdata = (data) => {
+export const filteredcatdata = data => {
   try {
     return async dispatch => {
       dispatch({
@@ -318,7 +350,7 @@ export const cleancart = () => {
   }
 };
 
-export const storerestrauntid = (id) => {
+export const storerestrauntid = id => {
   try {
     return async dispatch => {
       dispatch({
@@ -331,8 +363,7 @@ export const storerestrauntid = (id) => {
   }
 };
 
-
-export const storecartprice = (price) => {
+export const storecartprice = price => {
   try {
     return async dispatch => {
       dispatch({
@@ -345,7 +376,7 @@ export const storecartprice = (price) => {
   }
 };
 
-export const storecartdata = (data) => {
+export const storecartdata = data => {
   try {
     return async dispatch => {
       dispatch({
@@ -358,7 +389,7 @@ export const storecartdata = (data) => {
   }
 };
 
-export const savemenucategoryoptiondetailsdata = (data) => {
+export const savemenucategoryoptiondetailsdata = data => {
   try {
     return async dispatch => {
       dispatch({
@@ -371,7 +402,7 @@ export const savemenucategoryoptiondetailsdata = (data) => {
   }
 };
 
-export const updatedmenuselection = (data) => {
+export const updatedmenuselection = data => {
   try {
     return async dispatch => {
       dispatch({
@@ -383,51 +414,53 @@ export const updatedmenuselection = (data) => {
     console.log(error);
   }
 };
-export const getrestrauntmenubyid = (id) => {
+export const getrestrauntmenubyid = id => {
   try {
-   
     return async dispatch => {
-    
-      const result = await fetch(API_URl + "Customer/Restaurant/Branch/" + id  + "/Menu", {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
+      const result = await fetch(
+        API_URl + 'Customer/Restaurant/Branch/' + id + '/Menu',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      
-      });
+      );
 
       const json = await result.json();
-    
-      let data = json.Result
-     let arr = []
-   for (const key in data){
-    if (key == 0){
-      data[key]['visible'] = true; 
-    }else{
-      data[key]['visible'] = false; 
-    }
-    for (const index in data[key].Items){
-      if(data[key].Items[index]?.MenuItemOptions.length > 0){
-        for (const i in data[key].Items[index]?.MenuItemOptions){
-        
-          if(data[key].Items[index]?.MenuItemOptions[i].MenuItemOptionValues.length > 0){
-            //console.log("menuitemlength" + data[key].Items[index]?.MenuItemOptions[i].MenuItemOptionValues.length)
-          for (const j in data[key].Items[index]?.MenuItemOptions[i]?.MenuItemOptionValues){
-          // console.log("-------------------------------------------")
-            // console.log(data[key]?.Items[index]?.MenuItemOptions[i]?.MenuItemOptionValues[j].Price)
-            data[key].Items[index].MenuItemOptions[i].MenuItemOptionValues[j]['selected'] = false; 
-      
+
+      let data = json.Result;
+      let arr = [];
+      for (const key in data) {
+        if (key == 0) {
+          data[key]['visible'] = true;
+        } else {
+          data[key]['visible'] = false;
+        }
+        for (const index in data[key].Items) {
+          if (data[key].Items[index]?.MenuItemOptions.length > 0) {
+            for (const i in data[key].Items[index]?.MenuItemOptions) {
+              if (
+                data[key].Items[index]?.MenuItemOptions[i].MenuItemOptionValues
+                  .length > 0
+              ) {
+                //console.log("menuitemlength" + data[key].Items[index]?.MenuItemOptions[i].MenuItemOptionValues.length)
+                for (const j in data[key].Items[index]?.MenuItemOptions[i]
+                  ?.MenuItemOptionValues) {
+                  // console.log("-------------------------------------------")
+                  // console.log(data[key]?.Items[index]?.MenuItemOptions[i]?.MenuItemOptionValues[j].Price)
+                  data[key].Items[index].MenuItemOptions[
+                    i
+                  ].MenuItemOptionValues[j]['selected'] = false;
+                }
+              }
+            }
           }
         }
       }
+      console.log('getrestrauntmenubyiddata' + JSON.stringify(data));
+      // console.log('getrestrauntmenubyid' + JSON.stringify(arr));
 
-      }
-    
-   }
-  }
-  console.log('getrestrauntmenubyiddata' + JSON.stringify(data));
-  // console.log('getrestrauntmenubyid' + JSON.stringify(arr));
-   
       if (json.Status == 'Success') {
         dispatch({
           type: GET_MenuBYID,
@@ -438,67 +471,65 @@ export const getrestrauntmenubyid = (id) => {
   } catch (error) {
     console.log(error);
   }
-};   
+};
 
-  export const getpopularcategoriesbyid = (id) => {
-    try {
-     
-      return async dispatch => {
-      
-        const result = await fetch(API_URl + "Customer/Restaurant/Branch/" + id  + "/PopularCategories", {
+export const getpopularcategoriesbyid = id => {
+  try {
+    return async dispatch => {
+      const result = await fetch(
+        API_URl + 'Customer/Restaurant/Branch/' + id + '/PopularCategories',
+        {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
-        
-        });
-  
-        const json = await result.json();
-        console.log('getpopularcategoriesbyid' + JSON.stringify(json.Result));
-     
-     
-        if (json.Status == 'Success') {
-          dispatch({
-            type: GET_PopularCategoriesBYID,
-            payload: json.Result,
-          });
-        }
-      };
-    } catch (error) {
-      console.log(error);
-    }
-  };   
+        },
+      );
 
-  export const getallrestrauntsbyid = (id) => {
-    try {
-     
-      return async dispatch => {
-      
-        const result = await fetch(API_URl + "Customer/Restaurant/Branch/" + id  + "/Details", {
+      const json = await result.json();
+      console.log('getpopularcategoriesbyid' + JSON.stringify(json.Result));
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: GET_PopularCategoriesBYID,
+          payload: json.Result,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getallrestrauntsbyid = id => {
+  try {
+    return async dispatch => {
+      const result = await fetch(
+        API_URl + 'Customer/Restaurant/Branch/' + id + '/Details',
+        {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
-        
-        });
-  
-        const json = await result.json();
-        console.log('getallrestrauntsbyid' + JSON.stringify(json.Result));
-     
-     
-        if (json.Status == 'Success') {
-          dispatch({
-            type: GET_allRestrauntsByID,
-            payload: json.Result[0],
-          });
-        }
-      };
-    } catch (error) {
-      console.log(error);
-    }
-  };   
+        },
+      );
 
-export const updaterestraunts = (data) => {
+      const json = await result.json();
+      console.log('getallrestrauntsbyid' + JSON.stringify(json.Result));
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: GET_allRestrauntsByID,
+          payload: json.Result[0],
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updaterestraunts = data => {
   try {
     return async dispatch => {
       dispatch({
@@ -513,36 +544,34 @@ export const updaterestraunts = (data) => {
 
 export const getallrestraunts = (lat, long) => {
   try {
-   
     return async dispatch => {
-    
       const result = await fetch(API_URl + 'Customer/Restaurant/GetAll', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "Paging": {
-            "Search": "",
-            "PageNumber": 1,
-            "PageSize": 10
+          Paging: {
+            Search: '',
+            PageNumber: 1,
+            PageSize: 10,
           },
           // "Latitude": lat,
           // "Longitude": long
-          "Latitude": 24.8581087,
-          "Longitude":67.0605057
+          Latitude: 24.8581087,
+          Longitude: 67.0605057,
         }),
       });
 
       const json = await result.json();
-      console.log(lat + "lat")
-  console.log(long + "long")
+      console.log(lat + 'lat');
+      console.log(long + 'long');
       console.log('getallrestraunts' + JSON.stringify(json.Result));
-   
-    let data = [...json.Result]
-    for (const index in data){
-      data[index]["expanded"] = false;
-    }
+
+      let data = [...json.Result];
+      for (const index in data) {
+        data[index]['expanded'] = false;
+      }
       if (json.Status == 'Success') {
         dispatch({
           type: GET_allRestraunts,
@@ -553,7 +582,7 @@ export const getallrestraunts = (lat, long) => {
   } catch (error) {
     console.log(error);
   }
-};  
+};
 
 export const seticonfocus = icon => {
   try {
@@ -586,8 +615,6 @@ export const seticonfocus = icon => {
     console.log(error);
   }
 };
-
-
 
 // export const getblogshome = (lang) => {
 //   try {
@@ -623,5 +650,4 @@ export const seticonfocus = icon => {
 //   } catch (error) {
 //     console.log(error);
 //   }
-// };  
-
+// };
