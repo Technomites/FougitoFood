@@ -17,6 +17,11 @@ export const Cart_CURRENTPRICE = 'Cart_CURRENTPRICE';
 export const Store_RestrauntId = 'Store_RestrauntId';
 export const CleanCartData = 'CleanCartData';
 export const CARTDataDelete = 'CARTDataDelete';
+export const Login_User = 'Login_User';
+export const SignUP_User = ' SignUP_User';
+export const ChangedPasswordMessage = 'ChangedPasswordMessage';
+export const OTP_Verify = 'OTP_Verify';
+export const Reset_Password = 'Reset_Password';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -30,7 +35,262 @@ var requestOptions = {
   redirect: 'follow'
 };
 
+export const Signup = (number, fullname, email, password) => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Origin', 'https://fougito.com');
+      myHeaders.append('Content-Type', 'application/json');
 
+      var raw = JSON.stringify({
+        Email: email,
+        FirstName: fullname,
+        Password: password,
+        PhoneNumber: number,
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(
+        API_URl + 'customer/account/Register',
+        requestOptions,
+      );
+      json = await result.json();
+      console.log(json, 'Register Register Register');
+      if (json.Status == 'Success') {
+        dispatch({
+          type: SignUP_User,
+          SignUpPayLoad: json?.Result,
+        });
+      } else console.log('Unsuccessfull');
+    };
+  } catch (error) {}
+};
+
+export const Verification = (otp, userid) => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+      console.log(otp + 'userid' + userid);
+      const result = await fetch(
+        API_URl + `Customer/Account/VerifyOTP/${otp}/${userid}`,
+        requestOptions,
+      );
+      json = await result.json();
+      //  console.log(json, 'IF CONDITION OUTER');
+      if (json.Status == 'Success') {
+        dispatch({
+          type: Login_User,
+          payload: json?.Result,
+          payloadtoken: json?.Result.AuthData.TokenInfo.Token,
+          payloadCustomer: json?.Result.Customer,
+          LoadLoginStatus: json?.Status,
+        });
+        dispatch({
+          type: OTP_Verify,
+          payloadVerify: json?.Status,
+        });
+        console.log('Success', 'OTP OTP OTP');
+      } else if (json.Status == 'Error') {
+        dispatch({
+          type: OTP_Verify,
+          payloadVerify: json?.Status,
+        });
+      }
+    };
+  } catch (error) {}
+};
+
+export const ReVerification = number => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+      const result = await fetch(
+        API_URl + `Customer/Account/ResendOTP/${number}`,
+        requestOptions,
+      );
+      json = await result.json();
+      console.log(json, 'IF CONDITION OUTER RE send Otp');
+      if (json.Status == 'Success') {
+        console.log('Success', 'RE send Otp');
+      } else {
+        console.log('AUTHENTICATION FAILED Re send otp');
+      }
+    };
+  } catch (error) {}
+};
+
+export const Login = (number, password) => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+
+      var raw = JSON.stringify({
+        phoneNumber: number,
+        password: password,
+        rememberMe: false,
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(
+        API_URl + 'Customer/Account/Login',
+        requestOptions,
+      );
+      json = await result.json();
+      console.log(json, 'LOGIN LOGIN LOGIN');
+
+      if (json.Status == 'Success') {
+        console.log(' type: Login_User,');
+        dispatch({
+          type: Login_User,
+          payload: json?.Result,
+          payloadtoken: json?.Result.AuthData.TokenInfo.Token,
+          payloadCustomer: json?.Result.Customer,
+          LoadLoginStatus: json?.Status,
+        });
+        await AsyncStorage.setItem(
+          'AccessToken',
+          JSON.stringify(json?.Result.AuthData.TokenInfo.Token),
+        );
+        await AsyncStorage.setItem('Password', password);
+        console.log('Success');
+      } else if (json?.Status == 'Error') {
+        console.log(json?.Message, 'EROORRR');
+        dispatch({
+          type: Login_User,
+          payload: '',
+          payloadtoken: '',
+          payloadCustomer: '',
+          LoadLoginStatus: json?.Status,
+        });
+      }
+    };
+  } catch (error) {}
+};
+
+export const ForgetPassword = number => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(
+        API_URl + `Customer/Account/ForgetPassword/${number}`,
+        requestOptions,
+      );
+      json = await result.json();
+      console.log(json, 'ForgetPassword ForgetPassword ForgetPassword');
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: SignUP_User,
+          SignUpPayLoad: json?.Result,
+          successstautus: 'Otp Generated',
+        });
+        dispatch({
+          type: ChangedPasswordMessage,
+          ChangedPasswordMessagePayLoad: json?.Status,
+        });
+        console.log('Success Forget Password');
+      } else if (json?.Status == 'Error') {
+        dispatch({
+          type: ChangedPasswordMessage,
+          ChangedPasswordMessagePayLoad: json?.Status,
+          MessageError: json?.Message,
+        });
+      }
+    };
+  } catch (error) {}
+};
+
+export const ForgetPasswordNullstate = () => {
+  return async dispatch => {
+    dispatch({
+      type: ChangedPasswordMessage,
+      ChangedPasswordMessagePayLoad: '',
+    });
+  };
+};
+
+export const OTPNullstate = () => {
+  return async dispatch => {
+    dispatch({
+      type: OTP_Verify,
+      payloadVerify: json?.Status,
+    });
+  };
+};
+
+export const ChangedPassword = (userid, newpassword, confirmpassword) => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+
+      var raw = JSON.stringify({
+        userId: userid,
+        newPassword: newpassword,
+        confirmPassword: confirmpassword,
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(
+        API_URl + `Customer/Account/ResetPassword`,
+        requestOptions,
+      );
+      json = await result.json();
+      if (json.Status == 'Success') {
+        dispatch({
+          type: Reset_Password,
+          newPassword: json?.Status,
+          Message: json?.MessageValid,
+        });
+      } else if (json.Status == 'Error') {
+        dispatch({
+          type: Reset_Password,
+          newPassword: json?.Status,
+          Message: json?.MessageValid,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const filteredcatdata = (data) => {
   try {

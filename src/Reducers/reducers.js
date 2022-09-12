@@ -12,7 +12,12 @@ import {
   Cart_CURRENTPRICE,
   Store_RestrauntId,
   CleanCartData,
-  CARTDataDelete
+  CARTDataDelete,
+  Login_User,
+  SignUP_User,
+  ChangedPasswordMessage,
+  OTP_Verify,
+  Reset_Password
 } from '../Actions/actions';
 
 const initialState = {
@@ -26,14 +31,56 @@ const initialState = {
   retaurantmenucategorydataoption: [],
   cartdata: [],
   price: 0,
-  currentRestrauntid: 0
+  currentRestrauntid: 0,
+  AuthToken: '',
+  LoginResult: '',
+  PayLoadLoginStatus: '',
+  LoginCustomer: [],
+  SignupRandomid: '',
+  SuccessMessageForgetpassword: '',
+  PasswordMessage: '',
+  ErrorResultMessage: '',
+  OtpVerificationStatus: '',
 
 };
 
 function userReducer(state = initialState, action) {
   
   switch (action.type) {
-    
+    case Login_User:
+      return {
+        ...state,
+        LoginResult: action.payload,
+        AuthToken: action.payloadtoken,
+        LoginCustomer: action.payloadCustomer,
+        PayLoadLoginStatus: action.LoadLoginStatus,
+      };
+
+    case SignUP_User:
+      return {
+        ...state,
+        SignupRandomid: action.SignUpPayLoad,
+        SuccessMessageForgetpassword: action.successstautus,
+      };
+
+    case ChangedPasswordMessage:
+      return {
+        ...state,
+        PasswordMessage: action.ChangedPasswordMessagePayLoad,
+      };
+
+    case OTP_Verify:
+      return {
+        ...state,
+        OtpVerificationStatus: action.payloadVerify,
+      };
+
+    case Reset_Password:
+      return {
+        ...state,
+        Reset_PasswordStatus: action.newPassword,
+        MessagePasswordStatus:action.Message
+      };
     
     case CARTDataDelete:
      

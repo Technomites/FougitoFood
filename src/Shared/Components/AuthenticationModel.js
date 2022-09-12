@@ -11,6 +11,7 @@ import {
   TextInput,
   ImageBackground,
   ScrollView,
+  Keyboard,
 } from 'react-native';
 
 import renderIf from 'render-if';
@@ -22,6 +23,16 @@ import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
+import {
+  Login,
+  Signup,
+  Verification,
+  ReVerification,
+  ForgetPassword,
+  ChangedPassword,
+  ForgetPasswordNullstate,
+  OTPNullstate,
+} from '../../Actions/actions';
 
 import MYButton from './MYButton';
 import * as Animatable from 'react-native-animatable';
@@ -29,17 +40,24 @@ import PaymentOptions from '../../Shared/Components/PaymentOptions';
 import Animated from 'react-native-reanimated';
 import CountDown from 'react-native-countdown-component';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Toast from 'react-native-toast-notifications';
 export default function AuthenticationModel(props) {
+  const toast = useRef();
   const [number, setnumber] = useState('');
   const [fullname, setfullname] = useState('');
+  const [email, Setemail] = useState('');
   const [password, setpassword] = useState('');
+  const [confirmpassword, Setconfirmpassword] = useState('');
   const [newpasswordshow, setnewpasswordshow] = useState(false);
   const [inscreenanimation, setinscreenanimation] = useState(false);
   const [loginvisible, setloginvisible] = useState(true);
   const [signupvisible, setsignupvisible] = useState(false);
+  const [changenewpassword, setchangenewpassword] = useState(false);
   const [otpvisible, setotpvisible] = useState(false);
   const [timeractive, settimeractive] = useState(false);
+  const [showtimer, setShowTimer] = useState(false);
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
+  const [loader, setLoader] = useState(false);
 
   const [forgetpasswordvisible, setforgetpasswordvisible] = useState(false);
   const [animationstate, setanimationstate] = useState(false);
@@ -50,14 +68,315 @@ export default function AuthenticationModel(props) {
   const [codeOne, setCodeOne] = useState('');
   const [codeTwo, setCodeTwo] = useState('');
   const [codeThree, setCodeThree] = useState('');
-
   const [codeFour, setCodeFour] = useState('');
+  const [Otp, SetOtp] = useState('');
   const input_1 = useRef();
   const input_2 = useRef();
   const input_3 = useRef();
   const input_4 = useRef();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const {
+    //  AuthToken,
+    SignupRandomid,
+    PasswordMessage,
+    ErrorResultMessage,
+    SuccessMessageForgetpassword,
+    PayLoadLoginStatus,
+    OtpVerificationStatus,
+    Reset_PasswordStatus,
+    MessagePasswordStatus,
+  } = useSelector(state => state.userReducer);
+
+  console.log(PasswordMessage, 'AuthTokenAuthToken Mubashir ');
+
+  useEffect(() => {
+    console.log(PayLoadLoginStatus, 'AuthTokenAuthToken');
+    if (PayLoadLoginStatus === 'Success') {
+      toast.current.show('Login SuccessFully', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+      clearandclose();
+      console.log(' clearandclose();');
+      setLoader(false);
+    } else if (PayLoadLoginStatus === 'Error') {
+      toast.current.show('Password/PhoneNumber Invalid', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      console.log('LOGIN ERROROROOROROORO');
+      setLoader(false);
+    }
+  }, [PayLoadLoginStatus]);
+
+  //proceed
+  useEffect(() => {
+    console.log(PasswordMessage, 'AuthTokenAuthToken');
+    if (PasswordMessage === 'Success') {
+      toast.current.show('OTP Generated', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+      console.log('FAKE FAL+KE');
+      setLoader(false);
+      togglescreen(4);
+      dispatch(ForgetPasswordNullstate());
+    } else if (PasswordMessage === 'Error') {
+      toast.current.show('PhoneNumber Invalid', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      console.log('FAKE FAL+KE');
+      setLoader(false);
+      dispatch(ForgetPasswordNullstate());
+    }
+  }, [PasswordMessage]);
+
+  //OTP VERIFY
+  useEffect(() => {
+    console.log(OtpVerificationStatus, 'AuthTokenAuthToken');
+    if (OtpVerificationStatus === 'Success') {
+      toast.current.show('OTP Verified', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+
+      setLoader(false);
+      togglescreen(5);
+      dispatch(OTPNullstate());
+    } else if (OtpVerificationStatus === 'Error') {
+      toast.current.show('OTP has been expired', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      console.log('OTP has been expired');
+      setLoader(false);
+      dispatch(OTPNullstate());
+    }
+  }, [OtpVerificationStatus]);
+
+  const signUpHandler = async () => {
+    Keyboard.dismiss();
+    if (
+      number == '' ||
+      fullname == '' ||
+      email == '' ||
+      password == '' ||
+      confirmpassword == ''
+    ) {
+      toast.current.show('Enter All Fields', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+      return;
+    } else if (number.length == 0) {
+      toast.current.show('Enter PhoneNumber', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+      return;
+    } else if (email.indexOf(' ') >= 0) {
+      toast.current.show('Enter Email', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+    } else if (password != confirmpassword) {
+      toast.current.show('Password Not Matched', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+
+      return;
+    } else {
+      dispatch(Signup(number, fullname, email, password));
+    }
+  };
+
+  const VerifyOTP = () => {
+    Keyboard.dismiss();
+    if (
+      codeOne.length === '' ||
+      codeTwo.length === 0 ||
+      codeThree.length === 0 ||
+      codeFour.length === 0
+    ) {
+      toast.current.show('Enter OTP Code', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+    } else {
+      console.log('else');
+      const otp = codeOne + codeTwo + codeThree + codeFour;
+      console.log(SignupRandomid, 'otpotpotpotpotpotpotpotpotpotpotpotpotpotp');
+
+      if (SignupRandomid != '') {
+        dispatch(Verification(otp, SignupRandomid));
+        console.log(otp, SignupRandomid, 'OTP CODE 4 DiGIT');
+        console.log('if inner');
+        // togglescreen(5);
+      }
+      setLoader(true);
+      setCodeOne('');
+      setCodeTwo('');
+      setCodeThree('');
+      setCodeFour('');
+    }
+  };
+
+  const ReVerifyOTP = () => {
+    // Keyboard.dismiss();
+    if (number != '') {
+      dispatch(ReVerification(number));
+      console.log(number, 'ReVerification ReVerification');
+    } else {
+      console.log('number Required');
+    }
+  };
+
+  const LoginHandler = () => {
+    Keyboard.dismiss();
+    if (number.length === 0) {
+      toast.current.show('Enter PhoneNumber', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+    } else if (password.length === 0) {
+      toast.current.show('Enter Password', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+    } else {
+      dispatch(Login(number, password));
+      setLoader(true);
+    }
+  };
+
+  const ForgetPasswordHandler = () => {
+    Keyboard.dismiss();
+    if (number.length === 0) {
+      toast.current.show('Enter PhoneNumber', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+    } else {
+      dispatch(ForgetPassword(number));
+      setLoader(true);
+    }
+  };
+
+  // const ChangedPasswordHandler = () => {
+  //   Keyboard.dismiss();
+  //   if (password == '' || confirmpassword == '') {
+  //     toast.current.show('Enter All Fields', {
+  //       type: 'normal',
+  //       placement: 'bottom',
+  //       duration: 4000,
+  //       offset: 10,
+  //       animationType: 'slide-in',
+  //     });
+  //     return;
+  //   } else if (password == confirmpassword) {
+  //     toast.current.show('Password Not Matched', {
+  //       type: 'normal',
+  //       placement: 'bottom',
+  //       duration: 4000,
+  //       offset: 10,
+  //       animationType: 'slide-in',
+  //     });
+  //     return;
+  //   } else {
+  //     dispatch(ChangedPassword(SignupRandomid, password, confirmpassword));
+  //     // toast.current.show('Password Changed Successfully', {
+  //     //   type: 'normal',
+  //     //   placement: 'bottom',
+  //     //   duration: 4000,
+  //     //   offset: 10,
+  //     //   animationType: 'slide-in',
+  //     // });
+  //     // togglescreen(1);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   console.log(
+  //     Reset_PasswordStatus,
+  //     MessagePasswordStatus,
+  //     'AuthTokenAuthToken',
+  //   );
+  //   if (Reset_PasswordStatus === 'Success') {
+  //     toast.current.show(MessagePasswordStatus, {
+  //       type: 'normal',
+  //       placement: 'bottom',
+  //       duration: 4000,
+  //       offset: 10,
+  //       animationType: 'slide-in',
+  //     });
+
+  //     setLoader(false);
+  //     togglescreen(5);
+  //     dispatch(OTPNullstate());
+  //   } else if (Reset_PasswordStatus === 'Error') {
+  //     toast.current.show(MessagePasswordStatus, {
+  //       type: 'normal',
+  //       placement: 'bottom',
+  //       duration: 4000,
+  //       offset: 10,
+  //       animationType: 'slide-in',
+  //       zIndex: 2,
+  //     });
+  //     console.log('OTP has been expired');
+  //     setLoader(false);
+  //     dispatch(OTPNullstate());
+  //   }
+  // }, [Reset_PasswordStatus, OtpVerificationStatus]);
+
   function toggleanimation() {
     if (animationtype == 'fadeInUpBig') {
       setanimationtype('fadeOutDownBig');
@@ -71,10 +390,13 @@ export default function AuthenticationModel(props) {
       setanimationstate(true);
     }
   }, [props.state]);
+
   function clearandclose() {
     toggleanimation();
     setanimationstate(true);
     setnumber('');
+    Setemail('');
+    Setconfirmpassword('');
     setfullname('');
     setpassword('');
     setnewpasswordshow(false);
@@ -83,9 +405,13 @@ export default function AuthenticationModel(props) {
     setotpvisible(false);
     settimeractive(false);
     setforgetpasswordvisible(false);
-
+    setchangenewpassword(false);
     setCodeOneActive(false);
     setCodeTwoActive(false);
+    setCodeOne('');
+    setCodeTwo('');
+    setCodeThree('');
+    setCodeFour('');
   }
 
   function togglescreen(index) {
@@ -95,27 +421,37 @@ export default function AuthenticationModel(props) {
       setsignupvisible(false);
       setotpvisible(false);
       setforgetpasswordvisible(false);
+      setchangenewpassword(false);
       setloginvisible(true);
     } else if (index == 2) {
       setloginvisible(false);
       setotpvisible(false);
       setforgetpasswordvisible(false);
+      setchangenewpassword(false);
       setsignupvisible(true);
     } else if (index == 3) {
       setsignupvisible(false);
       setotpvisible(false);
       setloginvisible(false);
       setforgetpasswordvisible(true);
+      setchangenewpassword(false);
     } else if (index == 4) {
       setsignupvisible(false);
 
       setloginvisible(false);
       setforgetpasswordvisible(false);
       setotpvisible(true);
+      setchangenewpassword(false);
 
       setTimeout(async () => {
         input_1.current.focus();
       }, 500);
+    } else if (index == 5) {
+      setsignupvisible(false);
+      setotpvisible(false);
+      setloginvisible(false);
+      setforgetpasswordvisible(false);
+      setchangenewpassword(true);
     }
   }
 
@@ -199,6 +535,7 @@ export default function AuthenticationModel(props) {
                 </View>
 
                 <ScrollView
+                  keyboardShouldPersistTaps="always"
                   showsVerticalScrollIndicator={false}
                   style={{width: '100%', height: '55%'}}
                   contentContainerStyle={{
@@ -291,12 +628,24 @@ export default function AuthenticationModel(props) {
                             FORGOT PASSWORD
                           </Text>
                         </TouchableOpacity>
-                        <MYButton
-                          title={'LOGIN'}
-                          onPress={() => {}}
-                          color="#E14E4E"
-                          textcolor="white"
-                        />
+                        {loader == true ? (
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <ActivityIndicator size={'large'} color="#E14E4E" />
+                          </View>
+                        ) : (
+                          <MYButton
+                            title={'LOGIN'}
+                            onPress={() => {
+                              LoginHandler();
+                            }}
+                            color="#E14E4E"
+                            textcolor="white"
+                          />
+                        )}
 
                         <TouchableOpacity
                           onPress={() => {
@@ -380,6 +729,23 @@ export default function AuthenticationModel(props) {
                             ...styleSheet.Text5,
                             marginTop: scalableheight.two,
                           }}>
+                          Email
+                        </Text>
+                        <TextInput
+                          style={{
+                            ...styleSheet.TextInput,
+                            ...styleSheet.shadow,
+                          }}
+                          placeholderTextColor="#8c8c8c"
+                          placeholder={'Enter Email'}
+                          onChangeText={text => Setemail(text)}
+                          defaultValue={email}
+                        />
+                        <Text
+                          style={{
+                            ...styleSheet.Text5,
+                            marginTop: scalableheight.two,
+                          }}>
                           Password
                         </Text>
                         <View style={{width: '100%'}}>
@@ -406,10 +772,45 @@ export default function AuthenticationModel(props) {
                             />
                           </TouchableOpacity>
                         </View>
+                        <Text
+                          style={{
+                            ...styleSheet.Text5,
+                            marginTop: scalableheight.two,
+                          }}>
+                          Confirm Password
+                        </Text>
+                        <View style={{width: '100%'}}>
+                          <TextInput
+                            style={{
+                              ...styleSheet.TextInput,
+                              ...styleSheet.shadow,
+                            }}
+                            secureTextEntry={newpasswordshow}
+                            placeholderTextColor="#8c8c8c"
+                            placeholder={'Confirm Password'}
+                            onChangeText={text => Setconfirmpassword(text)}
+                            defaultValue={confirmpassword}
+                          />
+                          <TouchableOpacity
+                            onPress={() => {
+                              setnewpasswordshow(!newpasswordshow);
+                            }}
+                            style={styleSheet.inputIconStyle}>
+                            <Ionicons
+                              color={'#8c8c8c'}
+                              name={newpasswordshow ? 'eye-off' : 'eye'}
+                              size={fontSize.twentytwo}
+                            />
+                          </TouchableOpacity>
+                        </View>
+
                         <View style={{marginTop: scalableheight.two}}></View>
                         <MYButton
                           title={'SIGNUP'}
-                          onPress={() => {}}
+                          onPress={() => {
+                            signUpHandler();
+                            togglescreen(4);
+                          }}
                           color="#E14E4E"
                           textcolor="white"
                         />
@@ -482,17 +883,28 @@ export default function AuthenticationModel(props) {
                           placeholder={'Enter Phone Number'}
                           onChangeText={text => setnumber(text)}
                           defaultValue={number}
+                          keyboardType="numeric"
                         />
 
                         <View style={{marginTop: scalableheight.two}}></View>
-                        <MYButton
-                          title={'PROCEED'}
-                          onPress={() => {
-                            togglescreen(4);
-                          }}
-                          color="#E14E4E"
-                          textcolor="white"
-                        />
+                        {loader == true ? (
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <ActivityIndicator size={'large'} color="#E14E4E" />
+                          </View>
+                        ) : (
+                          <MYButton
+                            title={'PROCEED'}
+                            onPress={() => {
+                              ForgetPasswordHandler();
+                            }}
+                            color="#E14E4E"
+                            textcolor="white"
+                          />
+                        )}
 
                         <TouchableOpacity
                           onPress={() => {
@@ -677,36 +1089,155 @@ export default function AuthenticationModel(props) {
                         </View>
 
                         <View style={{marginTop: scalableheight.two}}></View>
+                        {loader == true ? (
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <ActivityIndicator size={'large'} color="#E14E4E" />
+                          </View>
+                        ) : (
+                          <MYButton
+                            title={'VERIFY'}
+                            onPress={() => {
+                              VerifyOTP();
+                              // togglescreen(5);
+                            }}
+                            color="#E14E4E"
+                            textcolor="white"
+                          />
+                        )}
+
+                        {showtimer == false ? (
+                          <TouchableOpacity
+                            onPress={() => {
+                              // ReVerifyOTP();
+                              setShowTimer(true);
+                            }}>
+                            <Text
+                              style={{
+                                ...styleSheet.Text4,
+                                textAlign: 'center',
+                                marginTop: scalableheight.one,
+                              }}>
+                              RESEND CODE
+                            </Text>
+                          </TouchableOpacity>
+                        ) : null}
+                        <View style={{marginTop: scalableheight.one}}></View>
+                        {showtimer == true ? (
+                          <CountDown
+                            onFinish={() => {
+                              settimeractive(false), setShowTimer(false);
+                            }}
+                            until={60}
+                            size={fontSize.fourteen}
+                            timeToShow={['M', 'S']}
+                            timeLabels={{m: 'Min', s: 'Sec'}}
+                            digitStyle={{backgroundColor: '#E14E4E'}}
+                            digitTxtStyle={{color: 'white'}}
+                            timeLabelStyle={{color: 'white'}}
+                          />
+                        ) : null}
+                      </Animatable.View>
+                    </>,
+                  )}
+                  {renderIf(changenewpassword == true)(
+                    <>
+                      <Animatable.View
+                        animation={
+                          inscreenanimation ? 'bounceInRight' : undefined
+                        }
+                        onAnimationEnd={() => {
+                          setinscreenanimation(false);
+                        }}
+                        // animation={ getstart1  ? 'bounceInRight' :  getstart2  ? 'bounceInRight':  getstart3 ? 'bounceInRight' : undefined}
+                        //animation="bounceInRight"
+                        easing="ease"
+                        // iterationCount="infinite"
+                        iterationCount={1}
+                        style={{width: '100%', height: '100%'}}>
+                        <Text
+                          style={{
+                            fontFamily: 'Inter-SemiBold',
+                            fontSize: fontSize.twentytwo,
+                            color: 'black',
+                          }}>
+                          Change Password
+                        </Text>
+
+                        <Text
+                          style={{
+                            ...styleSheet.Text5,
+                            marginTop: scalableheight.two,
+                          }}>
+                          Password
+                        </Text>
+                        <View style={{width: '100%'}}>
+                          <TextInput
+                            style={{
+                              ...styleSheet.TextInput,
+                              ...styleSheet.shadow,
+                            }}
+                            secureTextEntry={newpasswordshow}
+                            placeholderTextColor="#8c8c8c"
+                            placeholder={'Password'}
+                            onChangeText={text => setpassword(text)}
+                            defaultValue={password}
+                          />
+                          <TouchableOpacity
+                            onPress={() => {
+                              setnewpasswordshow(!newpasswordshow);
+                            }}
+                            style={styleSheet.inputIconStyle}>
+                            <Ionicons
+                              color={'#8c8c8c'}
+                              name={newpasswordshow ? 'eye-off' : 'eye'}
+                              size={fontSize.twentytwo}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                        <Text
+                          style={{
+                            ...styleSheet.Text5,
+                            marginTop: scalableheight.two,
+                          }}>
+                          Confirm Password
+                        </Text>
+                        <View style={{width: '100%'}}>
+                          <TextInput
+                            style={{
+                              ...styleSheet.TextInput,
+                              ...styleSheet.shadow,
+                            }}
+                            secureTextEntry={newpasswordshow}
+                            placeholderTextColor="#8c8c8c"
+                            placeholder={'Confirm Password'}
+                            onChangeText={text => Setconfirmpassword(text)}
+                            defaultValue={confirmpassword}
+                          />
+                          <TouchableOpacity
+                            onPress={() => {
+                              setnewpasswordshow(!newpasswordshow);
+                            }}
+                            style={styleSheet.inputIconStyle}>
+                            <Ionicons
+                              color={'#8c8c8c'}
+                              name={newpasswordshow ? 'eye-off' : 'eye'}
+                              size={fontSize.twentytwo}
+                            />
+                          </TouchableOpacity>
+                        </View>
+
+                        <View style={{marginTop: scalableheight.two}}></View>
                         <MYButton
-                          title={'VERIFY'}
-                          onPress={() => {}}
+                          title={'Change Password'}
+                          onPress={() => {
+                            ChangedPasswordHandler();
+                          }}
                           color="#E14E4E"
                           textcolor="white"
-                        />
-
-                        <TouchableOpacity
-                          onPress={() => {
-                            togglescreen(1);
-                          }}>
-                          <Text
-                            style={{
-                              ...styleSheet.Text4,
-                              textAlign: 'center',
-                              marginTop: scalableheight.one,
-                            }}>
-                            RESEND CODE
-                          </Text>
-                        </TouchableOpacity>
-                        <View style={{marginTop: scalableheight.one}}></View>
-                        <CountDown
-                          onFinish={() => settimeractive(false)}
-                          until={120}
-                          size={fontSize.fourteen}
-                          timeToShow={['M', 'S']}
-                          timeLabels={{m: 'Min', s: 'Sec'}}
-                          digitStyle={{backgroundColor: '#E14E4E'}}
-                          digitTxtStyle={{color: 'white'}}
-                          timeLabelStyle={{color: 'white'}}
                         />
                       </Animatable.View>
                     </>,
@@ -728,7 +1259,10 @@ export default function AuthenticationModel(props) {
             elevation: 2,
           }}></View>
       )}
-
+      <Toast
+        ref={toast}
+        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
+      />
       {/* {props.state  &&  (   */}
 
       {/* // )}  */}

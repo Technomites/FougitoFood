@@ -76,7 +76,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
 
   const {
     cartdata,
-    price
+    price,
+    AuthToken
   } = useSelector(
     state => state.userReducer,
   );
@@ -331,7 +332,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
             width: '100%',
           }}>
           <MYButton
-            title={'Login to Place Order'}
+                  title={AuthToken != '' ? 'Place Order' : 'Login to Place Order'}
             onPress={() => {
               setmodalVisible(true);
             }}
