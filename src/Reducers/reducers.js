@@ -11,7 +11,8 @@ import {
   STORE_Cart_DATA,
   Cart_CURRENTPRICE,
   Store_RestrauntId,
-  CleanCartData
+  CleanCartData,
+  CARTDataDelete
 } from '../Actions/actions';
 
 const initialState = {
@@ -34,6 +35,13 @@ function userReducer(state = initialState, action) {
   switch (action.type) {
     
     
+    case CARTDataDelete:
+     
+      return {
+        ...state,
+        cartdata: action.payload,
+      };
+
     case CleanCartData:
      
       return {

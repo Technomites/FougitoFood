@@ -15,6 +15,10 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
+import {
+  filteredcatdata,
+  storecartprice
+} from '../Actions/actions';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {fontSize, scalableheight} from '../Utilities/fonts';
@@ -24,8 +28,10 @@ import ItemDetails from '../Shared/Components/ItemDetails';
 import Addresstile from '../Shared/Components/Addresstile';
 import Bll from '../Shared/Components/Bll';
 import MYButton from '../Shared/Components/MYButton';
-import AuthenticationModel from '../Shared/Components/AuthenticationModel';
 
+import ItemDetailsModel from '../Shared/Components/ItemDetailsModel';
+import AuthenticationModel from '../Shared/Components/AuthenticationModel';
+import { SwipeListView, SwipeRow,  } from 'react-native-swipe-list-view';
 import * as Animatable from 'react-native-animatable';
 import PaymentOptions from '../Shared/Components/PaymentOptions';
 import Animated from 'react-native-reanimated';
@@ -41,6 +47,8 @@ import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 const Checkout = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   const [modalVisible, setmodalVisible] = useState(false);
+  const [itemmodalVisible, setitemmodalVisible] = useState(false);
+  const [itemmodaldata, setitemmodaldata] = useState([]);
   const [number, setnumber] = useState('');
   const [fullname, setfullname] = useState('');
   const [password, setpassword] = useState('');
@@ -66,7 +74,10 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   const input_3 = useRef();
   const input_4 = useRef();
 
-  const {notificationList, notificationCount} = useSelector(
+  const {
+    cartdata,
+    price
+  } = useSelector(
     state => state.userReducer,
   );
 
@@ -96,7 +107,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       icon: 1,
     },
     {
-      type: 'Credit/Debit Card',
+      type: 'COD',
       payment: 'Cash On Delivery',
       selected: false,
       icon: 2,
@@ -113,6 +124,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     //  Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
+
   function selectpaymentmethod(index) {
     console.log('ee' + index);
     let data = [...payment];
@@ -137,10 +149,32 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       }}
     />
   );
-// const [status,Setstatus]= useState();
-//   useEffect(() => {
-//     Setstatus)
-//   }, [useIsDrawerOpen]);
+
+  const renderHiddenItem = ({item, index}) => (
+    <View style={styleSheet.rowBack}>
+   
+      <TouchableOpacity
+        style={[styleSheet.actionButton, styleSheet.deleteBtn]}
+        onPress={() => {
+          let data = [...cartdata]
+         let reducepriced = data[index].completeitemorderprice
+          data.splice(index, 1);
+     
+          dispatch(storecartprice(price - reducepriced))
+          dispatch(filteredcatdata(data))
+
+
+          console.log(data)
+        }}
+      >
+        <Text style={styleSheet.btnText}>Delete</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const onItemOpen = rowKey => {
+    console.log('This row opened', rowKey);
+  };
 
   return (
     <Animated.View
@@ -188,19 +222,53 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
               Price
             </Text>
           </View>
-          {serving.map(item => {
+          <SwipeListView
+          key = {"1"}
+        data={cartdata}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={(data, index) => {
+          return(
+            // <SwipeRow >
+            // {/* {swipeAction} */}
+            <View style={{alignItems: 'center'}}>
+            <ItemDetails
+            qty = {data?.item?.Qty} 
+            title={data?.item?.Name}
+            index={data?.index}
+              price={data?.item?.completeitemorderprice}
+              onPress={() => {
+                setitemmodaldata(data?.item)
+                setitemmodalVisible(true)
+
+              }}
+            />
+          </View>
+          // {/* </SwipeRow> */}
+          )
+        }}
+        renderHiddenItem={renderHiddenItem}
+        // leftOpenValue={0}
+        disableRightSwipe={true}
+        rightOpenValue={-scalableheight.tweleve}
+        previewRowKey={'0'}
+        previewOpenValue={-40}
+        // previewOpenDelay={3000}
+        onRowDidOpen={onItemOpen}
+      />
+          {/* {cartdata.map(item => {
             return (
               <View style={{alignItems: 'center'}}>
                 <ItemDetails
-                  title={'Mexican Enchiladas'}
-                  price={159.4}
+                qty = {item?.Qty} 
+                title={item?.Name}
+                  price={item?.completeitemorderprice}
                   onPress={() => {
                     setmodalVisible(true);
                   }}
                 />
               </View>
             );
-          })}
+          })} */}
           <View style={{height: scalableheight.two}} />
           <Text style={styleSheet.Text1}>Payment Method</Text>
           <View style={{height: scalableheight.one}} />
@@ -277,6 +345,14 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         state={modalVisible}
         togglemodel={() => {
           setmodalVisible(false);
+        }}
+      />
+
+<ItemDetailsModel
+        state={itemmodalVisible}
+        data = {itemmodaldata}
+        togglemodel={() => {
+          setitemmodalVisible(false);
         }}
       />
     </Animated.View>
@@ -419,6 +495,57 @@ const styleSheet = StyleSheet.create({
     borderTopWidth: 1,
     paddingVertical: scalableheight.two,
     paddingHorizontal: scalableheight.one,
+  },
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  list: {
+    color: '#FFF',
+  },
+  btnText: {
+    color: '#FFF',
+    fontSize: fontSize.fifteen,
+
+    fontFamily: 'Inter-SemiBold',
+  },
+  rowFront: {
+    alignItems: 'center',
+    backgroundColor: 'lightcoral',
+    borderBottomColor: 'black',
+    borderBottomWidth: 0.5,
+    justifyContent: 'center',
+    height: 50,
+  },
+  rowBack: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    height: "98%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 5,
+  },
+  actionButton: {
+    alignItems: 'center',
+    bottom: 0,
+    justifyContent: "flex-end",
+    position: 'absolute',
+    top: 0,
+    width: "98%",
+paddingRight: scalableheight.four,
+    marginBottom: scalableheight.one,
+    borderRadius: fontSize.eleven,
+    backgroundColor:"white",
+    flexDirection:"row",
+    marginTop: scalableheight.borderwidth,
+  },
+  closeBtn: {
+    backgroundColor: 'blue',
+    right: 75,
+  },
+  deleteBtn: {
+    backgroundColor:"#E14E4E",
+    right: scalableheight.pointfive,
   },
 });
 export default Checkout;

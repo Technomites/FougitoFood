@@ -327,12 +327,14 @@ found = 1
         }
       }
     } 
+    arr["priceperitem"] = addedprice
     addedprice = addedprice * count
+    arr["completeitemorderprice"] = addedprice
     addedprice = price + addedprice
     dispatch(storecartprice(addedprice))
     dispatch(storecartdata(a))
     console.log("this is the price" + JSON.stringify(addedprice))
-      console.log("this is the data going into the cart" + JSON.stringify(arr))
+    console.log("this is the data going into the cart" + JSON.stringify(arr))
    clearandclose();
     setcartvisible(true);
     }

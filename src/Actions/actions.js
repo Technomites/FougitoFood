@@ -16,6 +16,7 @@ export const STORE_Cart_DATA = 'STORE_Cart_DATA';
 export const Cart_CURRENTPRICE = 'Cart_CURRENTPRICE';
 export const Store_RestrauntId = 'Store_RestrauntId';
 export const CleanCartData = 'CleanCartData';
+export const CARTDataDelete = 'CARTDataDelete';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -30,6 +31,19 @@ var requestOptions = {
 };
 
 
+
+export const filteredcatdata = (data) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: CARTDataDelete,
+        payload: data,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const cleancart = () => {
   try {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -12,24 +12,53 @@ import {
   ImageBackground
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import * as Animatable from 'react-native-animatable';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import { parseWithOptions } from 'date-fns/fp';
+import {
+  filteredcatdata,
+  storecartprice
+} from '../../Actions/actions';
 export default function ItemDetails(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
+const [showcounter, setshowcounter] = useState(false);
+const [animationstate, setanimationstate] = useState(true);
+
+const {
+  cartdata,
+  price
+} = useSelector(
+  state => state.userReducer,
+);
+
+
+useEffect(() => {
+  const delayDebounceFn = setTimeout(() => {
+    console.log("search hit " )
+    setshowcounter(false)
+    setanimationstate(true)
+  
+    // Send Axios request here
+  }, 5000)
+
+  return () => clearTimeout(delayDebounceFn)
+}, [cartdata])
+
 
 
   return (
     
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPress={props.onPress}
+    <View
+      // activeOpacity={1}
+    
       style={{
         ...styleSheet.shadow,
         height: scalableheight.nine,
@@ -44,21 +73,117 @@ const navigation = useNavigation();
  
        
       }}>
+        {showcounter ? 
+            <Animatable.View
+            animation={animationstate ? "pulse" : null}
+            onAnimationEnd={() => {
+              setanimationstate(false);
+              // if (animationtype == 'fadeOutDownBig') {
+              //   setanimationtype('fadeInUpBig');
+  
+              //   props.togglemodel();
+              // }
+            }}
+            easing="ease"
+            //  iterationCount="infinite"
+            iterationCount={1}
+            style={{width:scalableheight.tweleve, height: "70%", position:"absolute", left: scalableheight.eight, backgroundColor:"white", zIndex:1, borderRadius:fontSize.borderradius, flexDirection:"row", borderWidth:0.1, borderColor:"grey"}}
+          >
+      
+<TouchableOpacity 
+
+onPress={() => {
+  console.log("hhrrnr", props.index)
+  let data = [...cartdata]
+
+    data[props.index].Qty =  data[props.index].Qty + 1
+    let previousprice = data[props.index].completeitemorderprice
+    data[props.index].completeitemorderprice =  data[props.index].priceperitem * data[props.index].Qty
+    let newprice = data[props.index].completeitemorderprice
+
+  let incrementedprice = newprice - previousprice
+
+   dispatch(storecartprice(price + incrementedprice))
+    // "Qty": 1,
+    // "completeitemorderprice": 22
+  
+  dispatch(filteredcatdata(data))
+}}
+style={{width:"50%", height:"100%",  justifyContent:"center",alignItems:"center"}}>
+   <FontAwesome5
+                      name="plus-circle"
+                      color={"#E14E4E"}
+                      size={fontSize.twentyeight}
+                      style={{}}
+                    />
+</TouchableOpacity>
+<TouchableOpacity 
+onPress={() => {
+  console.log("hhrrnr", props.index)
+  let data = [...cartdata]
+
+    if( data[props.index].Qty > 1){
+      data[props.index].Qty  =  data[props.index].Qty - 1
+      let previousprice = data[props.index].completeitemorderprice
+      data[props.index].completeitemorderprice =  data[props.index].priceperitem * data[props.index].Qty
+      let newprice = data[props.index].completeitemorderprice
+  
+    let decrementedprice = previousprice - newprice
+  
+     dispatch(storecartprice(price - decrementedprice))
+    }
+ 
+  
+  dispatch(filteredcatdata(data))
+}}
+style={{width:"50%", height:"100%", justifyContent:"center",alignItems:"center"}}>
+   <FontAwesome5
+                      name="minus-circle"
+                      color={"#E14E4E"}
+                      size={fontSize.twentyeight}
+                      style={{}}
+                    />
+</TouchableOpacity>
+</Animatable.View>
+        : null
+}
      <View style={{height:"100%", width: "15%", alignItems:"center", justifyContent:"center"}}>
-<View style={{height: scalableheight.six, width: scalableheight.six,     backgroundColor:'#F9F9F9', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
+<TouchableOpacity
+onPress={() => {{
+  setanimationstate(true)
+  setshowcounter(!showcounter)}}}
+style={{height: scalableheight.six, width: scalableheight.six,     backgroundColor:'#F9F9F9', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
 <Text style={{
             
             fontFamily: 'Inter-Bold',
             fontSize: fontSize.fourteen,
             color:"#111111",
         
-          }}>1</Text>
-</View>
+          }}>{props.qty}</Text>
+</TouchableOpacity>
 
 </View>
-<View style={{height:"100%", width: "55%",justifyContent:"center", padding: scalableheight.two}}>
-<Text style={{
-            
+
+<TouchableOpacity
+activeOpacity={1}
+  onPress={props.onPress}
+style={{overflow:"hidden", height:"100%", width: "55%",justifyContent:"center", padding: scalableheight.one, flexDirection: "row", alignItems: "center",  justifyContent: "flex-start"}}>
+<View style={{      width: "25%", }}>
+<Image
+                    resizeMode="stretch"
+                    style={{
+                      width: scalableheight.six,
+                      height: scalableheight.six,
+                      borderRadius: fontSize.eleven
+                    }}
+                    source={require('../../Resources/images/foods.png')}
+                  />
+                  </View>
+<View style={{marginLeft: scalableheight.one, width:"70%"}}>
+<Text 
+numberOfLines={1}
+style={{
+          
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.twelve,
                 color:"#111111",
@@ -71,8 +196,9 @@ const navigation = useNavigation();
             color:"#E14E4E",
         
           }}>View Details</Text>
+          </View>
             
-</View>
+</TouchableOpacity>
 <View style={{height:"100%", width: "30%",justifyContent:"center", padding: scalableheight.two,}}>
 
               <Text style={{
@@ -86,7 +212,7 @@ const navigation = useNavigation();
    
             
        
-    </TouchableOpacity>
+    </View>
   );
 }
 
