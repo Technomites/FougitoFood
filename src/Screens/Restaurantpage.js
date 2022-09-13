@@ -25,7 +25,8 @@ import {
   updatedmenuselection,
   savemenucategoryoptiondetailsdata,
   storecartdata,
-  storecartprice
+  storecartprice,
+  pickupstate
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -244,8 +245,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     if(restrauntdetails?.RestaurantBranchId != undefined){
       dispatch(getpopularcategoriesbyid(restrauntdetails?.RestaurantBranchId))
       dispatch(getrestrauntmenubyid(restrauntdetails?.RestaurantBranchId))
-      let currentprice = price + restrauntdetails?.VAT +  restrauntdetails?.BranchDeliveryCharges
-      dispatch(storecartprice(currentprice))
+  
       
     }
    
@@ -391,6 +391,10 @@ found = 1
     hideNavigationBar();
   }, [modalVisible]);
 
+  useEffect(() => {
+   dispatch(pickupstate(isEnabled))
+  }, [isEnabled]);
+  
   useEffect(() => {
     if (lat != null && long != null) {
       Geocoder.from(lat, long)

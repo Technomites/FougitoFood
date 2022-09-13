@@ -17,7 +17,12 @@ import {
   SignUP_User,
   ChangedPasswordMessage,
   OTP_Verify,
-  Reset_Password
+  Reset_Password,
+  Restraunt_Distance,
+  StoreToken,
+  RESTRAUNTBASIC,
+  PICKUPState
+
 } from '../Actions/actions';
 
 const initialState = {
@@ -41,12 +46,46 @@ const initialState = {
   PasswordMessage: '',
   ErrorResultMessage: '',
   OtpVerificationStatus: '',
+  restrauntdistance: 0,
+  restrauntbasicdata: [],
+  pickuporder: false
 
 };
 
 function userReducer(state = initialState, action) {
   
   switch (action.type) {
+    
+    
+    case PICKUPState:
+      return {
+        ...state,
+        pickuporder: action.payload,
+  
+      };
+
+    case RESTRAUNTBASIC:
+      return {
+        ...state,
+        restrauntbasicdata: action.payload,
+  
+      };
+
+    case StoreToken:
+      return {
+        ...state,
+        AuthToken: action.payload,
+  
+      };
+
+    case Restraunt_Distance:
+      return {
+        ...state,
+        restrauntdistance: action.payload,
+  
+      };
+
+
     case Login_User:
       return {
         ...state,

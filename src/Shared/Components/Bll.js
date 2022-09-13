@@ -29,8 +29,8 @@ const navigation = useNavigation();
     
   
     <View style={styleSheet.Container}>
-    <Text style={styleSheet.Text3}>Sub Total</Text>
-    <Text style={styleSheet.Text3}>AED 209.00</Text>
+    <Text style={styleSheet.Text3}>{props.label}</Text>
+    <Text style={styleSheet.Text3}>AED {props.price}</Text>
     </View>
   );
 }

@@ -89,7 +89,7 @@ export default function AuthenticationModel(props) {
     MessagePasswordStatus,
   } = useSelector(state => state.userReducer);
 
-  console.log(PasswordMessage, 'AuthTokenAuthToken Mubashir ');
+
 
   useEffect(() => {
     console.log(PayLoadLoginStatus, 'AuthTokenAuthToken');
