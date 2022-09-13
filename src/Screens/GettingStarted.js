@@ -72,9 +72,9 @@ const GettingStarted = props => {
     // StatusBar.setBarStyle('light-content');
   }, []);
 
-  // useEffect(() => {
-  //   gettoken()
-  // }, []);
+  useEffect(() => {
+    gettoken()
+  }, []);
 
   async function gettoken() {
     const value = await AsyncStorage.getItem('AccessToken');
