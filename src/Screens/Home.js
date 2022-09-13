@@ -36,7 +36,9 @@ import {
   getallrestrauntsbyid,
   storecartprice,
   storerestrauntid,
-  cleancart
+  cleancart,
+  storedistance,
+  storerestrauntbasicdata
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -165,7 +167,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const {
     newNotificationCount,
     allrestraunts,
-    currentRestrauntid
+    currentRestrauntid,
+    
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
@@ -755,6 +758,9 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         reviews={item?.AvgRating + " (" + item?.RatingCount + " reviews)"}
         time={item?.OpeningTime + " - " + item?.ClosingTime}
         onPress={() =>{
+          
+          dispatch(storerestrauntbasicdata(item))
+          dispatch(storedistance(item?.Distance))
           if(currentRestrauntid != item?.Id){
             dispatch(storecartprice(0))
 dispatch(cleancart())
@@ -804,6 +810,8 @@ dispatch(cleancart())
         reviews={item?.AvgRating + " (" + item?.RatingCount + " reviews)"}
         time={item?.OpeningTime + " - " + item?.ClosingTime}
         onPress={() =>{
+          dispatch(storerestrauntbasicdata(item))
+          dispatch(storedistance(item?.Distance))
           if(currentRestrauntid != item?.Id){
             dispatch(storecartprice(0))
             dispatch(cleancart())

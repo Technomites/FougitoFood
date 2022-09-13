@@ -27,6 +27,11 @@ export const OTP_Verify = 'OTP_Verify';
 export const OTP_Verify2 = 'OTP_Verify2';
 export const Reset_Password = 'Reset_Password';
 export const couponsCart = 'couponsCart';
+export const Restraunt_Distance = 'Restraunt_Distance';
+export const StoreToken = 'StoreToken';
+export const RESTRAUNTBASIC = 'RESTRAUNTBASIC';
+export const PICKUPState = 'PICKUPState';
+export const CreateOrder = 'CreateOrder';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -38,6 +43,95 @@ const header1 = {
 var requestOptions = {
   method: 'GET',
   redirect: 'follow',
+};
+
+
+
+
+export const createorder = (data) => {
+  try {
+    console.log('placeorder');
+    return async dispatch => {
+    
+      const result = await fetch(API_URl + 'Customer/Restaurant/PlaceOrder', {
+        method: 'POST',
+        headers: {
+          // Authorization: 'Bearer ' + JSON.parse(token),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          data
+
+        ),
+      });
+
+      const json = await result.json();
+      console.log('postserviceratings' + JSON.stringify(json));
+
+      if (json.status === "success"){
+        dispatch({
+          type: CreateOrder,
+          payload: "success",
+        });
+      }
+     
+      
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const pickupstate = (bool) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: PICKUPState,
+        payload: bool,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const storerestrauntbasicdata = (data) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: RESTRAUNTBASIC,
+        payload: data,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const storetoken = (token) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: StoreToken,
+        payload: token,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const storedistance = (distance) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: Restraunt_Distance,
+        payload: distance,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const Signup = (number, fullname, email, password) => {

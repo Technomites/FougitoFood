@@ -12,16 +12,23 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+
 import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
+import AsyncStorage from '@react-native-community/async-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 // import AuthButton from '../Shared/Components/AuthButton';
 import * as Animatable from 'react-native-animatable';
 import MYButton from '../Shared/Components/MYButton';
+import {useSelector, useDispatch} from 'react-redux';
+import renderIf from 'render-if';
+// import Modal from "react-native-modal";
+import {
+  storetoken
+} from '../Actions/actions';
 
 const GettingStarted = props => {
   const {Lang} = useSelector(state => state.userReducer);
@@ -58,11 +65,25 @@ const GettingStarted = props => {
     },
   ]);
 
+  const dispatch = useDispatch()
   useEffect(() => {
     StatusBar.setHidden(false);
     //StatusBar.setBackgroundColor('transparent');
     // StatusBar.setBarStyle('light-content');
   }, []);
+
+  useEffect(() => {
+    gettoken()
+  }, []);
+
+  async function gettoken() {
+    const value = await AsyncStorage.getItem('AccessToken');
+   console.log(value)
+   if (value != undefined && value != ""){
+    dispatch(storetoken(value))
+   }
+  }
+  
   return (
     <ImageBackground
       resizeMode="cover"
