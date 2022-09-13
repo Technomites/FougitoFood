@@ -2,6 +2,7 @@ import qs from 'qs';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNFetchBlob from 'rn-fetch-blob';
 import {Platform} from 'react-native';
+import Coupons from '../Screens/Coupons';
 
 // export const GetBlogsHome = 'GetBlogsHome';
 export const set_IconFocus = 'set_IconFocus';
@@ -25,6 +26,7 @@ export const ChangedPasswordMessage = 'ChangedPasswordMessage';
 export const OTP_Verify = 'OTP_Verify';
 export const OTP_Verify2 = 'OTP_Verify2';
 export const Reset_Password = 'Reset_Password';
+export const couponsCart = 'couponsCart';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -609,6 +611,50 @@ export const seticonfocus = icon => {
           booking: 'false',
           setting: 'true',
         });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const MyCoupons = AuthToken => {
+  console.log(AuthToken, 'MyCouponsMyCouponsMyCouponsMyCoupons');
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${AuthToken} `);
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(
+        API_URl + `Customer/Restaurant/${0}/Coupon`,
+        requestOptions,
+      );
+      json = await result.json();
+      console.log(json, 'LOGIN LOGIN LOGIN');
+
+      if (json.Status == 'Success') {
+        console.log(json?.Result);
+        dispatch({
+          type: couponsCart,
+          payloadcoupon: json?.Result,
+        });
+
+        console.log('Success');
+      } else if (json?.Status == 'Error') {
+        console.log(json?.Message, 'EROORRR');
+        // dispatch({
+        //   type: Login_User,
+        //   payload: '',
+        //   payloadtoken: '',
+        //   payloadCustomer: '',
+        //   LoadLoginStatus: json?.Status,
+        // });
       }
     };
   } catch (error) {

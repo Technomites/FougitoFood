@@ -18,7 +18,7 @@ import {
   Platform,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {getcoupons} from '../Actions/actions';
+import {MyCoupons} from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
@@ -89,29 +89,41 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
       code: 'FLAWQDVHH',
     },
   ]);
+
   const dispatch = useDispatch();
-  const {Lang, coupons} = useSelector(state => state.userReducer);
+  const {AuthToken, CouponCartDetails} = useSelector(
+    state => state.userReducer,
+  );
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
-    dispatch(getcoupons());
-  }, []);
+    dispatch(MyCoupons(AuthToken));
+    console.log('MyCouponsMyCouponsMyCouponsMyCouponsMyCoupons');
+  }, [AuthToken]);
+
+  useEffect(() => {
+    console.log(
+      CouponCartDetails,
+      'MyCouponsMyCouponsMyCouponsMyCouponsMyCoupons',
+    );
+  }, [CouponCartDetails]);
 
   function copied() {
     showToast('Copied to clipboard', {
       duration: 500,
     });
   }
-  function onRefresh() {
-    NetInfo.fetch().then(state => {
-      if (state.isConnected == true && state.isInternetReachable == true) {
-        dispatch(getcoupons());
-      } else {
-        showToast('No Internet Connection', {
-          duration: 500,
-        });
-      }
-    });
-  }
+  // function onRefresh() {
+  //   NetInfo.fetch().then(state => {
+  //     if (state.isConnected == true && state.isInternetReachable == true) {
+  //       dispatch(MyCoupons(AuthToken));
+  //     } else {
+  //       showToast('No Internet Connection', {
+  //         duration: 500,
+  //       });
+  //     }
+  //   });
+  // }
+
   // React.useEffect(() => {
   //   const unsubscribe = navigation.addListener('focus', () => {
   //     StatusBar.setBarStyle('dark-content');
@@ -138,39 +150,53 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
           barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         /> */}
         <PlainHeader title={'My Coupons'} />
-
-        <FlatList
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          keyExtractor={(item, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            alignSelf: 'center',
-            width: '100%',
-            paddingBottom: scalableheight.two,
-          }}
-          data={Bookingdata}
-          renderItem={({item}) => {
-            return (
-              <View
-                style={{
-                  alignItems: 'center',
-                  paddingHorizontal: scalableheight.two,
-                }}>
-                <Couponscomponent
-                  sale={'40% OFF'}
-                  title={'EidSpecial40'}
-                  minorder={'AED 100'}
-                  daysleft={'3 days left'}
-                  discountprice={item.dicountAmount}
-                />
-              </View>
-            );
-          }}
-          // onEndReached={() => LoadVRTourPagination()}
-          // onEndReachedThreshold={0.1}
-        />
+        {CouponCartDetails.length == 0 ? (
+          <View
+            style={{
+              // justifyContent: 'center',
+              // alignItems: 'center',
+              alignSelf: 'center',
+              marginVertical: scalableheight.fourty,
+            }}>
+            <Text style={{fontSize: fontSize.fifteen, color: '#000'}}>
+              NO DATA FOUND
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            // refreshControl={
+            //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            // }
+            keyExtractor={(item, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              alignSelf: 'center',
+              width: '100%',
+              paddingBottom: scalableheight.two,
+            }}
+            data={CouponCartDetails}
+            renderItem={({item}) => {
+              return (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    paddingHorizontal: scalableheight.two,
+                  }}>
+                  <Couponscomponent
+                    sale={item.DiscountAmount + ' %'}
+                    title={item.Name}
+                    // minorder={'AED 100'}
+                    daysleft={item.DaysLeft + ' days left'}
+                    discountprice={item.dicountAmount}
+                    tc={item.TermsAndConditions}
+                  />
+                </View>
+              );
+            }}
+            // onEndReached={() => LoadVRTourPagination()}
+            // onEndReachedThreshold={0.1}
+          />
+        )}
       </View>
 
       <GToastContainer paddingBottom={100} style={{height: 50, width: 60}} />

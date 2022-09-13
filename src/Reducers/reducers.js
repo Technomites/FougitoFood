@@ -20,6 +20,7 @@ import {
   OTP_Verify,
   OTP_Verify2,
   Reset_Password,
+  couponsCart,
 } from '../Actions/actions';
 
 const initialState = {
@@ -43,6 +44,7 @@ const initialState = {
   PasswordMessage: '',
   ErrorResultMessage: '',
   OtpVerificationStatus: '',
+  CouponCartDetails: [],
 };
 
 function userReducer(state = initialState, action) {
@@ -179,6 +181,11 @@ function userReducer(state = initialState, action) {
         HomeIcon: action.home,
         BookingIcon: action.booking,
         SettingIcon: action.setting,
+      };
+    case couponsCart:
+      return {
+        ...state,
+        CouponCartDetails: action.payloadcoupon,
       };
 
     default:

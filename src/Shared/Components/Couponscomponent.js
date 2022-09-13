@@ -78,14 +78,14 @@ export default function Couponscomponent(props) {
             }}>
             {props.title}
           </Text>
-          <Text
+          {/* <Text
             style={{
               fontFamily: 'Inter-Medium',
               fontSize: fontSize.twelve,
               color: '#636363',
             }}>
             {'Min Order: '} {props.minorder}
-          </Text>
+          </Text> */}
         </View>
         <Text
           style={{
@@ -99,18 +99,18 @@ export default function Couponscomponent(props) {
           {props.daysleft}
         </Text>
       </View>
-     
+
       <View style={{height: '35%', width: '100%'}}>
-      <View
+        <View
           style={{
             borderTopWidth: 1,
             width: '90%',
             borderColor: '#707070',
             alignSelf: 'center',
-           paddingVertical:scalableheight.one,
-           position:"absolute",
-           top: scalableheight.pointfive,
-           opacity: 0.6
+            paddingVertical: scalableheight.one,
+            position: 'absolute',
+            top: scalableheight.pointfive,
+            opacity: 0.6,
           }}></View>
         <View style={{width: '100%', padding: scalableheight.two}}>
           <Text
@@ -127,11 +127,10 @@ export default function Couponscomponent(props) {
               fontSize: fontSize.ten,
               color: '#636363',
             }}>
-            Place an order on Eid and Get AED10 OFF in your order.
+            {props.tc}
           </Text>
         </View>
       </View>
-
     </View>
   );
 }
@@ -173,9 +172,9 @@ const styleSheet = StyleSheet.create({
   },
   shadow: {
     shadowColor: '#470000',
-  shadowOffset: {width: 0, height: 1},
-  shadowOpacity: 0.2,
-  elevation: 2,
-  // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 2,
+    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
 });
