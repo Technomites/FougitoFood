@@ -1,5 +1,4 @@
 import {
-  
   set_IconFocus,
   GET_allRestraunts,
   GET_allRestrauntsUpdates,
@@ -14,21 +13,24 @@ import {
   CleanCartData,
   CARTDataDelete,
   Login_User,
+  Login_User2,
   SignUP_User,
+  SignUP_User2,
   ChangedPasswordMessage,
   OTP_Verify,
   Reset_Password,
   Restraunt_Distance,
   StoreToken,
   RESTRAUNTBASIC,
-  PICKUPState
-
+  PICKUPState,
+  OTP_Verify2,
+  Reset_Password,
 } from '../Actions/actions';
 
 const initialState = {
-  HomeIcon: "false",
-  BookingIcon: "false",
-  SettingIcon: "false",
+  HomeIcon: 'false',
+  BookingIcon: 'false',
+  SettingIcon: 'false',
   allrestraunts: [],
   restrauntdetails: [],
   popularcategories: [],
@@ -53,7 +55,6 @@ const initialState = {
 };
 
 function userReducer(state = initialState, action) {
-  
   switch (action.type) {
     
     
@@ -94,12 +95,25 @@ function userReducer(state = initialState, action) {
         LoginCustomer: action.payloadCustomer,
         PayLoadLoginStatus: action.LoadLoginStatus,
       };
+    case Login_User2:
+      return {
+        ...state,
+        PayLoadLoginStatus: action.LoadLoginStatus,
+      };
 
     case SignUP_User:
       return {
         ...state,
         SignupRandomid: action.SignUpPayLoad,
+        signupStatus: action.SignUpstatus,
+        signupmessage: action.SignUpMessage,
         SuccessMessageForgetpassword: action.successstautus,
+      };
+
+    case SignUP_User2:
+      return {
+        ...state,
+        signupStatus: action.SignUpstatus,
       };
 
     case ChangedPasswordMessage:
@@ -114,107 +128,99 @@ function userReducer(state = initialState, action) {
         OtpVerificationStatus: action.payloadVerify,
       };
 
+    case OTP_Verify2:
+      return {
+        ...state,
+        OtpVerificationStatus: action.payloadVerify,
+      };
+
     case Reset_Password:
       return {
         ...state,
         Reset_PasswordStatus: action.newPassword,
-        MessagePasswordStatus:action.Message
+        MessagePasswordStatus: action.Message,
       };
-    
+
     case CARTDataDelete:
-     
       return {
         ...state,
         cartdata: action.payload,
       };
 
     case CleanCartData:
-     
       return {
         ...state,
         cartdata: action.payload,
       };
 
     case Store_RestrauntId:
-     
       return {
         ...state,
         currentRestrauntid: action.payload,
       };
 
     case Cart_CURRENTPRICE:
-     
       return {
         ...state,
         price: action.payload,
       };
 
     case STORE_Cart_DATA:
-     
       return {
         ...state,
-        cartdata:  [...state.cartdata, ...action.payload],
+        cartdata: [...state.cartdata, ...action.payload],
       };
-    
+
     case Menu_OptionDetails:
-     
       return {
         ...state,
         retaurantmenucategorydataoption: action.payload,
       };
 
     case Menu_Selection_Updated:
-     
       return {
         ...state,
         restrauntmenu: action.payload,
       };
 
     case GET_MenuBYID:
-     
       return {
         ...state,
         restrauntmenu: action.payload,
       };
 
     case GET_PopularCategoriesBYID:
-     
       return {
         ...state,
         popularcategories: action.payload,
       };
 
     case GET_allRestrauntsByID:
-     
       return {
         ...state,
         restrauntdetails: action.payload,
       };
 
     case GET_allRestrauntsUpdates:
-     
       return {
         ...state,
         allrestraunts: action.payload,
       };
 
     case GET_allRestraunts:
-     
       return {
         ...state,
         allrestraunts: action.payload,
       };
-      
+
     case set_IconFocus:
       return {
         ...state,
         HomeIcon: action.home,
         BookingIcon: action.booking,
         SettingIcon: action.setting,
-     
       };
 
-  
     default:
       return state;
   }
