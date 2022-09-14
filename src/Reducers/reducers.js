@@ -24,8 +24,9 @@ import {
   RESTRAUNTBASIC,
   PICKUPState,
   OTP_Verify2,
-  Reset_Password,
   couponsCart,
+  VerifyCoupon,
+  VerifyCouponClear
 } from '../Actions/actions';
 
 const initialState = {
@@ -52,14 +53,33 @@ const initialState = {
   CouponCartDetails: [],
   restrauntdistance: 0,
   restrauntbasicdata: [],
-  pickuporder: false
+  pickuporder: false,
+  couponresponsestatus: "",
+  couponresponsemessage: "",
 
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
     
-    
+
+   
+    case VerifyCouponClear:
+      return {
+        ...state,
+        couponresponsestatus: action.payload,
+        couponresponsemessage: action.payload,
+  
+      };
+
+    case VerifyCoupon:
+      return {
+        ...state,
+        couponresponsestatus: action.payloadstatus,
+        couponresponsemessage: action.payloadmessage,
+  
+      };
+
     case PICKUPState:
       return {
         ...state,

@@ -13,14 +13,17 @@ import {
   ScrollView,
   StatusBar,
   Platform,
-  PermissionsAndroid
+  PermissionsAndroid,
+  Keyboard
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
 import {
   filteredcatdata,
   storecartprice,
-  createorder
+  createorder,
+  verifycoupon,
+  clearcouponresponse
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -68,7 +71,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   const [signupvisible, setsignupvisible] = useState(false);
   const [otpvisible, setotpvisible] = useState(false);
   const [timeractive, settimeractive] = useState(false);
-
+  const [couponvalue, setcouponvalue] = useState("");
   const [forgetpasswordvisible, setforgetpasswordvisible] = useState(false);
   const [animationstate, setanimationstate] = useState(true);
   const [codeOneActive, setCodeOneActive] = useState(false);
@@ -85,12 +88,13 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   const [pinLongitude, SetPinLongitude] = useState(0);
   const [hidemarker, sethidemarker] = useState(false);
   const [pinlocation, setpinlocation] = useState('');
-
+  const [couponloader, setcouponloader] = useState(false);
 
   const [firstname, setfirstname] = useState("");
   const [lastname, setlastname] = useState("");
   const [email, setemail] = useState("");
   const [phonenumber, setphonenumber] = useState("");
+  const [couponvisible, setcouponvisible] = useState(false);
 
   const [loader1, setloader1] = useState(false);
   const [loader2, setloader2] = useState(false);
@@ -109,7 +113,11 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     restrauntdistance,
     currentRestrauntid,
     restrauntbasicdata,
-    pickuporder
+    pickuporder,
+    couponresponsestatus,
+    couponresponsemessage
+
+
   } = useSelector(
     state => state.userReducer,
   );
@@ -278,7 +286,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       payment: 'Pay Online',
       selected: false,
       icon: 1,
-      name: "Card(Online)"
+      name: "Card"
     },
     {
       type: 'COD',
@@ -301,6 +309,22 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     //  Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
+
+  useEffect(() => {
+   if(couponresponsestatus != "" && couponresponsemessage != ""){
+    setcouponloader(false)
+    toast.current.show(couponresponsemessage, {
+      type: 'normal',
+      placement: 'bottom',
+      duration: 4000,
+      offset: 10,
+      animationType: 'slide-in',
+      zIndex: 2,
+    });
+
+    dispatch(clearcouponresponse())
+   }
+  }, [couponresponsestatus, couponresponsemessage]);
 
   function placeorder(){
  
@@ -439,7 +463,8 @@ order.push({
       "longitude": pinLongitude,
       "noteToRider": notetorider,
       "street": buildingdetails,
-      "type": pickuporder ? "Pickup" : "Delivery",
+      "type": "",
+       "DeliveryType": pickuporder ? "Pickup" : "Delivery",
       "orderItems": order
   }
 
@@ -499,7 +524,37 @@ order.push({
   };
 
 
+function applycoupon(){
+  Keyboard.dismiss()
+ if(couponvalue == ""){
+  toast.current.show('Please enter a coupon code', {
+    type: 'normal',
+    placement: 'bottom',
+    duration: 4000,
+    offset: 10,
+    animationType: 'slide-in',
+    zIndex: 2,
+  });
+ }
+//  else if(phonenumber == ""){
+//   toast.current.show('Please enter your phone number before applying for a coupon discount', {
+//     type: 'normal',
+//     placement: 'bottom',
+//     duration: 4000,
+//     offset: 10,
+//     animationType: 'slide-in',
+//     zIndex: 2,
+//   });
+//  }
+ else{
+  setcouponloader(true)
+  dispatch(verifycoupon(couponvalue, "971040219373"))
+ }
 
+
+
+ 
+}
   /////////guest/////
   useEffect(() => {
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
@@ -1082,9 +1137,63 @@ numberOfLines={2}
             <Text style={styleSheet.Text3}>AED {((restrauntdetails?.DeliveryCharges + price) * restrauntdetails?.VAT)/ 100}</Text>
           </View>
           <View style={{height: scalableheight.one}} />
+
+          {couponvisible == false ?
+          <TouchableOpacity onPress={() => {setcouponvisible(true) }}>
           <Text style={{...styleSheet.Text4, textAlign: 'right'}}>
             I HAVE A COUPON
           </Text>
+          </TouchableOpacity>
+          :
+          <View style={{  marginVertical: scalableheight.two,}}>
+       
+          <TextInput
+                      editable={couponloader ? false : true}
+          value={couponvalue}
+          onChangeText={text => setcouponvalue(text)}
+          placeholder={'Enter Code'}
+          style={{
+            ...styleSheet.shadow,
+            width: '99%',
+            height: scalableheight.six,
+            fontSize: fontSize.fifteen,
+            backgroundColor: '#F9F9F9',
+            alignSelf: 'center',
+            borderRadius: fontSize.borderradiusmedium,
+            paddingHorizontal: '5%',
+            marginHorizontal: '0.4%',
+          }}
+        />
+        {couponloader ? 
+ <View
+ style={{
+  height: scalableheight.six,
+  width: scalableheight.ten,
+   justifyContent: 'center',
+   alignItems: "center",
+   borderRadius: fontSize.borderradiusmedium,
+ 
+   position: "absolute", right: 2
+ }}>
+ <ActivityIndicator size={'small'} color="#E14E4E" />
+</View>
+
+:
+             <TouchableOpacity 
+             onPress={() => {applycoupon()}}
+             style={{
+               height: scalableheight.six,
+              width: scalableheight.ten,
+               justifyContent: 'center',
+               alignItems: "center",
+               borderRadius: fontSize.borderradiusmedium,
+             
+              backgroundColor:"#E14E4E", position: "absolute", right: 2}}>
+                <Text style={{...styleSheet.Text4, color:"white"}}>Apply</Text>
+              </TouchableOpacity>
+}
+        </View>
+          }
           <View
             style={{
               borderTopColor: 'rgba(211,211,211, 0.5)',
@@ -1093,7 +1202,7 @@ numberOfLines={2}
             }}></View>
           <Bll label={'Total'} price={price + (restrauntdetails?.RestaurantDeliveryType == "Fixed" ? restrauntdetails?.DeliveryCharges : restrauntdetails?.DeliveryCharges * restrauntdistance) + ((restrauntdetails?.DeliveryCharges + price) * restrauntdetails?.VAT)/ 100 } />
           <View style={{height: scalableheight.two}} />
-         {AuthToken == '' &&
+         {AuthToken == '' && (
           loader1 == true ? (
             <View
               style={{
@@ -1116,7 +1225,7 @@ numberOfLines={2}
             }}
             color="black"
             textcolor="white"
-          />)
+          />))
 }
 
 {loader2 == true ? (

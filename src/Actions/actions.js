@@ -32,6 +32,8 @@ export const StoreToken = 'StoreToken';
 export const RESTRAUNTBASIC = 'RESTRAUNTBASIC';
 export const PICKUPState = 'PICKUPState';
 export const CreateOrder = 'CreateOrder';
+export const VerifyCoupon = 'VerifyCoupon';
+export const VerifyCouponClear = 'VerifyCouponClear';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -46,7 +48,51 @@ var requestOptions = {
 };
 
 
+export const clearcouponresponse = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: VerifyCouponClear,
+        payload: "",
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
+export const verifycoupon = (code, phonenumber) => {
+  try {
+    console.log('verifycoupon');
+    return async dispatch => {
+    
+      const result = await fetch(API_URl + 'Customer/Restaurant/ValidateCoupon', {
+        method: 'POST',
+        headers: {
+          "Origin" : "https://restaurant.fougito.com",
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+           couponCode: code,
+           phoneNumber: phonenumber
+        }),
+      });
+
+      const json = await result.json();
+      console.log('verifycoupon' + JSON.stringify(json));
+
+     
+        dispatch({
+          type: VerifyCoupon,
+          payloadstatus : json.Status,
+          payloadmessage: json.Message,
+        });
+    
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const createorder = (data) => {
   try {

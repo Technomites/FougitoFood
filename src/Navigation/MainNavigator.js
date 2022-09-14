@@ -100,7 +100,7 @@ const TransitionScreenOptions = {
 };
 
 const CustomDrawerStyle = ({navigation}) => {
-  const {Logout, Lang, ProfileInfo, newNotificationCount, profileimage} =
+  const {Logout, Lang, ProfileInfo, newNotificationCount, profileimage, AuthToken} =
     useSelector(state => state.userReducer);
 
   let options = [
@@ -606,7 +606,7 @@ const CustomDrawerStyle = ({navigation}) => {
             })}
           </View>
 
-          {renderIf(ProfileInfo != '')(
+          {renderIf(AuthToken != '')(
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => setModalVisible(true)}
@@ -646,7 +646,7 @@ const CustomDrawerStyle = ({navigation}) => {
               </Text>
             </TouchableOpacity>,
           )}
-          {renderIf(ProfileInfo == '')(
+          {renderIf(AuthToken == '')(
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
@@ -685,7 +685,7 @@ const CustomDrawerStyle = ({navigation}) => {
                   fontSize: fontSize.fourteen,
                   marginLeft: scalableheight.two,
                 }}>
-                {'Logout'}
+                {'Log in'}
               </Text>
             </TouchableOpacity>,
           )}
