@@ -13,22 +13,18 @@ import {
   ScrollView,
   StatusBar,
   Platform,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
-import {
-  filteredcatdata,
-  storecartprice,
-  createorder
-} from '../Actions/actions';
+import {filteredcatdata, storecartprice, createorder} from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Validations from "../Validations/Validations"
+import Validations from '../Validations/Validations';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -40,7 +36,7 @@ import MYButton from '../Shared/Components/MYButton';
 
 import ItemDetailsModel from '../Shared/Components/ItemDetailsModel';
 import AuthenticationModel from '../Shared/Components/AuthenticationModel';
-import { SwipeListView, SwipeRow,  } from 'react-native-swipe-list-view';
+import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 import * as Animatable from 'react-native-animatable';
 import PaymentOptions from '../Shared/Components/PaymentOptions';
 import Animated from 'react-native-reanimated';
@@ -86,11 +82,10 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   const [hidemarker, sethidemarker] = useState(false);
   const [pinlocation, setpinlocation] = useState('');
 
-
-  const [firstname, setfirstname] = useState("");
-  const [lastname, setlastname] = useState("");
-  const [email, setemail] = useState("");
-  const [phonenumber, setphonenumber] = useState("");
+  const [firstname, setfirstname] = useState('');
+  const [lastname, setlastname] = useState('');
+  const [email, setemail] = useState('');
+  const [phonenumber, setphonenumber] = useState('');
 
   const [loader1, setloader1] = useState(false);
   const [loader2, setloader2] = useState(false);
@@ -109,13 +104,11 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     restrauntdistance,
     currentRestrauntid,
     restrauntbasicdata,
-    pickuporder
-  } = useSelector(
-    state => state.userReducer,
-  );
+    pickuporder,
+  } = useSelector(state => state.userReducer);
   const refMap = useRef(null);
   const toast = useRef();
- 
+
   const customStyle = [
     {
       elementType: 'geometry',
@@ -278,14 +271,14 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       payment: 'Pay Online',
       selected: false,
       icon: 1,
-      name: "Card(Online)"
+      name: 'Card(Online)',
     },
     {
       type: 'COD',
       payment: 'Cash On Delivery',
       selected: false,
       icon: 2,
-      name: "Cash"
+      name: 'Cash',
     },
   ]);
 
@@ -302,9 +295,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     return unsubscribe;
   }, [navigation]);
 
-  function placeorder(){
- 
-    if(pinlocation == ""){
+  function placeorder() {
+    if (pinlocation == '') {
       toast.current.show('Please select a location', {
         type: 'normal',
         placement: 'bottom',
@@ -313,8 +305,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    }
-    else if(buildingdetails == ""){
+    } else if (buildingdetails == '') {
       toast.current.show('Please Building & Street details', {
         type: 'normal',
         placement: 'bottom',
@@ -323,7 +314,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    }else if(plotnodetails == ""){
+    } else if (plotnodetails == '') {
       toast.current.show('Please Flat no & Floor details', {
         type: 'normal',
         placement: 'bottom',
@@ -332,7 +323,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    }else if(firstname == ""){
+    } else if (firstname == '') {
       toast.current.show('Please fill out your first name', {
         type: 'normal',
         placement: 'bottom',
@@ -341,7 +332,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    }else if(lastname == ""){
+    } else if (lastname == '') {
       toast.current.show('Please fill out your last name', {
         type: 'normal',
         placement: 'bottom',
@@ -350,7 +341,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    }else if(email == ""){
+    } else if (email == '') {
       toast.current.show('Please enter your email', {
         type: 'normal',
         placement: 'bottom',
@@ -359,7 +350,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    }else if(!Validations.validateEmail(email)){
+    } else if (!Validations.validateEmail(email)) {
       toast.current.show('You have entered an invalid email', {
         type: 'normal',
         placement: 'bottom',
@@ -368,18 +359,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } 
-    else if(phonenumber == ""){
-        toast.current.show('Please enter your phone number', {
-          type: 'normal',
-          placement: 'bottom',
-          duration: 4000,
-          offset: 10,
-          animationType: 'slide-in',
-          zIndex: 2,
-        });
-      }else if(!payment.find(data => data?.selected === true) ){
-      toast.current.show("Please select a payment method", {
+    } else if (phonenumber == '') {
+      toast.current.show('Please enter your phone number', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -387,66 +368,73 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-      
-      
-    }
-    else{
+    } else if (!payment.find(data => data?.selected === true)) {
+      toast.current.show('Please select a payment method', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+    } else {
       // setloader1(true)
-     
-      console.log(pickuporder)
-let order = []
-for (const key in cartdata){
-  let options = []
-  for(const index in cartdata[key]?.MenuItemOptions){
- let menuItemOptionValueId = null
-for (const item in cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues){
-if(cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues[item]?.selected == true){
-  menuItemOptionValueId = cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues[item]?.Id
-}
 
-   
-  }
-  options.push({
-    menuItemOptionId: cartdata[key]?.MenuItemOptions[index]?.Id,
-    menuItemOptionValueId: menuItemOptionValueId
-  })
+      console.log(pickuporder);
+      let order = [];
+      for (const key in cartdata) {
+        let options = [];
+        for (const index in cartdata[key]?.MenuItemOptions) {
+          let menuItemOptionValueId = null;
+          for (const item in cartdata[key]?.MenuItemOptions[index]
+            ?.MenuItemOptionValues) {
+            if (
+              cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues[item]
+                ?.selected == true
+            ) {
+              menuItemOptionValueId =
+                cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues[
+                  item
+                ]?.Id;
+            }
+          }
+          options.push({
+            menuItemOptionId: cartdata[key]?.MenuItemOptions[index]?.Id,
+            menuItemOptionValueId: menuItemOptionValueId,
+          });
+        }
+        order.push({
+          menuItemId: cartdata[key]?.Id,
+          quantity: cartdata[key]?.Qty,
+          customerNote: cartdata[key]?.SpecialInstructios,
+          orderItemOptions: options,
+        });
+        // != undefined ?  cartdata[key].MenuItemOptions[index].MenuItemOptionValues[item]?.find(data => data.selected == true).Id : 0
+      }
 
-  
-}
-order.push({
-  menuItemId: cartdata[key]?.Id,
-  quantity: cartdata[key]?.Qty,
-  customerNote: cartdata[key]?.SpecialInstructios,
-  orderItemOptions: options
-})
-// != undefined ?  cartdata[key].MenuItemOptions[index].MenuItemOptionValues[item]?.find(data => data.selected == true).Id : 0
-    
+      console.log('this is the order' + JSON.stringify(order));
+      let data = {
+        restaurantBranchId: restrauntbasicdata.Id,
+        discountPercentage: 0, // to be decided
+        discountAmount: 0, // to be decided
+        couponCode: '', // to be decided
+        paymentMethod: payment.find(data => data?.selected === true).name, //Cash, Card(Online)
+        address: pinlocation,
+        customerName: firstname + ' ' + lastname,
+        customerContact: phonenumber,
+        customerEmail: email, //"mailto:customer@fougito.com"
+        floor: plotnodetails,
+        latitude: pinlatitude,
+        longitude: pinLongitude,
+        noteToRider: notetorider,
+        street: buildingdetails,
+        type: pickuporder ? 'Pickup' : 'Delivery',
+        orderItems: order,
+      };
+
+      dispatch(createorder(data));
     }
-
-    console.log("this is the order" + JSON.stringify(order))
-    let data = {
-      "restaurantBranchId": restrauntbasicdata.Id,
-      "discountPercentage": 0, // to be decided
-      "discountAmount": 0,   // to be decided
-      "couponCode": "",      // to be decided
-      "paymentMethod": payment.find(data => data?.selected === true).name , //Cash, Card(Online)
-      "address": pinlocation,
-      "customerName": firstname + " " + lastname,
-      "customerContact": phonenumber,
-      "customerEmail": email,  //"mailto:customer@fougito.com"
-      "floor": plotnodetails,
-      "latitude": pinlatitude,
-      "longitude": pinLongitude,
-      "noteToRider": notetorider,
-      "street": buildingdetails,
-      "type": pickuporder ? "Pickup" : "Delivery",
-      "orderItems": order
   }
-
-  dispatch(createorder(data))
-   
- 
-  }}
   function selectpaymentmethod(index) {
     console.log('ee' + index);
     let data = [...payment];
@@ -474,21 +462,18 @@ order.push({
 
   const renderHiddenItem = ({item, index}) => (
     <View style={styleSheet.rowBack}>
-   
       <TouchableOpacity
         style={[styleSheet.actionButton, styleSheet.deleteBtn]}
         onPress={() => {
-          let data = [...cartdata]
-         let reducepriced = data[index].completeitemorderprice
+          let data = [...cartdata];
+          let reducepriced = data[index].completeitemorderprice;
           data.splice(index, 1);
-     
-          dispatch(storecartprice(price - reducepriced))
-          dispatch(filteredcatdata(data))
 
+          dispatch(storecartprice(price - reducepriced));
+          dispatch(filteredcatdata(data));
 
-          console.log(data)
-        }}
-      >
+          console.log(data);
+        }}>
         <Text style={styleSheet.btnText}>Delete</Text>
       </TouchableOpacity>
     </View>
@@ -497,8 +482,6 @@ order.push({
   const onItemOpen = rowKey => {
     console.log('This row opened', rowKey);
   };
-
-
 
   /////////guest/////
   useEffect(() => {
@@ -629,14 +612,14 @@ order.push({
         <PlainHeader title={'Cart'} />
 
         <ScrollView
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps= {true}
-        style={{
-          width: '100%',
-          paddingHorizontal: scalableheight.one,
-          marginTop: scalableheight.two,}}
- 
-          contentContainerStyle={{ flexGrow: 1,paddingBottom: 5 }}>
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps={true}
+          style={{
+            width: '100%',
+            paddingHorizontal: scalableheight.one,
+            marginTop: scalableheight.two,
+          }}
+          contentContainerStyle={{flexGrow: 1, paddingBottom: 5}}>
           <View
             style={{flexDirection: 'row', marginBottom: scalableheight.one}}>
             <Text
@@ -661,39 +644,38 @@ order.push({
             </Text>
           </View>
           <SwipeListView
-          key = {"1"}
-        data={cartdata}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={(data, index) => {
-          return(
-            // <SwipeRow >
-            // {/* {swipeAction} */}
-            <View style={{alignItems: 'center'}}>
-            <ItemDetails
-            qty = {data?.item?.Qty} 
-            title={data?.item?.Name}
-            index={data?.index}
-              price={data?.item?.completeitemorderprice}
-              onPress={() => {
-                setitemmodaldata(data?.item)
-                setitemmodalVisible(true)
-
-              }}
-            />
-          </View>
-          // {/* </SwipeRow> */}
-          )
-        }}
-        renderHiddenItem={renderHiddenItem}
-        // leftOpenValue={0}
-        disableRightSwipe={true}
-        rightOpenValue={-scalableheight.tweleve}
-        previewRowKey={'0'}
-        previewOpenValue={-40}
-        // previewOpenDelay={3000}
-        onRowDidOpen={onItemOpen}
-      />
+            key={'1'}
+            data={cartdata}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={(data, index) => {
+              return (
+                // <SwipeRow >
+                // {/* {swipeAction} */}
+                <View style={{alignItems: 'center'}}>
+                  <ItemDetails
+                    qty={data?.item?.Qty}
+                    title={data?.item?.Name}
+                    index={data?.index}
+                    price={data?.item?.completeitemorderprice}
+                    onPress={() => {
+                      setitemmodaldata(data?.item);
+                      setitemmodalVisible(true);
+                    }}
+                  />
+                </View>
+                // {/* </SwipeRow> */}
+              );
+            }}
+            renderHiddenItem={renderHiddenItem}
+            // leftOpenValue={0}
+            disableRightSwipe={true}
+            rightOpenValue={-scalableheight.tweleve}
+            previewRowKey={'0'}
+            previewOpenValue={-40}
+            // previewOpenDelay={3000}
+            onRowDidOpen={onItemOpen}
+          />
           {/* {cartdata.map(item => {
             return (
               <View style={{alignItems: 'center'}}>
@@ -708,103 +690,111 @@ order.push({
               </View>
             );
           })} */}
-          {AuthToken == '' &&
-          <>
-          <View style={{height: scalableheight.two}} />
-          <Text style={styleSheet.Text1}>Payment Method</Text>
-          <View style={{height: scalableheight.one}} />
-          <FlatList
-            keyExtractor={(item, index) => index.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={payment}
-            renderItem={renderpayment}
-            // onEndReached={() => LoadFeaturedProjectPagination()}
-            // onEndReachedThreshold={0.1}
-          />
-          
-          <View style={{height: scalableheight.two}} />
-          <Text style={styleSheet.Text1}>Delivery Details</Text>
-          <View style={{height: scalableheight.one}} />
+          {AuthToken == '' && (
+            <>
+              <View style={{height: scalableheight.two}} />
+              <Text style={styleSheet.Text1}>Payment Method</Text>
+              <View style={{height: scalableheight.one}} />
+              <FlatList
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={payment}
+                renderItem={renderpayment}
+                // onEndReached={() => LoadFeaturedProjectPagination()}
+                // onEndReachedThreshold={0.1}
+              />
 
-          <GooglePlacesAutocomplete
-          suppressDefaultStyles={false}
-          //  styles ={{
-  
-          //   ...styleSheet.shadow,
-          //   width: '100%',
-          //   height: scalableheight.six,
-          //   fontSize: fontSize.fifteen,
-          //   backgroundColor: '#F9F9F9',
-          //   alignSelf: 'center',
-          //   borderRadius: fontSize.borderradiusmedium,
-          //   paddingHorizontal: '5%',
-          //   marginHorizontal: '0.4%',
-          // }}
-          styles={{
-          
-            textInput: {
-              ...styleSheet.shadow,
-                 width: '100%',
-            height: scalableheight.six,
-            fontSize: fontSize.fifteen,
-            backgroundColor: '#F9F9F9',
-            alignSelf: 'center',
-            borderRadius: fontSize.borderradiusmedium,
-            paddingHorizontal: '5%',
-            marginHorizontal: '0.4%',
-            marginBottom:scalableheight.two
-            },
-          }}
+              <View style={{height: scalableheight.two}} />
+              <Text style={styleSheet.Text1}>Delivery Details</Text>
+              <View style={{height: scalableheight.one}} />
 
-      placeholder='Search'
-      onPress={(data, details = null) => {
-        setpinlocation(data.description)
-        Geocoder.from(data.description)
-		.then(json => {
-			var location = json.results[0].geometry.location;
-      SetPinLatitude(location.lat)
-      SetPinLongitude(location.lng)
-		})
-		.catch(error => console.warn(error));
- 
-      }}
-      query={{
-        key:'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
-        language: 'en',
-      }}
-    />
+              <GooglePlacesAutocomplete
+                suppressDefaultStyles={false}
+                //  styles ={{
 
-          <View
-            style={{
-              height: scalableheight.twentysix,
-              borderRadius: fontSize.eight,
-              overflow: 'hidden',
-              marginBottom: scalableheight.two,
-       
-              justifyContent:'center',
-              alignItems:'center'
-            }}>
-               
-{hidemarker == false ? 
+                //   ...styleSheet.shadow,
+                //   width: '100%',
+                //   height: scalableheight.six,
+                //   fontSize: fontSize.fifteen,
+                //   backgroundColor: '#F9F9F9',
+                //   alignSelf: 'center',
+                //   borderRadius: fontSize.borderradiusmedium,
+                //   paddingHorizontal: '5%',
+                //   marginHorizontal: '0.4%',
+                // }}
+                styles={{
+                  textInput: {
+                    ...styleSheet.shadow,
+                    width: '100%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                    marginBottom: scalableheight.two,
+                  },
+                }}
+                placeholder="Search"
+                onPress={(data, details = null) => {
+                  setpinlocation(data.description);
+                  Geocoder.from(data.description)
+                    .then(json => {
+                      var location = json.results[0].geometry.location;
+                      SetPinLatitude(location.lat);
+                      SetPinLongitude(location.lng);
+                    })
+                    .catch(error => console.warn(error));
+                }}
+                query={{
+                  key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
+                  language: 'en',
+                }}
+              />
+
+              <View
+                style={{
+                  height: scalableheight.twentysix,
+                  borderRadius: fontSize.eight,
+                  overflow: 'hidden',
+                  marginBottom: scalableheight.two,
+
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                {hidemarker == false ? (
                   <MaterialIcons
-                     style={{  position:"absolute", alignSelf:"center", alignContent:"center", zIndex:3, elevation:3, }}
-                      name="location-pin"
-                      color={'#F55050'}
-                      size={scalableheight.six}
-                    /> :
-                    <Entypo
-                    style={{  position:"absolute", alignSelf:"center", alignContent:"center", zIndex:3, elevation:3}}
-                     name="dot-single"
-                     color={'#F55050'}
-                     size={scalableheight.six}
-                   />
-}
-            <MapView
+                    style={{
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      alignContent: 'center',
+                      zIndex: 3,
+                      elevation: 3,
+                    }}
+                    name="location-pin"
+                    color={'#F55050'}
+                    size={scalableheight.six}
+                  />
+                ) : (
+                  <Entypo
+                    style={{
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      alignContent: 'center',
+                      zIndex: 3,
+                      elevation: 3,
+                    }}
+                    name="dot-single"
+                    color={'#F55050'}
+                    size={scalableheight.six}
+                  />
+                )}
+                <MapView
                   provider={PROVIDER_GOOGLE}
                   customMapStyle={customStyle}
                   ref={refMap}
-              
                   showsUserLocation
                   style={{
                     width: '100%',
@@ -823,34 +813,31 @@ order.push({
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
-          
-                  onRegionChange={(region) => {
-                //  console.log(region)
-                if(region.latitude.toFixed(6) === pinlatitude.toFixed(6)
-                && region.longitude.toFixed(6) === pinLongitude.toFixed(6)){
-                  return;
-              }else{
-                sethidemarker(true)
-              }
+                  onRegionChange={region => {
+                    //  console.log(region)
+                    if (
+                      region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
+                      region.longitude.toFixed(6) === pinLongitude.toFixed(6)
+                    ) {
+                      return;
+                    } else {
+                      sethidemarker(true);
+                    }
                   }}
-                  onRegionChangeComplete = {(region) => {
+                  onRegionChangeComplete={region => {
                     // console.log(region)
-                
-               
-    if(region.latitude.toFixed(6) === pinlatitude.toFixed(6)
-    && region.longitude.toFixed(6) === pinLongitude.toFixed(6)){
-      return;
-  }else{
-    sethidemarker(false)
-    SetPinLatitude(region.latitude),
-    SetPinLongitude(region.longitude)
-  }
 
- 
-                     }}
-
-                  
-                  >
+                    if (
+                      region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
+                      region.longitude.toFixed(6) === pinLongitude.toFixed(6)
+                    ) {
+                      return;
+                    } else {
+                      sethidemarker(false);
+                      SetPinLatitude(region.latitude),
+                        SetPinLongitude(region.longitude);
+                    }
+                  }}>
                   {/* <Marker
                     draggable
                     onDragEnd={e => (
@@ -870,162 +857,166 @@ order.push({
                     />
                   </Marker> */}
                 </MapView>
-          </View>
-        <View style={{
-              ...styleSheet.shadow,
-              width: '99%',
-         height: scalableheight.eight,
-         fontSize: fontSize.fifteen,
-         backgroundColor: '#F9F9F9',
-         alignSelf: 'center',
-         borderRadius: fontSize.borderradiusmedium,
-         paddingHorizontal: '5%',
-      justifyContent:"center",
-         marginBottom:scalableheight.two
-        
-        }}>
-<Text
-numberOfLines={2}
->{pinlocation}</Text>
-        </View>
-          <View style={{width: "100%", flexDirection:"row" , justifyContent:"space-between", marginBottom: scalableheight.two}}>
-          <TextInput
-                      
-                      value={buildingdetails}
-                      onChangeText={text => setbuildingdetails(text)}
-                      placeholder={'Building and Street'}
-                      style={{
-                        ...styleSheet.shadow,
-                        width: '48.5%',
-                        height: scalableheight.six,
-                        fontSize: fontSize.fifteen,
-                        backgroundColor: '#F9F9F9',
-                        alignSelf: 'center',
-                        borderRadius: fontSize.borderradiusmedium,
-                        paddingHorizontal: '5%',
-                       marginHorizontal: '0.4%',
-                   
-                      }}
-                    />
-                       <TextInput
-                      
-                      value={plotnodetails}
-                      onChangeText={text => setplotnodetails(text)}
-                      placeholder={'Flat no & Floor'}
-                      style={{
-                        ...styleSheet.shadow,
-                        width: '48.5%',
-                        height: scalableheight.six,
-                        fontSize: fontSize.fifteen,
-                        backgroundColor: '#F9F9F9',
-                        alignSelf: 'center',
-                        borderRadius: fontSize.borderradiusmedium,
-                        paddingHorizontal: '5%',
-                        marginHorizontal: '0.4%',
-                      }}
-                    />
-          </View>
-          <TextInput
-                      multiline
-                      value={notetorider}
-                      onChangeText={text => setnotetorider(text)}
-                      placeholder={'Note to Rider'}
-                      style={{
-                        ...styleSheet.shadow,
-                        width: '99%',
-                        height: scalableheight.fifteen,
-                        fontSize: fontSize.fifteen,
-                        backgroundColor: '#F9F9F9',
-                        alignSelf: 'center',
-                        borderRadius: fontSize.borderradiusmedium,
-                        paddingHorizontal: '5%',
-                        textAlignVertical: 'top',
-                    
-                   
-                      }}
-                    />
-           <View style={{height: scalableheight.two}} />
-          <Text style={styleSheet.Text1}>Personal Details</Text>
-          <View style={{height: scalableheight.one}} />
-           
-          <View style={{width: "100%", flexDirection:"row" , justifyContent:"space-between", marginBottom: scalableheight.two}}>
-          <TextInput
-                      
-                      value={firstname}
-                      onChangeText={text => setfirstname(text)}
-                      placeholder={'First Name'}
-                      style={{
-                        ...styleSheet.shadow,
-                        width: '48.5%',
-                        height: scalableheight.six,
-                        fontSize: fontSize.fifteen,
-                        backgroundColor: '#F9F9F9',
-                        alignSelf: 'center',
-                        borderRadius: fontSize.borderradiusmedium,
-                        paddingHorizontal: '5%',
-                       marginHorizontal: '0.4%',
-                   
-                      }}
-                    />
-                       <TextInput
-                      
-                      value={lastname}
-                      onChangeText={text => setlastname(text)}
-                      placeholder={'Last Name'}
-                      style={{
-                        ...styleSheet.shadow,
-                        width: '48.5%',
-                        height: scalableheight.six,
-                        fontSize: fontSize.fifteen,
-                        backgroundColor: '#F9F9F9',
-                        alignSelf: 'center',
-                        borderRadius: fontSize.borderradiusmedium,
-                        paddingHorizontal: '5%',
-                        marginHorizontal: '0.4%',
-                      }}
-                    />
-          </View>
-           
-          <View style={{width: "100%", flexDirection:"row" , justifyContent:"space-between", marginBottom: scalableheight.two}}>
-          <TextInput
-                      
-                      value={email}
-                      onChangeText={text => setemail(text)}
-                      placeholder={'Email Address'}
-                      style={{
-                        ...styleSheet.shadow,
-                        width: '48.5%',
-                        height: scalableheight.six,
-                        fontSize: fontSize.fifteen,
-                        backgroundColor: '#F9F9F9',
-                        alignSelf: 'center',
-                        borderRadius: fontSize.borderradiusmedium,
-                        paddingHorizontal: '5%',
-                       marginHorizontal: '0.4%',
-                   
-                      }}
-                    />
-                       <TextInput
-                      
-                      value={phonenumber}
-                      onChangeText={text => setphonenumber(text)}
-                      placeholder={'Phone Number'}
-                      style={{
-                        ...styleSheet.shadow,
-                        width: '48.5%',
-                        height: scalableheight.six,
-                        fontSize: fontSize.fifteen,
-                        backgroundColor: '#F9F9F9',
-                        alignSelf: 'center',
-                        borderRadius: fontSize.borderradiusmedium,
-                        paddingHorizontal: '5%',
-                        marginHorizontal: '0.4%',
-                      }}
-                    />
-          </View>
-          </>
-}
-       
+              </View>
+              <View
+                style={{
+                  ...styleSheet.shadow,
+                  width: '99%',
+                  height: scalableheight.eight,
+                  fontSize: fontSize.fifteen,
+                  backgroundColor: '#F9F9F9',
+                  alignSelf: 'center',
+                  borderRadius: fontSize.borderradiusmedium,
+                  paddingHorizontal: '5%',
+                  justifyContent: 'center',
+                  marginBottom: scalableheight.two,
+                }}>
+                <Text numberOfLines={2}>{pinlocation}</Text>
+              </View>
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: scalableheight.two,
+                }}>
+                <TextInput
+                  value={buildingdetails}
+                  onChangeText={text => setbuildingdetails(text)}
+                  placeholder={'Building and Street'}
+                  style={{
+                    ...styleSheet.shadow,
+                    width: '48.5%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                  }}
+                />
+                <TextInput
+                  value={plotnodetails}
+                  onChangeText={text => setplotnodetails(text)}
+                  placeholder={'Flat no & Floor'}
+                  style={{
+                    ...styleSheet.shadow,
+                    width: '48.5%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                  }}
+                />
+              </View>
+              <TextInput
+                multiline
+                value={notetorider}
+                onChangeText={text => setnotetorider(text)}
+                placeholder={'Note to Rider'}
+                style={{
+                  ...styleSheet.shadow,
+                  width: '99%',
+                  height: scalableheight.fifteen,
+                  fontSize: fontSize.fifteen,
+                  backgroundColor: '#F9F9F9',
+                  alignSelf: 'center',
+                  borderRadius: fontSize.borderradiusmedium,
+                  paddingHorizontal: '5%',
+                  textAlignVertical: 'top',
+                }}
+              />
+              <View style={{height: scalableheight.two}} />
+              <Text style={styleSheet.Text1}>Personal Details</Text>
+              <View style={{height: scalableheight.one}} />
+
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: scalableheight.two,
+                }}>
+                <TextInput
+                  value={firstname}
+                  onChangeText={text => setfirstname(text)}
+                  placeholder={'First Name'}
+                  style={{
+                    ...styleSheet.shadow,
+                    width: '48.5%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                  }}
+                />
+                <TextInput
+                  value={lastname}
+                  onChangeText={text => setlastname(text)}
+                  placeholder={'Last Name'}
+                  style={{
+                    ...styleSheet.shadow,
+                    width: '48.5%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                  }}
+                />
+              </View>
+
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: scalableheight.two,
+                }}>
+                <TextInput
+                  value={email}
+                  onChangeText={text => setemail(text)}
+                  placeholder={'Email Address'}
+                  style={{
+                    ...styleSheet.shadow,
+                    width: '48.5%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                  }}
+                />
+                <TextInput
+                  value={phonenumber}
+                  onChangeText={text => setphonenumber(text)}
+                  placeholder={'Phone Number'}
+                  style={{
+                    ...styleSheet.shadow,
+                    width: '48.5%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                  }}
+                />
+              </View>
+            </>
+          )}
 
           {/* <View style={{height: scalableheight.ten}} /> */}
         </ScrollView>
@@ -1036,50 +1027,63 @@ numberOfLines={2}
             bottom: scalableheight.two,
             width: '100%',
           }}>
-              {AuthToken != '' &&
-          <>
-          <View style={{height: scalableheight.two}} />
-          <Text style={styleSheet.Text1}>Payment Method</Text>
-          <View style={{height: scalableheight.one}} />
-          <FlatList
-            keyExtractor={(item, index) => index.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={payment}
-            renderItem={renderpayment}
-            // onEndReached={() => LoadFeaturedProjectPagination()}
-            // onEndReachedThreshold={0.1}
-          />
-        
-          <View style={{height: scalableheight.two}} />
-          <Text style={styleSheet.Text1}>Delivery Address</Text>
-          <View style={{height: scalableheight.one}} />
+          {AuthToken != '' && (
+            <>
+              <View style={{height: scalableheight.two}} />
+              <Text style={styleSheet.Text1}>Payment Method</Text>
+              <View style={{height: scalableheight.one}} />
+              <FlatList
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={payment}
+                renderItem={renderpayment}
+                // onEndReached={() => LoadFeaturedProjectPagination()}
+                // onEndReachedThreshold={0.1}
+              />
 
-          <Addresstile
-            icon={require('../Resources/images/Homeicon.png')}
-            place={'Home'}
-            address={'7399 Stefan Trace Joanne Ligh Street No.85'}
-            note={'4th floor, Take a left, 2nd brown Door on your right'}
-            onPress={() => {
-              navigation.navigate('MyAddresses', {
-                screenname: 'checkout',
-              });
-            }}
-            screenname={''}
-          />
-          </>
-}
+              <View style={{height: scalableheight.two}} />
+              <Text style={styleSheet.Text1}>Delivery Address</Text>
+              <View style={{height: scalableheight.one}} />
 
-               <View style={{height: scalableheight.three}} />
+              <Addresstile
+                icon={require('../Resources/images/Homeicon.png')}
+                place={'Home'}
+                address={'7399 Stefan Trace Joanne Ligh Street No.85'}
+                note={'4th floor, Take a left, 2nd brown Door on your right'}
+                onPress={() => {
+                  navigation.navigate('MyAddresses', {
+                    screenname: 'checkout',
+                  });
+                }}
+                screenname={''}
+              />
+            </>
+          )}
+
+          <View style={{height: scalableheight.three}} />
           <Bll label={'Sub Total'} price={price} />
-          <Bll label={'Delivery Charges'} price={restrauntdetails?.RestaurantDeliveryType == "Fixed" ? restrauntdetails?.DeliveryCharges : restrauntdetails?.DeliveryCharges * restrauntdistance} />
+          <Bll
+            label={'Delivery Charges'}
+            price={
+              restrauntdetails?.RestaurantDeliveryType == 'Fixed'
+                ? restrauntdetails?.DeliveryCharges
+                : restrauntdetails?.DeliveryCharges * restrauntdistance
+            }
+          />
 
           <View style={styleSheet.Container}>
             <View style={{flexDirection: 'row'}}>
               <Text style={styleSheet.Text3}>Vat Amount </Text>
-              <Text style={styleSheet.Text4}>{`(${restrauntdetails?.VAT}%)`}</Text>
+              <Text
+                style={styleSheet.Text4}>{`(${restrauntdetails?.VAT}%)`}</Text>
             </View>
-            <Text style={styleSheet.Text3}>AED {((restrauntdetails?.DeliveryCharges + price) * restrauntdetails?.VAT)/ 100}</Text>
+            <Text style={styleSheet.Text3}>
+              AED{' '}
+              {((restrauntdetails?.DeliveryCharges + price) *
+                restrauntdetails?.VAT) /
+                100}
+            </Text>
           </View>
           <View style={{height: scalableheight.one}} />
           <Text style={{...styleSheet.Text4, textAlign: 'right'}}>
@@ -1091,10 +1095,20 @@ numberOfLines={2}
               borderTopWidth: scalableheight.borderTopWidth,
               marginVertical: scalableheight.one,
             }}></View>
-          <Bll label={'Total'} price={price + (restrauntdetails?.RestaurantDeliveryType == "Fixed" ? restrauntdetails?.DeliveryCharges : restrauntdetails?.DeliveryCharges * restrauntdistance) + ((restrauntdetails?.DeliveryCharges + price) * restrauntdetails?.VAT)/ 100 } />
+          <Bll
+            label={'Total'}
+            price={
+              price +
+              (restrauntdetails?.RestaurantDeliveryType == 'Fixed'
+                ? restrauntdetails?.DeliveryCharges
+                : restrauntdetails?.DeliveryCharges * restrauntdistance) +
+              ((restrauntdetails?.DeliveryCharges + price) *
+                restrauntdetails?.VAT) /
+                100
+            }
+          />
           <View style={{height: scalableheight.two}} />
-         {AuthToken == '' &&
-          loader1 == true ? (
+          {AuthToken == '' && loader1 == true ? (
             <View
               style={{
                 justifyContent: 'center',
@@ -1102,24 +1116,24 @@ numberOfLines={2}
                 height: scalableheight.seven,
 
                 borderRadius: fontSize.borderradiusmedium,
-            
+
                 marginTop: '1%',
                 marginBottom: '1%',
               }}>
               <ActivityIndicator size={'large'} color="#E14E4E" />
             </View>
           ) : (
-              <MYButton
-                  title={'Proceed as Guest'}
-            onPress={() => {
-              placeorder()
-            }}
-            color="black"
-            textcolor="white"
-          />)
-}
+            <MYButton
+              title={'Proceed as Guest'}
+              onPress={() => {
+                placeorder();
+              }}
+              color="black"
+              textcolor="white"
+            />
+          )}
 
-{loader2 == true ? (
+          {loader2 == true ? (
             <View
               style={{
                 justifyContent: 'center',
@@ -1127,23 +1141,23 @@ numberOfLines={2}
                 height: scalableheight.seven,
 
                 borderRadius: fontSize.borderradiusmedium,
-            
+
                 marginTop: '1%',
                 marginBottom: '1%',
               }}>
               <ActivityIndicator size={'large'} color="#E14E4E" />
             </View>
           ) : (
-          <MYButton
-                  title={AuthToken != '' ? 'Place Order' : 'Login to Place Order'}
-            onPress={() => {
-            
-            setmodalVisible(true)
-            }}
-            color="#E14E4E"
-            textcolor="white"
-          />)}
-        </View> 
+            <MYButton
+              title={AuthToken != '' ? 'Place Order' : 'Login to Place Order'}
+              onPress={() => {
+                setmodalVisible(true);
+              }}
+              color="#E14E4E"
+              textcolor="white"
+            />
+          )}
+        </View>
       </View>
 
       <AuthenticationModel
@@ -1153,14 +1167,14 @@ numberOfLines={2}
         }}
       />
 
-<ItemDetailsModel
+      <ItemDetailsModel
         state={itemmodalVisible}
-        data = {itemmodaldata}
+        data={itemmodaldata}
         togglemodel={() => {
           setitemmodalVisible(false);
         }}
       />
-          <Toast
+      <Toast
         ref={toast}
         style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
       />
@@ -1329,7 +1343,7 @@ const styleSheet = StyleSheet.create({
   rowBack: {
     alignItems: 'center',
     backgroundColor: '#fff',
-    height: "98%",
+    height: '98%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingLeft: 5,
@@ -1337,15 +1351,15 @@ const styleSheet = StyleSheet.create({
   actionButton: {
     alignItems: 'center',
     bottom: 0,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     position: 'absolute',
     top: 0,
-    width: "98%",
-paddingRight: scalableheight.four,
+    width: '98%',
+    paddingRight: scalableheight.four,
     marginBottom: scalableheight.one,
     borderRadius: fontSize.eleven,
-    backgroundColor:"white",
-    flexDirection:"row",
+    backgroundColor: 'white',
+    flexDirection: 'row',
     marginTop: scalableheight.borderwidth,
   },
   closeBtn: {
@@ -1353,7 +1367,7 @@ paddingRight: scalableheight.four,
     right: 75,
   },
   deleteBtn: {
-    backgroundColor:"#E14E4E",
+    backgroundColor: '#E14E4E',
     right: scalableheight.pointfive,
   },
 });

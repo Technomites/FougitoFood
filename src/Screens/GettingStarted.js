@@ -26,9 +26,7 @@ import MYButton from '../Shared/Components/MYButton';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
 // import Modal from "react-native-modal";
-import {
-  storetoken
-} from '../Actions/actions';
+import {storetoken} from '../Actions/actions';
 
 const GettingStarted = props => {
   const {Lang} = useSelector(state => state.userReducer);
@@ -65,7 +63,7 @@ const GettingStarted = props => {
     },
   ]);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     StatusBar.setHidden(false);
     //StatusBar.setBackgroundColor('transparent');
@@ -73,17 +71,17 @@ const GettingStarted = props => {
   }, []);
 
   useEffect(() => {
-    gettoken()
+    gettoken();
   }, []);
 
   async function gettoken() {
     const value = await AsyncStorage.getItem('AccessToken');
-   console.log(value)
-   if (value != undefined && value != ""){
-    dispatch(storetoken(value))
-   }
+    console.log(value);
+    if (value != undefined && value != '') {
+      dispatch(storetoken(value));
+    }
   }
-  
+
   return (
     <ImageBackground
       resizeMode="cover"
