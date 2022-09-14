@@ -22,6 +22,7 @@ import {
   getProfileInformation,
   updateprofilepicture,
   clearprofilemessage,
+  GetProfile,
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -55,8 +56,17 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
   const [Password, setPassword] = useState('');
   const [newpasswordshow, setnewpasswordshow] = useState(false);
   const [Loader, setLoader] = useState(false);
-  const {Lang, ProfileInfo, profileupdated, profileimage, profilemessage} =
-    useSelector(state => state.userReducer);
+  const {
+    Lang,
+    ProfileInfo,
+    profileupdated,
+    profileimage,
+    profilemessage,
+    ProfileName,
+    ProfileContact,
+    ProfileEmail,
+    AuthToken,
+  } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -65,7 +75,26 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
     // StatusBar.setBarStyle('light-content');
   }, []);
 
-  function UpdateProfile() {
+  useEffect(() => {
+    // console.log(
+    //   AuthToken,
+    //   'UpdateProfile UpdateProfile UpdateProfile UpdateProfile',
+    // );
+    dispatch(GetProfile(AuthToken));
+  }, [AuthToken]);
+
+  useEffect(() => {
+    console.log(
+      ProfileEmail,
+      ProfileContact,
+      ProfileName + 'UpdateProfile UpdateProfile UpdateProfile UpdateProfile',
+    );
+    setEmailAddress(ProfileEmail);
+    setPhoneNumber(ProfileContact);
+    setName(ProfileName);
+  }, [ProfileEmail, ProfileContact, ProfileName,AuthToken]);
+
+  function postupdatedprofile() {
     if (Name == '') {
       showToast('Enter first name', {
         duration: 500,
@@ -241,7 +270,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
               defaultValue={EmailAddress}
             />
           </View>
-          <View style={{marginVertical: scalableheight.one}}>
+          {/* <View style={{marginVertical: scalableheight.one}}>
             <Text
               style={{
                 color: 'rgba(41, 38, 42, 0.6)',
@@ -276,7 +305,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                 />
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
           <View style={{marginVertical: scalableheight.one}}>
             <Text
               style={{

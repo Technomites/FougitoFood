@@ -34,6 +34,7 @@ export const PICKUPState = 'PICKUPState';
 export const CreateOrder = 'CreateOrder';
 export const VerifyCoupon = 'VerifyCoupon';
 export const VerifyCouponClear = 'VerifyCouponClear';
+export const GetUserProfile = 'GetUserProfile';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -98,38 +99,31 @@ export const createorder = (data) => {
   try {
     console.log('placeorder');
     return async dispatch => {
-    
       const result = await fetch(API_URl + 'Customer/Restaurant/PlaceOrder', {
         method: 'POST',
         headers: {
           // Authorization: 'Bearer ' + JSON.parse(token),
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(
-          data
-
-        ),
+        body: JSON.stringify(data),
       });
 
       const json = await result.json();
       console.log('postserviceratings' + JSON.stringify(json));
 
-      if (json.status === "success"){
+      if (json.status === 'success') {
         dispatch({
           type: CreateOrder,
-          payload: "success",
+          payload: 'success',
         });
       }
-     
-      
     };
   } catch (error) {
     console.log(error);
   }
 };
 
-
-export const pickupstate = (bool) => {
+export const pickupstate = bool => {
   try {
     return async dispatch => {
       dispatch({
@@ -142,7 +136,7 @@ export const pickupstate = (bool) => {
   }
 };
 
-export const storerestrauntbasicdata = (data) => {
+export const storerestrauntbasicdata = data => {
   try {
     return async dispatch => {
       dispatch({
@@ -155,7 +149,7 @@ export const storerestrauntbasicdata = (data) => {
   }
 };
 
-export const storetoken = (token) => {
+export const storetoken = token => {
   try {
     return async dispatch => {
       dispatch({
@@ -167,7 +161,7 @@ export const storetoken = (token) => {
     console.log(error);
   }
 };
-export const storedistance = (distance) => {
+export const storedistance = distance => {
   try {
     return async dispatch => {
       dispatch({
@@ -763,7 +757,7 @@ export const MyCoupons = AuthToken => {
   try {
     return async dispatch => {
       var myHeaders = new Headers();
-      myHeaders.append('Authorization', `Bearer ${AuthToken} `);
+      myHeaders.append('Authorization', `Bearer ${JSON.parse(AuthToken)} `);
 
       var requestOptions = {
         method: 'GET',
@@ -795,6 +789,43 @@ export const MyCoupons = AuthToken => {
         //   payloadCustomer: '',
         //   LoadLoginStatus: json?.Status,
         // });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const GetProfile = AuthToken => {
+  try {
+    return async dispatch => {
+      console.log(AuthToken, 'Action Action Action Actioon');
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${JSON.parse(AuthToken)}`);
+      console.log(AuthToken, 'AuthToken AuthToken AuthToken AuthToken');
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(
+        API_URl + `customer/account/profile`,
+        requestOptions,
+      );
+      json = await result.json();
+      console.log(json, 'Hello ,HELLO');
+      if (json.Status == 'Success') {
+        dispatch({
+          type: GetUserProfile,
+          NamePayload: json?.Result.Name,
+          ContactPayload: json?.Result.Contact,
+          EmailPayload: json?.Result.Email,
+        });
+
+        console.log('Success');
+      } else if (json?.Status == 'Error') {
+        console.log(json?.Message, 'EROORRR');
       }
     };
   } catch (error) {
