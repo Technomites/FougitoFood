@@ -37,6 +37,8 @@ export const VerifyCouponClear = 'VerifyCouponClear';
 export const GetUserProfile = 'GetUserProfile';
 export const CURRENTADDRESS = 'CURRENTADDRESS';
 export const SAVEADDRESS = 'SAVEADDRESS';
+export const Logoutuser = 'Logoutuser';
+export const AsynClear = 'AsynClear';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -103,7 +105,7 @@ export const clearcouponresponse = () => {
     return async dispatch => {
       dispatch({
         type: VerifyCouponClear,
-        payload: "",
+        payload: '',
       });
     };
   } catch (error) {
@@ -115,36 +117,36 @@ export const verifycoupon = (code, phonenumber) => {
   try {
     console.log('verifycoupon');
     return async dispatch => {
-    
-      const result = await fetch(API_URl + 'Customer/Restaurant/ValidateCoupon', {
-        method: 'POST',
-        headers: {
-          "Origin" : "https://restaurant.fougito.com",
-          'Content-Type': 'application/json',
+      const result = await fetch(
+        API_URl + 'Customer/Restaurant/ValidateCoupon',
+        {
+          method: 'POST',
+          headers: {
+            Origin: 'https://restaurant.fougito.com',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            couponCode: code,
+            phoneNumber: phonenumber,
+          }),
         },
-        body: JSON.stringify({
-           couponCode: code,
-           phoneNumber: phonenumber
-        }),
-      });
+      );
 
       const json = await result.json();
       console.log('verifycoupon' + JSON.stringify(json));
 
-     
-        dispatch({
-          type: VerifyCoupon,
-          payloadstatus : json.Status,
-          payloadmessage: json.Message,
-        });
-    
+      dispatch({
+        type: VerifyCoupon,
+        payloadstatus: json.Status,
+        payloadmessage: json.Message,
+      });
     };
   } catch (error) {
     console.log(error);
   }
 };
 
-export const createorder = (data) => {
+export const createorder = data => {
   try {
     console.log('placeorder');
     return async dispatch => {
@@ -806,7 +808,7 @@ export const MyCoupons = AuthToken => {
   try {
     return async dispatch => {
       var myHeaders = new Headers();
-      myHeaders.append('Authorization', `Bearer ${JSON.parse(AuthToken)} `);
+      myHeaders.append('Authorization', `Bearer ${AuthToken} `);
 
       var requestOptions = {
         method: 'GET',
@@ -850,7 +852,7 @@ export const GetProfile = AuthToken => {
     return async dispatch => {
       console.log(AuthToken, 'Action Action Action Actioon');
       var myHeaders = new Headers();
-      myHeaders.append('Authorization', `Bearer ${JSON.parse(AuthToken)}`);
+      myHeaders.append('Authorization', `Bearer ${AuthToken}`);
       console.log(AuthToken, 'AuthToken AuthToken AuthToken AuthToken');
       var requestOptions = {
         method: 'GET',
@@ -880,6 +882,53 @@ export const GetProfile = AuthToken => {
   } catch (error) {
     console.log(error);
   }
+};
+export const logout = AuthToken => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${AuthToken}`);
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+      const result = await fetch(
+        API_URl + `Customer/Account/Logout`,
+        requestOptions,
+      );
+
+      json = await result.json();
+      console.log(json, 'Logout Logout Logout');
+
+      if (json?.Status == 'Success') {
+        dispatch({
+          type: Logoutuser,
+          LogoutSatusPayload: json?.Status,
+          LogoutPayload: json?.Message,
+        });
+        console.log(json?.Message, 'Logout Logout');
+        console.log('Logout Success');
+      } else if (json?.Status == 'Error') {
+        dispatch({
+          type: Logoutuser,
+          LogoutSatusPayload: json?.Status,
+          LogoutPayload: json?.Message,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const ClearAsycn = () => {
+  return async dispatch => {
+    dispatch({
+      type: AsynClear,
+      PayloadAuth: '',
+    });
+  };
 };
 
 // export const getblogshome = (lang) => {

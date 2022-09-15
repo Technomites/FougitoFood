@@ -28,7 +28,9 @@ import {
   VerifyCoupon,
   VerifyCouponClear,
   GetUserProfile,
-  CURRENTADDRESS
+  CURRENTADDRESS,
+  Logoutuser,
+  AsynClear,
 } from '../Actions/actions';
 
 const initialState = {
@@ -56,13 +58,14 @@ const initialState = {
   restrauntdistance: 0,
   restrauntbasicdata: [],
   pickuporder: false,
-  couponresponsestatus: "",
-  couponresponsemessage: "",
-
+  couponresponsestatus: '',
+  couponresponsemessage: '',
   ProfileName: '',
   ProfileContact: '',
   ProfileEmail: '',
-  Selectedcurrentaddress: []
+  Selectedcurrentaddress: [],
+  UserLogout: '',
+  userLogoutStatus: '',
 };
 
 function userReducer(state = initialState, action) {
@@ -74,8 +77,12 @@ function userReducer(state = initialState, action) {
       return {
         ...state,
         Selectedcurrentaddress: action.payload,
-   
+      };
   
+    case AsynClear:
+      return {
+        ...state,
+        AuthToken: action.PayloadAuth,
       };
 
     case VerifyCouponClear:
@@ -83,7 +90,6 @@ function userReducer(state = initialState, action) {
         ...state,
         couponresponsestatus: action.payload,
         couponresponsemessage: action.payload,
-  
       };
 
     case VerifyCoupon:
@@ -91,7 +97,6 @@ function userReducer(state = initialState, action) {
         ...state,
         couponresponsestatus: action.payloadstatus,
         couponresponsemessage: action.payloadmessage,
-  
       };
 
     case PICKUPState:
@@ -263,6 +268,12 @@ function userReducer(state = initialState, action) {
         ProfileName: action.NamePayload,
         ProfileContact: action.ContactPayload,
         ProfileEmail: action.EmailPayload,
+      };
+    case Logoutuser:
+      return {
+        ...state,
+        userLogoutStatus: action.LogoutSatusPayload,
+        UserLogout: action.LogoutPayload,
       };
 
     default:

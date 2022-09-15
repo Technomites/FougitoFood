@@ -78,7 +78,7 @@ const GettingStarted = props => {
     const value = await AsyncStorage.getItem('AccessToken');
     console.log(value);
     if (value != undefined && value != '') {
-      dispatch(storetoken(value));
+      dispatch(storetoken(JSON.parse(value)));
     }
   }
 

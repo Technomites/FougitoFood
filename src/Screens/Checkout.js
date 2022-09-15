@@ -14,7 +14,7 @@ import {
   StatusBar,
   Platform,
   PermissionsAndroid,
-  Keyboard
+  Keyboard,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
@@ -23,7 +23,7 @@ import {
   storecartprice,
   createorder,
   verifycoupon,
-  clearcouponresponse
+  clearcouponresponse,
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -71,7 +71,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   const [signupvisible, setsignupvisible] = useState(false);
   const [otpvisible, setotpvisible] = useState(false);
   const [timeractive, settimeractive] = useState(false);
-  const [couponvalue, setcouponvalue] = useState("");
+  const [couponvalue, setcouponvalue] = useState('');
   const [forgetpasswordvisible, setforgetpasswordvisible] = useState(false);
   const [animationstate, setanimationstate] = useState(true);
   const [codeOneActive, setCodeOneActive] = useState(false);
@@ -90,10 +90,10 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   const [pinlocation, setpinlocation] = useState('');
   const [couponloader, setcouponloader] = useState(false);
 
-  const [firstname, setfirstname] = useState("");
-  const [lastname, setlastname] = useState("");
-  const [email, setemail] = useState("");
-  const [phonenumber, setphonenumber] = useState("");
+  const [firstname, setfirstname] = useState('');
+  const [lastname, setlastname] = useState('');
+  const [email, setemail] = useState('');
+  const [phonenumber, setphonenumber] = useState('');
   const [couponvisible, setcouponvisible] = useState(false);
 
   const [loader1, setloader1] = useState(false);
@@ -289,7 +289,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       payment: 'Pay Online',
       selected: false,
       icon: 1,
-      name: "Card"
+      name: 'Card',
     },
     {
       type: 'COD',
@@ -312,24 +312,23 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   }, [navigation]);
 
   useEffect(() => {
-   if(couponresponsestatus != "" && couponresponsemessage != ""){
-    setcouponloader(false)
-    toast.current.show(couponresponsemessage, {
-      type: 'normal',
-      placement: 'bottom',
-      duration: 4000,
-      offset: 10,
-      animationType: 'slide-in',
-      zIndex: 2,
-    });
+    if (couponresponsestatus != '' && couponresponsemessage != '') {
+      setcouponloader(false);
+      toast.current.show(couponresponsemessage, {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
 
-    dispatch(clearcouponresponse())
-   }
+      dispatch(clearcouponresponse());
+    }
   }, [couponresponsestatus, couponresponsemessage]);
 
-  function placeorder(){
- 
-    if(pinlocation == ""){
+  function placeorder() {
+    if (pinlocation == '') {
       toast.current.show('Please select a location', {
         type: 'normal',
         placement: 'bottom',
@@ -490,38 +489,33 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     console.log('This row opened', rowKey);
   };
 
-
-function applycoupon(){
-  Keyboard.dismiss()
- if(couponvalue == ""){
-  toast.current.show('Please enter a coupon code', {
-    type: 'normal',
-    placement: 'bottom',
-    duration: 4000,
-    offset: 10,
-    animationType: 'slide-in',
-    zIndex: 2,
-  });
- }
-//  else if(phonenumber == ""){
-//   toast.current.show('Please enter your phone number before applying for a coupon discount', {
-//     type: 'normal',
-//     placement: 'bottom',
-//     duration: 4000,
-//     offset: 10,
-//     animationType: 'slide-in',
-//     zIndex: 2,
-//   });
-//  }
- else{
-  setcouponloader(true)
-  dispatch(verifycoupon(couponvalue, "971040219373"))
- }
-
-
-
- 
-}
+  function applycoupon() {
+    Keyboard.dismiss();
+    if (couponvalue == '') {
+      toast.current.show('Please enter a coupon code', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+    }
+    //  else if(phonenumber == ""){
+    //   toast.current.show('Please enter your phone number before applying for a coupon discount', {
+    //     type: 'normal',
+    //     placement: 'bottom',
+    //     duration: 4000,
+    //     offset: 10,
+    //     animationType: 'slide-in',
+    //     zIndex: 2,
+    //   });
+    //  }
+    else {
+      setcouponloader(true);
+      dispatch(verifycoupon(couponvalue, '971040219373'));
+    }
+  }
   /////////guest/////
   useEffect(() => {
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
@@ -1151,62 +1145,71 @@ function applycoupon(){
           </View>
           <View style={{height: scalableheight.one}} />
 
-          {couponvisible == false ?
-          <TouchableOpacity onPress={() => {setcouponvisible(true) }}>
-          <Text style={{...styleSheet.Text4, textAlign: 'right'}}>
-            I HAVE A COUPON
-          </Text>
-          </TouchableOpacity>
-          :
-          <View style={{  marginVertical: scalableheight.two,}}>
-       
-          <TextInput
-                      editable={couponloader ? false : true}
-          value={couponvalue}
-          onChangeText={text => setcouponvalue(text)}
-          placeholder={'Enter Code'}
-          style={{
-            ...styleSheet.shadow,
-            width: '99%',
-            height: scalableheight.six,
-            fontSize: fontSize.fifteen,
-            backgroundColor: '#F9F9F9',
-            alignSelf: 'center',
-            borderRadius: fontSize.borderradiusmedium,
-            paddingHorizontal: '5%',
-            marginHorizontal: '0.4%',
-          }}
-        />
-        {couponloader ? 
- <View
- style={{
-  height: scalableheight.six,
-  width: scalableheight.ten,
-   justifyContent: 'center',
-   alignItems: "center",
-   borderRadius: fontSize.borderradiusmedium,
- 
-   position: "absolute", right: 2
- }}>
- <ActivityIndicator size={'small'} color="#E14E4E" />
-</View>
+          {couponvisible == false ? (
+            <TouchableOpacity
+              onPress={() => {
+                setcouponvisible(true);
+              }}>
+              <Text style={{...styleSheet.Text4, textAlign: 'right'}}>
+                I HAVE A COUPON
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={{marginVertical: scalableheight.two}}>
+              <TextInput
+                editable={couponloader ? false : true}
+                value={couponvalue}
+                onChangeText={text => setcouponvalue(text)}
+                placeholder={'Enter Code'}
+                style={{
+                  ...styleSheet.shadow,
+                  width: '99%',
+                  height: scalableheight.six,
+                  fontSize: fontSize.fifteen,
+                  backgroundColor: '#F9F9F9',
+                  alignSelf: 'center',
+                  borderRadius: fontSize.borderradiusmedium,
+                  paddingHorizontal: '5%',
+                  marginHorizontal: '0.4%',
+                }}
+              />
+              {couponloader ? (
+                <View
+                  style={{
+                    height: scalableheight.six,
+                    width: scalableheight.ten,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
 
-:
-             <TouchableOpacity 
-             onPress={() => {applycoupon()}}
-             style={{
-               height: scalableheight.six,
-              width: scalableheight.ten,
-               justifyContent: 'center',
-               alignItems: "center",
-               borderRadius: fontSize.borderradiusmedium,
-             
-              backgroundColor:"#E14E4E", position: "absolute", right: 2}}>
-                <Text style={{...styleSheet.Text4, color:"white"}}>Apply</Text>
-              </TouchableOpacity>
-}
-        </View>
-          }
+                    position: 'absolute',
+                    right: 2,
+                  }}>
+                  <ActivityIndicator size={'small'} color="#E14E4E" />
+                </View>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    applycoupon();
+                  }}
+                  style={{
+                    height: scalableheight.six,
+                    width: scalableheight.ten,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+
+                    backgroundColor: '#E14E4E',
+                    position: 'absolute',
+                    right: 2,
+                  }}>
+                  <Text style={{...styleSheet.Text4, color: 'white'}}>
+                    Apply
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
           <View
             style={{
               borderTopColor: 'rgba(211,211,211, 0.5)',
@@ -1226,31 +1229,31 @@ function applycoupon(){
             }
           />
           <View style={{height: scalableheight.two}} />
-         {AuthToken == '' && (
-          loader1 == true ? (
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: scalableheight.seven,
+          {AuthToken == '' &&
+            (loader1 == true ? (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: scalableheight.seven,
 
-                borderRadius: fontSize.borderradiusmedium,
+                  borderRadius: fontSize.borderradiusmedium,
 
-                marginTop: '1%',
-                marginBottom: '1%',
-              }}>
-              <ActivityIndicator size={'large'} color="#E14E4E" />
-            </View>
-          ) : (
+                  marginTop: '1%',
+                  marginBottom: '1%',
+                }}>
+                <ActivityIndicator size={'large'} color="#E14E4E" />
+              </View>
+            ) : (
               <MYButton
-                  title={'Proceed as Guest'}
-            onPress={() => {
-              placeorder()
-            }}
-            color="black"
-            textcolor="white"
-          />))
-}
+                title={'Proceed as Guest'}
+                onPress={() => {
+                  placeorder();
+                }}
+                color="black"
+                textcolor="white"
+              />
+            ))}
 
           {loader2 == true ? (
             <View

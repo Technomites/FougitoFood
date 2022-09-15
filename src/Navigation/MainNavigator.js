@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+
 import {
   SafeAreaView,
   ImageBackground,
@@ -26,6 +27,8 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import CustomButton from '../Shared/Components/CustomButton';
 import LinearGradient from 'react-native-linear-gradient';
 import RadialGradient from 'react-native-radial-gradient';
+import Toast from 'react-native-toast-notifications';
+import AuthenticationModel from '../Shared/Components/AuthenticationModel';
 import {useSelector, useDispatch} from 'react-redux';
 import {FullWindowOverlay} from 'react-native-screens';
 import {
@@ -76,6 +79,7 @@ import TermsCondition from '../Screens/Terms&Condition';
 import Changepasswordforgot from '../Screens/Changepasswordforgot';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -87,7 +91,7 @@ import {totalSize, height} from 'react-native-dimension';
 import {PortalProvider} from 'react-native-portal';
 import DeviceInfo from 'react-native-device-info';
 import NetInfo from '@react-native-community/netinfo';
-import {eraselogout, logout} from '../Actions/actions';
+import {eraselogout, logout, ClearAsycn} from '../Actions/actions';
 import {GToastContainer, showToast} from 'react-native-gtoast';
 
 // import { StatusBar } from 'expo-status-bar';
@@ -100,8 +104,17 @@ const TransitionScreenOptions = {
 };
 
 const CustomDrawerStyle = ({navigation}) => {
-  const {Logout, Lang, ProfileInfo, newNotificationCount, profileimage, AuthToken} =
-    useSelector(state => state.userReducer);
+  const toast = useRef();
+  const {
+    Logout,
+    Lang,
+    ProfileInfo,
+    newNotificationCount,
+    profileimage,
+    AuthToken,
+    userLogoutStatus,
+    UserLogout,
+  } = useSelector(state => state.userReducer);
 
   let options = [
     {
@@ -141,24 +154,48 @@ const CustomDrawerStyle = ({navigation}) => {
       type: 5,
     },
   ];
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setmodalVisible] = useState(false);
   const [logoutmodal, setlogoutmodal] = useState(false);
+
   const [nointernet, setnointernet] = useState(false);
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(true);
 
   const dispatch = useDispatch();
 
+  async function ClearAsyncStorage() {
+    await AsyncStorage.clear();
+    // props.navigation.navigate('login');
+  }
   useEffect(() => {
-    if (Logout) {
-      setnointernet(false);
-      setModalVisible(false);
+    if (userLogoutStatus === 'Success') {
+      toast.current.show(UserLogout, {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+
+        animationType: 'slide-in',
+      });
+      ClearAsyncStorage();
+      dispatch(ClearAsycn());
+    } else if (userLogoutStatus === 'Error') {
+      toast.current.show(UserLogout, {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      console.log(UserLogout, 'abcc');
     }
-  }, [Logout]);
+  }, [userLogoutStatus, UserLogout]);
   const logoutHandle = () => {
+    // dispatch(logout(AuthToken));
     setnointernet();
-    const deviceId = DeviceInfo.getUniqueId();
-    console.log(deviceId);
+    // const deviceId = DeviceInfo.getUniqueId();
+    // console.log(deviceId);
     NetInfo.fetch().then(state => {
       if (state.isConnected == false && state.isInternetReachable == false) {
         // showToast('Problem with internet connectivity', {
@@ -170,7 +207,7 @@ const CustomDrawerStyle = ({navigation}) => {
       } else {
         // setLoader(true);
         // setModalVisible(false);
-        dispatch(logout(deviceId));
+        dispatch(logout(AuthToken));
       }
     });
   };
@@ -609,7 +646,12 @@ const CustomDrawerStyle = ({navigation}) => {
           {renderIf(AuthToken != '')(
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => setlogoutmodal(true)}
+              onPress={
+                () =>
+                  //logoutHandle()
+                  setlogoutmodal(true)
+                // alert('mm')
+              }
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -650,8 +692,7 @@ const CustomDrawerStyle = ({navigation}) => {
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
-                setanimationstate(true);
-                setlogoutmodal(true);
+                setmodalVisible(true);
               }}
               style={{
                 flexDirection: 'row',
@@ -750,6 +791,7 @@ const CustomDrawerStyle = ({navigation}) => {
               <TouchableOpacity
                 onPress={() => {
                   setanimationstate(true);
+                  logoutHandle();
                 }}
                 style={{
                   backgroundColor: '#E14E4E',
@@ -793,6 +835,53 @@ const CustomDrawerStyle = ({navigation}) => {
           </View>
         </Animatable.View>
       )}
+      <Modal
+        transparent
+        style={{
+          width: '100%',
+          height: '100%',
+          // zIndex: 1,
+          // elevation: 1,
+          // position: 'absolute',
+        }}
+        statusBarTranslucent
+        visible={modalVisible}
+        onRequestClose={() => setmodalVisible(false)}>
+        <AuthenticationModel
+          state={modalVisible}
+          togglemodel={() => {
+            setmodalVisible(false);
+          }}
+        />
+      </Modal>
+      {/* <View
+style={{position:"absolute",
+height: Dimensions.get('window').height,
+width: Dimensions.get('window').width,
+backgroundColor:"red",
+elevation:999999999999999,
+zIndex:999999999999999,
+
+}}>
+<AuthenticationModel
+          state={modalVisible}
+          togglemodel={() => {
+            setmodalVisible(false);
+          }}
+        />
+</View> */}
+      <Toast
+        ref={toast}
+        style={{
+          marginBottom: scalableheight.eight,
+          justifyContent: 'center',
+          width: '50%',
+          alignItems: 'center',
+          alignContent: 'center',
+          position: 'relative',
+          left: scalableheight.ten,
+        }}
+      />
     </>
   );
 };
