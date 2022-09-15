@@ -13,16 +13,9 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
-  readallnotifications,
-  addReadNotifications,
-  clearNotificationCount,
-  clearNotifications,
-  getAllNotifications,
-  GetNotifications,
-  notificationCountHandle,
-  readNotification,
-  seticonfocus,
-  savemyaddress
+  getalladdresses,
+  savemyaddress,
+  clearaddressresponse
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Geocoder from 'react-native-geocoding';
@@ -62,6 +55,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
   const [street, setstreet] = useState('');
   const [floor, setfloor] = useState('');
   const [note, setnote] = useState('');
+  const [loader, setloader] = useState(false);
   const toast = useRef();
 
   const customStyle = [
@@ -234,7 +228,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
   const refMap = useRef(null);
-  const {notificationList, notificationCount} = useSelector(
+  const {notificationList, notificationCount, AuthToken, addresscreationresponse} = useSelector(
     state => state.userReducer,
   );
 
@@ -243,13 +237,44 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
     Geolocation.getCurrentPosition(info => {
       SetPinLatitude(info?.coords?.latitude);
       SetPinLongitude(info?.coords?.longitude);
-      console.log('hello' + info?.coords?.latitude);
-      console.log('hello' + info?.coords?.longitude);
+      console.log( info?.coords?.latitude);
+      console.log( info?.coords?.longitude);
     });
-    console.log('hello');
+  
     getLocation();
   }, []);
 
+
+  useEffect(() => {
+  if(addresscreationresponse != ""){
+    setloader(false)
+    if(addresscreationresponse == "Success"){
+      toast.current.show("New address created", {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      })
+      dispatch(getalladdresses(AuthToken))
+      navigation.goBack();
+    }else{
+      toast.current.show("There was an error saving your address. Please try again later", {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      })
+    }
+dispatch(clearaddressresponse())
+  }
+  }, [addresscreationresponse]);
+
+
+  
   useEffect(() => {
     if (pinlatitude != null && pinLongitude != null) {
       Geocoder.from(pinlatitude, pinLongitude)
@@ -394,7 +419,8 @@ Street: street,
 Floor: floor,
 NoteToRider:note
 }
-dispatch(savemyaddress(data))
+setloader(true)
+dispatch(savemyaddress(data, AuthToken))
 
       }
  
@@ -742,7 +768,18 @@ dispatch(savemyaddress(data))
 
      <View style={{height:scalableheight.tweleve}}></View>
         </ScrollView>
+       
         <View style={{marginVertical: fontSize.eight, position: "absolute", bottom: scalableheight.two, width:"100%", paddingHorizontal: scalableheight.two}}>
+          
+        {loader == true ? (
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <ActivityIndicator size={'large'} color="#E14E4E" />
+                          </View>
+                        ) : (
             <MYButton
               onPress={() => {
              addresssave()
@@ -750,7 +787,7 @@ dispatch(savemyaddress(data))
               color={'rgba(225, 78, 78, 1)'}
               title={'SAVE NEW ADDRESS'}
               textcolor={'white'}
-            />
+            />)}
           </View>
       </View>
       <SuccessModal

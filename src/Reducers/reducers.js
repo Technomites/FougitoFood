@@ -31,6 +31,9 @@ import {
   CURRENTADDRESS,
   Logoutuser,
   AsynClear,
+  SAVEADDRESS,
+  ClearAddress,
+  GetALLUSERADDRESSES
 } from '../Actions/actions';
 
 const initialState = {
@@ -66,13 +69,33 @@ const initialState = {
   Selectedcurrentaddress: [],
   UserLogout: '',
   userLogoutStatus: '',
+  addresscreationresponse: "",
+  alladdresses: []
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
     
-    
    
+
+    case GetALLUSERADDRESSES:
+      return {
+        ...state,
+        alladdresses: action.payload,
+      };
+
+    case ClearAddress:
+      return {
+        ...state,
+        addresscreationresponse: "",
+      };
+
+    case SAVEADDRESS:
+      return {
+        ...state,
+        addresscreationresponse: action.payloadstatus,
+      };
+
     case CURRENTADDRESS:
       return {
         ...state,

@@ -12,15 +12,7 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
-  readallnotifications,
-  addReadNotifications,
-  clearNotificationCount,
-  clearNotifications,
-  getAllNotifications,
-  GetNotifications,
-  notificationCountHandle,
-  readNotification,
-  seticonfocus,
+  getalladdresses,
   storecurrentaddress
 } from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
@@ -44,7 +36,7 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   const dispatch = useDispatch();
   const [screenname, setscreenname] = useState('');
-  const {notificationList, notificationCount} = useSelector(
+  const {AuthToken, alladdresses} = useSelector(
     state => state.userReducer,
   );
 
@@ -118,6 +110,11 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
     return unsubscribe;
   }, [navigation, route]);
 
+
+  useEffect(() => {
+    dispatch(getalladdresses(AuthToken))
+   
+  }, []);
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -141,7 +138,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
             paddingBottom: '5%',
           }}>
           <FlatList
-            data={addresses}
+            data={alladdresses}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: scalableheight.twentytwo}}
             renderItem={({item, i}) => {
