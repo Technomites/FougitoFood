@@ -34,6 +34,14 @@ export default function Addresstile(props) {
             color={"#F55050"}
             size={fontSize.twenty}
           />
+            {/* <Image
+          resizeMode="stretch"
+          style={{
+            width: scalableheight.five,
+            height: scalableheight.tweleve,
+            borderRadius: fontSize.eleven,
+          }}
+          source={props?.icon}></Image> */}
 </View>
           </View>
           <View

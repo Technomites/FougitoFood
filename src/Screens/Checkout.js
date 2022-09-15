@@ -30,7 +30,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Validations from '../Validations/Validations';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -115,8 +115,11 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     restrauntbasicdata,
     pickuporder,
     couponresponsestatus,
-    couponresponsemessage
-
+    couponresponsemessage,
+    ProfileName,
+    ProfileContact,
+    ProfileEmail,
+    Selectedcurrentaddress
 
   } = useSelector(
     state => state.userReducer,
@@ -301,8 +304,6 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   // dispatch(storecartprice(currentprice))
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('hehvhjjjv');
-
       StatusBar.setBarStyle('dark-content');
     });
 
@@ -412,8 +413,10 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     } else {
       // setloader1(true)
 
-    console.log("this is the order" + JSON.stringify(order))
-    
+    // console.log("this is the order" + JSON.stringify(order))
+  
+  
+  
 
       console.log('this is the order' + JSON.stringify(order));
       let data = {
@@ -422,19 +425,20 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         discountAmount: 0, // to be decided
         couponCode: '', // to be decided
         paymentMethod: payment.find(data => data?.selected === true).name, //Cash, Card(Online)
-        address: pinlocation,
-        customerName: firstname + ' ' + lastname,
-        customerContact: phonenumber,
-        customerEmail: email, //"mailto:customer@fougito.com"
+        address: AuthToken != "" ? Selectedcurrentaddress[0].address : pinlocation,
+        customerName: AuthToken != "" ? ProfileName : firstname + ' ' + lastname,
+        customerContact: AuthToken != "" ? ProfileContact : phonenumber,
+        customerEmail: AuthToken != "" ? ProfileEmail : email, //"mailto:customer@fougito.com"
         floor: plotnodetails,
         latitude: pinlatitude,
         longitude: pinLongitude,
-        noteToRider: notetorider,
+        noteToRider: AuthToken != "" ? Selectedcurrentaddress[0].note : notetorider,
         street: buildingdetails,
         type: pickuporder ? 'Pickup' : 'Delivery',
         orderItems: order,
       };
-
+  
+ 
       dispatch(createorder(data));
     }
   }
@@ -1078,14 +1082,16 @@ function applycoupon(){
               />
 
               <View style={{height: scalableheight.two}} />
+              {Selectedcurrentaddress?.length > 0 ? 
+              <>
               <Text style={styleSheet.Text1}>Delivery Address</Text>
               <View style={{height: scalableheight.one}} />
 
               <Addresstile
-                icon={require('../Resources/images/Homeicon.png')}
-                place={'Home'}
-                address={'7399 Stefan Trace Joanne Ligh Street No.85'}
-                note={'4th floor, Take a left, 2nd brown Door on your right'}
+                icon={Selectedcurrentaddress[0].icon}
+                place={Selectedcurrentaddress[0].place}
+                address={Selectedcurrentaddress[0].address}
+                note={Selectedcurrentaddress[0].note}
                 onPress={() => {
                   navigation.navigate('MyAddresses', {
                     screenname: 'checkout',
@@ -1093,6 +1099,29 @@ function applycoupon(){
                 }}
                 screenname={''}
               />
+        </>   : 
+        <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('MyAddresses', {
+            screenname: 'checkout',
+          });
+        }
+
+        }
+        style={{flexDirection:"row",alignItems:"center"}}>
+         <Text style={{...styleSheet.Text4}}>SELECT ADDRESS</Text>
+         <AntDesign
+                    style={{
+                  marginLeft:scalableheight.two
+               
+                     
+                    }}
+                    name="pluscircle"
+                    color={'#F55050'}
+                    size={scalableheight.three}
+                  />
+              <View style={{height: scalableheight.one}} />
+        </TouchableOpacity>  }
             </>
           )}
 

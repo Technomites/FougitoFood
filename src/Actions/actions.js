@@ -35,6 +35,8 @@ export const CreateOrder = 'CreateOrder';
 export const VerifyCoupon = 'VerifyCoupon';
 export const VerifyCouponClear = 'VerifyCouponClear';
 export const GetUserProfile = 'GetUserProfile';
+export const CURRENTADDRESS = 'CURRENTADDRESS';
+export const SAVEADDRESS = 'SAVEADDRESS';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -48,6 +50,53 @@ var requestOptions = {
   redirect: 'follow',
 };
 
+
+
+
+
+export const savemyaddress = (data) => {
+  try {
+    console.log('savemyaddress');
+    return async dispatch => {
+    
+      const result = await fetch(API_URl + 'Customer/Address', {
+        method: 'POST',
+        headers: {
+        
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          data
+        ),
+      });
+
+      const json = await result.json();
+      console.log('savemyaddress' + JSON.stringify(json));
+
+     
+        dispatch({
+          type: SAVEADDRESS,
+          payloadstatus : json.Status,
+        });
+    
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const storecurrentaddress = (data) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: CURRENTADDRESS,
+        payload: data,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const clearcouponresponse = () => {
   try {

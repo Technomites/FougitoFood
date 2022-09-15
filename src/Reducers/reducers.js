@@ -28,6 +28,7 @@ import {
   VerifyCoupon,
   VerifyCouponClear,
   GetUserProfile,
+  CURRENTADDRESS
 } from '../Actions/actions';
 
 const initialState = {
@@ -61,13 +62,22 @@ const initialState = {
   ProfileName: '',
   ProfileContact: '',
   ProfileEmail: '',
+  Selectedcurrentaddress: []
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
     
-
+    
    
+    case CURRENTADDRESS:
+      return {
+        ...state,
+        Selectedcurrentaddress: action.payload,
+   
+  
+      };
+
     case VerifyCouponClear:
       return {
         ...state,

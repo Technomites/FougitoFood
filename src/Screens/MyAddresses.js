@@ -21,6 +21,7 @@ import {
   notificationCountHandle,
   readNotification,
   seticonfocus,
+  storecurrentaddress
 } from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -148,17 +149,28 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
+                    let currentaddress = [{
+                      icon: item.Icon,
+                      place: item.Place,
+                      address: item.address,
+                      note: item.Note,
+                      
+                    }]
+                    console.log(currentaddress)
+                    dispatch(storecurrentaddress(currentaddress))
                     navigation.goBack();
                   }}
                   disabled={screenname == 'checkout' ? false : true}
                   style={{marginTop: '5%'}}>
                   <Addresstile
-                    onPress={() =>
+                    onPress={() =>{
+
+                    
                       navigation.navigate('EditAddress', {
                         // orderId: item.OrderNo,
                         // completedetails: Order,
                       })
-                    }
+                    }}
                     //   // onModelPopUp={changestatus}
                     icon={item.Icon}
                     place={item.Place}

@@ -609,7 +609,7 @@ const CustomDrawerStyle = ({navigation}) => {
           {renderIf(AuthToken != '')(
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => setModalVisible(true)}
+              onPress={() => setlogoutmodal(true)}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
