@@ -12,15 +12,8 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
-  readallnotifications,
-  addReadNotifications,
-  clearNotificationCount,
-  clearNotifications,
-  getAllNotifications,
-  GetNotifications,
-  notificationCountHandle,
-  readNotification,
-  seticonfocus,
+  getalladdresses,
+  storecurrentaddress
 } from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -43,7 +36,7 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   const dispatch = useDispatch();
   const [screenname, setscreenname] = useState('');
-  const {notificationList, notificationCount} = useSelector(
+  const {AuthToken, alladdresses} = useSelector(
     state => state.userReducer,
   );
 
@@ -117,6 +110,11 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
     return unsubscribe;
   }, [navigation, route]);
 
+
+  useEffect(() => {
+    dispatch(getalladdresses(AuthToken))
+   
+  }, []);
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -140,7 +138,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
             paddingBottom: '5%',
           }}>
           <FlatList
-            data={addresses}
+            data={alladdresses}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: scalableheight.twentytwo}}
             renderItem={({item, i}) => {
@@ -148,17 +146,28 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
+                    let currentaddress = [{
+                      icon: item.Icon,
+                      place: item.Place,
+                      address: item.address,
+                      note: item.Note,
+                      
+                    }]
+                    console.log(currentaddress)
+                    dispatch(storecurrentaddress(currentaddress))
                     navigation.goBack();
                   }}
                   disabled={screenname == 'checkout' ? false : true}
                   style={{marginTop: '5%'}}>
                   <Addresstile
-                    onPress={() =>
+                    onPress={() =>{
+
+                    
                       navigation.navigate('EditAddress', {
                         // orderId: item.OrderNo,
                         // completedetails: Order,
                       })
-                    }
+                    }}
                     //   // onModelPopUp={changestatus}
                     icon={item.Icon}
                     place={item.Place}

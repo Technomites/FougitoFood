@@ -33,6 +33,11 @@ import {
   UpdateProfile,
   clearStatusProfile,
   UpdateProfilePicture,
+  GetUserProfile,
+  CURRENTADDRESS,
+  SAVEADDRESS,
+  ClearAddress,
+  GetALLUSERADDRESSES
 } from '../Actions/actions';
 
 const initialState = {
@@ -72,10 +77,42 @@ const initialState = {
   UserUpdateProfileMessage: '',
   UpdatePicStatus: '',
   UpdatePicStatusMessage: '',
+  Selectedcurrentaddress: [],
+  UserLogout: '',
+  userLogoutStatus: '',
+  addresscreationresponse: "",
+  alladdresses: []
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
+    
+   
+
+    case GetALLUSERADDRESSES:
+      return {
+        ...state,
+        alladdresses: action.payload,
+      };
+
+    case ClearAddress:
+      return {
+        ...state,
+        addresscreationresponse: "",
+      };
+
+    case SAVEADDRESS:
+      return {
+        ...state,
+        addresscreationresponse: action.payloadstatus,
+      };
+
+    case CURRENTADDRESS:
+      return {
+        ...state,
+        Selectedcurrentaddress: action.payload,
+      };
+  
     case AsynClear:
       return {
         ...state,

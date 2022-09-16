@@ -19,6 +19,7 @@ export default function Addressplace(props) {
     <TouchableOpacity
       onPress={props.onPress}
       style={{
+    
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -27,6 +28,7 @@ export default function Addressplace(props) {
       }}>
       <View
         style={{
+       
           backgroundColor:
             props?.data?.title === props?.selection?.title
               ? 'rgba(245, 80, 80, 0.2)'
@@ -36,6 +38,13 @@ export default function Addressplace(props) {
           height: scalableheight.six,
           justifyContent: 'center',
           alignItems: 'center',
+          // width: '100%',
+          // height: scalableheight.six,
+          // fontSize: fontSize.fifteen,
+          // backgroundColor: '#F9F9F9',
+          // alignSelf: 'center',
+          // borderRadius: fontSize.borderradiusmedium,
+          // paddingHorizontal: '5%',
         }}>
         <FontAwesome5
           style={{alignSelf: 'center'}}
@@ -63,4 +72,16 @@ export default function Addressplace(props) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 2,
+  },
+});

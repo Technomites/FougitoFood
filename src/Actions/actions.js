@@ -40,6 +40,11 @@ export const AsynClear = 'AsynClear';
 export const UpdateProfile = 'UpdateProfile';
 export const clearStatusProfile = 'clearStatusProfile';
 export const UpdateProfilePicture = 'UpdateProfilePicture';
+export const GetUserProfile = 'GetUserProfile';
+export const CURRENTADDRESS = 'CURRENTADDRESS';
+export const SAVEADDRESS = 'SAVEADDRESS';
+export const ClearAddress = 'ClearAddress';
+export const GetALLUSERADDRESSES = 'GetALLUSERADDRESSES';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -48,9 +53,94 @@ const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
 
-var requestOptions = {
-  method: 'GET',
-  redirect: 'follow',
+
+
+export const getalladdresses = (token) => {
+  try {
+    return async dispatch => {
+      const result = await fetch(
+        API_URl + 'api/Customer/' + 0 + '/Address',
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      const json = await result.json();
+      console.log('getalladdresses' + JSON.stringify(data));
+    
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: GetALLUSERADDRESSES,
+          payload: json.Result,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const clearaddressresponse = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: ClearAddress,
+        payload: "",
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const savemyaddress = (data, token) => {
+  try {
+    console.log('savemyaddress');
+    return async dispatch => {
+    
+      const result = await fetch(API_URl + 'Customer/Address', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          data
+        ),
+      });
+
+      const json = await result.json();
+      console.log('savemyaddress' + JSON.stringify(json));
+
+     
+        dispatch({
+          type: SAVEADDRESS,
+          payloadstatus : json.Status,
+        });
+    
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const storecurrentaddress = (data) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: CURRENTADDRESS,
+        payload: data,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const clearcouponresponse = () => {

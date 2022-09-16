@@ -13,16 +13,15 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
-  readallnotifications,
-  addReadNotifications,
-  clearNotificationCount,
-  clearNotifications,
-  getAllNotifications,
-  GetNotifications,
-  notificationCountHandle,
-  readNotification,
-  seticonfocus,
+  getalladdresses,
+  savemyaddress,
+  clearaddressresponse
 } from '../Actions/actions';
+import Toast from 'react-native-toast-notifications';
+import Geocoder from 'react-native-geocoding';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Geolocation from '@react-native-community/geolocation';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
@@ -40,6 +39,7 @@ import SuccessModal from '../Shared/Components/SuccessModal';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {Item} from 'react-native-paper/lib/typescript/components/List/List';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
+import SavedAddresses from '../Shared/Components/SavedAddresses';
 
 const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
@@ -47,6 +47,17 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
   const [long, setlong] = useState(67.0011);
   const [placeselected, SetPlaceSelected] = useState('');
   const [modelpopup, SetModelPopUP] = useState(false);
+  const [address, setaddress] = useState("");
+  const [pinlatitude, SetPinLatitude] = useState(0);
+  const [pinLongitude, SetPinLongitude] = useState(0);
+  const [hidemarker, sethidemarker] = useState(false);
+  const [pinlocation, setpinlocation] = useState('');
+  const [street, setstreet] = useState('');
+  const [floor, setfloor] = useState('');
+  const [note, setnote] = useState('');
+  const [loader, setloader] = useState(false);
+  const toast = useRef();
+
   const customStyle = [
     {
       elementType: 'geometry',
@@ -217,10 +228,208 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
   const refMap = useRef(null);
-  const {notificationList, notificationCount} = useSelector(
+  const {notificationList, notificationCount, AuthToken, addresscreationresponse} = useSelector(
     state => state.userReducer,
   );
 
+  useEffect(() => {
+    Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
+    Geolocation.getCurrentPosition(info => {
+      SetPinLatitude(info?.coords?.latitude);
+      SetPinLongitude(info?.coords?.longitude);
+      console.log( info?.coords?.latitude);
+      console.log( info?.coords?.longitude);
+    });
+  
+    getLocation();
+  }, []);
+
+
+  useEffect(() => {
+  if(addresscreationresponse != ""){
+    setloader(false)
+    if(addresscreationresponse == "Success"){
+      toast.current.show("New address created", {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      })
+      dispatch(getalladdresses(AuthToken))
+      navigation.goBack();
+    }else{
+      toast.current.show("There was an error saving your address. Please try again later", {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      })
+    }
+dispatch(clearaddressresponse())
+  }
+  }, [addresscreationresponse]);
+
+
+  
+  useEffect(() => {
+    if (pinlatitude != null && pinLongitude != null) {
+      Geocoder.from(pinlatitude, pinLongitude)
+        .then(json => {
+          var addressComponent = json.results[0].formatted_address;
+          console.log(addressComponent);
+          setpinlocation(addressComponent);
+        })
+        .catch(error => console.warn(error));
+    }
+  }, [pinlatitude, pinLongitude]);
+
+  function getnewlocation() {
+    Geocoder.from(pinlatitude, pinLongitude)
+      .then(json => {
+        var addressComponent = json.results[0].formatted_address;
+        console.log(addressComponent);
+        setpinlocation(addressComponent);
+      })
+      .catch(error => console.warn(error));
+  }
+  const getLocation = async () => {
+    const hasLocationPermission = await hasLocationPermissions();
+    if (!hasLocationPermission) {
+      return;
+    }
+  };
+  const hasLocationPermissions = async () => {
+    if (Platform.OS === 'ios') {
+      const hasPermission = await hasLocationPermissionIOS();
+      return hasPermission;
+    }
+
+    if (Platform.OS === 'android' && Platform.Version < 23) {
+      return true;
+    }
+
+    const hasPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (hasPermission) {
+      return true;
+    }
+
+    const status = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (status === PermissionsAndroid.RESULTS.GRANTED) {
+      return true;
+    }
+
+    if (status === PermissionsAndroid.RESULTS.DENIED) {
+      // ToastAndroid.show(
+      //   'Location permission denied by user.',
+      //   ToastAndroid.LONG,
+      // );
+    } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+      // ToastAndroid.show(
+      //   'Location permission revoked by user.',
+      //   ToastAndroid.LONG,
+      // );
+    }
+    return false;
+  };
+  const hasLocationPermissionIOS = async () => {
+    const openSetting = () => {
+      Linking.openSettings().catch(() => {
+        ToastMessage('success', 'Success', 'Unable to open settings');
+      });
+    };
+    const status = await Geolocation.requestAuthorization('whenInUse');
+
+    if (status === 'granted') {
+      return true;
+    }
+
+    if (status === 'denied') {
+      ToastMessage('error', 'Error', 'Location permission denied');
+    }
+
+    if (status === 'disabled') {
+      Alert.alert(
+        `Turn on Location Services to allow Bakery App to determine your location.`,
+        '',
+        [
+          {text: 'Go to Settings', onPress: openSetting},
+          {text: "Don't Use Location", onPress: () => {}},
+        ],
+      );
+    }
+    return false;
+  };
+
+  function addresssave(){
+
+    if(placeselected == ""){
+
+      toast.current.show("Pleace label your address as Home/Work/Other", {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      })
+    }else if(pinlocation == ""){
+
+        toast.current.show("Pleace select a location", {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+          zIndex: 2,
+        })
+      }else if(street == ""){
+
+        toast.current.show("Pleace enter your street", {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+          zIndex: 2,
+        })
+      }else{
+console.log("placeselected " + JSON.stringify(placeselected.title))
+console.log("pinlocation " + pinlocation)
+console.log("street " + street)
+console.log("floor " + floor)
+console.log("pinlatitude " + pinlatitude)
+console.log("pinLongitude " + placeselected)
+let data ={
+  id: 0,
+  address: pinlocation,
+  latitude: pinlatitude,
+  longitude: pinLongitude,
+  type: placeselected.title,
+Street: street,
+Floor: floor,
+NoteToRider:note
+}
+setloader(true)
+dispatch(savemyaddress(data, AuthToken))
+
+      }
+ 
+ 
+  
+  
+  
+  
+  }
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -235,94 +444,179 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
           alignSelf: 'center',
           paddingTop: getStatusBarHeight(),
         }}>
-        <PlainHeader title={'My Address'} />
+        <PlainHeader title={'Create Address'} />
         <View style={{height: scalableheight.three}} />
-        <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
-          <View style={styleSheet.container}>
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '10%',
-              }}>
-              <FontAwesome
-                style={{alignSelf: 'center'}}
-                name="search"
-                color={'rgba(41, 38, 42, 0.5)'}
-                size={fontSize.fifteen}
-              />
-            </View>
-            <View
-              style={{
-                height: '100%',
-                width: '80%',
-                justifyContent: 'center',
-              }}>
-              <TextInput
-                returnKeyType="next"
-                // numberOfLines={props.inputLine}
-                //value={props.value}
-                // onChangeText={props.onChangeText}
-                placeholderTextColor={'lightgray'}
-                placeholder={'Search'}
-                style={styleSheet.textInput}
-              />
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '10%',
-              }}>
-              <MaterialIcons
-                style={{alignSelf: 'center'}}
-                name="my-location"
-                color={'#F55050'}
-                size={fontSize.fifteen}
-              />
-            </View>
-          </View>
+        <ScrollView 
+        keyboardShouldPersistTaps = {true}
+        style={{width: '100%', paddingHorizontal: scalableheight.two, }}>
+       
+        <View style={{height: scalableheight.one}} />
+
+<GooglePlacesAutocomplete
+  suppressDefaultStyles={false}
+  //  styles ={{
+
+  //   ...styleSheet.shadow,
+  //   width: '100%',
+  //   height: scalableheight.six,
+  //   fontSize: fontSize.fifteen,
+  //   backgroundColor: '#F9F9F9',
+  //   alignSelf: 'center',
+  //   borderRadius: fontSize.borderradiusmedium,
+  //   paddingHorizontal: '5%',
+  //   marginHorizontal: '0.4%',
+  // }}
+  styles={{
+    textInput: {
+      ...styleSheet.shadow,
+      width: '100%',
+      height: scalableheight.six,
+      fontSize: fontSize.fifteen,
+      backgroundColor: '#F9F9F9',
+      alignSelf: 'center',
+      borderRadius: fontSize.borderradiusmedium,
+      paddingHorizontal: '5%',
+      marginHorizontal: '0.4%',
+    
+    },
+  }}
+  placeholder="Search"
+  onPress={(data, details = null) => {
+    setpinlocation(data.description);
+    Geocoder.from(data.description)
+      .then(json => {
+        var location = json.results[0].geometry.location;
+        SetPinLatitude(location.lat);
+        SetPinLongitude(location.lng);
+      })
+      .catch(error => console.warn(error));
+  }}
+  query={{
+    key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
+    language: 'en',
+  }}
+/>
+
           <View
-            style={{
-              height: scalableheight.twentysix,
-              borderRadius: fontSize.eight,
-              overflow: 'hidden',
-              marginTop: scalableheight.two,
-            }}>
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              customMapStyle={customStyle}
-              ref={refMap}
-              style={{
-                width: '100%',
-                height: '100%',
-              }}
-              showsUserLocation
-              region={{
-                latitude: lat,
-                longitude: long,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-              initialRegion={{
-                latitude: lat,
-                longitude: long,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}></MapView>
+                style={{
+                  marginTop: scalableheight.one,
+                  height: scalableheight.twentysix,
+                  borderRadius: fontSize.eight,
+                  overflow: 'hidden',
+                 
+
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                {hidemarker == false ? (
+                  <MaterialIcons
+                    style={{
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      alignContent: 'center',
+                      zIndex: 3,
+                      elevation: 3,
+                    }}
+                    name="location-pin"
+                    color={'#F55050'}
+                    size={scalableheight.six}
+                  />
+                ) : (
+                  <Entypo
+                    style={{
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      alignContent: 'center',
+                      zIndex: 3,
+                      elevation: 3,
+                    }}
+                    name="dot-single"
+                    color={'#F55050'}
+                    size={scalableheight.six}
+                  />
+                )}
+                <MapView
+                  provider={PROVIDER_GOOGLE}
+                  customMapStyle={customStyle}
+                  ref={refMap}
+                  showsUserLocation
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: fontSize.fifteen,
+                  }}
+                  region={{
+                    latitude: pinlatitude,
+                    longitude: pinLongitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  }}
+                  initialRegion={{
+                    latitude: pinlatitude,
+                    longitude: pinLongitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  }}
+                  onRegionChange={region => {
+                    //  console.log(region)
+                    if (
+                      region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
+                      region.longitude.toFixed(6) === pinLongitude.toFixed(6)
+                    ) {
+                      return;
+                    } else {
+                      sethidemarker(true);
+                    }
+                  }}
+                  onRegionChangeComplete={region => {
+                    // console.log(region)
+
+                    if (
+                      region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
+                      region.longitude.toFixed(6) === pinLongitude.toFixed(6)
+                    ) {
+                      return;
+                    } else {
+                      sethidemarker(false);
+                      SetPinLatitude(region.latitude),
+                        SetPinLongitude(region.longitude);
+                    }
+                  }}>
+                 
+                </MapView>
+              </View>
+      
+          <View  style={{
+            marginTop: scalableheight.two,
+            ...styleSheet.shadow,
+            width: '99%',
+            height: scalableheight.eight,
+            fontSize: fontSize.fifteen,
+            backgroundColor: '#F9F9F9',
+            alignSelf: 'center',
+            borderRadius: fontSize.borderradiusmedium,
+            paddingHorizontal: '5%',
+            justifyContent: 'center',
+          
+              
+             }}>
+        <Text
+        numberOfLines={2}
+        >{pinlocation}</Text>
           </View>
           <View>
-            <View style={{marginVertical: 5}}>
+            <View style={{marginTop: scalableheight.two, marginBottom: scalableheight.one}}>
               <Text
                 style={{
-                  color: 'rgba(41, 38, 42, 0.6)',
                   fontFamily: 'Inter-Bold',
                   fontSize: fontSize.fifteen,
+                  color: 'black',
+                  opacity:0.5
                 }}>
                 Street
               </Text>
             </View>
-            <View style={styleSheet.container}>
+            <View style={{...styleSheet.container,    ...styleSheet.shadow,}}>
               <View
                 style={{
                   height: '100%',
@@ -333,30 +627,40 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   returnKeyType="next"
                   // numberOfLines={props.inputLine}
                   // keyboardType={props.keyboardType}
-                  //value={props.value}
-                  // onChangeText={props.onChangeText}
+                  value={street}
+                  onChangeText={text => setstreet(text)}
+             
                   placeholderTextColor={'lightgray'}
                   placeholder={'Enter Street'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
-                  style={styleSheet.textInput}
+                  style={{
+                    width: '100%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                  }}
                 />
               </View>
             </View>
           </View>
 
           <View>
-            <View style={{marginVertical: 5}}>
+          <View style={{marginTop: scalableheight.two, marginBottom: scalableheight.one}}>
               <Text
                 style={{
-                  color: 'rgba(41, 38, 42, 0.6)',
                   fontFamily: 'Inter-Bold',
                   fontSize: fontSize.fifteen,
+                  color: 'black',
+                  opacity:0.5
                 }}>
                 Floor (Optional)
               </Text>
             </View>
-            <View style={styleSheet.container}>
+            <View style={{...styleSheet.container,    ...styleSheet.shadow,}}>
               <View
                 style={{
                   height: '100%',
@@ -365,6 +669,8 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                 }}>
                 <TextInput
                   returnKeyType="next"
+                  value={floor}
+                  onChangeText={text => setfloor(text)}
                   // numberOfLines={props.inputLine}
                   // keyboardType={props.keyboardType}
                   //value={props.value}
@@ -373,19 +679,28 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   placeholder={'Enter Floor'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
-                  style={styleSheet.textInput}
+                  style={{
+                    width: '100%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                  }}
                 />
               </View>
             </View>
           </View>
 
           <View>
-            <View style={{marginVertical: 5}}>
+          <View style={{marginTop: scalableheight.two, marginBottom: scalableheight.one}}>
               <Text
                 style={{
-                  color: 'rgba(41, 38, 42, 0.6)',
                   fontFamily: 'Inter-Bold',
                   fontSize: fontSize.fifteen,
+                  color: 'black',
+                  opacity:0.5
                 }}>
                 Note To Rider (Optional)
               </Text>
@@ -394,6 +709,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
               style={{
                 ...styleSheet.container,
                 height: scalableheight.thirteen,
+               ...styleSheet.shadow
               }}>
               <View
                 style={{
@@ -403,6 +719,8 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                 }}>
                 <TextInput
                   returnKeyType="next"
+                  value={note}
+                  onChangeText={text => setnote(text)}
                   // numberOfLines={props.inputLine}
                   // keyboardType={props.keyboardType}
                   //value={props.value}
@@ -411,8 +729,15 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   placeholder={'Enter Note to Rider'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
+                
                   style={{
-                    ...styleSheet.textInput,
+                    width: '100%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
                     textAlignVertical: 'top',
                     height: '100%',
                   }}
@@ -441,17 +766,29 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
             })}
           </View>
 
-          <View style={{marginVertical: fontSize.eight}}>
+     <View style={{height:scalableheight.tweleve}}></View>
+        </ScrollView>
+       
+        <View style={{marginVertical: fontSize.eight, position: "absolute", bottom: scalableheight.two, width:"100%", paddingHorizontal: scalableheight.two}}>
+          
+        {loader == true ? (
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <ActivityIndicator size={'large'} color="#E14E4E" />
+                          </View>
+                        ) : (
             <MYButton
               onPress={() => {
-                SetModelPopUP(true);
+             addresssave()
               }}
               color={'rgba(225, 78, 78, 1)'}
               title={'SAVE NEW ADDRESS'}
               textcolor={'white'}
-            />
+            />)}
           </View>
-        </View>
       </View>
       <SuccessModal
         successModalShown={modelpopup}
@@ -459,6 +796,10 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
           SetModelPopUP(false);
           navigation.navigate('Home');
         }}
+      />
+        <Toast
+        ref={toast}
+        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
       />
     </Animated.View>
   );
@@ -468,9 +809,10 @@ const styleSheet = StyleSheet.create({
   container: {
     height: scalableheight.six,
     backgroundColor: '#F9F9F9',
-    width: '100%',
+    width: '99%',
     flexDirection: 'row',
     borderRadius: fontSize.eight,
+    marginHorizontal:"0.5%"
   },
   textInput: {
     marginLeft: scalableheight.one,
@@ -514,6 +856,17 @@ const styleSheet = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: '100%',
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 2,
   },
 });
 export default EditAddress;
