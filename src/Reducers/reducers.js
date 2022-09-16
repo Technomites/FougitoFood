@@ -27,10 +27,14 @@ import {
   couponsCart,
   VerifyCoupon,
   VerifyCouponClear,
-  GetUserProfile,
-  CURRENTADDRESS,
+  GetUserProfiles,
   Logoutuser,
   AsynClear,
+  UpdateProfile,
+  clearStatusProfile,
+  UpdateProfilePicture,
+  GetUserProfile,
+  CURRENTADDRESS,
   SAVEADDRESS,
   ClearAddress,
   GetALLUSERADDRESSES
@@ -66,6 +70,13 @@ const initialState = {
   ProfileName: '',
   ProfileContact: '',
   ProfileEmail: '',
+  ProfileImage: '',
+  UserLogout: '',
+  userLogoutStatus: '',
+  UserUpdateProfileStatus: '',
+  UserUpdateProfileMessage: '',
+  UpdatePicStatus: '',
+  UpdatePicStatusMessage: '',
   Selectedcurrentaddress: [],
   UserLogout: '',
   userLogoutStatus: '',
@@ -105,7 +116,10 @@ function userReducer(state = initialState, action) {
     case AsynClear:
       return {
         ...state,
-        AuthToken: action.PayloadAuth,
+        AuthToken: '',
+        LoginCustomer: [],
+        UserLogout: '',
+        userLogoutStatus: '',
       };
 
     case VerifyCouponClear:
@@ -285,18 +299,39 @@ function userReducer(state = initialState, action) {
         GetUserProfile: action.payloadcoupon,
       };
 
-    case GetUserProfile:
+    case GetUserProfiles:
       return {
         ...state,
         ProfileName: action.NamePayload,
         ProfileContact: action.ContactPayload,
         ProfileEmail: action.EmailPayload,
+        ProfileImage: action.UserImagePayload,
       };
     case Logoutuser:
       return {
         ...state,
         userLogoutStatus: action.LogoutSatusPayload,
         UserLogout: action.LogoutPayload,
+      };
+    case UpdateProfile:
+      return {
+        ...state,
+        UserUpdateProfileStatus: action.UpdateProfileStatus,
+        UserUpdateProfileMessage: action.UpdateProfileStatusMessage,
+      };
+
+    case clearStatusProfile:
+      return {
+        ...state,
+        UserUpdateProfileStatus: '',
+        UserUpdateProfileMessage: '',
+      };
+
+    case UpdateProfilePicture:
+      return {
+        ...state,
+        UpdatePicStatus: action.UpdateProfilePicStatus,
+        UpdatePicStatusMessage: action.UpdateProfilePicStatusMessage,
       };
 
     default:

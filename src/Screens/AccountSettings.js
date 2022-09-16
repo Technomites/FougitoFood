@@ -12,17 +12,17 @@ import {
   Dimensions,
   TextInput,
   FlatList,
+  Keyboard,
   Modal,
+  ActivityIndicator,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 
 import {
-  postupdatedprofile,
-  clearprofileupdate,
-  getProfileInformation,
-  updateprofilepicture,
-  clearprofilemessage,
+  ProfileUpdate,
   GetProfile,
+  clearstatusProfileupdate,
+  ProfilePictureUpdate,
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -47,25 +47,30 @@ import {
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
-
+import Toast from 'react-native-toast-notifications';
 const AccountSettings = ({navigation, drawerAnimationStyle}) => {
+  const toast = useRef();
   const [Name, setName] = useState('');
   const [EmailAddress, setEmailAddress] = useState('');
   const [PhoneNumber, setPhoneNumber] = useState('');
   const phoneInput = useRef(null);
-  const [Password, setPassword] = useState('');
+  const [password, setPassword] = useState('');
   const [newpasswordshow, setnewpasswordshow] = useState(false);
-  const [Loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [PickImage, setPickImage] = useState('');
   const {
     Lang,
     ProfileInfo,
     profileupdated,
-    profileimage,
+    ProfileImage,
     profilemessage,
     ProfileName,
     ProfileContact,
     ProfileEmail,
     AuthToken,
+    LoginCustomer,
+    UserUpdateProfileStatus,
+    UserUpdateProfileMessage,
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
@@ -76,14 +81,6 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
   }, []);
 
   useEffect(() => {
-    // console.log(
-    //   AuthToken,
-    //   'UpdateProfile UpdateProfile UpdateProfile UpdateProfile',
-    // );
-    dispatch(GetProfile(AuthToken));
-  }, [AuthToken]);
-
-  useEffect(() => {
     console.log(
       ProfileEmail,
       ProfileContact,
@@ -92,60 +89,111 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
     setEmailAddress(ProfileEmail);
     setPhoneNumber(ProfileContact);
     setName(ProfileName);
-  }, [ProfileEmail, ProfileContact, ProfileName,AuthToken]);
+  }, [ProfileEmail, ProfileContact, ProfileName, AuthToken]);
 
-  function postupdatedprofile() {
-    if (Name == '') {
-      showToast('Enter first name', {
-        duration: 500,
+  const postupdatedprofileHandler = () => {
+    Keyboard.dismiss();
+    if (Name.length === 0) {
+      toast.current.show('Enter Name', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
       });
-    } else if (EmailAddress == '') {
-      showToast('Enter Email Address', {
-        duration: 500,
-      });
-    } else if (PhoneNumber == '') {
-      showToast('enter full name', {
-        duration: 500,
-      });
-    } else if (Password == '') {
-      showToast('Enter Password', {
-        duration: 500,
+    } else if (EmailAddress.length === 0) {
+      toast.current.show('Enter EmailAddress', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
       });
     } else {
-      NetInfo.fetch().then(state => {
-        if (state.isConnected == false && state.isInternetReachable == false) {
-          showToast('Problem with internet connectivity', {
-            duration: 500,
-          });
-          setLoader(false);
-        } else {
-          setLoader(true);
-          dispatch(
-            postupdatedprofile(Name, EmailAddress, Password, PhoneNumber),
-          );
-        }
-      });
+      // NetInfo.fetch().then(state => {
+      //   if (state.isConnected == false && state.isInternetReachable == false) {
+      //     showToast('Problem with internet connectivity', {
+      //       duration: 500,
+      //     });
+      //     setLoader(false);
+      //   } else {
+      //     setLoader(true);
+      dispatch(ProfileUpdate(Name, EmailAddress, PhoneNumber, AuthToken));
+      setLoader(true);
+      // }
+      // });
     }
-  }
-
-  const imagePicker = async () => {
-    let imagePick = [];
-    ImagePicker.openPicker({
-      waitAnimationEnd: false,
-      includeExif: true,
-      forceJpg: true,
-      compressImageQuality: 0.8,
-      maxFiles: 10,
-      mediaType: 'photo',
-      includeBase64: true,
-    })
-      .then(response => {
-        setPickImage(response.path);
-        console.log(response);
-        dispatch(updateprofilepicture(response));
-      })
-      .catch(e => console.log(e, 'Error'));
   };
+
+  useEffect(() => {
+    console.log(UserUpdateProfileStatus, 'AuthTokenAuthToken');
+    if (UserUpdateProfileStatus === 'Success') {
+      toast.current.show(UserUpdateProfileMessage, {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+      setLoader(false);
+
+      dispatch(GetProfile(AuthToken));
+    } else if (UserUpdateProfileStatus === 'Error') {
+      toast.current.show(UserUpdateProfileMessage, {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      setLoader(false);
+    }
+  }, [UserUpdateProfileStatus, UserUpdateProfileMessage]);
+  // function postupdatedprofile() {
+  //   if (Name == '') {
+  //     showToast('Enter first name', {
+  //       duration: 500,
+  //     });
+  //   } else if (EmailAddress == '') {
+  //     showToast('Enter Email Address', {
+  //       duration: 500,
+  //     });
+  //   } else {
+  //     NetInfo.fetch().then(state => {
+  //       if (state.isConnected == false && state.isInternetReachable == false) {
+  //         showToast('Problem with internet connectivity', {
+  //           duration: 500,
+  //         });
+  //         setLoader(false);
+  //       } else {
+  //         setLoader(true);
+  //         dispatch(
+  //           postupdatedprofile(Name, EmailAddress, Password, PhoneNumber),
+  //         );
+  //       }
+  //     });
+  //   }
+  // }
+
+  // const imagePicker = async () => {
+  //   //  let imagePick = [];
+  //   ImagePicker.openPicker({
+  //     waitAnimationEnd: false,
+  //     includeExif: true,
+  //     forceJpg: true,
+  //     compressImageQuality: 0.8,
+  //     maxFiles: 10,
+  //     mediaType: 'photo',
+  //     includeBase64: true,
+  //   })
+  //     .then(response => {
+  //       setPickImage(response.path);
+  //       console.log(response);
+  //       dispatch(ProfilePictureUpdate(response));
+  //     })
+  //     .catch(e => console.log(e, 'Error'));  
+  // };
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -173,18 +221,18 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
             backgroundColor: 'white',
           }}>
           <Image
-            resizeMode="stretch"
+            resizeMode="cover"
             style={{
               width: '100%',
               height: '100%',
-
+              borderColor: '#000',
               borderWidth: scalableheight.borderwidth,
               borderRadius: fontSize.circle,
             }}
             source={
-              ProfileInfo != ''
+              AuthToken != ''
                 ? {
-                    uri: profileimage,
+                    uri: ProfileImage,
                   }
                 : require('../Resources/images/grill.png')
             }
@@ -200,7 +248,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
               alignSelf: 'center',
             }}>
             <TouchableOpacity
-              //  disabled={imageLoader}
+              //    disabled={imageLoader}
               onPress={() => imagePicker()}
               style={{
                 alignItems: 'center',
@@ -210,13 +258,12 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
               }}>
               {/* {imageLoader ? (
                 <ActivityIndicator color={'white'} />
-              ) : ( */}
+              ) : ( )} */}
               <Icon
                 name="camera-outline"
                 size={fontSize.twentythree}
                 color="#fff"
               />
-              {/* )} */}
             </TouchableOpacity>
           </View>
         </View>
@@ -291,7 +338,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                 placeholderTextColor="#8c8c8c"
                 placeholder={'Password'}
                 onChangeText={text => setPassword(text)}
-                defaultValue={Password}
+                defaultValue={password}
               />
               <TouchableOpacity
                 onPress={() => {
@@ -346,9 +393,10 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                   ...styleSheet.shadow,
                   paddingLeft: scalableheight.fourteen,
                 }}
+                editable={false}
                 keyboardType="numeric"
                 placeholderTextColor="#8c8c8c"
-                placeholder={'Enter Phone Number'}
+                //          placeholder={'Enter Phone Number'}
                 onChangeText={text => setPhoneNumber(text)}
                 defaultValue={PhoneNumber}
               />
@@ -385,15 +433,30 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
             alignSelf: 'center',
             paddingHorizontal: scalableheight.two,
           }}>
-          <MYButton
-            onPress={() => {
-              SetModelPopUP(true);
-            }}
-            color={'rgba(225, 78, 78, 1)'}
-            title={'UPDATE'}
-            textcolor={'white'}
-          />
+          {loader == true ? (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color="#E14E4E" />
+            </View>
+          ) : (
+            <MYButton
+              onPress={() => {
+                // SetModelPopUP(true);
+                postupdatedprofileHandler();
+              }}
+              color={'rgba(225, 78, 78, 1)'}
+              title={'UPDATE'}
+              textcolor={'white'}
+            />
+          )}
         </View>
+        <Toast
+          ref={toast}
+          style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
+        />
       </View>
     </Animated.View>
   );

@@ -636,7 +636,7 @@ export default function AuthenticationModel(props) {
                               ...styleSheet.TextInput,
                               ...styleSheet.shadow,
                             }}
-                            secureTextEntry={newpasswordshow}
+                            secureTextEntry={!newpasswordshow}
                             placeholderTextColor="#8c8c8c"
                             placeholder={'Password'}
                             onChangeText={text => setpassword(text)}
@@ -649,7 +649,7 @@ export default function AuthenticationModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ? 'eye-off' : 'eye'}
+                              name={newpasswordshow ? 'eye' : 'eye-off'}
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -794,7 +794,7 @@ export default function AuthenticationModel(props) {
                               ...styleSheet.TextInput,
                               ...styleSheet.shadow,
                             }}
-                            secureTextEntry={newpasswordshow}
+                            secureTextEntry={!newpasswordshow}
                             placeholderTextColor="#8c8c8c"
                             placeholder={'Password'}
                             onChangeText={text => setpassword(text)}
@@ -807,7 +807,7 @@ export default function AuthenticationModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ? 'eye-off' : 'eye'}
+                              name={newpasswordshow ? 'eye' : 'eye-off'}
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -825,7 +825,7 @@ export default function AuthenticationModel(props) {
                               ...styleSheet.TextInput,
                               ...styleSheet.shadow,
                             }}
-                            secureTextEntry={newpasswordshow}
+                            secureTextEntry={!newpasswordshow}
                             placeholderTextColor="#8c8c8c"
                             placeholder={'Confirm Password'}
                             onChangeText={text => Setconfirmpassword(text)}
@@ -838,7 +838,7 @@ export default function AuthenticationModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ? 'eye-off' : 'eye'}
+                              name={newpasswordshow ? 'eye' : 'eye-off'}
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>

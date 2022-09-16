@@ -99,7 +99,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
     },
   ]);
   const dispatch = useDispatch();
-  const {Lang, notificationStatus, ProfileInfo} = useSelector(
+  const {Lang, notificationStatus,AuthToken} = useSelector(
     state => state.userReducer,
   );
   const [isEnabled, setIsEnabled] = useState(false);
@@ -121,18 +121,18 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
   //   dispatch(eraseNotificationStatus());
   // }, [notificationStatus]);
 
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      if (ProfileInfo.allowPushNotifications == true) {
-        setIsEnabled(true);
-      } else {
-        setIsEnabled(false);
-      }
-    });
+  // React.useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     if (ProfileInfo.allowPushNotifications == true) {
+  //       setIsEnabled(true);
+  //     } else {
+  //       setIsEnabled(false);
+  //     }
+  //   });
 
-    //  Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, [navigation]);
+  //   //  Return the function to unsubscribe from the event so it gets removed on unmount
+  //   return unsubscribe;
+  // }, [navigation]);
 
   const toggleSwitch = async () => {
     dispatch(updateNotificationStatus(!isEnabled));
