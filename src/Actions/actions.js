@@ -46,6 +46,9 @@ export const SAVEADDRESS = 'SAVEADDRESS';
 export const ClearAddress = 'ClearAddress';
 export const GetALLUSERADDRESSES = 'GetALLUSERADDRESSES';
 export const ClearORDERPLACEMENTSTATUS = 'ClearORDERPLACEMENTSTATUS';
+export const RefreshToken = 'RefreshToken';
+export const StoreNEWRefreshTokenDATA = 'StoreNEWRefreshTokenDATA';
+
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
@@ -53,6 +56,66 @@ const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
 
+
+ 
+
+
+
+export const refreshmytoken = (data,token) => {
+  try {
+    console.log('refreshmytoken');
+    return async dispatch => {
+    
+      const result = await fetch(API_URl + 'ServiceAndDeliveryStaffAccount/RefreshToken', {
+        method: 'POST',
+        headers: {
+          "Accept" : "text/plain",
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          data
+        ),
+      });
+
+      const json = await result.json();
+      console.log('refreshmytoken' + JSON.stringify(json));
+
+     
+   
+      if (json.Status == 'Success') {
+        await AsyncStorage.setItem(
+          'AccessToken',
+          JSON.stringify(json.Result.Token),
+        );
+        await AsyncStorage.setItem(
+          'TokenInfo',
+          JSON.stringify(json.Result),
+        );
+        
+        dispatch({
+          type: StoreNEWRefreshTokenDATA,
+          payloadtoken : json.Result.Token,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const storetokenrefresh = (data) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: RefreshToken,
+        payload: data,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const clearorderplacementstatus = () => {
   try {
@@ -443,6 +506,10 @@ export const Login = (number, password) => {
         await AsyncStorage.setItem(
           'AccessToken',
           JSON.stringify(json?.Result.AuthData.TokenInfo.Token),
+        );
+        await AsyncStorage.setItem(
+          'TokenInfo',
+          JSON.stringify(json?.Result.AuthData.TokenInfo),
         );
         await AsyncStorage.setItem('Password', password);
         console.log('Success');

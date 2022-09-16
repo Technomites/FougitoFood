@@ -120,7 +120,7 @@ const CustomDrawerStyle = ({navigation}) => {
     ProfileImage,
   } = useSelector(state => state.userReducer);
 
-  console.log(LoginCustomer?.Logo, 'LoginCustomer?.Name LoginCustomer?.Name');
+
   let options = [
     {
       label: 'Settings',

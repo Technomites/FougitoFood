@@ -39,7 +39,9 @@ import {
   ClearAddress,
   GetALLUSERADDRESSES,
   CreateOrder,
-  ClearORDERPLACEMENTSTATUS
+  ClearORDERPLACEMENTSTATUS,
+  RefreshToken,
+  StoreNEWRefreshTokenDATA
 } from '../Actions/actions';
 
 const initialState = {
@@ -84,12 +86,28 @@ const initialState = {
   userLogoutStatus: '',
   addresscreationresponse: "",
   alladdresses: [],
-  orderplacementstatus: ""
+  orderplacementstatus: "",
+  refreshtokendata: null,
+
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
     
+
+    case StoreNEWRefreshTokenDATA:
+      return {
+        ...state,
+        AuthToken: action.payloadtoken,
+        refreshtokendata: null,
+      };
+    
+    case RefreshToken:
+      return {
+        ...state,
+        refreshtokendata: action.payload,
+      };
+
     case ClearORDERPLACEMENTSTATUS:
       return {
         ...state,

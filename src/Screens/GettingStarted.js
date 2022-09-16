@@ -26,10 +26,10 @@ import MYButton from '../Shared/Components/MYButton';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
 // import Modal from "react-native-modal";
-import {storetoken} from '../Actions/actions';
+import {storetoken, storetokenrefresh, refreshmytoken} from '../Actions/actions';
 
 const GettingStarted = props => {
-  const {Lang} = useSelector(state => state.userReducer);
+  const {refreshtokendata, AuthToken} = useSelector(state => state.userReducer);
 
   const [count, setcount] = useState(0);
   const [animationstate, setanimationstate] = useState(true);
@@ -76,11 +76,27 @@ const GettingStarted = props => {
 
   async function gettoken() {
     const value = await AsyncStorage.getItem('AccessToken');
+     const refresh = await AsyncStorage.getItem('TokenInfo');
     console.log(value);
     if (value != undefined && value != '') {
       dispatch(storetoken(JSON.parse(value)));
+
+      if (refresh != undefined && refresh != '') {
+
+        dispatch(storetokenrefresh(JSON.parse(refresh, AuthToken)));
+      }
     }
+   
   }
+
+  useEffect(() => {
+    if(refreshtokendata != null){
+      dispatch(refreshmytoken(refreshtokendata))
+// console.log("yoooo1" + JSON.stringify(refreshtokendata))
+    }
+
+  }, [refreshtokendata]);
+  
 
   return (
     <ImageBackground
