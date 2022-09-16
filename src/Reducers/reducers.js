@@ -37,7 +37,9 @@ import {
   CURRENTADDRESS,
   SAVEADDRESS,
   ClearAddress,
-  GetALLUSERADDRESSES
+  GetALLUSERADDRESSES,
+  CreateOrder,
+  ClearORDERPLACEMENTSTATUS
 } from '../Actions/actions';
 
 const initialState = {
@@ -81,13 +83,24 @@ const initialState = {
   UserLogout: '',
   userLogoutStatus: '',
   addresscreationresponse: "",
-  alladdresses: []
+  alladdresses: [],
+  orderplacementstatus: ""
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
     
-   
+    case ClearORDERPLACEMENTSTATUS:
+      return {
+        ...state,
+        orderplacementstatus: action.payload,
+      };
+
+    case CreateOrder:
+      return {
+        ...state,
+        orderplacementstatus: action.payload,
+      };
 
     case GetALLUSERADDRESSES:
       return {

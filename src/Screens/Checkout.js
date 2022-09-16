@@ -24,6 +24,8 @@ import {
   createorder,
   verifycoupon,
   clearcouponresponse,
+  clearorderplacementstatus,
+  cleancart
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -119,7 +121,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     ProfileName,
     ProfileContact,
     ProfileEmail,
-    Selectedcurrentaddress
+    Selectedcurrentaddress,
+    orderplacementstatus
 
   } = useSelector(
     state => state.userReducer,
@@ -327,6 +330,39 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     }
   }, [couponresponsestatus, couponresponsemessage]);
 
+
+  useEffect(() => {
+    setloader2(false)
+    if(orderplacementstatus != ""){
+if(orderplacementstatus ==  'success'){
+  toast.current.show('Order Placed', {
+    type: 'normal',
+    placement: 'bottom',
+    duration: 4000,
+    offset: 10,
+    animationType: 'slide-in',
+    zIndex: 2,
+  });
+dispatch(cleancart())
+
+navigation.replace("PreparingFood")
+}else{
+  toast.current.show(orderplacementstatus, {
+    type: 'normal',
+    placement: 'bottom',
+    duration: 4000,
+    offset: 10,
+    animationType: 'slide-in',
+    zIndex: 2,
+  });
+}
+    }
+   dispatch(clearorderplacementstatus())
+  }, [orderplacementstatus]);
+
+
+
+  
   function placeorder() {
 
   
@@ -424,9 +460,18 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       zIndex: 2,
     });
   } 
+  else if (Selectedcurrentaddress?.length == 0) {
+    toast.current.show('Please Select a Delivery Address', {
+      type: 'normal',
+      placement: 'bottom',
+      duration: 4000,
+      offset: 10,
+      animationType: 'slide-in',
+      zIndex: 2,
+    });
+  } 
     
-    
-    
+
     else {
      
   
@@ -459,10 +504,9 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           
           }
       
-          console.log("this is the order" + JSON.stringify(order))
-  
+     
+          
 
-      
       let data = {
         restaurantBranchId: restrauntbasicdata.Id,
         discountPercentage: 0, // to be decided
@@ -473,17 +517,17 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         customerName: AuthToken != "" ? ProfileName : firstname + ' ' + lastname,
         customerContact: AuthToken != "" ? ProfileContact : phonenumber,
         customerEmail: AuthToken != "" ? ProfileEmail : email, //"mailto:customer@fougito.com"
-        floor: plotnodetails,
-        latitude: pinlatitude,
-        longitude: pinLongitude,
+        floor: AuthToken != "" ? Selectedcurrentaddress[0].Floor  : plotnodetails,
+        latitude: AuthToken != "" ? Selectedcurrentaddress[0].Latitude  : pinlatitude,
+        longitude: AuthToken != "" ? Selectedcurrentaddress[0].Longitude  : pinLongitude,
         noteToRider: AuthToken != "" ? Selectedcurrentaddress[0].note : notetorider,
-        street: buildingdetails,
+        street: AuthToken != "" ? Selectedcurrentaddress[0].Street  : buildingdetails,
         type: pickuporder ? 'Pickup' : 'Delivery',
         orderItems: order,
       };
   
- 
-      dispatch(createorder(data));
+      setloader2(true)
+       dispatch(createorder(data));
     }
   }
   function selectpaymentmethod(index) {

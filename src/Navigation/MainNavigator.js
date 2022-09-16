@@ -57,6 +57,8 @@ import RestaurantPageAnimation from '../Screens/RestaurantPageAnimation';
 import Settings from '../Screens/Settings';
 import Help from '../Screens/Help';
 import Coupons from '../Screens/Coupons';
+import PreparingFood from '../Screens/PreparingFood';
+
 
 import Login from '../Screens/Login';
 import SignUp from '../Screens/SignUp';
@@ -993,7 +995,9 @@ const Drawernavigator = props => {
       <Drawer.Screen name="Checkout" options={{headerShown: false}}>
         {props => <Checkout {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
+     
 
+      
       <Drawer.Screen name="Changepassword" options={{headerShown: false}}>
         {props => (
           <Changepassword {...props} drawerAnimationStyle={animatedStyle} />
@@ -1235,6 +1239,12 @@ const MainNavigator = () => {
             component={Legal}
             options={{headerShown: false}}
           />
+           <Stack.Screen
+            name="PreparingFood"
+            component={PreparingFood}
+            options={{headerShown: false}}
+          />
+
           <Stack.Screen
             name="TermsCondition"
             component={TermsCondition}

@@ -45,7 +45,7 @@ export const CURRENTADDRESS = 'CURRENTADDRESS';
 export const SAVEADDRESS = 'SAVEADDRESS';
 export const ClearAddress = 'ClearAddress';
 export const GetALLUSERADDRESSES = 'GetALLUSERADDRESSES';
-
+export const ClearORDERPLACEMENTSTATUS = 'ClearORDERPLACEMENTSTATUS';
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
@@ -54,6 +54,18 @@ const header1 = {
 };
 
 
+export const clearorderplacementstatus = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: ClearORDERPLACEMENTSTATUS,
+        payload: "",
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getalladdresses = (token) => {
   try {
@@ -204,11 +216,16 @@ export const createorder = data => {
 
       const json = await result.json();
       console.log('postserviceratings' + JSON.stringify(json));
-
-      if (json.status === 'success') {
+    
+      if (json.Status === 'Success') {
         dispatch({
           type: CreateOrder,
           payload: 'success',
+        });
+      }else{
+        dispatch({
+          type: CreateOrder,
+          payload: 'We are unable to place your order at the moment. Please try again later.',
         });
       }
     };
