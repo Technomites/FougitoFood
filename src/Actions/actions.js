@@ -55,7 +55,7 @@ export const getalladdresses = (token) => {
   try {
     return async dispatch => {
       const result = await fetch(
-        API_URl + 'api/Customer/' + 0 + '/Address',
+        API_URl + 'Customer/' + 0 + '/Address',
         {
           method: 'GET',
           headers: {
@@ -66,7 +66,7 @@ export const getalladdresses = (token) => {
       );
 
       const json = await result.json();
-      console.log('getalladdresses' + JSON.stringify(data));
+      console.log('getalladdresses' + JSON.stringify(json));
     
 
       if (json.Status == 'Success') {

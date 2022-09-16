@@ -11,18 +11,34 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		182E39F828929497006F429F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 182E39F728929497006F429F /* GoogleService-Info.plist */; };
+		3B33A66A572D425B9F60A8A6 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2C1969A0D0A41F198E03A1A /* Inter-Medium.ttf */; };
+		3E3800E5799247E394AE5A6A /* Rubik-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5460545A246C4F4A83262704 /* Rubik-ExtraBoldItalic.ttf */; };
+		4CA18B4828D319BC0002CC53 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4CA18B4728D319BC0002CC53 /* GoogleService-Info.plist */; };
 		4FA4F6032FA54B2CBFB42BEF /* .ttf in Resources */ = {isa = PBXBuildFile; fileRef = 551F23707F6348A28A583133 /* .ttf */; };
-		4FDB2F377A3449DD86530C4C /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBF97893D0034D27A3EFD73B /* Rubik-BlackItalic.ttf */; };
-		797750EB59F043A19F538268 /* Rubik-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED7C3653783541BDB5F260D0 /* Rubik-BoldItalic.ttf */; };
-		812D7A6C93A2499BA7104EBD /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08754531EE834913826FDF39 /* Rubik-LightItalic.ttf */; };
+		58FD1CD48F7A42BB89B3D58F /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54D397D18FDB478FA8FE0A06 /* Inter-Light.ttf */; };
+		5B265AD652134820AAC732D5 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5E9B72A25A44312ADE5BCFA /* Rubik-Bold.ttf */; };
+		69A9209314F349E6B8CB4F89 /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 384F2F5A75BC4A91BFDD4CCB /* Inter-ExtraLight.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		820757830C6A40A58097066E /* Rubik-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8DD2A4969D73423185C014F3 /* Rubik-MediumItalic.ttf */; };
 		83EDE239D71FFE22752F2C6B /* Pods_FougitoFood.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62B4135324C42D6366700612 /* Pods_FougitoFood.framework */; };
-		85E9B6CD30414C98AD6F24DE /* Rubik-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D0EA6F28B68429A81565491 /* Rubik-Italic.ttf */; };
-		C07E6B4315A54A8DAD024898 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 698FCBE680F542AAA63B4C10 /* Rubik-Black.ttf */; };
-		C4161DC026A148E3A8B9E5F6 /* Rubik-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E46BFBAEF904AD4A07F5227 /* Rubik-SemiBoldItalic.ttf */; };
-		D26A41EB09AF4C42BA91ED9F /* Rubik-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 596FA00BE8CA4C8F991A78E5 /* Rubik-MediumItalic.ttf */; };
+		9101882466FD491392176FE9 /* Rubik-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01B009BA3B1845869191F15D /* Rubik-ExtraBold.ttf */; };
+		926BAB24C75D4EB7BA4CAA66 /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB9FDF4D007E4C0DB84B1D83 /* Rubik-BlackItalic.ttf */; };
+		9CA0D764B70940529BE52252 /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB2F28FA5F9046D8888C0A8A /* Rubik-LightItalic.ttf */; };
+		A4058A99960B4BBC9526F46D /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D28CEF0DEBE14C2FB1C22FDF /* Inter-Thin.ttf */; };
+		B4C6B5936D55481D9AD6F042 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2E328FA3E9446F6ABB9FB87 /* Rubik-Black.ttf */; };
+		BA3AC62B6FF24C4CB27BDF83 /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BDAC6D4545B346BE9AB7A93F /* Inter-Black.ttf */; };
+		BCE78F00B2F44EACA39E3961 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 614FB36626474B07ADEA84BE /* Rubik-Regular.ttf */; };
+		BDA2B1D3B27141F4BF0A9CD4 /* Rubik-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99442BF72146446E8C3A9EC2 /* Rubik-SemiBoldItalic.ttf */; };
+		C04AD8BA58544AA898518723 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE84C7CDFE7247DB93403985 /* Inter-SemiBold.ttf */; };
+		C82D015BBEFF425480F4A9DE /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 810220200362429AA849D448 /* Inter-Bold.ttf */; };
+		CB735655F60F4798A2B03628 /* Rubik-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA8D91D642AE430993C28517 /* Rubik-Light.ttf */; };
+		D564B06D4F0744A88D160C3E /* Rubik-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6879FF8524B04907968962FE /* Rubik-SemiBold.ttf */; };
+		D6B6A1D0F0EE4BA793DC667E /* Rubik-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6D3999F3CBB4413A666925D /* Rubik-BoldItalic.ttf */; };
+		D86F95AF1E834AC3BF4974CA /* Rubik-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE462660FA6C4B5898C9EE22 /* Rubik-Italic.ttf */; };
 		E8573556FF205F490FE7635B /* Pods_FougitoFood_FougitoFoodTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47C80175D9A1E4AA843C3E1E /* Pods_FougitoFood_FougitoFoodTests.framework */; };
+		E8F61337B7D846E6B3FED619 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0F9F89E9511E41CF87B0684B /* Inter-Regular.ttf */; };
+		F688B3A0570247F18C18E426 /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0018CF44C1624732A03798B3 /* Rubik-Medium.ttf */; };
+		FC7C42C7EECC4A4CA8C8CFD7 /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7046401BAB8043418555CE63 /* Inter-ExtraBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,40 +52,49 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0018CF44C1624732A03798B3 /* Rubik-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Medium.ttf"; path = "../Fonts/Rubik-Medium.ttf"; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* FougitoFoodTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FougitoFoodTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* FougitoFoodTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FougitoFoodTests.m; sourceTree = "<group>"; };
-		08754531EE834913826FDF39 /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-LightItalic.ttf"; path = "../Fonts/Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
-		0E46BFBAEF904AD4A07F5227 /* Rubik-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-SemiBoldItalic.ttf"; path = "../Fonts/Rubik-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		01B009BA3B1845869191F15D /* Rubik-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-ExtraBold.ttf"; path = "../Fonts/Rubik-ExtraBold.ttf"; sourceTree = "<group>"; };
+		0F9F89E9511E41CF87B0684B /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../Fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* FougitoFood.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FougitoFood.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = FougitoFood/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = FougitoFood/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = FougitoFood/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = FougitoFood/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FougitoFood/main.m; sourceTree = "<group>"; };
-		182E39F728929497006F429F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		182E39F92892C7E1006F429F /* FougitoFood.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FougitoFood.entitlements; path = FougitoFood/FougitoFood.entitlements; sourceTree = "<group>"; };
-		2D0EA6F28B68429A81565491 /* Rubik-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Italic.ttf"; path = "../Fonts/Rubik-Italic.ttf"; sourceTree = "<group>"; };
-		37B143BD72144EE4980FAF8E /* Rubik-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-ExtraBoldItalic.ttf"; path = "../Fonts/Rubik-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		384F2F5A75BC4A91BFDD4CCB /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraLight.ttf"; path = "../Fonts/Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-FougitoFood.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FougitoFood.debug.xcconfig"; path = "Target Support Files/Pods-FougitoFood/Pods-FougitoFood.debug.xcconfig"; sourceTree = "<group>"; };
-		42C09118C51E4E2381C71C5C /* Rubik-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-ExtraBold.ttf"; path = "../Fonts/Rubik-ExtraBold.ttf"; sourceTree = "<group>"; };
 		47C80175D9A1E4AA843C3E1E /* Pods_FougitoFood_FougitoFoodTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FougitoFood_FougitoFoodTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CA18B4728D319BC0002CC53 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5460545A246C4F4A83262704 /* Rubik-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-ExtraBoldItalic.ttf"; path = "../Fonts/Rubik-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		54D397D18FDB478FA8FE0A06 /* Inter-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.ttf"; path = "../Fonts/Inter-Light.ttf"; sourceTree = "<group>"; };
 		551F23707F6348A28A583133 /* .ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = .ttf; path = ../Fonts/.ttf; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-FougitoFood.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FougitoFood.release.xcconfig"; path = "Target Support Files/Pods-FougitoFood/Pods-FougitoFood.release.xcconfig"; sourceTree = "<group>"; };
-		596FA00BE8CA4C8F991A78E5 /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-MediumItalic.ttf"; path = "../Fonts/Rubik-MediumItalic.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-FougitoFood-FougitoFoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FougitoFood-FougitoFoodTests.debug.xcconfig"; path = "Target Support Files/Pods-FougitoFood-FougitoFoodTests/Pods-FougitoFood-FougitoFoodTests.debug.xcconfig"; sourceTree = "<group>"; };
+		614FB36626474B07ADEA84BE /* Rubik-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Regular.ttf"; path = "../Fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		62B4135324C42D6366700612 /* Pods_FougitoFood.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FougitoFood.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		698FCBE680F542AAA63B4C10 /* Rubik-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Black.ttf"; path = "../Fonts/Rubik-Black.ttf"; sourceTree = "<group>"; };
-		77622838B8144F6A81E83CD0 /* Rubik-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Bold.ttf"; path = "../Fonts/Rubik-Bold.ttf"; sourceTree = "<group>"; };
+		6879FF8524B04907968962FE /* Rubik-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-SemiBold.ttf"; path = "../Fonts/Rubik-SemiBold.ttf"; sourceTree = "<group>"; };
+		7046401BAB8043418555CE63 /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraBold.ttf"; path = "../Fonts/Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
+		810220200362429AA849D448 /* Inter-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Bold.ttf"; path = "../Fonts/Inter-Bold.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = FougitoFood/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-FougitoFood-FougitoFoodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FougitoFood-FougitoFoodTests.release.xcconfig"; path = "Target Support Files/Pods-FougitoFood-FougitoFoodTests/Pods-FougitoFood-FougitoFoodTests.release.xcconfig"; sourceTree = "<group>"; };
-		89E8CCCC1D72459094180998 /* Rubik-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-SemiBold.ttf"; path = "../Fonts/Rubik-SemiBold.ttf"; sourceTree = "<group>"; };
-		A069382391484CAABF1F144A /* Rubik-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Medium.ttf"; path = "../Fonts/Rubik-Medium.ttf"; sourceTree = "<group>"; };
-		C33AA7BDC0304A8B829ABCB2 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../Fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
-		E4576AAEA01E44F4BC8030C9 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Regular.ttf"; path = "../Fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
-		EBF97893D0034D27A3EFD73B /* Rubik-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BlackItalic.ttf"; path = "../Fonts/Rubik-BlackItalic.ttf"; sourceTree = "<group>"; };
+		8DD2A4969D73423185C014F3 /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-MediumItalic.ttf"; path = "../Fonts/Rubik-MediumItalic.ttf"; sourceTree = "<group>"; };
+		99442BF72146446E8C3A9EC2 /* Rubik-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-SemiBoldItalic.ttf"; path = "../Fonts/Rubik-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		AA8D91D642AE430993C28517 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../Fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
+		B2C1969A0D0A41F198E03A1A /* Inter-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Medium.ttf"; path = "../Fonts/Inter-Medium.ttf"; sourceTree = "<group>"; };
+		B2E328FA3E9446F6ABB9FB87 /* Rubik-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Black.ttf"; path = "../Fonts/Rubik-Black.ttf"; sourceTree = "<group>"; };
+		BB9FDF4D007E4C0DB84B1D83 /* Rubik-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BlackItalic.ttf"; path = "../Fonts/Rubik-BlackItalic.ttf"; sourceTree = "<group>"; };
+		BDAC6D4545B346BE9AB7A93F /* Inter-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Black.ttf"; path = "../Fonts/Inter-Black.ttf"; sourceTree = "<group>"; };
+		CE462660FA6C4B5898C9EE22 /* Rubik-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Italic.ttf"; path = "../Fonts/Rubik-Italic.ttf"; sourceTree = "<group>"; };
+		D28CEF0DEBE14C2FB1C22FDF /* Inter-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Thin.ttf"; path = "../Fonts/Inter-Thin.ttf"; sourceTree = "<group>"; };
+		D6D3999F3CBB4413A666925D /* Rubik-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BoldItalic.ttf"; path = "../Fonts/Rubik-BoldItalic.ttf"; sourceTree = "<group>"; };
+		DE84C7CDFE7247DB93403985 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.ttf"; path = "../Fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
+		EB2F28FA5F9046D8888C0A8A /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-LightItalic.ttf"; path = "../Fonts/Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		ED7C3653783541BDB5F260D0 /* Rubik-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BoldItalic.ttf"; path = "../Fonts/Rubik-BoldItalic.ttf"; sourceTree = "<group>"; };
+		F5E9B72A25A44312ADE5BCFA /* Rubik-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Bold.ttf"; path = "../Fonts/Rubik-Bold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,7 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				182E39F92892C7E1006F429F /* FougitoFood.entitlements */,
-				182E39F728929497006F429F /* GoogleService-Info.plist */,
+				4CA18B4728D319BC0002CC53 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -137,20 +162,6 @@
 		4CA5379628D3089E005B2847 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				698FCBE680F542AAA63B4C10 /* Rubik-Black.ttf */,
-				EBF97893D0034D27A3EFD73B /* Rubik-BlackItalic.ttf */,
-				77622838B8144F6A81E83CD0 /* Rubik-Bold.ttf */,
-				ED7C3653783541BDB5F260D0 /* Rubik-BoldItalic.ttf */,
-				42C09118C51E4E2381C71C5C /* Rubik-ExtraBold.ttf */,
-				37B143BD72144EE4980FAF8E /* Rubik-ExtraBoldItalic.ttf */,
-				2D0EA6F28B68429A81565491 /* Rubik-Italic.ttf */,
-				C33AA7BDC0304A8B829ABCB2 /* Rubik-Light.ttf */,
-				08754531EE834913826FDF39 /* Rubik-LightItalic.ttf */,
-				A069382391484CAABF1F144A /* Rubik-Medium.ttf */,
-				596FA00BE8CA4C8F991A78E5 /* Rubik-MediumItalic.ttf */,
-				E4576AAEA01E44F4BC8030C9 /* Rubik-Regular.ttf */,
-				89E8CCCC1D72459094180998 /* Rubik-SemiBold.ttf */,
-				0E46BFBAEF904AD4A07F5227 /* Rubik-SemiBoldItalic.ttf */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -192,6 +203,29 @@
 			isa = PBXGroup;
 			children = (
 				551F23707F6348A28A583133 /* .ttf */,
+				0018CF44C1624732A03798B3 /* Rubik-Medium.ttf */,
+				8DD2A4969D73423185C014F3 /* Rubik-MediumItalic.ttf */,
+				614FB36626474B07ADEA84BE /* Rubik-Regular.ttf */,
+				6879FF8524B04907968962FE /* Rubik-SemiBold.ttf */,
+				99442BF72146446E8C3A9EC2 /* Rubik-SemiBoldItalic.ttf */,
+				D6D3999F3CBB4413A666925D /* Rubik-BoldItalic.ttf */,
+				01B009BA3B1845869191F15D /* Rubik-ExtraBold.ttf */,
+				5460545A246C4F4A83262704 /* Rubik-ExtraBoldItalic.ttf */,
+				CE462660FA6C4B5898C9EE22 /* Rubik-Italic.ttf */,
+				AA8D91D642AE430993C28517 /* Rubik-Light.ttf */,
+				EB2F28FA5F9046D8888C0A8A /* Rubik-LightItalic.ttf */,
+				0F9F89E9511E41CF87B0684B /* Inter-Regular.ttf */,
+				DE84C7CDFE7247DB93403985 /* Inter-SemiBold.ttf */,
+				D28CEF0DEBE14C2FB1C22FDF /* Inter-Thin.ttf */,
+				B2E328FA3E9446F6ABB9FB87 /* Rubik-Black.ttf */,
+				BB9FDF4D007E4C0DB84B1D83 /* Rubik-BlackItalic.ttf */,
+				F5E9B72A25A44312ADE5BCFA /* Rubik-Bold.ttf */,
+				BDAC6D4545B346BE9AB7A93F /* Inter-Black.ttf */,
+				810220200362429AA849D448 /* Inter-Bold.ttf */,
+				7046401BAB8043418555CE63 /* Inter-ExtraBold.ttf */,
+				384F2F5A75BC4A91BFDD4CCB /* Inter-ExtraLight.ttf */,
+				54D397D18FDB478FA8FE0A06 /* Inter-Light.ttf */,
+				B2C1969A0D0A41F198E03A1A /* Inter-Medium.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -302,15 +336,31 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				C07E6B4315A54A8DAD024898 /* Rubik-Black.ttf in Resources */,
-				4FDB2F377A3449DD86530C4C /* Rubik-BlackItalic.ttf in Resources */,
-				797750EB59F043A19F538268 /* Rubik-BoldItalic.ttf in Resources */,
-				85E9B6CD30414C98AD6F24DE /* Rubik-Italic.ttf in Resources */,
-				812D7A6C93A2499BA7104EBD /* Rubik-LightItalic.ttf in Resources */,
-				182E39F828929497006F429F /* GoogleService-Info.plist in Resources */,
-				D26A41EB09AF4C42BA91ED9F /* Rubik-MediumItalic.ttf in Resources */,
-				C4161DC026A148E3A8B9E5F6 /* Rubik-SemiBoldItalic.ttf in Resources */,
+				4CA18B4828D319BC0002CC53 /* GoogleService-Info.plist in Resources */,
 				4FA4F6032FA54B2CBFB42BEF /* .ttf in Resources */,
+				F688B3A0570247F18C18E426 /* Rubik-Medium.ttf in Resources */,
+				820757830C6A40A58097066E /* Rubik-MediumItalic.ttf in Resources */,
+				BCE78F00B2F44EACA39E3961 /* Rubik-Regular.ttf in Resources */,
+				D564B06D4F0744A88D160C3E /* Rubik-SemiBold.ttf in Resources */,
+				BDA2B1D3B27141F4BF0A9CD4 /* Rubik-SemiBoldItalic.ttf in Resources */,
+				D6B6A1D0F0EE4BA793DC667E /* Rubik-BoldItalic.ttf in Resources */,
+				9101882466FD491392176FE9 /* Rubik-ExtraBold.ttf in Resources */,
+				3E3800E5799247E394AE5A6A /* Rubik-ExtraBoldItalic.ttf in Resources */,
+				D86F95AF1E834AC3BF4974CA /* Rubik-Italic.ttf in Resources */,
+				CB735655F60F4798A2B03628 /* Rubik-Light.ttf in Resources */,
+				9CA0D764B70940529BE52252 /* Rubik-LightItalic.ttf in Resources */,
+				E8F61337B7D846E6B3FED619 /* Inter-Regular.ttf in Resources */,
+				C04AD8BA58544AA898518723 /* Inter-SemiBold.ttf in Resources */,
+				A4058A99960B4BBC9526F46D /* Inter-Thin.ttf in Resources */,
+				B4C6B5936D55481D9AD6F042 /* Rubik-Black.ttf in Resources */,
+				926BAB24C75D4EB7BA4CAA66 /* Rubik-BlackItalic.ttf in Resources */,
+				5B265AD652134820AAC732D5 /* Rubik-Bold.ttf in Resources */,
+				BA3AC62B6FF24C4CB27BDF83 /* Inter-Black.ttf in Resources */,
+				C82D015BBEFF425480F4A9DE /* Inter-Bold.ttf in Resources */,
+				FC7C42C7EECC4A4CA8C8CFD7 /* Inter-ExtraBold.ttf in Resources */,
+				69A9209314F349E6B8CB4F89 /* Inter-ExtraLight.ttf in Resources */,
+				58FD1CD48F7A42BB89B3D58F /* Inter-Light.ttf in Resources */,
+				3B33A66A572D425B9F60A8A6 /* Inter-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,8 +583,90 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FougitoFood/FougitoFood.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M7XN37KV2Z;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/BVLinearGradient/BVLinearGradient.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion/DoubleConversion.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations/FirebaseInstallations.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMessaging/FirebaseMessaging.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Google-Maps-iOS-Utils/GoogleMapsUtils.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport/GoogleDataTransport.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities/GoogleUtilities.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC/FBLPromises.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/folly.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety/RCTTypeSafety.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNCAsyncStorage/RNCAsyncStorage.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNCClipboard/RNCClipboard.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNCPushNotificationIOS/RNCPushNotificationIOS.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDateTimePicker/RNDateTimePicker.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDeviceInfo/RNDeviceInfo.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNFBApp/RNFBApp.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNFBMessaging/RNFBMessaging.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler/RNGestureHandler.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/RNImageCropPicker.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNReanimated/RNReanimated.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNSVG/RNSVG.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNScreens/RNScreens.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNVectorIcons/RNVectorIcons.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Codegen/React_Codegen.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules/CoreModules.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation/RCTAnimation.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob/RCTBlob.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage/RCTImage.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking/RCTLinking.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork/RCTNetwork.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings/RCTSettings.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText/RCTText.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration/RCTVibration.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-bridging/react_bridging.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/cxxreact.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi/jsi.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor/jsireact.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector/jsinspector.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger/logger.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger/reactperflogger.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactNativeCameraKit/ReactNativeCameraKit.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewController.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Yoga/yoga.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt/fmt.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/lottie-ios/Lottie.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/lottie-react-native/lottie_react_native.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb/nanopb.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-date-picker/react_native_date_picker.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-geolocation/react_native_geolocation.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-google-maps/react_native_google_maps.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-maps/react_native_maps.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-netinfo/react_native_netinfo.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-pager-view/react_native_pager_view.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-safe-area-context/react_native_safe_area_context.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-webview/react_native_webview.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/rn-fetch-blob/rn_fetch_blob.framework/Headers\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
+					"\"$(PODS_ROOT)/DoubleConversion\"",
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/boost-for-react-native\"",
+					"\"$(PODS_ROOT)/glog\"",
+					"\"$(PODS_ROOT)/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+				);
 				INFOPLIST_FILE = FougitoFood/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -561,7 +693,89 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FougitoFood/FougitoFood.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M7XN37KV2Z;
+				DEVELOPMENT_TEAM = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/BVLinearGradient/BVLinearGradient.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion/DoubleConversion.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations/FirebaseInstallations.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMessaging/FirebaseMessaging.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Google-Maps-iOS-Utils/GoogleMapsUtils.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport/GoogleDataTransport.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities/GoogleUtilities.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC/FBLPromises.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/folly.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety/RCTTypeSafety.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNCAsyncStorage/RNCAsyncStorage.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNCClipboard/RNCClipboard.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNCPushNotificationIOS/RNCPushNotificationIOS.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDateTimePicker/RNDateTimePicker.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDeviceInfo/RNDeviceInfo.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNFBApp/RNFBApp.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNFBMessaging/RNFBMessaging.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler/RNGestureHandler.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/RNImageCropPicker.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNReanimated/RNReanimated.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNSVG/RNSVG.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNScreens/RNScreens.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNVectorIcons/RNVectorIcons.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Codegen/React_Codegen.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules/CoreModules.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation/RCTAnimation.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob/RCTBlob.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage/RCTImage.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking/RCTLinking.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork/RCTNetwork.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings/RCTSettings.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText/RCTText.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration/RCTVibration.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-bridging/react_bridging.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/cxxreact.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi/jsi.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor/jsireact.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector/jsinspector.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger/logger.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger/reactperflogger.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactNativeCameraKit/ReactNativeCameraKit.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewController.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Yoga/yoga.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt/fmt.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/lottie-ios/Lottie.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/lottie-react-native/lottie_react_native.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb/nanopb.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-date-picker/react_native_date_picker.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-geolocation/react_native_geolocation.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-google-maps/react_native_google_maps.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-maps/react_native_maps.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-netinfo/react_native_netinfo.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-pager-view/react_native_pager_view.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-safe-area-context/react_native_safe_area_context.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-webview/react_native_webview.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/rn-fetch-blob/rn_fetch_blob.framework/Headers\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
+					"\"$(PODS_ROOT)/DoubleConversion\"",
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/boost-for-react-native\"",
+					"\"$(PODS_ROOT)/glog\"",
+					"\"$(PODS_ROOT)/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+				);
 				INFOPLIST_FILE = FougitoFood/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

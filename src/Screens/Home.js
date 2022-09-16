@@ -747,6 +747,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   };
 
   const renderItem = ({item, index}) => (
+    
+    item?.NameAsPerTradeLicense.includes(search.trim()) ? 
     <Animatable.View
       animation="zoomInLeft"
       easing="ease"
@@ -775,6 +777,7 @@ dispatch(cleancart())
         distance={item?.Distance + " AWAY"}
       />
     </Animatable.View>
+    : null
   );
   function onRefresh() {
     NetInfo.fetch().then(state => {
@@ -799,6 +802,7 @@ dispatch(cleancart())
   }, [navigation]);
 
   const rendernearby = ({item, index}) => (
+    item?.NameAsPerTradeLicense.includes(search.trim()) ? 
     <View
       style={{
         width: Dimensions.get('window').width / 1.2,
@@ -829,7 +833,7 @@ dispatch(cleancart())
         distance={item?.Distance + " AWAY"}
       />
     </View>
-
+: null
     //  onPress={()=>{activaterestaurant(index, 24.8475, 67.0330 )}}
   );
 
@@ -907,7 +911,7 @@ dispatch(cleancart())
                 }}>
                 {lat != null && long != null ? (
                   <MapView
-                    provider={PROVIDER_GOOGLE}
+                    // provider={PROVIDER_GOOGLE}
                     customMapStyle={customStyle}
                     // userInterfaceStyle={"dark"}
                     ref={refMap}
@@ -1098,7 +1102,7 @@ dispatch(cleancart())
                     }}>
                     <Text
                       style={{
-                        fontFamily: 'Inter-ExtraBold',
+                        fontFamily: 'Inter-Bold',
                         fontSize: fontSize.sixteen,
                         color: '#29262A',
                       }}>

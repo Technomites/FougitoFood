@@ -328,7 +328,10 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   }, [couponresponsestatus, couponresponsemessage]);
 
   function placeorder() {
-    if (pinlocation == '') {
+
+  
+ 
+    if (pinlocation == '' && AuthToken == "") {
       toast.current.show('Please select a location', {
         type: 'normal',
         placement: 'bottom',
@@ -337,7 +340,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (buildingdetails == '') {
+    } else if (buildingdetails == '' && AuthToken == "") {
       toast.current.show('Please Building & Street details', {
         type: 'normal',
         placement: 'bottom',
@@ -346,7 +349,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (plotnodetails == '') {
+    } else if (plotnodetails == '' && AuthToken == "") {
       toast.current.show('Please Flat no & Floor details', {
         type: 'normal',
         placement: 'bottom',
@@ -355,7 +358,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (firstname == '') {
+    } else if (firstname == '' && AuthToken == "") {
       toast.current.show('Please fill out your first name', {
         type: 'normal',
         placement: 'bottom',
@@ -364,7 +367,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (lastname == '') {
+    } else if (lastname == '' && AuthToken == "") {
       toast.current.show('Please fill out your last name', {
         type: 'normal',
         placement: 'bottom',
@@ -373,7 +376,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (email == '') {
+    } else if (email == '' && AuthToken == "") {
       toast.current.show('Please enter your email', {
         type: 'normal',
         placement: 'bottom',
@@ -382,7 +385,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (!Validations.validateEmail(email)) {
+    } else if (!Validations.validateEmail(email) && AuthToken == "") {
       toast.current.show('You have entered an invalid email', {
         type: 'normal',
         placement: 'bottom',
@@ -391,7 +394,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (phonenumber == '') {
+    } else if (phonenumber == '' && AuthToken == "") {
       toast.current.show('Please enter your phone number', {
         type: 'normal',
         placement: 'bottom',
@@ -400,24 +403,66 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (!payment.find(data => data?.selected === true)) {
-      toast.current.show('Please select a payment method', {
-        type: 'normal',
-        placement: 'bottom',
-        duration: 4000,
-        offset: 10,
-        animationType: 'slide-in',
-        zIndex: 2,
-      });
-    } else {
-      // setloader1(true)
+    } 
+    
+  else if (!payment.find(data => data?.selected === true)) {
+    toast.current.show('Please select a payment method', {
+      type: 'normal',
+      placement: 'bottom',
+      duration: 4000,
+      offset: 10,
+      animationType: 'slide-in',
+      zIndex: 2,
+    });
+  } else if (cartdata.length == 0) {
+    toast.current.show('Your cart is empty please add an item', {
+      type: 'normal',
+      placement: 'bottom',
+      duration: 4000,
+      offset: 10,
+      animationType: 'slide-in',
+      zIndex: 2,
+    });
+  } 
+    
+    
+    
+    else {
+     
+  
+      let order = []
+      for (const key in cartdata){
+        let options = []
+        for(const index in cartdata[key]?.MenuItemOptions){
+       let menuItemOptionValueId = null
+      for (const item in cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues){
+      if(cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues[item]?.selected == true){
+        menuItemOptionValueId = cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues[item]?.Id
+      }
+      
+         
+        }
+        options.push({
+          menuItemOptionId: cartdata[key]?.MenuItemOptions[index]?.Id,
+          menuItemOptionValueId: menuItemOptionValueId
+        })
+      
+        
+      }
+      order.push({
+        menuItemId: cartdata[key]?.Id,
+        quantity: cartdata[key]?.Qty,
+        customerNote: cartdata[key]?.SpecialInstructios,
+        orderItemOptions: options
+      })
+      // != undefined ?  cartdata[key].MenuItemOptions[index].MenuItemOptionValues[item]?.find(data => data.selected == true).Id : 0
+          
+          }
+      
+          console.log("this is the order" + JSON.stringify(order))
+  
 
-    // console.log("this is the order" + JSON.stringify(order))
-  
-  
-  
-
-      console.log('this is the order' + JSON.stringify(order));
+      
       let data = {
         restaurantBranchId: restrauntbasicdata.Id,
         discountPercentage: 0, // to be decided
@@ -825,7 +870,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   />
                 )}
                 <MapView
-                  provider={PROVIDER_GOOGLE}
+                  // provider={PROVIDER_GOOGLE}
                   customMapStyle={customStyle}
                   ref={refMap}
                   showsUserLocation
@@ -1273,7 +1318,13 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
             <MYButton
               title={AuthToken != '' ? 'Place Order' : 'Login to Place Order'}
               onPress={() => {
-                setmodalVisible(true);
+                AuthToken != '' ? (
+                  placeorder()
+                  // ( setmodalVisible(true))
+                  )
+                :
+              
+               ( setmodalVisible(true))
               }}
               color="#E14E4E"
               textcolor="white"

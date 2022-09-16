@@ -1,7 +1,7 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '12.4'
+platform :ios, '13'
 install! 'cocoapods', :deterministic_uuids => false
 
 production = ENV["PRODUCTION"] == "1"
@@ -10,6 +10,25 @@ production = ENV["PRODUCTION"] == "1"
 target 'FougitoFood' do
   config = use_native_modules!
   
+#   # React Native Maps dependencies
+# rn_maps_path = '../node_modules/react-native-maps'
+# pod 'react-native-google-maps', :path => rn_maps_path
+#   pod 'Google-Maps-iOS-Utils'
+# pod 'GoogleMaps'
+
+# pod 'React', path: '../node_modules/react-native', :subspecs => [
+#   'Core',
+#   'RCTActionSheet',
+#   'RCTGeolocation',
+#   'RCTImage',
+#   'RCTLinkingIOS',
+#   'RCTNetwork',
+#   'RCTSettings',
+#   'RCTText',
+#   'RCTVibration',
+#   'RCTWebSocket'
+# ]
+
   # Flags change depending on the env values.
   flags = get_default_flags()
 

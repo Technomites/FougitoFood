@@ -83,13 +83,14 @@ const navigation = useNavigation();
 <View style={{height:"100%", width: "20%",justifyContent:"center", padding: scalableheight.two,}}>
 {props.selected ? 
 
-<Fontisto 
-            name="radio-btn-active"
+<Ionicons 
+            name="ios-radio-button-on"
             color={"#F55050"}
             size={fontSize.twenty}
-          />:
-          <Fontisto 
-            name="radio-btn-passive"
+          />
+          :
+          <Ionicons 
+            name="ios-radio-button-off-sharp"
             color={'rgba(211,211,211, 0.8)'}
             size={fontSize.twenty}
           /> 

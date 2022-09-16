@@ -123,7 +123,7 @@ const GettingStarted = props => {
               color: '#29262A',
               fontSize: fontSize.twentyseven,
               fontWeight: '700',
-              fontFamily: 'Inter, Extra Bold',
+              fontFamily: 'Inter-ExtraBold',
               textAlign: 'center',
               width: '80%',
             }}>

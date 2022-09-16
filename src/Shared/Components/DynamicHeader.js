@@ -149,7 +149,7 @@ const renderpopularcategories = ({item}) => (
               <Text
                 style={{
                   marginLeft: scalableheight.one,
-                  fontFamily: 'Inter-ExtraBold',
+                  fontFamily: 'Inter-Bold',
                   fontSize: fontSize.sixteen,
                   color: '#29262A',
                 }}>

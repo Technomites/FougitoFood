@@ -446,7 +446,7 @@ export default function Custombottomsheet(props) {
 }
                   
                 <MapView
-                  provider={PROVIDER_GOOGLE}
+                  // provider={PROVIDER_GOOGLE}
                   style={{
                     width: '100%',
                     height: '100%',

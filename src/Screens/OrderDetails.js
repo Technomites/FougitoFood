@@ -354,7 +354,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                   overflow: 'hidden',
                 }}>
                 <MapView
-                  provider={PROVIDER_GOOGLE}
+                  // provider={PROVIDER_GOOGLE}
                   customMapStyle={customStyle}
                   ref={refMap}
                   style={{

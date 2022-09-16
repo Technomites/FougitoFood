@@ -19,7 +19,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fontisto from 'react-native-vector-icons/Fontisto';
+
 export default function Bll(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();

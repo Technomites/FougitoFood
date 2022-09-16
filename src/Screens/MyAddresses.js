@@ -146,11 +146,18 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
+
+
+    
                     let currentaddress = [{
-                      icon: item.Icon,
-                      place: item.Place,
-                      address: item.address,
-                      note: item.Note,
+                      Latitude: item.Latitude,
+                      Longitude: item.Longitude,
+                      icon: item.Type,
+                      place: item.Type,
+                      address: item.Address,
+                      note: item.NoteToRider,
+                      Street: item.Street,
+                      Floor: item.Floor,
                       
                     }]
                     console.log(currentaddress)
@@ -169,10 +176,10 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
                       })
                     }}
                     //   // onModelPopUp={changestatus}
-                    icon={item.Icon}
-                    place={item.Place}
-                    address={item.address}
-                    note={item.Note}
+                    icon={item.Type}
+                    place={item.Type}
+                    address={item.Address}
+                    note={item.NoteToRider}
                     screenname={screenname}
                   />
                 </TouchableOpacity>

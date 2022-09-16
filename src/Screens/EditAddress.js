@@ -536,7 +536,7 @@ dispatch(savemyaddress(data, AuthToken))
                   />
                 )}
                 <MapView
-                  provider={PROVIDER_GOOGLE}
+                  // provider={PROVIDER_GOOGLE}
                   customMapStyle={customStyle}
                   ref={refMap}
                   showsUserLocation

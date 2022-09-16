@@ -17,7 +17,7 @@ import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
-import Fontisto from 'react-native-vector-icons/Fontisto';
+
 export default function AnimatableInfoBar(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();

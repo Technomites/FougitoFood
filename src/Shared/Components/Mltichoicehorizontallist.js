@@ -22,7 +22,7 @@ import renderIf from 'render-if';
 import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fontisto from 'react-native-vector-icons/Fontisto';
+
 import { ScrollView } from 'react-native-gesture-handler';
 export default function Mltichoicehorizontallist(props) {
   const dispatch = useDispatch();

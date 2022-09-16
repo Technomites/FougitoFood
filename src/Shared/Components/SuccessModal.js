@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import IoIcon from 'react-native-vector-icons/Ionicons';
-import Icon from 'react-native-vector-icons/Fontisto';
+
 import {useSelector} from 'react-redux';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import MYButton from './MYButton';

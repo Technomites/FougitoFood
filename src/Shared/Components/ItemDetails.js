@@ -20,7 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fontisto from 'react-native-vector-icons/Fontisto';
+
 import { parseWithOptions } from 'date-fns/fp';
 import {
   filteredcatdata,
@@ -47,10 +47,10 @@ useEffect(() => {
     setanimationstate(true)
   
     // Send Axios request here
-  }, 5000)
+  }, 3000)
 
   return () => clearTimeout(delayDebounceFn)
-}, [cartdata])
+}, [cartdata, showcounter])
 
 
 
@@ -87,7 +87,7 @@ useEffect(() => {
             easing="ease"
             //  iterationCount="infinite"
             iterationCount={1}
-            style={{width:scalableheight.tweleve, height: "70%", position:"absolute", left: scalableheight.eight, backgroundColor:"white", zIndex:1, borderRadius:fontSize.borderradius, flexDirection:"row", borderWidth:0.1, borderColor:"grey"}}
+            style={{width:scalableheight.tweleve, height: "70%", position:"absolute", left: scalableheight.seven, backgroundColor:"white", zIndex:1, borderRadius:fontSize.borderradius, flexDirection:"row", borderWidth:0.1, borderColor:"grey"}}
           >
       
 <TouchableOpacity 

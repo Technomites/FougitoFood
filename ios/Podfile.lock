@@ -44,14 +44,14 @@ PODS:
     - FirebaseCoreInternal (~> 9.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (9.3.0):
+  - FirebaseCoreDiagnostics (9.6.0):
     - GoogleDataTransport (< 10.0.0, >= 9.1.4)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseCoreInternal (9.3.0):
+  - FirebaseCoreInternal (9.6.0):
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
-  - FirebaseInstallations (9.3.0):
+  - FirebaseInstallations (9.6.0):
     - FirebaseCore (~> 9.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
@@ -91,38 +91,38 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities (7.7.0):
-    - GoogleUtilities/AppDelegateSwizzler (= 7.7.0)
-    - GoogleUtilities/Environment (= 7.7.0)
-    - GoogleUtilities/ISASwizzler (= 7.7.0)
-    - GoogleUtilities/Logger (= 7.7.0)
-    - GoogleUtilities/MethodSwizzler (= 7.7.0)
-    - GoogleUtilities/Network (= 7.7.0)
-    - "GoogleUtilities/NSData+zlib (= 7.7.0)"
-    - GoogleUtilities/Reachability (= 7.7.0)
-    - GoogleUtilities/SwizzlerTestHelpers (= 7.7.0)
-    - GoogleUtilities/UserDefaults (= 7.7.0)
-  - GoogleUtilities/AppDelegateSwizzler (7.7.0):
+  - GoogleUtilities (7.8.0):
+    - GoogleUtilities/AppDelegateSwizzler (= 7.8.0)
+    - GoogleUtilities/Environment (= 7.8.0)
+    - GoogleUtilities/ISASwizzler (= 7.8.0)
+    - GoogleUtilities/Logger (= 7.8.0)
+    - GoogleUtilities/MethodSwizzler (= 7.8.0)
+    - GoogleUtilities/Network (= 7.8.0)
+    - "GoogleUtilities/NSData+zlib (= 7.8.0)"
+    - GoogleUtilities/Reachability (= 7.8.0)
+    - GoogleUtilities/SwizzlerTestHelpers (= 7.8.0)
+    - GoogleUtilities/UserDefaults (= 7.8.0)
+  - GoogleUtilities/AppDelegateSwizzler (7.8.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.7.0):
+  - GoogleUtilities/Environment (7.8.0):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/ISASwizzler (7.7.0)
-  - GoogleUtilities/Logger (7.7.0):
+  - GoogleUtilities/ISASwizzler (7.8.0)
+  - GoogleUtilities/Logger (7.8.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.7.0):
+  - GoogleUtilities/MethodSwizzler (7.8.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.7.0):
+  - GoogleUtilities/Network (7.8.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.7.0)"
-  - GoogleUtilities/Reachability (7.7.0):
+  - "GoogleUtilities/NSData+zlib (7.8.0)"
+  - GoogleUtilities/Reachability (7.8.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/SwizzlerTestHelpers (7.7.0):
+  - GoogleUtilities/SwizzlerTestHelpers (7.8.0):
     - GoogleUtilities/MethodSwizzler
-  - GoogleUtilities/UserDefaults (7.7.0):
+  - GoogleUtilities/UserDefaults (7.8.0):
     - GoogleUtilities/Logger
   - lottie-ios (3.2.3)
   - lottie-react-native (5.1.3):
@@ -699,15 +699,15 @@ SPEC CHECKSUMS:
   Firebase: ef75abb1cdbc746d5a38f4e26c422c807b189b8c
   FirebaseAnalytics: bf46f5163f44097ce2c789de0b3e6f87f1da834a
   FirebaseCore: c088995ece701a021a48a1348ea0174877de2a6a
-  FirebaseCoreDiagnostics: 060eb57cc56dfaf40b1b1b5874a5c17c41ce79f8
-  FirebaseCoreInternal: 635d1c9a612a6502b6377a0c92af83758076ffff
-  FirebaseInstallations: 54b40022cb06e462740c9f2b9fbe38b5e78a825a
+  FirebaseCoreDiagnostics: 99a495094b10a57eeb3ae8efa1665700ad0bdaa6
+  FirebaseCoreInternal: bca76517fe1ed381e989f5e7d8abb0da8d85bed3
+  FirebaseInstallations: 0a115432c4e223c5ab20b0dbbe4cbefa793a0e8e
   FirebaseMessaging: 2f6e38b6133059eb796ec224104f09379298a8c3
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 3d02b25ca00c2d456734d0bcff864cbc62f6ae1a
   GoogleAppMeasurement: b907bdad775b6975a8108762345b2cfbf1a93c37
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
-  GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
+  GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   lottie-react-native: a501112fa980529ccb80b9f3ee117a7f98c6af3a
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
@@ -763,6 +763,6 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 44c64131616253fa83366295acdbce3d14926041
 
-PODFILE CHECKSUM: e2c64ac1989d7512eca18194bfccceb23677c8ad
+PODFILE CHECKSUM: 84babbaed11405e4a01cf0af44667adb1f437d6b
 
 COCOAPODS: 1.11.3

@@ -28,12 +28,28 @@ export default function Addresstile(props) {
           <View style={{width: '5%', alignSelf:"flex-start"  }}>
            
             <View style={{height: scalableheight.six, width: scalableheight.six,      backgroundColor:'#F9F9F9', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
-
-          <Ionicons 
-            name="home"
-            color={"#F55050"}
-            size={fontSize.twenty}
-          />
+              {props?.icon == "Home" ?
+            <FontAwesome5
+          style={{alignSelf: 'center'}}
+          name={"home"}
+          color={"#F55050"}
+          size={fontSize.twenty}
+        />
+        : props?.icon == "Work" ? 
+        <FontAwesome5
+        style={{alignSelf: 'center'}}
+        name={"briefcase"}
+        color={"#F55050"}
+        size={fontSize.twenty}
+      />
+          : 
+          <FontAwesome5
+          style={{alignSelf: 'center'}}
+          name={"building"}
+          color={"#F55050"}
+          size={fontSize.twenty}
+        />
+        }
             {/* <Image
           resizeMode="stretch"
           style={{

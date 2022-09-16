@@ -497,7 +497,7 @@ found = 1
     <TouchableOpacity
       onPress={() => {
         console.log(index);
-        scrollTo(dataSourceCords[index + 1] - 150, true);
+        scrollTo(dataSourceCords[index + 1] - scalableheight.twenty, true);
 
         let data = [...restrauntmenu];
         for (const index in data) {
@@ -1180,7 +1180,7 @@ for(const index in dataSourceCords){
 
             dispatch(updatedmenuselection(data))
             scrollviewhorizontalref.current?.scrollToIndex({
-              index: index -1,
+              index: index - 1 ,
               animated: true,
             });
             //  scrollviewhorizontalref.current.scrollTo({ y: dataSourceCordsHorizontal[0], animated: true });

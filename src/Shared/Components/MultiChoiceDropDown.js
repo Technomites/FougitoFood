@@ -21,7 +21,7 @@ import renderIf from 'render-if';
 import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fontisto from 'react-native-vector-icons/Fontisto';
+
 export default function MultiChoiceDropDown(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
