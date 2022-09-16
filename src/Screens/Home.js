@@ -38,7 +38,8 @@ import {
   storerestrauntid,
   cleancart,
   storedistance,
-  storerestrauntbasicdata
+  storerestrauntbasicdata,
+  GetProfile,
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -164,12 +165,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       serving: 'Pasta',
     },
   ]);
-  const {
-    newNotificationCount,
-    allrestraunts,
-    currentRestrauntid,
-    
-  } = useSelector(state => state.userReducer);
+  const {newNotificationCount, allrestraunts, currentRestrauntid, AuthToken} =
+    useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
   const [pin, setpin] = useState([
@@ -608,13 +605,10 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     listeners();
   }, []);
   useEffect(() => {
-    if(lat != null && long != null ){
-      dispatch(getallrestraunts(lat, long))
+    if (lat != null && long != null) {
+      dispatch(getallrestraunts(lat, long));
     }
-
   }, [lat, long]);
-
-  
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -636,7 +630,13 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       keyboardDidHideListener.remove();
     };
   }, []);
-
+  useEffect(() => {
+    // console.log(
+    //   AuthToken,
+    //   'UpdateProfile UpdateProfile UpdateProfile UpdateProfile',
+    // );
+    dispatch(GetProfile(AuthToken));
+  }, [AuthToken]);
   useEffect(() => {
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
     Geolocation.getCurrentPosition(info => {
@@ -755,24 +755,23 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       <Favourites
         image={item?.Logo}
         title={item?.NameAsPerTradeLicense}
-        reviews={item?.AvgRating + " (" + item?.RatingCount + " reviews)"}
-        time={item?.OpeningTime + " - " + item?.ClosingTime}
-        onPress={() =>{
-          
-          dispatch(storerestrauntbasicdata(item))
-          dispatch(storedistance(item?.Distance))
-          if(currentRestrauntid != item?.Id){
-            dispatch(storecartprice(0))
-dispatch(cleancart())
-            dispatch(storerestrauntid(item?.Id))
+        reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
+        time={item?.OpeningTime + ' - ' + item?.ClosingTime}
+        onPress={() => {
+          dispatch(storerestrauntbasicdata(item));
+          dispatch(storedistance(item?.Distance));
+          if (currentRestrauntid != item?.Id) {
+            dispatch(storecartprice(0));
+            dispatch(cleancart());
+            dispatch(storerestrauntid(item?.Id));
           }
-          dispatch(getallrestrauntsbyid(item?.Id))
+          dispatch(getallrestrauntsbyid(item?.Id));
           navigation.navigate('Restaurantpage', {
             latitude: lat,
             longitude: long,
-          })
+          });
         }}
-        distance={item?.Distance + " AWAY"}
+        distance={item?.Distance + ' AWAY'}
       />
     </Animatable.View>
   );
@@ -807,26 +806,24 @@ dispatch(cleancart())
       <Favourites
         image={item?.Logo}
         title={item?.NameAsPerTradeLicense}
-        reviews={item?.AvgRating + " (" + item?.RatingCount + " reviews)"}
-        time={item?.OpeningTime + " - " + item?.ClosingTime}
-        onPress={() =>{
-          dispatch(storerestrauntbasicdata(item))
-          dispatch(storedistance(item?.Distance))
-          if(currentRestrauntid != item?.Id){
-            dispatch(storecartprice(0))
-            dispatch(cleancart())
-            dispatch(storerestrauntid(item?.Id))
+        reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
+        time={item?.OpeningTime + ' - ' + item?.ClosingTime}
+        onPress={() => {
+          dispatch(storerestrauntbasicdata(item));
+          dispatch(storedistance(item?.Distance));
+          if (currentRestrauntid != item?.Id) {
+            dispatch(storecartprice(0));
+            dispatch(cleancart());
+            dispatch(storerestrauntid(item?.Id));
           }
-          dispatch(getallrestrauntsbyid(item?.Id))
-     
+          dispatch(getallrestrauntsbyid(item?.Id));
+
           navigation.navigate('Restaurantpage', {
             latitude: lat,
             longitude: long,
-          })
-        }
-        
-        }
-        distance={item?.Distance + " AWAY"}
+          });
+        }}
+        distance={item?.Distance + ' AWAY'}
       />
     </View>
 
@@ -834,7 +831,7 @@ dispatch(cleancart())
   );
 
   function activaterestaurant(key, lat, long) {
-    console.log("hello")
+    console.log('hello');
     setinlat(lat);
     setinlong(long);
     console.log('selected');
@@ -844,7 +841,7 @@ dispatch(cleancart())
     }
     arr[key].expanded = true;
     // setpin(arr);
-    dispatch(updaterestraunts(arr))
+    dispatch(updaterestraunts(arr));
 
     ref.current?.scrollToIndex({
       index: key,
@@ -876,7 +873,7 @@ dispatch(cleancart())
             }}
             source={require('../Resources/images/homebackground.png')}>
             <View style={{marginTop: getStatusBarHeight()}}></View>
-            <HeaderComponent  />
+            <HeaderComponent />
             <View style={{paddingHorizontal: scalableheight.one}}>
               {/* <Transparentinfobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
              <View style={{marginTop: scalableheight.one}}></View> */}
@@ -923,12 +920,10 @@ dispatch(cleancart())
                       longitudeDelta: 0.08,
                       latitudeDelta: 0.08,
                     }}
-                   
                     initialRegion={{
                       latitude: lat,
                       longitude: long,
-                     
-                  
+
                       latitudeDelta: 0.0922,
                       longitudeDelta: 0.0421,
                     }}>
@@ -955,7 +950,11 @@ dispatch(cleancart())
                           title={'Restaurant'}
                           description={item?.NameAsPerTradeLicense}
                           onPress={() =>
-                            activaterestaurant(key, item?.Latitude, item?.Longitude)
+                            activaterestaurant(
+                              key,
+                              item?.Latitude,
+                              item?.Longitude,
+                            )
                           }>
                           {item?.expanded ? (
                             <View
@@ -1127,24 +1126,25 @@ dispatch(cleancart())
             //     width: '100%',
             //     paddingHorizontal: scalableheight.one,
             //     marginTop: scalableheight.two,
-          
+
             // //  height: Dimensions.get('window').height + scalableheight.five -  scalableheight.fifteen - getStatusBarHeight()
             //   }}>
-              <FlatList
-               key = "1"
-                data={allrestraunts}
-                renderItem={renderItem}
-                // ListFooterComponent={renderFooter}
-                // onEndReached={loadMoreNotifications}
-                    style={{
+            <FlatList
+              key="1"
+              data={allrestraunts}
+              renderItem={renderItem}
+              // ListFooterComponent={renderFooter}
+              // onEndReached={loadMoreNotifications}
+              style={{
                 width: '100%',
                 paddingHorizontal: scalableheight.one,
-                marginTop: scalableheight.two,}}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ flexGrow: 1,paddingBottom: 5 }}
-                // contentContainerStyle={{paddingBottom: 54}}
-                keyExtractor={(item, index) => index.toString()}
-              />
+                marginTop: scalableheight.two,
+              }}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{flexGrow: 1, paddingBottom: 5}}
+              // contentContainerStyle={{paddingBottom: 54}}
+              keyExtractor={(item, index) => index.toString()}
+            />
             // {/* </View> */}
           )}
         </View>

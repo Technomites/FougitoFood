@@ -34,9 +34,12 @@ export const PICKUPState = 'PICKUPState';
 export const CreateOrder = 'CreateOrder';
 export const VerifyCoupon = 'VerifyCoupon';
 export const VerifyCouponClear = 'VerifyCouponClear';
-export const GetUserProfile = 'GetUserProfile';
+export const GetUserProfiles = 'GetUserProfiles';
 export const Logoutuser = 'Logoutuser';
 export const AsynClear = 'AsynClear';
+export const UpdateProfile = 'UpdateProfile';
+export const clearStatusProfile = 'clearStatusProfile';
+export const UpdateProfilePicture = 'UpdateProfilePicture';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -818,10 +821,11 @@ export const GetProfile = AuthToken => {
       console.log(json, 'Hello ,HELLO');
       if (json.Status == 'Success') {
         dispatch({
-          type: GetUserProfile,
+          type: GetUserProfiles,
           NamePayload: json?.Result.Name,
           ContactPayload: json?.Result.Contact,
           EmailPayload: json?.Result.Email,
+          UserImagePayload: json?.Result.Logo,
         });
 
         console.log('Success');
@@ -876,10 +880,107 @@ export const ClearAsycn = () => {
   return async dispatch => {
     dispatch({
       type: AsynClear,
-      PayloadAuth: '',
+      //  PayloadAuth: '',
     });
   };
 };
+
+export const ProfileUpdate = (Name, EmailAddress, PhoneNumber, AuthToken) => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${AuthToken}`);
+      myHeaders.append('Content-Type', 'application/json');
+
+      var raw = JSON.stringify({
+        email: EmailAddress,
+        firstName: Name,
+        phoneNumber: PhoneNumber,
+      });
+
+      var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+      const result = await fetch(
+        API_URl + `Customer/Account/Update`,
+        requestOptions,
+      );
+      json = await result.json();
+      console.log(json, 'Hello ,HELLO');
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: UpdateProfile,
+          UpdateProfileStatus: json?.Status,
+          UpdateProfileStatusMessage: json?.Message,
+        });
+        console.log('Success');
+      } else if (json?.Status == 'Error') {
+        dispatch({
+          type: UpdateProfile,
+          UpdateProfileStatus: json?.Status,
+          UpdateProfileStatusMessage: json?.Message,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const clearstatusProfileupdate = () => {
+  return async dispatch => {
+    dispatch({
+      type: clearStatusProfile,
+      //  PayloadAuth: '',
+    });
+  };
+};
+
+// export const ProfilePictureUpdate = response => {
+//   try {
+//     return async dispatch => {
+//       var myHeaders = new Headers();
+//       myHeaders.append('Authorization', `Bearer ${AuthToken}`);
+
+//       var formdata = new FormData();
+//       formdata.append('Image', fileInput.files[0], '/path/to/file');
+
+//       var requestOptions = {
+//         method: 'PUT',
+//         headers: myHeaders,
+//         body: raw,
+//         redirect: 'follow',
+//       };
+//       const result = await fetch(
+//         API_URl + `Customer/Account/ProfilePicture`,
+//         requestOptions,
+//       );
+//       json = await result.json();
+//       console.log(json, 'Hello ,HELLO');
+
+//       if (json.Status == 'Success') {
+//         dispatch({
+//           type: UpdateProfilePicture,
+//           UpdateProfilePicStatus: json?.Status,
+//           UpdateProfilePicStatusMessage: json?.Message,
+//         });
+//         console.log('Success');
+//       } else if (json?.Status == 'Error') {
+//         dispatch({
+//           type: UpdateProfilePicture,
+//           UpdateProfilePicStatus: json?.Status,
+//           UpdateProfilePicStatusMessage: json?.Message,
+//         });
+//       }
+//     };
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 // export const getblogshome = (lang) => {
 //   try {
