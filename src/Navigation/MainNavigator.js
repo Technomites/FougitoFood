@@ -163,7 +163,7 @@ const CustomDrawerStyle = ({navigation}) => {
   const [logoutmodal, setlogoutmodal] = useState(false);
 
   const [nointernet, setnointernet] = useState(false);
-  const [animationtype, setanimationtype] = useState('fadeInUpBig');
+  const [animationtype, setanimationtype] = useState('fadeOutDownBig');
   const [animationstate, setanimationstate] = useState(false);
   const [loader, setLoader] = useState(false);
 
@@ -185,12 +185,13 @@ const CustomDrawerStyle = ({navigation}) => {
         animationType: 'slide-in',
       });
       setLoader(false);
-      setanimationstate(true);
-
+      // setanimationstate(true);
+     
+      setanimationtype('fadeOutDownBig')
       ClearAsyncStorage();
       dispatch(ClearAsycn());
 
-      setlogoutmodal(false);
+    //  setlogoutmodal(false);
     } else if (userLogoutStatus === 'Error') {
       toast.current.show(UserLogout, {
         type: 'normal',
@@ -287,8 +288,8 @@ const CustomDrawerStyle = ({navigation}) => {
             }}>
             <Image
               style={{
-                width: scalableheight.tweleve,
-                height: scalableheight.tweleve,
+                width: scalableheight.fifteen,
+                height: scalableheight.fifteen,
                 borderRadius: fontSize.circle,
                 borderWidth: scalableheight.borderwidth,
                 borderColor: 'black',
@@ -302,18 +303,22 @@ const CustomDrawerStyle = ({navigation}) => {
               }
             />
             <View style={{alignItems: 'center', marginTop: scalableheight.one}}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: fontSize.eightteen,
-                  fontFamily: 'Inter-SemiBold',
-                }}>
-                {AuthToken != '' ? ProfileName : 'Guest User'}
-              </Text>
+           
               {AuthToken != '' ? (
                 <TouchableOpacity
-                  activeOpacity={0.9}
-                  onPress={() => navigation.navigate('AccountSettings')}>
+                activeOpacity={0.9}
+                style={{alignItems:"center"}}
+                onPress={() => navigation.navigate('AccountSettings')}
+                >
+                  <Text
+                  style={{
+                    color: 'white',
+                    fontSize: fontSize.eightteen,
+                    fontFamily: 'Inter-SemiBold',
+                  }}>
+                  {ProfileName}
+                </Text>
+                <View>
                   <Text
                     style={{
                       color: 'white',
@@ -323,11 +328,23 @@ const CustomDrawerStyle = ({navigation}) => {
                     }}>
                     Account Settings
                   </Text>
+                </View>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                  activeOpacity={0.9}
-                  onPress={() => setmodalVisible(true)}>
+                style={{alignItems:"center"}}
+                activeOpacity={0.9}
+                  onPress={() => setmodalVisible(true)}
+                >
+                   <Text
+                style={{
+                  color: 'white',
+                  fontSize: fontSize.eightteen,
+                  fontFamily: 'Inter-SemiBold',
+                }}>
+                {'Guest User'}
+              </Text>
+                <View>
                   <Text
                     style={{
                       color: 'white',
@@ -337,6 +354,7 @@ const CustomDrawerStyle = ({navigation}) => {
                     }}>
                     Login/Signup
                   </Text>
+                </View>
                 </TouchableOpacity>
               )}
             </View>
@@ -406,7 +424,7 @@ const CustomDrawerStyle = ({navigation}) => {
 
               // borderTopWidth: scalableheight.borderTopWidth,
               // borderColor: '#adadad',
-              height: Dimensions.get('window').height / 12,
+              height: Dimensions.get('window').height / 15,
               marginHorizontal: scalableheight.two,
             }}>
             <View
@@ -449,7 +467,7 @@ const CustomDrawerStyle = ({navigation}) => {
               alignItems: 'center',
               borderTopWidth: scalableheight.borderTopWidth,
               borderColor: '#adadad',
-              height: Dimensions.get('window').height / 12,
+              height: Dimensions.get('window').height / 13,
               marginHorizontal: scalableheight.two,
             }}>
             <View
@@ -491,7 +509,7 @@ const CustomDrawerStyle = ({navigation}) => {
                 alignItems: 'center',
                 borderTopWidth: scalableheight.borderTopWidth,
                 borderColor: '#adadad',
-                height: Dimensions.get('window').height / 12,
+                height: Dimensions.get('window').height / 13,
                 marginHorizontal: scalableheight.two,
               }}>
               <View
@@ -532,7 +550,7 @@ const CustomDrawerStyle = ({navigation}) => {
               alignItems: 'center',
               borderTopWidth: scalableheight.borderTopWidth,
               borderColor: '#adadad',
-              height: Dimensions.get('window').height / 12,
+              height: Dimensions.get('window').height / 13,
               marginHorizontal: scalableheight.two,
             }}>
             <View
@@ -576,7 +594,7 @@ const CustomDrawerStyle = ({navigation}) => {
                 alignItems: 'center',
                 borderTopWidth: scalableheight.borderTopWidth,
                 borderColor: '#adadad',
-                height: Dimensions.get('window').height / 12,
+                height: Dimensions.get('window').height / 13,
                 marginHorizontal: scalableheight.two,
               }}>
               <View
@@ -619,7 +637,7 @@ const CustomDrawerStyle = ({navigation}) => {
 
                     borderTopWidth: scalableheight.borderTopWidth,
                     borderColor: '#adadad',
-                    height: Dimensions.get('window').height / 12,
+                    height: Dimensions.get('window').height / 13,
                     marginHorizontal: scalableheight.two,
                   }}>
                   <View
@@ -682,18 +700,21 @@ const CustomDrawerStyle = ({navigation}) => {
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={
-                () =>
+                () =>{
                   //logoutHandle()
-                  setlogoutmodal(true)
+                  // setlogoutmodal(true)
                 // alert('mm')
-              }
+                setlogoutmodal(true)
+                setanimationtype('fadeInUpBig')
+                // setlogoutmodal(true)
+                }}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
 
                 borderTopWidth: scalableheight.borderTopWidth,
                 borderColor: '#adadad',
-                height: Dimensions.get('window').height / 12,
+                height: Dimensions.get('window').height / 13,
                 marginHorizontal: scalableheight.two,
               }}>
               <View
@@ -768,29 +789,43 @@ const CustomDrawerStyle = ({navigation}) => {
         </ScrollView>
       </View>
       {logoutmodal && (
+        <Modal
+        style={{     width: '100%',
+        height: '100%', }}
+        transparent
+        statusBarTranslucent
+        >
+          <View
+            style={{     width: '100%',
+            height: '100%',
+            justifyContent: "flex-end", alignItems:"center", paddingBottom: scalableheight.eight }}
+        
+          >
         <Animatable.View
-          animation={animationstate ? animationtype : null}
+          animation={animationtype}
           onAnimationEnd={() => {
-            setanimationstate(false);
+            // setanimationstate(false);
 
             if (animationtype == 'fadeInUpBig') {
-              setanimationtype('fadeOutDownBig');
-              // setlogoutmodal(false)
+              // setanimationtype('fadeOutDownBig')
+          
             } else {
-              setanimationtype('fadeInUpBig');
-              setlogoutmodal(false);
+              // setanimationtype('fadeInUpBig');
+              // setlogoutmodal(false);
+              setlogoutmodal(false)
             }
           }}
           easing="ease"
           //  iterationCount="infinite"
           iterationCount={1}
           style={{
-            bottom: scalableheight.two,
-            position: 'absolute',
+            // bottom: scalableheight.two,
+            // position: 'absolute',
+            
             width: Dimensions.get('window').width / 1,
             alignItems: 'center',
             justifyContent: 'center',
-            height: scalableheight.fifteen,
+            height: scalableheight.sixteen,
           }}>
           <View
             style={{
@@ -858,7 +893,9 @@ const CustomDrawerStyle = ({navigation}) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    setanimationstate(true);
+                  
+                    setanimationtype('fadeOutDownBig')
+                    // setanimationstate(true);
                   }}
                   style={{
                     marginLeft: scalableheight.one,
@@ -881,6 +918,8 @@ const CustomDrawerStyle = ({navigation}) => {
             )}
           </View>
         </Animatable.View>
+        </View>
+        </Modal>
       )}
       <Modal
         transparent

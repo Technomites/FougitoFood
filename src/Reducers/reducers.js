@@ -41,7 +41,9 @@ import {
   CreateOrder,
   ClearORDERPLACEMENTSTATUS,
   RefreshToken,
-  StoreNEWRefreshTokenDATA
+  StoreNEWRefreshTokenDATA,
+  Updated_Profile_Picture,
+  Updated_Profile_PictureClear
 } from '../Actions/actions';
 
 const initialState = {
@@ -88,12 +90,28 @@ const initialState = {
   alladdresses: [],
   orderplacementstatus: "",
   refreshtokendata: null,
+  imageupdationstatus: ""
 
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
     
+    
+    case Updated_Profile_PictureClear:
+      return {
+        ...state,
+        imageupdationstatus: action.payload,
+     
+      };
+
+
+          case Updated_Profile_Picture:
+            return {
+              ...state,
+              imageupdationstatus: action.payloadimagestatus,
+           
+            };
 
     case StoreNEWRefreshTokenDATA:
       return {

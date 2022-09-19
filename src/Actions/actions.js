@@ -4,6 +4,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import {Platform} from 'react-native';
 import Coupons from '../Screens/Coupons';
 
+
 // export const GetBlogsHome = 'GetBlogsHome';
 export const set_IconFocus = 'set_IconFocus';
 export const GET_allRestraunts = 'GET_allRestraunts';
@@ -48,6 +49,8 @@ export const GetALLUSERADDRESSES = 'GetALLUSERADDRESSES';
 export const ClearORDERPLACEMENTSTATUS = 'ClearORDERPLACEMENTSTATUS';
 export const RefreshToken = 'RefreshToken';
 export const StoreNEWRefreshTokenDATA = 'StoreNEWRefreshTokenDATA';
+export const Updated_Profile_Picture = 'Updated_Profile_Picture';
+export const Updated_Profile_PictureClear = 'Updated_Profile_PictureClear';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -57,9 +60,67 @@ const header1 = {
 };
 
 
+export const clearimageresponse = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: Updated_Profile_PictureClear,
+        payload: "",
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateprofilepicture = (picture, token) => {
  
+  
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'multipart/form-data');
+      myHeaders.append( 'Authorization', `Bearer ${token}`);
+  
+      var photo = {
+        uri: picture.path,
+        type: picture.mime,
+        name: 'photo.jpg',
+      };
+  
+      var formdata = new FormData();
+      formdata.append('Image', photo);
+  
+      var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow',
+      };
+  
+    
+      const result = await fetch(API_URl + 'Customer/Account/ProfilePicture', 
+        requestOptions);
+    
+    
+      const json = await result.json();
 
+     
+  
+      console.log('updated picture' + JSON.stringify(json));
 
+      
+        dispatch({
+          type: Updated_Profile_Picture,
+          payloadimagestatus: json.Status,
+    
+        });
+      
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const refreshmytoken = (data,token) => {
   try {
@@ -92,7 +153,7 @@ export const refreshmytoken = (data,token) => {
           'TokenInfo',
           JSON.stringify(json.Result),
         );
-        
+
         dispatch({
           type: StoreNEWRefreshTokenDATA,
           payloadtoken : json.Result.Token,

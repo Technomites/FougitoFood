@@ -1089,7 +1089,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                   zIndex: 200,
                   elevation: 200,
                 }}>
-                {dished?.length > 0 ? (
+                {allrestraunts?.length > 0 &&   allrestraunts?.find(data => data?.NameAsPerTradeLicense.includes(search.trim())) != undefined   ? (
                   <Animatable.View
                     animation="bounceInRight"
                     easing="ease"

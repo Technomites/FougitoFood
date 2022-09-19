@@ -22,7 +22,8 @@ import {
   ProfileUpdate,
   GetProfile,
   clearstatusProfileupdate,
-  ProfilePictureUpdate,
+  updateprofilepicture,
+  clearimageresponse
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -34,9 +35,8 @@ import Animated from 'react-native-reanimated';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {GToastContainer, showToast} from 'react-native-gtoast';
 import NetInfo from '@react-native-community/netinfo';
-import ImagePicker from 'react-native-image-crop-picker';
 import NumberInput from '../Shared/Components/NumberInput';
-
+import ImagePicker from 'react-native-image-crop-picker';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -58,6 +58,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
   const [newpasswordshow, setnewpasswordshow] = useState(false);
   const [loader, setLoader] = useState(false);
   const [PickImage, setPickImage] = useState('');
+  const [imageloader, setimageloader] = useState(false);
   const {
     Lang,
     ProfileInfo,
@@ -71,6 +72,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
     LoginCustomer,
     UserUpdateProfileStatus,
     UserUpdateProfileMessage,
+    imageupdationstatus
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
@@ -79,7 +81,32 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
     // StatusBar.setBackgroundColor('transparent');
     // StatusBar.setBarStyle('light-content');
   }, []);
+  useEffect(() => {
+    if(imageupdationstatus != ""){
+      if(imageupdationstatus == "Success"){
+        toast.current.show('Profile Image Updated Successfully', {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+        });
+      }else{
+        toast.current.show('There was an error updating your profile picture. Please try again later', {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+        });
+      }
+      dispatch(clearimageresponse())
+      dispatch(GetProfile(AuthToken));
+      setimageloader(false)
+    }
+  }, [imageupdationstatus]);
 
+  
   useEffect(() => {
     console.log(
       ProfileEmail,
@@ -176,24 +203,25 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
   //   }
   // }
 
-  // const imagePicker = async () => {
-  //   //  let imagePick = [];
-  //   ImagePicker.openPicker({
-  //     waitAnimationEnd: false,
-  //     includeExif: true,
-  //     forceJpg: true,
-  //     compressImageQuality: 0.8,
-  //     maxFiles: 10,
-  //     mediaType: 'photo',
-  //     includeBase64: true,
-  //   })
-  //     .then(response => {
-  //       setPickImage(response.path);
-  //       console.log(response);
-  //       dispatch(ProfilePictureUpdate(response));
-  //     })
-  //     .catch(e => console.log(e, 'Error'));  
-  // };
+  const imagePicker = async () => {
+    //  let imagePick = [];
+    ImagePicker.openPicker({
+      waitAnimationEnd: false,
+      includeExif: true,
+      forceJpg: true,
+      compressImageQuality: 0.8,
+      maxFiles: 10,
+      mediaType: 'photo',
+      includeBase64: true,
+    })
+      .then(response => {
+        setPickImage(response.path);
+        console.log(response);
+        setimageloader(true)
+        dispatch(updateprofilepicture(response, AuthToken));
+      })
+      .catch(e => console.log(e, 'Error'));  
+  };
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -210,6 +238,21 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
           paddingTop: getStatusBarHeight(),
         }}>
         <PlainHeader title={'Account Settings'} />
+        
+        {imageloader == true ? (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: scalableheight.fifteen,
+                height: scalableheight.fifteen,
+           
+                marginTop: scalableheight.three,
+                alignSelf:"center"
+              }}>
+              <ActivityIndicator size={'large'} color="#E14E4E" />
+            </View>
+          ) : (
         <View
           style={{
             ...styleSheet.shadow,
@@ -267,6 +310,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
             </TouchableOpacity>
           </View>
         </View>
+          )}
 
         <View
           style={{
