@@ -25,7 +25,8 @@ import {
   verifycoupon,
   clearcouponresponse,
   clearorderplacementstatus,
-  cleancart
+  cleancart,
+  CartDetails,
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -122,11 +123,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     ProfileContact,
     ProfileEmail,
     Selectedcurrentaddress,
-    orderplacementstatus
-
-  } = useSelector(
-    state => state.userReducer,
-  );
+    orderplacementstatus,
+  } = useSelector(state => state.userReducer);
   const refMap = useRef(null);
   const toast = useRef();
 
@@ -330,44 +328,38 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     }
   }, [couponresponsestatus, couponresponsemessage]);
 
-
   useEffect(() => {
-    setloader2(false)
-    if(orderplacementstatus != ""){
-if(orderplacementstatus ==  'success'){
-  toast.current.show('Order Placed', {
-    type: 'normal',
-    placement: 'bottom',
-    duration: 4000,
-    offset: 10,
-    animationType: 'slide-in',
-    zIndex: 2,
-  });
-dispatch(cleancart())
+    setloader2(false);
+    if (orderplacementstatus != '') {
+      if (orderplacementstatus == 'success') {
+        toast.current.show('Order Placed', {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+          zIndex: 2,
+        });
+        dispatch(CartDetails(cartdata));
+        dispatch(cleancart());
 
-navigation.replace("PreparingFood")
-}else{
-  toast.current.show(orderplacementstatus, {
-    type: 'normal',
-    placement: 'bottom',
-    duration: 4000,
-    offset: 10,
-    animationType: 'slide-in',
-    zIndex: 2,
-  });
-}
+        navigation.replace('PreparingFood');
+      } else {
+        toast.current.show(orderplacementstatus, {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+          zIndex: 2,
+        });
+      }
     }
-   dispatch(clearorderplacementstatus())
+    dispatch(clearorderplacementstatus());
   }, [orderplacementstatus]);
 
-
-
-  
   function placeorder() {
-
-  
- 
-    if (pinlocation == '' && AuthToken == "") {
+    if (pinlocation == '' && AuthToken == '') {
       toast.current.show('Please select a location', {
         type: 'normal',
         placement: 'bottom',
@@ -376,7 +368,7 @@ navigation.replace("PreparingFood")
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (buildingdetails == '' && AuthToken == "") {
+    } else if (buildingdetails == '' && AuthToken == '') {
       toast.current.show('Please Building & Street details', {
         type: 'normal',
         placement: 'bottom',
@@ -385,7 +377,7 @@ navigation.replace("PreparingFood")
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (plotnodetails == '' && AuthToken == "") {
+    } else if (plotnodetails == '' && AuthToken == '') {
       toast.current.show('Please Flat no & Floor details', {
         type: 'normal',
         placement: 'bottom',
@@ -394,7 +386,7 @@ navigation.replace("PreparingFood")
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (firstname == '' && AuthToken == "") {
+    } else if (firstname == '' && AuthToken == '') {
       toast.current.show('Please fill out your first name', {
         type: 'normal',
         placement: 'bottom',
@@ -403,7 +395,7 @@ navigation.replace("PreparingFood")
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (lastname == '' && AuthToken == "") {
+    } else if (lastname == '' && AuthToken == '') {
       toast.current.show('Please fill out your last name', {
         type: 'normal',
         placement: 'bottom',
@@ -412,7 +404,7 @@ navigation.replace("PreparingFood")
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (email == '' && AuthToken == "") {
+    } else if (email == '' && AuthToken == '') {
       toast.current.show('Please enter your email', {
         type: 'normal',
         placement: 'bottom',
@@ -421,7 +413,7 @@ navigation.replace("PreparingFood")
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (!Validations.validateEmail(email) && AuthToken == "") {
+    } else if (!Validations.validateEmail(email) && AuthToken == '') {
       toast.current.show('You have entered an invalid email', {
         type: 'normal',
         placement: 'bottom',
@@ -430,7 +422,7 @@ navigation.replace("PreparingFood")
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (phonenumber == '' && AuthToken == "") {
+    } else if (phonenumber == '' && AuthToken == '') {
       toast.current.show('Please enter your phone number', {
         type: 'normal',
         placement: 'bottom',
@@ -439,73 +431,64 @@ navigation.replace("PreparingFood")
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } 
-    
-  else if (!payment.find(data => data?.selected === true)) {
-    toast.current.show('Please select a payment method', {
-      type: 'normal',
-      placement: 'bottom',
-      duration: 4000,
-      offset: 10,
-      animationType: 'slide-in',
-      zIndex: 2,
-    });
-  } else if (cartdata.length == 0) {
-    toast.current.show('Your cart is empty please add an item', {
-      type: 'normal',
-      placement: 'bottom',
-      duration: 4000,
-      offset: 10,
-      animationType: 'slide-in',
-      zIndex: 2,
-    });
-  } 
-  else if (Selectedcurrentaddress?.length == 0) {
-    toast.current.show('Please Select a Delivery Address', {
-      type: 'normal',
-      placement: 'bottom',
-      duration: 4000,
-      offset: 10,
-      animationType: 'slide-in',
-      zIndex: 2,
-    });
-  } 
-    
-
-    else {
-     
-  
-      let order = []
-      for (const key in cartdata){
-        let options = []
-        for(const index in cartdata[key]?.MenuItemOptions){
-       let menuItemOptionValueId = null
-      for (const item in cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues){
-      if(cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues[item]?.selected == true){
-        menuItemOptionValueId = cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues[item]?.Id
-      }
-      
-         
-        }
-        options.push({
-          menuItemOptionId: cartdata[key]?.MenuItemOptions[index]?.Id,
-          menuItemOptionValueId: menuItemOptionValueId
-        })
-      
-        
-      }
-      order.push({
-        menuItemId: cartdata[key]?.Id,
-        quantity: cartdata[key]?.Qty,
-        customerNote: cartdata[key]?.SpecialInstructios,
-        orderItemOptions: options
-      })
-      // != undefined ?  cartdata[key].MenuItemOptions[index].MenuItemOptionValues[item]?.find(data => data.selected == true).Id : 0
-          
+    } else if (!payment.find(data => data?.selected === true)) {
+      toast.current.show('Please select a payment method', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+    } else if (cartdata.length == 0) {
+      toast.current.show('Your cart is empty please add an item', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+    } else if (Selectedcurrentaddress?.length == 0) {
+      toast.current.show('Please Select a Delivery Address', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+    } else {
+      let order = [];
+      for (const key in cartdata) {
+        let options = [];
+        for (const index in cartdata[key]?.MenuItemOptions) {
+          let menuItemOptionValueId = null;
+          for (const item in cartdata[key]?.MenuItemOptions[index]
+            ?.MenuItemOptionValues) {
+            if (
+              cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues[item]
+                ?.selected == true
+            ) {
+              menuItemOptionValueId =
+                cartdata[key]?.MenuItemOptions[index]?.MenuItemOptionValues[
+                  item
+                ]?.Id;
+            }
           }
-      
-     
-          
+          options.push({
+            menuItemOptionId: cartdata[key]?.MenuItemOptions[index]?.Id,
+            menuItemOptionValueId: menuItemOptionValueId,
+          });
+        }
+        order.push({
+          menuItemId: cartdata[key]?.Id,
+          quantity: cartdata[key]?.Qty,
+          customerNote: cartdata[key]?.SpecialInstructios,
+          orderItemOptions: options,
+        });
+        // != undefined ?  cartdata[key].MenuItemOptions[index].MenuItemOptionValues[item]?.find(data => data.selected == true).Id : 0
+      }
 
       let data = {
         restaurantBranchId: restrauntbasicdata.Id,
@@ -513,21 +496,28 @@ navigation.replace("PreparingFood")
         discountAmount: 0, // to be decided
         couponCode: '', // to be decided
         paymentMethod: payment.find(data => data?.selected === true).name, //Cash, Card(Online)
-        address: AuthToken != "" ? Selectedcurrentaddress[0].address : pinlocation,
-        customerName: AuthToken != "" ? ProfileName : firstname + ' ' + lastname,
-        customerContact: AuthToken != "" ? ProfileContact : phonenumber,
-        customerEmail: AuthToken != "" ? ProfileEmail : email, //"mailto:customer@fougito.com"
-        floor: AuthToken != "" ? Selectedcurrentaddress[0].Floor  : plotnodetails,
-        latitude: AuthToken != "" ? Selectedcurrentaddress[0].Latitude  : pinlatitude,
-        longitude: AuthToken != "" ? Selectedcurrentaddress[0].Longitude  : pinLongitude,
-        noteToRider: AuthToken != "" ? Selectedcurrentaddress[0].note : notetorider,
-        street: AuthToken != "" ? Selectedcurrentaddress[0].Street  : buildingdetails,
+        address:
+          AuthToken != '' ? Selectedcurrentaddress[0].address : pinlocation,
+        customerName:
+          AuthToken != '' ? ProfileName : firstname + ' ' + lastname,
+        customerContact: AuthToken != '' ? ProfileContact : phonenumber,
+        customerEmail: AuthToken != '' ? ProfileEmail : email, //"mailto:customer@fougito.com"
+        floor:
+          AuthToken != '' ? Selectedcurrentaddress[0].Floor : plotnodetails,
+        latitude:
+          AuthToken != '' ? Selectedcurrentaddress[0].Latitude : pinlatitude,
+        longitude:
+          AuthToken != '' ? Selectedcurrentaddress[0].Longitude : pinLongitude,
+        noteToRider:
+          AuthToken != '' ? Selectedcurrentaddress[0].note : notetorider,
+        street:
+          AuthToken != '' ? Selectedcurrentaddress[0].Street : buildingdetails,
         type: pickuporder ? 'Pickup' : 'Delivery',
         orderItems: order,
       };
-  
-      setloader2(true)
-       dispatch(createorder(data));
+
+      setloader2(true);
+      dispatch(createorder(data));
     }
   }
   function selectpaymentmethod(index) {
@@ -1165,46 +1155,44 @@ navigation.replace("PreparingFood")
               />
 
               <View style={{height: scalableheight.two}} />
-              {Selectedcurrentaddress?.length > 0 ? 
-              <>
-              <Text style={styleSheet.Text1}>Delivery Address</Text>
-              <View style={{height: scalableheight.one}} />
+              {Selectedcurrentaddress?.length > 0 ? (
+                <>
+                  <Text style={styleSheet.Text1}>Delivery Address</Text>
+                  <View style={{height: scalableheight.one}} />
 
-              <Addresstile
-                icon={Selectedcurrentaddress[0].icon}
-                place={Selectedcurrentaddress[0].place}
-                address={Selectedcurrentaddress[0].address}
-                note={Selectedcurrentaddress[0].note}
-                onPress={() => {
-                  navigation.navigate('MyAddresses', {
-                    screenname: 'checkout',
-                  });
-                }}
-                screenname={''}
-              />
-        </>   : 
-        <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('MyAddresses', {
-            screenname: 'checkout',
-          });
-        }
-
-        }
-        style={{flexDirection:"row",alignItems:"center"}}>
-         <Text style={{...styleSheet.Text4}}>SELECT ADDRESS</Text>
-         <AntDesign
+                  <Addresstile
+                    icon={Selectedcurrentaddress[0].icon}
+                    place={Selectedcurrentaddress[0].place}
+                    address={Selectedcurrentaddress[0].address}
+                    note={Selectedcurrentaddress[0].note}
+                    onPress={() => {
+                      navigation.navigate('MyAddresses', {
+                        screenname: 'checkout',
+                      });
+                    }}
+                    screenname={''}
+                  />
+                </>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('MyAddresses', {
+                      screenname: 'checkout',
+                    });
+                  }}
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{...styleSheet.Text4}}>SELECT ADDRESS</Text>
+                  <AntDesign
                     style={{
-                  marginLeft:scalableheight.two
-               
-                     
+                      marginLeft: scalableheight.two,
                     }}
                     name="pluscircle"
                     color={'#F55050'}
                     size={scalableheight.three}
                   />
-              <View style={{height: scalableheight.one}} />
-        </TouchableOpacity>  }
+                  <View style={{height: scalableheight.one}} />
+                </TouchableOpacity>
+              )}
             </>
           )}
 
@@ -1362,13 +1350,10 @@ navigation.replace("PreparingFood")
             <MYButton
               title={AuthToken != '' ? 'Place Order' : 'Login to Place Order'}
               onPress={() => {
-                AuthToken != '' ? (
-                  placeorder()
-                  // ( setmodalVisible(true))
-                  )
-                :
-              
-               ( setmodalVisible(true))
+                AuthToken != ''
+                  ? placeorder()
+                  : // ( setmodalVisible(true))
+                    setmodalVisible(true);
               }}
               color="#E14E4E"
               textcolor="white"

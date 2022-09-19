@@ -51,6 +51,7 @@ export const RefreshToken = 'RefreshToken';
 export const StoreNEWRefreshTokenDATA = 'StoreNEWRefreshTokenDATA';
 export const Updated_Profile_Picture = 'Updated_Profile_Picture';
 export const Updated_Profile_PictureClear = 'Updated_Profile_PictureClear';
+export const DetailsCart = 'DetailsCart';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -126,24 +127,22 @@ export const refreshmytoken = (data,token) => {
   try {
     console.log('refreshmytoken');
     return async dispatch => {
-    
-      const result = await fetch(API_URl + 'ServiceAndDeliveryStaffAccount/RefreshToken', {
-        method: 'POST',
-        headers: {
-          "Accept" : "text/plain",
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
+      const result = await fetch(
+        API_URl + 'ServiceAndDeliveryStaffAccount/RefreshToken',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'text/plain',
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(
-          data
-        ),
-      });
+      );
 
       const json = await result.json();
       console.log('refreshmytoken' + JSON.stringify(json));
 
-     
-   
       if (json.Status == 'Success') {
         await AsyncStorage.setItem(
           'AccessToken',
@@ -156,7 +155,7 @@ export const refreshmytoken = (data,token) => {
 
         dispatch({
           type: StoreNEWRefreshTokenDATA,
-          payloadtoken : json.Result.Token,
+          payloadtoken: json.Result.Token,
         });
       }
     };
@@ -165,7 +164,7 @@ export const refreshmytoken = (data,token) => {
   }
 };
 
-export const storetokenrefresh = (data) => {
+export const storetokenrefresh = data => {
   try {
     return async dispatch => {
       dispatch({
@@ -183,7 +182,7 @@ export const clearorderplacementstatus = () => {
     return async dispatch => {
       dispatch({
         type: ClearORDERPLACEMENTSTATUS,
-        payload: "",
+        payload: '',
       });
     };
   } catch (error) {
@@ -191,23 +190,19 @@ export const clearorderplacementstatus = () => {
   }
 };
 
-export const getalladdresses = (token) => {
+export const getalladdresses = token => {
   try {
     return async dispatch => {
-      const result = await fetch(
-        API_URl + 'Customer/' + 0 + '/Address',
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
+      const result = await fetch(API_URl + 'Customer/' + 0 + '/Address', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-      );
+      });
 
       const json = await result.json();
       console.log('getalladdresses' + JSON.stringify(json));
-    
 
       if (json.Status == 'Success') {
         dispatch({
@@ -226,47 +221,41 @@ export const clearaddressresponse = () => {
     return async dispatch => {
       dispatch({
         type: ClearAddress,
-        payload: "",
+        payload: '',
       });
     };
   } catch (error) {
     console.log(error);
   }
 };
-
 
 export const savemyaddress = (data, token) => {
   try {
     console.log('savemyaddress');
     return async dispatch => {
-    
       const result = await fetch(API_URl + 'Customer/Address', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(
-          data
-        ),
+        body: JSON.stringify(data),
       });
 
       const json = await result.json();
       console.log('savemyaddress' + JSON.stringify(json));
 
-     
-        dispatch({
-          type: SAVEADDRESS,
-          payloadstatus : json.Status,
-        });
-    
+      dispatch({
+        type: SAVEADDRESS,
+        payloadstatus: json.Status,
+      });
     };
   } catch (error) {
     console.log(error);
   }
 };
 
-export const storecurrentaddress = (data) => {
+export const storecurrentaddress = data => {
   try {
     return async dispatch => {
       dispatch({
@@ -340,16 +329,17 @@ export const createorder = data => {
 
       const json = await result.json();
       console.log('postserviceratings' + JSON.stringify(json));
-    
+
       if (json.Status === 'Success') {
         dispatch({
           type: CreateOrder,
           payload: 'success',
         });
-      }else{
+      } else {
         dispatch({
           type: CreateOrder,
-          payload: 'We are unable to place your order at the moment. Please try again later.',
+          payload:
+            'We are unable to place your order at the moment. Please try again later.',
         });
       }
     };
@@ -1174,7 +1164,15 @@ export const clearstatusProfileupdate = () => {
     });
   };
 };
-
+export const CartDetails = cartdata => {
+  return async dispatch => {
+    console.log(cartdata, 'cart data cleaned')
+    dispatch({
+      type: DetailsCart,
+      orderDetails: cartdata,
+    });
+  };
+};
 // export const ProfilePictureUpdate = response => {
 //   try {
 //     return async dispatch => {

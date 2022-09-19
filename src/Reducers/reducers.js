@@ -43,7 +43,8 @@ import {
   RefreshToken,
   StoreNEWRefreshTokenDATA,
   Updated_Profile_Picture,
-  Updated_Profile_PictureClear
+  Updated_Profile_PictureClear,
+  DetailsCart
 } from '../Actions/actions';
 
 const initialState = {
@@ -86,12 +87,13 @@ const initialState = {
   Selectedcurrentaddress: [],
   UserLogout: '',
   userLogoutStatus: '',
-  addresscreationresponse: "",
+  addresscreationresponse: '',
   alladdresses: [],
-  orderplacementstatus: "",
+  orderplacementstatus: '',
   refreshtokendata: null,
-  imageupdationstatus: ""
+  imageupdationstatus: "",
 
+  completeorderdetails: [],
 };
 
 function userReducer(state = initialState, action) {
@@ -119,7 +121,7 @@ function userReducer(state = initialState, action) {
         AuthToken: action.payloadtoken,
         refreshtokendata: null,
       };
-    
+
     case RefreshToken:
       return {
         ...state,
@@ -147,7 +149,7 @@ function userReducer(state = initialState, action) {
     case ClearAddress:
       return {
         ...state,
-        addresscreationresponse: "",
+        addresscreationresponse: '',
       };
 
     case SAVEADDRESS:
@@ -161,7 +163,7 @@ function userReducer(state = initialState, action) {
         ...state,
         Selectedcurrentaddress: action.payload,
       };
-  
+
     case AsynClear:
       return {
         ...state,
@@ -383,6 +385,14 @@ function userReducer(state = initialState, action) {
         UpdatePicStatusMessage: action.UpdateProfilePicStatusMessage,
       };
 
+    case DetailsCart:
+      return {
+        ...state,
+        completeorderdetails: action.orderDetails,
+
+      };
+
+      ;
     default:
       return state;
   }
