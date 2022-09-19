@@ -26,7 +26,10 @@ import {
   savemenucategoryoptiondetailsdata,
   storecartdata,
   storecartprice,
-  pickupstate
+  pickupstate,
+  markfavourite,
+  getallrestrauntsbyid,
+  clearfavourite
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -203,7 +206,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     restrauntmenu,
     retaurantmenucategorydataoption,
     cartdata,
-    price
+    price,
+    AuthToken,
+    addedtofavourite
  
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
@@ -241,6 +246,19 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   //   //  Return the function to unsubscribe from the event so it gets removed on unmount
   //   return unsubscribe;
   // }, [navigation]);
+  addedtofavourite
+
+  useEffect(() => {
+    if(addedtofavourite == "Success"){
+
+      dispatch(getallrestrauntsbyid(restrauntdetails?.RestaurantBranchId));
+  dispatch(clearfavourite())
+      
+    }
+   
+
+  }, [addedtofavourite]);
+
   useEffect(() => {
     if(restrauntdetails?.RestaurantBranchId != undefined){
       dispatch(getpopularcategoriesbyid(restrauntdetails?.RestaurantBranchId))
@@ -354,9 +372,7 @@ found = 1
 
     // listeners()
   }, []);
-  useEffect(() => {
-    listeners();
-  }, []);
+
 
   useEffect(() => {
     console.log(
@@ -1028,10 +1044,18 @@ found = 1
             </ImageBackground>
 
             <Reviewscontainer
+            token= {AuthToken}
               rating={restrauntdetails?.AvgRating}
               reviews={restrauntdetails?.RatingCount}
               title={restrauntdetails?.BranchName}
               description={'Its the food you love'}
+              onPress={() => {
+                // console.log(JSON.stringify(restrauntdetails.RestaurantBranchId))
+                // console.log( restrauntdetails?.Isfavourite)
+
+                 dispatch(markfavourite(restrauntdetails?.RestaurantBranchId, restrauntdetails?.Isfavourite ? "DELETE" : "POST", AuthToken))
+              }}
+              Isfavourite = {restrauntdetails?.Isfavourite}
               image={restrauntdetails?.Logo}
             />
 
@@ -1128,7 +1152,7 @@ overflow={"hidden"}
               <FlatList
               key={"1"}
                 keyExtractor={(item, index) => index.toString()}
-                ref={scrollviewhorizontalref}
+                refs={scrollviewhorizontalref}
                 overflow={'hidden'}
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -1148,7 +1172,8 @@ overflow={"hidden"}
           </CollapsibleHeaderContainer>
 
           <CollapsibleScrollView
-            ref={scrollviewref}
+              keyExtractor={(item, index) => index.toString()}
+            refs={scrollviewref}
             scrollEventThrottle={16}
             onMomentumScrollEnd={event => {
               // console.log("3eeee" + event.nativeEvent?.contentOffset?.y)

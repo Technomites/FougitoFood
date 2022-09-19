@@ -44,7 +44,9 @@ import {
   StoreNEWRefreshTokenDATA,
   Updated_Profile_Picture,
   Updated_Profile_PictureClear,
-  DetailsCart
+  DetailsCart,
+  MarkFAVOURITE,
+  ClearFavourite
 } from '../Actions/actions';
 
 const initialState = {
@@ -94,11 +96,27 @@ const initialState = {
   imageupdationstatus: "",
 
   completeorderdetails: [],
+  addedtofavourite: "",
+  origin: ""
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
     
+  
+    case ClearFavourite:
+      return {
+        ...state,
+        addedtofavourite: action.payload,
+     
+      };
+
+    case MarkFAVOURITE:
+      return {
+        ...state,
+        addedtofavourite: action.payload,
+     
+      };
     
     case Updated_Profile_PictureClear:
       return {
@@ -323,6 +341,7 @@ function userReducer(state = initialState, action) {
       return {
         ...state,
         restrauntdetails: action.payload,
+        origin: action.payloadorigin,
       };
 
     case GET_allRestrauntsUpdates:

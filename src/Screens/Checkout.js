@@ -124,6 +124,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     ProfileEmail,
     Selectedcurrentaddress,
     orderplacementstatus,
+    origin
   } = useSelector(state => state.userReducer);
   const refMap = useRef(null);
   const toast = useRef();
@@ -592,7 +593,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     //  }
     else {
       setcouponloader(true);
-      dispatch(verifycoupon(couponvalue, '971040219373'));
+      dispatch(verifycoupon(couponvalue, '971040219373', origin));
     }
   }
   /////////guest/////

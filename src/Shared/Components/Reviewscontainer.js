@@ -42,7 +42,19 @@ const navigation = useNavigation();
         zIndex:1}}>
           <View style= {{height:"100%", width: "50%",}}>
       <View style={{flexDirection:"row", paddingVertical: scalableheight.one, alignItems:"center",}}>
-          <View style={{height:scalableheight.three, backgroundColor:"#E14E4E", width: scalableheight.eight , flexDirection:"row", alignItems:"center", justifyContent:"space-evenly", borderRadius: fontSize.borderradius}}>
+        {props?.token != "" &&
+   <TouchableOpacity 
+   style={{ marginRight:scalableheight.one}}
+         onPress={props.onPress}>
+      <FontAwesome 
+                name="star"
+                color={props?.Isfavourite == true ? "#FFD700" : '#00000029'}
+
+                // #FFD700
+                size={fontSize.twenty}
+              />
+              </TouchableOpacity>}
+          <View style={{height:scalableheight.three, backgroundColor:"#E14E4E", width: scalableheight.eight , flexDirection:"row", alignItems:"center", justifyContent:"space-evenly", borderRadius: fontSize.borderradius,}}>
           <FontAwesome 
                 name="star"
                 color={"white"}
@@ -57,7 +69,7 @@ const navigation = useNavigation();
     <Text
     numberOfLines={1}
     style={{ color:"#303030", fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.twentytwo,}}>{props.title}</Text>
+                    fontSize: fontSize.twentytwo,}}>{props?.Isfavourite?.toString()}{props.title}</Text>
     <Text style={{ color:"#303030", fontFamily: 'Inter-Medium',
                     fontSize: fontSize.twelve, opacity: 0.4}}>{props.description}</Text>
           </View>

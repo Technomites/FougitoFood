@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RNFetchBlob from 'rn-fetch-blob';
 import {Platform} from 'react-native';
 import Coupons from '../Screens/Coupons';
-
+import {useSelector, useDispatch} from 'react-redux';
 
 // export const GetBlogsHome = 'GetBlogsHome';
 export const set_IconFocus = 'set_IconFocus';
@@ -52,6 +52,8 @@ export const StoreNEWRefreshTokenDATA = 'StoreNEWRefreshTokenDATA';
 export const Updated_Profile_Picture = 'Updated_Profile_Picture';
 export const Updated_Profile_PictureClear = 'Updated_Profile_PictureClear';
 export const DetailsCart = 'DetailsCart';
+export const MarkFAVOURITE = 'MarkFAVOURITE';
+export const ClearFavourite = 'ClearFavourite';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -61,6 +63,49 @@ const header1 = {
 };
 
 
+
+export const clearfavourite = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: ClearFavourite,
+        payload: "",
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+  export const markfavourite = (id, type, token) => {
+    try {
+      console.log('markfavourite');
+      return async dispatch => {
+        const result = await fetch(
+          API_URl + 'Customer/Favourite/Branch/' + id,
+          {
+            method: type,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+  
+        const json = await result.json();
+        console.log('markfavourite' + JSON.stringify(json));
+  
+        if (json.Status == 'Success') {
+ 
+          dispatch({
+            type: MarkFAVOURITE,
+            payload: json.Status,
+          });
+        }
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  };
 export const clearimageresponse = () => {
   try {
     return async dispatch => {
@@ -886,6 +931,7 @@ export const getallrestrauntsbyid = id => {
         dispatch({
           type: GET_allRestrauntsByID,
           payload: json.Result[0],
+          payloadorigin: json.Result[0].Origin
         });
       }
     };

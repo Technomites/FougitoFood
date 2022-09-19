@@ -40,7 +40,8 @@ export default function Categoriescard(props) {
           justifyContent: 'center',
           marginRight: scalableheight.one,
         }}
-        source={{uri: props.image}}>
+        // source={ props.image != undefined || props.image != "" || props.image != null  ? {uri: props.image} : require('../../Resources/images/Rectangle.png')}>
+        source={require('../../Resources/images/Rectangle.png')}>
         <ImageBackground
           borderRadius={scalableheight.one}
           resizeMode="cover"
