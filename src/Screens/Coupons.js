@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import {
   Modal,
   Platform,
 } from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
 import {useSelector, useDispatch} from 'react-redux';
 import {MyCoupons} from '../Actions/actions';
 import changeNavigationBarColor, {
@@ -35,6 +36,7 @@ import {GToastContainer, showToast} from 'react-native-gtoast';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Animated from 'react-native-reanimated';
 import {fontSize, scalableheight} from '../Utilities/fonts';
+import Toast from 'react-native-toast-notifications';
 import NetInfo from '@react-native-community/netinfo';
 import {
   createDrawerNavigator,
@@ -89,49 +91,29 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
       code: 'FLAWQDVHH',
     },
   ]);
-
+  const toast = useRef();
   const dispatch = useDispatch();
-  const {AuthToken, CouponCartDetails} = useSelector(
+  const {AuthToken, UserCoupons} = useSelector(
     state => state.userReducer,
   );
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     dispatch(MyCoupons(AuthToken));
-    console.log('MyCouponsMyCouponsMyCouponsMyCouponsMyCoupons');
+   
   }, [AuthToken]);
 
-  useEffect(() => {
-    console.log(
-      CouponCartDetails,
-      'MyCouponsMyCouponsMyCouponsMyCouponsMyCoupons',
-    );
-  }, [CouponCartDetails]);
+
 
   function copied() {
-    showToast('Copied to clipboard', {
-      duration: 500,
+    toast.current.show('Copied To Clipboard', {
+      type: 'normal',
+      placement: 'bottom',
+      duration: 4000,
+      offset: 10,
+      animationType: 'slide-in',
     });
   }
-  // function onRefresh() {
-  //   NetInfo.fetch().then(state => {
-  //     if (state.isConnected == true && state.isInternetReachable == true) {
-  //       dispatch(MyCoupons(AuthToken));
-  //     } else {
-  //       showToast('No Internet Connection', {
-  //         duration: 500,
-  //       });
-  //     }
-  //   });
-  // }
 
-  // React.useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     StatusBar.setBarStyle('dark-content');
-  //   });
-
-  //   //  Return the function to unsubscribe from the event so it gets removed on unmount
-  //   return unsubscribe;
-  // }, [navigation]);
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -150,7 +132,7 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
           barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         /> */}
         <PlainHeader title={'My Coupons'} />
-        {CouponCartDetails.length == 0 ? (
+        {UserCoupons.length == 0 ? (
           <View
             style={{
               // justifyContent: 'center',
@@ -174,10 +156,16 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
               width: '100%',
               paddingBottom: scalableheight.two,
             }}
-            data={CouponCartDetails}
+            data={UserCoupons}
             renderItem={({item}) => {
               return (
-                <View
+                <TouchableOpacity
+                onPress={() => {
+                  
+                  Clipboard.setString(item.CouponCode)
+                  copied()
+
+                  }}
                   style={{
                     alignItems: 'center',
                     paddingHorizontal: scalableheight.two,
@@ -190,7 +178,7 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
                     discountprice={item.dicountAmount}
                     tc={item.TermsAndConditions}
                   />
-                </View>
+                </TouchableOpacity>
               );
             }}
             // onEndReached={() => LoadVRTourPagination()}
@@ -199,7 +187,10 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
         )}
       </View>
 
-      <GToastContainer paddingBottom={100} style={{height: 50, width: 60}} />
+      <Toast
+          ref={toast}
+          style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
+        />
     </Animated.View>
   );
 };

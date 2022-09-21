@@ -40,6 +40,7 @@ import {
   storedistance,
   storerestrauntbasicdata,
   GetProfile,
+  storelatlong
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -607,6 +608,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   useEffect(() => {
     if (lat != null && long != null) {
       dispatch(getallrestraunts(lat, long));
+      dispatch(storelatlong(lat, long))
     }
   }, [lat, long]);
 
@@ -767,7 +769,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             dispatch(cleancart());
             dispatch(storerestrauntid(item?.Id));
           }
-          dispatch(getallrestrauntsbyid(item?.Id));
+          dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
           navigation.navigate('Restaurantpage', {
             latitude: lat,
             longitude: long,
@@ -820,7 +822,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             dispatch(cleancart());
             dispatch(storerestrauntid(item?.Id));
           }
-          dispatch(getallrestrauntsbyid(item?.Id));
+         
+          dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
 
           navigation.navigate('Restaurantpage', {
             latitude: lat,

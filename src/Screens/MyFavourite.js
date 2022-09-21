@@ -9,15 +9,7 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
-  readallnotifications,
-  addReadNotifications,
-  clearNotificationCount,
-  clearNotifications,
-  getAllNotifications,
-  GetNotifications,
-  notificationCountHandle,
-  readNotification,
-  seticonfocus,
+  getmyfavourites
 } from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -38,9 +30,18 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const MyFavourite = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
-  const {notificationList, notificationCount} = useSelector(
+  const {
+    storedlat,
+    storedlong,
+    AuthToken,
+    favouriterestuarants
+  } = useSelector(
     state => state.userReducer,
   );
+
+  useEffect(() => {
+ dispatch(getmyfavourites(storedlat, storedlong, AuthToken ))
+  }, [storedlat, storedlong]);
 
   const [serving, setserving] = useState([
     {
@@ -62,12 +63,12 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
 
   const renderItem = ({item, index}) => (
     <Favourites
-      image={require('../Resources/images/food.jpg')}
-      title={'Mexican Enchiladas'}
-      reviews={'8.9 (350 reviews)'}
-      time={'9:00 AM - 10:00PM'}
+      image={item.Logo}
+      title={item.NameAsPerTradeLicense}
+      reviews={`${item.AvgRating} (${item.RatingCount} reviews)`}
+      time={`${item.OpeningTime} AM - ${item.ClosingTime}PM`}
       onPress={() => {}}
-      distance={'2.5KM AWAY'}
+      distance={`${item.Distance}KM AWAY`}
     />
   );
 
@@ -91,7 +92,7 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
     
         <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
           <FlatList
-            data={serving}
+            data={favouriterestuarants}
             renderItem={renderItem}
             // ListFooterComponent={renderFooter}
             // onEndReached={loadMoreNotifications}

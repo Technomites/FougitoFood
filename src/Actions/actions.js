@@ -54,6 +54,9 @@ export const Updated_Profile_PictureClear = 'Updated_Profile_PictureClear';
 export const DetailsCart = 'DetailsCart';
 export const MarkFAVOURITE = 'MarkFAVOURITE';
 export const ClearFavourite = 'ClearFavourite';
+export const PriceAFTERDISCOUNT = 'PriceAFTERDISCOUNT';
+export const MYFAVOURITES = 'MYFAVOURITES';
+export const STORELATLONG = 'STORELATLONG';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -62,7 +65,67 @@ const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
 
+export const storelatlong = (lat, long) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: STORELATLONG,
+        payloadlat: lat,
+        payloadlong: long,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
+  export const getmyfavourites = (Latitude,Longitude, token) => {
+    try {
+      console.log('getmyfavourites');
+      return async dispatch => {
+        const result = await fetch(
+          API_URl + 'Customer/Favourite/Branches',
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              "Latitude": Latitude,
+              "Longitude": Longitude
+            }),
+          },
+        );
+  
+        const json = await result.json();
+        console.log('getmyfavourites' + JSON.stringify(json));
+  
+        if (json.Status == 'Success') {
+          dispatch({
+            type: MYFAVOURITES,
+            payload: json.Result,
+          });
+        }
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const updatepriceafterdiscount = (price, discount) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: PriceAFTERDISCOUNT,
+        payloadprice: price,
+        payloaddiscount: discount,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const clearfavourite = () => {
   try {
@@ -326,7 +389,7 @@ export const clearcouponresponse = () => {
   }
 };
 
-export const verifycoupon = (code, phonenumber) => {
+export const verifycoupon = (code, phonenumber, origin) => {
   try {
     console.log('verifycoupon');
     return async dispatch => {
@@ -335,7 +398,7 @@ export const verifycoupon = (code, phonenumber) => {
         {
           method: 'POST',
           headers: {
-            Origin: 'https://restaurant.fougito.com',
+            Origin: origin,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -352,6 +415,8 @@ export const verifycoupon = (code, phonenumber) => {
         type: VerifyCoupon,
         payloadstatus: json.Status,
         payloadmessage: json.Message,
+        payloadResult: json.Result,
+
       });
     };
   } catch (error) {
@@ -911,21 +976,24 @@ export const getpopularcategoriesbyid = id => {
   }
 };
 
-export const getallrestrauntsbyid = id => {
+export const getallrestrauntsbyid = (id, token) => {
   try {
     return async dispatch => {
+
       const result = await fetch(
         API_URl + 'Customer/Restaurant/Branch/' + id + '/Details',
         {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`,
           },
+         
         },
       );
 
       const json = await result.json();
-      console.log('getallrestrauntsbyid' + JSON.stringify(json.Result));
+     console.log(" this was the token" + token)
+      console.log('getallrestrauntsbyid -- new' + JSON.stringify(json.Result));
 
       if (json.Status == 'Success') {
         dispatch({
@@ -1045,7 +1113,6 @@ export const MyCoupons = AuthToken => {
         requestOptions,
       );
       json = await result.json();
-      console.log(json, 'LOGIN LOGIN LOGIN');
 
       if (json.Status == 'Success') {
         console.log(json?.Result);
@@ -1054,17 +1121,8 @@ export const MyCoupons = AuthToken => {
           payloadcoupon: json?.Result,
         });
 
-        console.log('Success');
-      } else if (json?.Status == 'Error') {
-        console.log(json?.Message, 'EROORRR');
-        // dispatch({
-        //   type: Login_User,
-        //   payload: '',
-        //   payloadtoken: '',
-        //   payloadCustomer: '',
-        //   LoadLoginStatus: json?.Status,
-        // });
-      }
+    
+      } 
     };
   } catch (error) {
     console.log(error);

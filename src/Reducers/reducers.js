@@ -46,7 +46,10 @@ import {
   Updated_Profile_PictureClear,
   DetailsCart,
   MarkFAVOURITE,
-  ClearFavourite
+  ClearFavourite,
+  PriceAFTERDISCOUNT,
+  STORELATLONG,
+  MYFAVOURITES
 } from '../Actions/actions';
 
 const initialState = {
@@ -97,13 +100,41 @@ const initialState = {
 
   completeorderdetails: [],
   addedtofavourite: "",
-  origin: ""
+  origin: "",
+  discount: 0,
+  couponresponseresult: undefined,
+   UserCoupons: [],
+   storedlat: 0,
+   storedlong: 0,
+   favouriterestuarants: []
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
-    
   
+  
+    case MYFAVOURITES:
+      return {
+        ...state,
+        favouriterestuarants: action.payload,
+    
+     
+      };
+    case STORELATLONG:
+      return {
+        ...state,
+        storedlat: action.payloadlat,
+        storedlong: action.payloadlong,
+     
+      };
+    case PriceAFTERDISCOUNT:
+      return {
+        ...state,
+        price: action.payloadprice,
+        discount: action.payloaddiscount,
+     
+      };
+
     case ClearFavourite:
       return {
         ...state,
@@ -196,6 +227,7 @@ function userReducer(state = initialState, action) {
         ...state,
         couponresponsestatus: action.payload,
         couponresponsemessage: action.payload,
+        couponresponseresult: undefined
       };
 
     case VerifyCoupon:
@@ -203,6 +235,9 @@ function userReducer(state = initialState, action) {
         ...state,
         couponresponsestatus: action.payloadstatus,
         couponresponsemessage: action.payloadmessage,
+        couponresponseresult: action.payloadResult
+       
+    
       };
 
     case PICKUPState:
@@ -366,7 +401,7 @@ function userReducer(state = initialState, action) {
     case couponsCart:
       return {
         ...state,
-        GetUserProfile: action.payloadcoupon,
+        UserCoupons: action.payloadcoupon,
       };
 
     case GetUserProfiles:

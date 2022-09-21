@@ -83,7 +83,7 @@ const GettingStarted = props => {
 
       if (refresh != undefined && refresh != '') {
 
-        dispatch(storetokenrefresh(JSON.parse(refresh, AuthToken)));
+        dispatch(storetokenrefresh(JSON.parse(refresh)));
       }
     }
    

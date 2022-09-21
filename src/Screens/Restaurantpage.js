@@ -246,12 +246,12 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   //   //  Return the function to unsubscribe from the event so it gets removed on unmount
   //   return unsubscribe;
   // }, [navigation]);
-  addedtofavourite
+  
 
   useEffect(() => {
     if(addedtofavourite == "Success"){
 
-      dispatch(getallrestrauntsbyid(restrauntdetails?.RestaurantBranchId));
+      dispatch(getallrestrauntsbyid(restrauntdetails?.RestaurantBranchId, AuthToken));
   dispatch(clearfavourite())
       
     }
@@ -800,6 +800,7 @@ found = 1
                         alignSelf: 'center',
                         borderRadius: fontSize.borderradiusmedium,
                         paddingHorizontal: '5%',
+            
                         textAlignVertical: 'top',
                       }}
                     />
@@ -1296,6 +1297,7 @@ for(const index in dataSourceCords){
              {restrauntmenu.map((item, key) => {
               return (
                <>
+               {search == "" &&
                 <Text
               onLayout={event => {
                 const layout = event.nativeEvent.layout;
@@ -1304,8 +1306,10 @@ for(const index in dataSourceCords){
               style={styleSheet.heading}>
               {item?.CategoryName}{' '}
             </Text>
+             }
             {item?.Items?.map((item, key) => {
               return (
+                item?.Name.toLowerCase().includes(search.trim().toLowerCase()) ? 
                 <View style={{width: '100%', alignItems: 'center'}}>
                   <Starters
                     image={require('../Resources/images/food.jpg')}
@@ -1318,10 +1322,12 @@ for(const index in dataSourceCords){
                       setmodaldataoptions(item)
                       setmodaldataoptionsindex(key)
                       dispatch(savemenucategoryoptiondetailsdata(item))
+                      setspecialinstructions("")
+                      setcount(1)
                       setmodalVisible(true);
                     }}
                   />
-                </View>
+                </View> : null
               );
             })}
                </>

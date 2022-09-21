@@ -27,6 +27,7 @@ import {
   clearorderplacementstatus,
   cleancart,
   CartDetails,
+  updatepriceafterdiscount
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -124,7 +125,9 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     ProfileEmail,
     Selectedcurrentaddress,
     orderplacementstatus,
-    origin
+    origin,
+    couponresponseresult,
+    discount
   } = useSelector(state => state.userReducer);
   const refMap = useRef(null);
   const toast = useRef();
@@ -325,7 +328,37 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         zIndex: 2,
       });
 
+      if(couponresponseresult != undefined){
+
+console.log("this is the result" +  JSON.stringify(couponresponseresult))
+let newprice = price
+let discountedamount = 0
+if(couponresponseresult.Type == "Percentage"){
+if(newprice > couponresponseresult.MaxAmount){
+  let subtractibleamount = couponresponseresult.MaxAmount/100 * couponresponseresult.Value
+  discountedamount = subtractibleamount
+  newprice = newprice - subtractibleamount
+}else{
+  let subtractibleamount = newprice/100 * couponresponseresult.Value
+  discountedamount = subtractibleamount
+  newprice = newprice - subtractibleamount
+}
+}else{
+  discountedamount = couponresponseresult.Value
+  newprice = newprice - couponresponseresult.Value
+}
+
+
+console.log("this is the discountedamount price" +  JSON.stringify(discountedamount))
+console.log("this is the new price" +  JSON.stringify(newprice))
+dispatch(updatepriceafterdiscount(newprice, discountedamount))
+      }
       dispatch(clearcouponresponse());
+
+
+   
+
+
     }
   }, [couponresponsestatus, couponresponsemessage]);
 
@@ -517,6 +550,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         orderItems: order,
       };
 
+      console.log("all data-----" + JSON.stringify(data))
+
       setloader2(true);
       dispatch(createorder(data));
     }
@@ -593,7 +628,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     //  }
     else {
       setcouponloader(true);
-      dispatch(verifycoupon(couponvalue, '971040219373', origin));
+      dispatch(verifycoupon(couponvalue, AuthToken != '' ? ProfileContact : phonenumber, origin));
     }
   }
   /////////guest/////
@@ -1207,6 +1242,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                 : restrauntdetails?.DeliveryCharges * restrauntdistance
             }
           />
+        
 
           <View style={styleSheet.Container}>
             <View style={{flexDirection: 'row'}}>
@@ -1221,6 +1257,20 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                 100}
             </Text>
           </View>
+
+          {discount > 0 &&
+ 
+      
+            <View style={styleSheet.Container}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={styleSheet.Text3}>Coupon Discount</Text>
+             
+            </View>
+            <Text style={{...styleSheet.Text3, color: '#E14E4E'}}>
+           AED{' -'}{discount}
+            </Text>
+          </View>
+       }
           <View style={{height: scalableheight.one}} />
 
           {couponvisible == false ? (
@@ -1235,7 +1285,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           ) : (
             <View style={{marginVertical: scalableheight.two}}>
               <TextInput
-                editable={couponloader ? false : true}
+              
+                editable={couponloader || discount > 0 ? false : true}
                 value={couponvalue}
                 onChangeText={text => setcouponvalue(text)}
                 placeholder={'Enter Code'}
@@ -1267,6 +1318,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                 </View>
               ) : (
                 <TouchableOpacity
+                disabled ={discount > 0 ? true : false}
                   onPress={() => {
                     applycoupon();
                   }}
@@ -1277,12 +1329,12 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                     alignItems: 'center',
                     borderRadius: fontSize.borderradiusmedium,
 
-                    backgroundColor: '#E14E4E',
+                    backgroundColor: discount > 0 ? "transparent" : '#E14E4E',
                     position: 'absolute',
                     right: 2,
                   }}>
-                  <Text style={{...styleSheet.Text4, color: 'white'}}>
-                    Apply
+                  <Text style={{...styleSheet.Text4, color:discount > 0 ? "#E14E4E" : 'white'}}>
+                  {discount > 0 ? "Applied" : "Apply"}  
                   </Text>
                 </TouchableOpacity>
               )}

@@ -69,7 +69,7 @@ const navigation = useNavigation();
     <Text
     numberOfLines={1}
     style={{ color:"#303030", fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.twentytwo,}}>{props?.Isfavourite?.toString()}{props.title}</Text>
+                    fontSize: fontSize.twentytwo,}}>{props.title}</Text>
     <Text style={{ color:"#303030", fontFamily: 'Inter-Medium',
                     fontSize: fontSize.twelve, opacity: 0.4}}>{props.description}</Text>
           </View>
