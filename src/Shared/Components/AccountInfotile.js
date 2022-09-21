@@ -19,8 +19,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 export default function AccountInfotile(props) {
   const [animationstate, setanimationstate] = useState(false);
-  console.log(props?.data.onPress);
-  console.log(props?.data);
+  // console.log(props?.data.onPress);
+  // console.log(props?.data);
 
   async function pressablee() {
     setanimationstate(true)

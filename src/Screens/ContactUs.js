@@ -19,13 +19,7 @@ import {
   Linking,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {
-  changelang,
-  seticonfocus,
-  submitcontactusform,
-  clearcontactform,
-  getbussinesssettings,
-} from '../Actions/actions';
+import {Contactus, emailNullstate, Contactemail} from '../Actions/actions';
 import {GToastContainer, showToast} from 'react-native-gtoast';
 import renderIf from 'render-if';
 import MYButton from '../Shared/Components/MYButton';
@@ -53,8 +47,12 @@ import {
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
+import Toast from 'react-native-toast-notifications';
+import AuthenticationModel from '../Shared/Components/AuthenticationModel';
 
 const ContactUs = ({navigation, drawerAnimationStyle}) => {
+  const toast = useRef();
+  const [modalVisible, setmodalVisible] = useState(false);
   const [message, setMessage] = useState('');
   const [loader, setLoader] = useState(false);
   const [contactinfo, setContactInfo] = useState();
@@ -64,92 +62,60 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
   const [pickerSearch, setPickerSearch] = useState('');
   const [numberShown, setNumberShown] = useState(false);
 
-  const {Lang, contactformsubmissionsuccess, bussinesslist} = useSelector(
-    state => state.userReducer,
-  );
+  const {
+    AuthToken,
+    detailsContact,
+    detailsContactstatus,
+    detailsContactmessage,
+  } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(seticonfocus('home'));
+    dispatch(Contactus());
   }, []);
 
   useEffect(() => {
-    if (contactformsubmissionsuccess != '') {
+    if (detailsContactstatus === 'Success') {
+      toast.current.show(detailsContactmessage, {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+
+      dispatch(emailNullstate());
+      setMessage('');
       setLoader(false);
-      if (contactformsubmissionsuccess == 200) {
-        showToast(
-          Lang == 'en'
-            ? 'Your email has been sent successfully. We will getback to you shortly'
-            : 'تم إرسال بريدك الإلكتروني بنجاح ، وسنعاود الاتصال بك قريبًا.',
-          {
-            duration: 500,
-          },
-        );
-
-        setFirstName('');
-        setPhoneNumber('');
-        setMessage('');
-        setEmail('');
-      } else {
-        showToast(
-          Lang == 'en'
-            ? 'There was a problem sending your email. Please try again later.'
-            : 'حدثت مشكلة أثناء إرسال البريد الإلكتروني الخاص بك. يرجى المحاولة مرة أخرى في وقت لاحق.',
-          {
-            duration: 500,
-          },
-        );
-      }
-
-      dispatch(clearcontactform());
+    } else if (detailsContactstatus === 'Error') {
+      toast.current.show(detailsContactmessage, {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      dispatch(emailNullstate());
+      setMessage('');
+      setLoader(false);
     }
-  }, [contactformsubmissionsuccess]);
+  }, [detailsContactstatus, detailsContactmessage]);
 
-  useEffect(() => {
-    dispatch(getbussinesssettings(Lang));
-  }, [Lang]);
-
-  function submitcontactus() {
-    if (FirstName == '') {
-      showToast(
-        Lang == 'en'
-          ? 'Please enter your first name.'
-          : 'الرجاء إدخال اسمك الأول.',
-        {
-          duration: 500,
-        },
-      );
-    } else if (PhoneNumber == '') {
-      showToast(
-        Lang == 'en'
-          ? 'Please enter your phone number.'
-          : 'يرجى إدخال رقم الهاتف الخاص بك.',
-        {
-          duration: 500,
-        },
-      );
-    } else if (Email == '') {
-      showToast(
-        Lang == 'en'
-          ? 'Please enter your email address.'
-          : 'الرجاء إدخال عنوان البريد الإلكتروني الخاص بك.',
-        {
-          duration: 500,
-        },
-      );
-    } else if (Message == '') {
-      showToast(
-        Lang == 'en' ? 'Please enter your message.' : 'أدرج رسالتك من فضلك.',
-        {
-          duration: 500,
-        },
-      );
+  const emailsend = () => {
+    if (message == '') {
+      toast.current.show('Type your message', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
     } else {
       setLoader(true);
-      console.log(selectNumber + PhoneNumber);
-      let number = selectNumber.substring(1) + PhoneNumber;
-      dispatch(submitcontactusform(FirstName, number, Email, Message));
+      dispatch(Contactemail(AuthToken, message));
     }
-  }
+  };
 
   return (
     <Animated.View
@@ -177,7 +143,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                   color: '#29262A',
                   alignSelf: 'flex-start',
                 }}>
-                Get in touch with us
+                {detailsContact[0]?.Title}
               </Text>
               <Text
                 style={{
@@ -224,7 +190,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                     color: '#29262A',
                     textAlign: 'justify',
                   }}>
-                  (446)078-4232
+                  {detailsContact[0]?.Contact}
                 </Text>
               </View>
             </View>
@@ -258,7 +224,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                     color: '#29262A',
                     textAlign: 'justify',
                   }}>
-                  support@fougito.com
+                  {detailsContact[0]?.Email}
                 </Text>
               </View>
             </View>
@@ -296,7 +262,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                     color: '#29262A',
                     textAlign: 'justify',
                   }}>
-                  3636 Flavie Crest Barton Parkways Pedroton
+                  {detailsContact[0]?.StreetAddress}
                 </Text>
               </View>
             </View>
@@ -307,6 +273,9 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 marginVertical: scalableheight.two,
               }}>
               <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL(`${detailsContact[0]?.Facebook}`)
+                }
                 activeOpacity={0.9}
                 style={{
                   backgroundColor: '#F9F9F9',
@@ -322,7 +291,6 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                   },
                   shadowOpacity: 0.23,
                   shadowRadius: 2.62,
-
                   elevation: 2,
                   borderWidth: scalableheight.borderTopWidth,
                   borderColor: 'rgba(211,211,211, 0.6)',
@@ -337,6 +305,9 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
 
               <TouchableOpacity
                 activeOpacity={0.9}
+                onPress={() =>
+                  Linking.openURL(`${detailsContact[0]?.Instagram}`)
+                }
                 style={{
                   backgroundColor: '#F9F9F9',
                   borderRadius: scalableheight.one,
@@ -365,6 +336,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               </TouchableOpacity>
 
               <TouchableOpacity
+                onPress={() => Linking.openURL(`${detailsContact[0]?.Twitter}`)}
                 activeOpacity={0.9}
                 style={{
                   backgroundColor: '#F9F9F9',
@@ -395,6 +367,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
 
               <TouchableOpacity
                 activeOpacity={0.9}
+                onPress={() => Linking.openURL(`${detailsContact[0]?.Youtube}`)}
                 style={{
                   backgroundColor: '#F9F9F9',
                   borderRadius: scalableheight.one,
@@ -416,13 +389,19 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
-                  name={'linkedin'}
-                  color={'#1980e7'}
+                  name={'youtube-play'}
+                  color={'#E14E4E'}
                   size={fontSize.twentysix}
                 />
               </TouchableOpacity>
 
               <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL(
+                    'whatsapp://send?text=&phone=' +
+                      `${detailsContact[0]?.WhatsApp}`,
+                  )
+                }
                 activeOpacity={0.9}
                 style={{
                   backgroundColor: '#F9F9F9',
@@ -515,16 +494,26 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               />
             </View>
             <View style={{marginTop: scalableheight.two}}>
-              {/* {loader ? (
-                <ActivityIndicator size={'large'} color={Color.btnBgColor} />
-              ) : ( */}
-              <MYButton
-                onPress={() => {}}
-                title="SEND"
-                color={'#E14E4E'}
-                textcolor={'white'}
-              />
-              {/* )} */}
+              {loader == true ? (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <ActivityIndicator size={'large'} color="#E14E4E" />
+                </View>
+              ) : (
+                <MYButton
+                  onPress={() => {
+                    {
+                      AuthToken != '' ? emailsend() : setmodalVisible(true);
+                    }
+                  }}
+                  title={AuthToken != '' ? 'SEND' : 'Login'}
+                  color={'#E14E4E'}
+                  textcolor={'white'}
+                />
+              )}
             </View>
 
             {/* <SuccessModal
@@ -536,6 +525,16 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               visible={successModal}
             /> */}
           </View>
+          <AuthenticationModel
+            state={modalVisible}
+            togglemodel={() => {
+              setmodalVisible(false);
+            }}
+          />
+          <Toast
+            ref={toast}
+            style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
+          />
         </View>
       </SafeAreaView>
     </Animated.View>

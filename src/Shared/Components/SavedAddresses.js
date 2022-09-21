@@ -9,36 +9,81 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { fontSize, scalableheight } from '../../Utilities/fonts'
+import {useNavigation} from '@react-navigation/native';
+import {fontSize, scalableheight} from '../../Utilities/fonts';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 export default function SavedAddresses(props) {
   const dispatch = useDispatch();
-const navigation = useNavigation();
-
+  const navigation = useNavigation();
 
   return (
-    
-    <View style={{flexDirection:"row", borderBottomWidth: 1, borderColor:  "rgba(211,211,211, 0.5)", paddingVertical: scalableheight.one}}>
-    <View style={{justifyContent:"center"}}>
-    <FontAwesome name={'home'} color={"#F55050"}   size={fontSize.twentyfour} />
-  </View>
-    <View style={{marginLeft:scalableheight.two}}>
-    <Text style={{color:"black", fontFamily: 'Inter-SemiBold',
-  fontSize: fontSize.sixteen,}}>{props.title}</Text>
-   
-     <Text style={{color:"black", fontFamily: 'Inter-Regular', opacity:0.5,
-  fontSize: fontSize.fourteen,}}>{props.address}</Text>
-  </View>
-</View>  
+    <View
+      style={{
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderColor: 'rgba(211,211,211, 0.5)',
+        paddingVertical: scalableheight.one,
+      }}>
+      <View style={{justifyContent: 'center'}}>
+        {/* <FontAwesome
+          name={'home'}
+          color={'#F55050'}
+          size={fontSize.twentyfour}
+        /> */}
+        {props?.icon == 'Home' ? (
+          <FontAwesome5
+            style={{alignSelf: 'center'}}
+            name={'home'}
+            color={'#F55050'}
+            size={fontSize.twenty}
+          />
+        ) : props?.icon == 'Work' ? (
+          <FontAwesome5
+            style={{alignSelf: 'center'}}
+            name={'briefcase'}
+            color={'#F55050'}
+            size={fontSize.twenty}
+          />
+        ) : (
+          <FontAwesome5
+            style={{alignSelf: 'center'}}
+            name={'building'}
+            color={'#F55050'}
+            size={fontSize.twenty}
+          />
+        )}
+      </View>
+      <View style={{marginLeft: scalableheight.two}}>
+        <Text
+          style={{
+            color: 'black',
+            fontFamily: 'Inter-SemiBold',
+            fontSize: fontSize.sixteen,
+          }}>
+          {props.title}
+        </Text>
+
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={{
+            color: 'black',
+            fontFamily: 'Inter-Regular',
+            opacity: 0.5,
+            fontSize: fontSize.fourteen,
+          }}>
+          {props.address}
+        </Text>
+      </View>
+    </View>
   );
 }
 
@@ -51,7 +96,7 @@ const styleSheet = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    paddingHorizontal: scalableheight.one
+    paddingHorizontal: scalableheight.one,
   },
 
   text: {
@@ -67,14 +112,14 @@ const styleSheet = StyleSheet.create({
     right: '-1%',
   },
   backButtonMain: {
-    backgroundColor: "#F9F9F9",
+    backgroundColor: '#F9F9F9',
     height: scalableheight.four,
     width: scalableheight.four,
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
-},
-shadow: {
+  },
+  shadow: {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -86,5 +131,3 @@ shadow: {
     elevation: 4,
   },
 });
-
-

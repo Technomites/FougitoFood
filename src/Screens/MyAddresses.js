@@ -11,10 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {
-  getalladdresses,
-  storecurrentaddress
-} from '../Actions/actions';
+import {getalladdresses, storecurrentaddress} from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
@@ -36,9 +33,7 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   const dispatch = useDispatch();
   const [screenname, setscreenname] = useState('');
-  const {AuthToken, alladdresses} = useSelector(
-    state => state.userReducer,
-  );
+  const {AuthToken, alladdresses} = useSelector(state => state.userReducer);
 
   const [addresses, Setaddresses] = useState([
     {
@@ -110,10 +105,8 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
     return unsubscribe;
   }, [navigation, route]);
 
-
   useEffect(() => {
-    dispatch(getalladdresses(AuthToken))
-   
+    dispatch(getalladdresses(AuthToken));
   }, []);
   return (
     <Animated.View
@@ -146,34 +139,30 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
-
-
-    
-                    let currentaddress = [{
-                      Latitude: item.Latitude,
-                      Longitude: item.Longitude,
-                      icon: item.Type,
-                      place: item.Type,
-                      address: item.Address,
-                      note: item.NoteToRider,
-                      Street: item.Street,
-                      Floor: item.Floor,
-                      
-                    }]
-                    console.log(currentaddress)
-                    dispatch(storecurrentaddress(currentaddress))
+                    let currentaddress = [
+                      {
+                        Latitude: item.Latitude,
+                        Longitude: item.Longitude,
+                        icon: item.Type,
+                        place: item.Type,
+                        address: item.Address,
+                        note: item.NoteToRider,
+                        Street: item.Street,
+                        Floor: item.Floor,
+                      },
+                    ];
+                    console.log(currentaddress);
+                    dispatch(storecurrentaddress(currentaddress));
                     navigation.goBack();
                   }}
                   disabled={screenname == 'checkout' ? false : true}
                   style={{marginTop: '5%'}}>
                   <Addresstile
-                    onPress={() =>{
-
-                    
+                    onPress={() => {
                       navigation.navigate('EditAddress', {
                         // orderId: item.OrderNo,
                         // completedetails: Order,
-                      })
+                      });
                     }}
                     //   // onModelPopUp={changestatus}
                     icon={item.Type}

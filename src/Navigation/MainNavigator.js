@@ -59,7 +59,6 @@ import Help from '../Screens/Help';
 import Coupons from '../Screens/Coupons';
 import PreparingFood from '../Screens/PreparingFood';
 
-
 import Login from '../Screens/Login';
 import SignUp from '../Screens/SignUp';
 import OtpVerification from '../Screens/OtpVerification';
@@ -119,7 +118,6 @@ const CustomDrawerStyle = ({navigation}) => {
     ProfileName,
     ProfileImage,
   } = useSelector(state => state.userReducer);
-
 
   let options = [
     {
@@ -186,12 +184,12 @@ const CustomDrawerStyle = ({navigation}) => {
       });
       setLoader(false);
       // setanimationstate(true);
-     
-      setanimationtype('fadeOutDownBig')
+
+      setanimationtype('fadeOutDownBig');
       ClearAsyncStorage();
       dispatch(ClearAsycn());
 
-    //  setlogoutmodal(false);
+      //  setlogoutmodal(false);
     } else if (userLogoutStatus === 'Error') {
       toast.current.show(UserLogout, {
         type: 'normal',
@@ -303,58 +301,55 @@ const CustomDrawerStyle = ({navigation}) => {
               }
             />
             <View style={{alignItems: 'center', marginTop: scalableheight.one}}>
-           
               {AuthToken != '' ? (
                 <TouchableOpacity
-                activeOpacity={0.9}
-                style={{alignItems:"center"}}
-                onPress={() => navigation.navigate('AccountSettings')}
-                >
-                  <Text
-                  style={{
-                    color: 'white',
-                    fontSize: fontSize.eightteen,
-                    fontFamily: 'Inter-SemiBold',
-                  }}>
-                  {ProfileName}
-                </Text>
-                <View>
+                  activeOpacity={0.9}
+                  style={{alignItems: 'center'}}
+                  onPress={() => navigation.navigate('AccountSettings')}>
                   <Text
                     style={{
                       color: 'white',
-                      fontSize: fontSize.twelve,
-                      fontFamily: 'Inter-Medium',
-                      opacity: 0.8,
+                      fontSize: fontSize.eightteen,
+                      fontFamily: 'Inter-SemiBold',
                     }}>
-                    Account Settings
+                    {ProfileName}
                   </Text>
-                </View>
+                  <View>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: fontSize.twelve,
+                        fontFamily: 'Inter-Medium',
+                        opacity: 0.8,
+                      }}>
+                      Account Settings
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                style={{alignItems:"center"}}
-                activeOpacity={0.9}
-                  onPress={() => setmodalVisible(true)}
-                >
-                   <Text
-                style={{
-                  color: 'white',
-                  fontSize: fontSize.eightteen,
-                  fontFamily: 'Inter-SemiBold',
-                }}>
-                {'Guest User'}
-              </Text>
-                <View>
+                  style={{alignItems: 'center'}}
+                  activeOpacity={0.9}
+                  onPress={() => setmodalVisible(true)}>
                   <Text
                     style={{
                       color: 'white',
-                      fontSize: fontSize.twelve,
-                      fontFamily: 'Inter-Medium',
-                      opacity: 0.8,
+                      fontSize: fontSize.eightteen,
+                      fontFamily: 'Inter-SemiBold',
                     }}>
-                    Login/Signup
+                    {'Guest User'}
                   </Text>
-                </View>
+                  <View>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: fontSize.twelve,
+                        fontFamily: 'Inter-Medium',
+                        opacity: 0.8,
+                      }}>
+                      Login/Signup
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               )}
             </View>
@@ -456,46 +451,49 @@ const CustomDrawerStyle = ({navigation}) => {
 
           {/* {renderIf(ProfileInfo != '')(
             <> */}
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => {
-              navigation.navigate('MyOrders');
-              navigation.dispatch(DrawerActions.closeDrawer());
-            }}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderTopWidth: scalableheight.borderTopWidth,
-              borderColor: '#adadad',
-              height: Dimensions.get('window').height / 13,
-              marginHorizontal: scalableheight.two,
-            }}>
-            <View
+
+          {AuthToken != '' ? (
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() => {
+                navigation.navigate('MyOrders');
+                navigation.dispatch(DrawerActions.closeDrawer());
+              }}
               style={{
-                ...styleSheet.shadowicon,
-                width: scalableheight.five,
-                height: scalableheight.five,
-                borderRadius: fontSize.nine,
-                backgroundColor: '#F9F9F9',
+                flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
+                borderTopWidth: scalableheight.borderTopWidth,
+                borderColor: '#adadad',
+                height: Dimensions.get('window').height / 13,
+                marginHorizontal: scalableheight.two,
               }}>
-              <MaterialIcons
-                name={'history'}
-                color={'black'}
-                size={fontSize.twentytwo}
-              />
-            </View>
-            <Text
-              style={{
-                color: 'white',
-                fontFamily: 'Inter-Medium',
-                fontSize: fontSize.fourteen,
-                marginLeft: scalableheight.two,
-              }}>
-              {'My Orders'}
-            </Text>
-          </TouchableOpacity>
+              <View
+                style={{
+                  ...styleSheet.shadowicon,
+                  width: scalableheight.five,
+                  height: scalableheight.five,
+                  borderRadius: fontSize.nine,
+                  backgroundColor: '#F9F9F9',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <MaterialIcons
+                  name={'history'}
+                  color={'black'}
+                  size={fontSize.twentytwo}
+                />
+              </View>
+              <Text
+                style={{
+                  color: 'white',
+                  fontFamily: 'Inter-Medium',
+                  fontSize: fontSize.fourteen,
+                  marginLeft: scalableheight.two,
+                }}>
+                {'My Orders'}
+              </Text>
+            </TouchableOpacity>
+          ) : null}
 
           {AuthToken != '' ? (
             <TouchableOpacity
@@ -539,46 +537,48 @@ const CustomDrawerStyle = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           ) : null}
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => {
-              navigation.navigate('MyFavourite');
-              navigation.dispatch(DrawerActions.closeDrawer());
-            }}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderTopWidth: scalableheight.borderTopWidth,
-              borderColor: '#adadad',
-              height: Dimensions.get('window').height / 13,
-              marginHorizontal: scalableheight.two,
-            }}>
-            <View
+          {AuthToken != '' ? (
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() => {
+                navigation.navigate('MyFavourite');
+                navigation.dispatch(DrawerActions.closeDrawer());
+              }}
               style={{
-                ...styleSheet.shadowicon,
-                width: scalableheight.five,
-                height: scalableheight.five,
-                borderRadius: fontSize.nine,
-                backgroundColor: '#F9F9F9',
+                flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
+                borderTopWidth: scalableheight.borderTopWidth,
+                borderColor: '#adadad',
+                height: Dimensions.get('window').height / 13,
+                marginHorizontal: scalableheight.two,
               }}>
-              <AntDesign
-                name={'hearto'}
-                color={'black'}
-                size={fontSize.twentytwo}
-              />
-            </View>
-            <Text
-              style={{
-                color: 'white',
-                fontFamily: 'Inter-Medium',
-                fontSize: fontSize.fourteen,
-                marginLeft: scalableheight.two,
-              }}>
-              {'My Favourites'}
-            </Text>
-          </TouchableOpacity>
+              <View
+                style={{
+                  ...styleSheet.shadowicon,
+                  width: scalableheight.five,
+                  height: scalableheight.five,
+                  borderRadius: fontSize.nine,
+                  backgroundColor: '#F9F9F9',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <AntDesign
+                  name={'hearto'}
+                  color={'black'}
+                  size={fontSize.twentytwo}
+                />
+              </View>
+              <Text
+                style={{
+                  color: 'white',
+                  fontFamily: 'Inter-Medium',
+                  fontSize: fontSize.fourteen,
+                  marginLeft: scalableheight.two,
+                }}>
+                {'My Favourites'}
+              </Text>
+            </TouchableOpacity>
+          ) : null}
 
           {AuthToken != '' ? (
             <TouchableOpacity
@@ -699,15 +699,14 @@ const CustomDrawerStyle = ({navigation}) => {
           {renderIf(AuthToken != '')(
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={
-                () =>{
-                  //logoutHandle()
-                  // setlogoutmodal(true)
-                // alert('mm')
-                setlogoutmodal(true)
-                setanimationtype('fadeInUpBig')
+              onPress={() => {
+                //logoutHandle()
                 // setlogoutmodal(true)
-                }}
+                // alert('mm')
+                setlogoutmodal(true);
+                setanimationtype('fadeInUpBig');
+                // setlogoutmodal(true)
+              }}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -790,135 +789,133 @@ const CustomDrawerStyle = ({navigation}) => {
       </View>
       {logoutmodal && (
         <Modal
-        style={{     width: '100%',
-        height: '100%', }}
-        transparent
-        statusBarTranslucent
-        >
-          <View
-            style={{     width: '100%',
-            height: '100%',
-            justifyContent: "flex-end", alignItems:"center", paddingBottom: scalableheight.eight }}
-        
-          >
-        <Animatable.View
-          animation={animationtype}
-          onAnimationEnd={() => {
-            // setanimationstate(false);
-
-            if (animationtype == 'fadeInUpBig') {
-              // setanimationtype('fadeOutDownBig')
-          
-            } else {
-              // setanimationtype('fadeInUpBig');
-              // setlogoutmodal(false);
-              setlogoutmodal(false)
-            }
-          }}
-          easing="ease"
-          //  iterationCount="infinite"
-          iterationCount={1}
-          style={{
-            // bottom: scalableheight.two,
-            // position: 'absolute',
-            
-            width: Dimensions.get('window').width / 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: scalableheight.sixteen,
-          }}>
+          style={{width: '100%', height: '100%'}}
+          transparent
+          statusBarTranslucent>
           <View
             style={{
-              backgroundColor: '#303030',
+              width: '100%',
               height: '100%',
-              width: '90%',
-              borderRadius: fontSize.eleven,
+              justifyContent: 'flex-end',
               alignItems: 'center',
-              justifyContent: 'center',
+              paddingBottom: scalableheight.eight,
             }}>
-            <AntDesign
-              name={'exclamationcircle'}
-              color={'white'}
-              size={fontSize.thirtytwo}
-            />
-            <Text
-              style={{
-                fontFamily: 'Inter-SemiBold',
-                color: 'white',
-                fontSize: fontSize.fifteen,
-                paddingTop: scalableheight.pointfive,
-              }}>
-              Are you sure you want to logout?
-            </Text>
+            <Animatable.View
+              animation={animationtype}
+              onAnimationEnd={() => {
+                // setanimationstate(false);
 
-            {loader == true ? (
+                if (animationtype == 'fadeInUpBig') {
+                  // setanimationtype('fadeOutDownBig')
+                } else {
+                  // setanimationtype('fadeInUpBig');
+                  // setlogoutmodal(false);
+                  setlogoutmodal(false);
+                }
+              }}
+              easing="ease"
+              //  iterationCount="infinite"
+              iterationCount={1}
+              style={{
+                // bottom: scalableheight.two,
+                // position: 'absolute',
+
+                width: Dimensions.get('window').width / 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: scalableheight.sixteen,
+              }}>
               <View
                 style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  paddingVertical: scalableheight.one,
-                }}>
-                <ActivityIndicator size={'small'} color="#fff" />
-              </View>
-            ) : (
-              <View
-                style={{
-                  flexDirection: 'row',
+                  backgroundColor: '#303030',
+                  height: '100%',
+                  width: '90%',
+                  borderRadius: fontSize.eleven,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  paddingVertical: scalableheight.one,
                 }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    logoutHandle();
-                    //   setLoader(true);
-                    //  setanimationstate(true);
-                  }}
+                <AntDesign
+                  name={'exclamationcircle'}
+                  color={'white'}
+                  size={fontSize.thirtytwo}
+                />
+                <Text
                   style={{
-                    backgroundColor: '#E14E4E',
-                    width: scalableheight.seven,
-                    height: scalableheight.four,
-                    borderRadius: fontSize.borderradiusmedium,
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    fontFamily: 'Inter-SemiBold',
+                    color: 'white',
+                    fontSize: fontSize.fifteen,
+                    paddingTop: scalableheight.pointfive,
                   }}>
-                  <Text
+                  Are you sure you want to logout?
+                </Text>
+
+                {loader == true ? (
+                  <View
                     style={{
-                      fontFamily: 'Inter-SemiBold',
-                      color: 'white',
-                      fontSize: fontSize.fifteen,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      paddingVertical: scalableheight.one,
                     }}>
-                    Yes
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                  
-                    setanimationtype('fadeOutDownBig')
-                    // setanimationstate(true);
-                  }}
-                  style={{
-                    marginLeft: scalableheight.one,
-                    width: scalableheight.seven,
-                    height: scalableheight.four,
-                    borderRadius: fontSize.borderradiusmedium,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text
+                    <ActivityIndicator size={'small'} color="#fff" />
+                  </View>
+                ) : (
+                  <View
                     style={{
-                      fontFamily: 'Inter-SemiBold',
-                      color: '#E14E4E',
-                      fontSize: fontSize.fifteen,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      paddingVertical: scalableheight.one,
                     }}>
-                    No
-                  </Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        logoutHandle();
+                        //   setLoader(true);
+                        //  setanimationstate(true);
+                      }}
+                      style={{
+                        backgroundColor: '#E14E4E',
+                        width: scalableheight.seven,
+                        height: scalableheight.four,
+                        borderRadius: fontSize.borderradiusmedium,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-SemiBold',
+                          color: 'white',
+                          fontSize: fontSize.fifteen,
+                        }}>
+                        Yes
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setanimationtype('fadeOutDownBig');
+                        // setanimationstate(true);
+                      }}
+                      style={{
+                        marginLeft: scalableheight.one,
+                        width: scalableheight.seven,
+                        height: scalableheight.four,
+                        borderRadius: fontSize.borderradiusmedium,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-SemiBold',
+                          color: '#E14E4E',
+                          fontSize: fontSize.fifteen,
+                        }}>
+                        No
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
-            )}
+            </Animatable.View>
           </View>
-        </Animatable.View>
-        </View>
         </Modal>
       )}
       <Modal
@@ -1034,9 +1031,7 @@ const Drawernavigator = props => {
       <Drawer.Screen name="Checkout" options={{headerShown: false}}>
         {props => <Checkout {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
-     
 
-      
       <Drawer.Screen name="Changepassword" options={{headerShown: false}}>
         {props => (
           <Changepassword {...props} drawerAnimationStyle={animatedStyle} />
@@ -1278,7 +1273,7 @@ const MainNavigator = () => {
             component={Legal}
             options={{headerShown: false}}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="PreparingFood"
             component={PreparingFood}
             options={{headerShown: false}}

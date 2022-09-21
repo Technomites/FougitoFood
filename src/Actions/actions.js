@@ -57,6 +57,11 @@ export const ClearFavourite = 'ClearFavourite';
 export const PriceAFTERDISCOUNT = 'PriceAFTERDISCOUNT';
 export const MYFAVOURITES = 'MYFAVOURITES';
 export const STORELATLONG = 'STORELATLONG';
+export const NewpasswordChanged = 'NewpasswordChanged';
+export const NewpasswordChanged2 = 'NewpasswordChanged2';
+export const OrderList = 'OrderList';
+export const Contactusdetails = 'Contactusdetails';
+export const contactusemail = 'contactusemail';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -132,7 +137,7 @@ export const clearfavourite = () => {
     return async dispatch => {
       dispatch({
         type: ClearFavourite,
-        payload: "",
+        payload: '',
       });
     };
   } catch (error) {
@@ -140,41 +145,37 @@ export const clearfavourite = () => {
   }
 };
 
-  export const markfavourite = (id, type, token) => {
-    try {
-      console.log('markfavourite');
-      return async dispatch => {
-        const result = await fetch(
-          API_URl + 'Customer/Favourite/Branch/' + id,
-          {
-            method: type,
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-  
-        const json = await result.json();
-        console.log('markfavourite' + JSON.stringify(json));
-  
-        if (json.Status == 'Success') {
- 
-          dispatch({
-            type: MarkFAVOURITE,
-            payload: json.Status,
-          });
-        }
-      };
-    } catch (error) {
-      console.log(error);
-    }
-  };
+export const markfavourite = (id, type, token) => {
+  try {
+    console.log('markfavourite');
+    return async dispatch => {
+      const result = await fetch(API_URl + 'Customer/Favourite/Branch/' + id, {
+        method: type,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const json = await result.json();
+      console.log('markfavourite' + JSON.stringify(json));
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: MarkFAVOURITE,
+          payload: json.Status,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const clearimageresponse = () => {
   try {
     return async dispatch => {
       dispatch({
         type: Updated_Profile_PictureClear,
-        payload: "",
+        payload: '',
       });
     };
   } catch (error) {
@@ -183,55 +184,48 @@ export const clearimageresponse = () => {
 };
 
 export const updateprofilepicture = (picture, token) => {
- 
-  
   try {
     return async dispatch => {
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'multipart/form-data');
-      myHeaders.append( 'Authorization', `Bearer ${token}`);
-  
+      myHeaders.append('Authorization', `Bearer ${token}`);
+
       var photo = {
         uri: picture.path,
         type: picture.mime,
         name: 'photo.jpg',
       };
-  
+
       var formdata = new FormData();
       formdata.append('Image', photo);
-  
+
       var requestOptions = {
         method: 'PUT',
         headers: myHeaders,
         body: formdata,
         redirect: 'follow',
       };
-  
-    
-      const result = await fetch(API_URl + 'Customer/Account/ProfilePicture', 
-        requestOptions);
-    
-    
+
+      const result = await fetch(
+        API_URl + 'Customer/Account/ProfilePicture',
+        requestOptions,
+      );
+
       const json = await result.json();
 
-     
-  
       console.log('updated picture' + JSON.stringify(json));
 
-      
-        dispatch({
-          type: Updated_Profile_Picture,
-          payloadimagestatus: json.Status,
-    
-        });
-      
+      dispatch({
+        type: Updated_Profile_Picture,
+        payloadimagestatus: json.Status,
+      });
     };
   } catch (error) {
     console.log(error);
   }
 };
 
-export const refreshmytoken = (data,token) => {
+export const refreshmytoken = (data, token) => {
   try {
     console.log('refreshmytoken');
     return async dispatch => {
@@ -256,10 +250,7 @@ export const refreshmytoken = (data,token) => {
           'AccessToken',
           JSON.stringify(json.Result.Token),
         );
-        await AsyncStorage.setItem(
-          'TokenInfo',
-          JSON.stringify(json.Result),
-        );
+        await AsyncStorage.setItem('TokenInfo', JSON.stringify(json.Result));
 
         dispatch({
           type: StoreNEWRefreshTokenDATA,
@@ -799,6 +790,117 @@ export const ChangedPassword = (userid, newpassword, confirmpassword) => {
   }
 };
 
+export const Contactemail = (AuthToken, message) => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append('Authorization', `Bearer ${AuthToken}`);
+
+      var raw = JSON.stringify({
+        message: message,
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(API_URl + `ContactUs`, requestOptions);
+      json = await result.json();
+      if (json.Status == 'Success') {
+        dispatch({
+          type: contactusemail,
+          emailpayload: json?.Status,
+          messagepayload: json?.Message,
+        });
+      } else if (json.Status == 'Error') {
+        console.log();
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const emailNullstate = () => {
+  return async dispatch => {
+    dispatch({
+      type: contactusemail,
+      emailpayload: '',
+      messagepayload: '',
+    });
+  };
+};
+
+export const ChangedNewPassword = (
+  AuthToken,
+  oldpassword,
+  newpassword,
+  confirmpassword,
+) => {
+  try {
+    console.log(
+      AuthToken,
+      oldpassword,
+      newpassword,
+      confirmpassword,
+      'hdajkdhajksdhjk',
+    );
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${AuthToken}`);
+      myHeaders.append('Content-Type', 'application/json');
+
+      var raw = JSON.stringify({
+        oldPassword: oldpassword,
+        newPassword: newpassword,
+        confirmPassword: confirmpassword,
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(
+        API_URl + `Customer/Account/ChangePassword`,
+        requestOptions,
+      );
+      json = await result.json();
+      if (json.Status == 'Success') {
+        console.log(json.Status, 'Customer/Account/ChangePassword');
+        dispatch({
+          type: NewpasswordChanged,
+          changedPassword: json?.Status,
+          Message: json?.Message,
+        });
+      } else if (json.Status == 'Error') {
+        dispatch({
+          type: NewpasswordChanged,
+          changedPassword: json?.Status,
+          Message: json?.Message,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const NewpasswordChangednull = () => {
+  return async dispatch => {
+    dispatch({
+      type: NewpasswordChanged2,
+      changedPassword: '',
+      Message: '',
+    });
+  };
+};
+
 export const filteredcatdata = data => {
   try {
     return async dispatch => {
@@ -999,7 +1101,7 @@ export const getallrestrauntsbyid = (id, token) => {
         dispatch({
           type: GET_allRestrauntsByID,
           payload: json.Result[0],
-          payloadorigin: json.Result[0].Origin
+          payloadorigin: json.Result[0].Origin,
         });
       }
     };
@@ -1127,6 +1229,89 @@ export const MyCoupons = AuthToken => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const Myorders = AuthToken => {
+  console.log(AuthToken, 'MyCouponsMyCouponsMyCouponsMyCoupons');
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${AuthToken} `);
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(
+        API_URl + `Customer/Order/ByRestaurant/0`,
+        requestOptions,
+      );
+      json = await result.json();
+      console.log(json, 'LOGIN LOGIN LOGIN');
+
+      if (json.Status == 'Success') {
+        console.log(json?.Result);
+        dispatch({
+          type: OrderList,
+          payloadorder: json?.Result.Ongoing,
+          payloadPastorder: json?.Result.Past,
+        });
+
+        console.log('Success');
+      } else if (json?.Status == 'Error') {
+        console.log(json?.Message, 'EROORRR');
+        // dispatch({
+        //   type: Login_User,
+        //   payload: '',
+        //   payloadtoken: '',
+        //   payloadCustomer: '',
+        //   LoadLoginStatus: json?.Status,
+        // });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const Contactus = () => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(
+        API_URl + 'BusinessSetting/Master',
+        requestOptions,
+      );
+      json = await result.json();
+      if (json.Status == 'Success') {
+        console.log(json?.Result);
+
+        dispatch({
+          type: Contactusdetails,
+          PayloadContactus: json?.Result,
+        });
+
+        console.log('Success');
+      } else if (json?.Status == 'Error') {
+        console.log(json?.Message, 'EROORRR');
+        // dispatch({
+        //   type: Login_User,
+        //   payload: '',
+        //   payloadtoken: '',
+        //   payloadCustomer: '',
+        //   LoadLoginStatus: json?.Status,
+        // });
+      }
+    };
+  } catch (error) {}
 };
 
 export const GetProfile = AuthToken => {
@@ -1270,7 +1455,7 @@ export const clearstatusProfileupdate = () => {
 };
 export const CartDetails = cartdata => {
   return async dispatch => {
-    console.log(cartdata, 'cart data cleaned')
+    console.log(cartdata, 'cart data cleaned');
     dispatch({
       type: DetailsCart,
       orderDetails: cartdata,
