@@ -41,17 +41,44 @@ import {
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 import Navigation from '../Shared/Components/Navigation';
 
-const PreparingFood = ({navigation}) => {
+const PreparingFood = ({navigation, route}, props) => {
   const [togglelist, settogglelist] = useState(false);
+  const [screenname, setscreenname] = useState('');
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(false);
-  const {completeorderdetails, Selectedcurrentaddress, restrauntdetails} =
-    useSelector(state => state.userReducer);
+  const {
+    orderdetails,
+    completeorderdetails,
+    Selectedcurrentaddress,
+    restrauntdetails,
+    orderResult,
+  } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   useEffect(() => {
     StatusBar.setHidden(false);
-  }, []);
+    console.log(
+      JSON.stringify(orderdetails?.TotalAmount),
+      'Prepearing Food Prepearing Food Prepearing Food Prepearing Food',
+    );
+  }, [orderdetails]);
 
+  // qty={orderResult[0]?.OrderDetails[0].Quantity}
+  // title={orderResult[0]?.OrderDetails[0].MenuItems.Name}
+  // price={data?.item?.completeitemorderprice}
+  // image={orderResult[0]?.OrderDetails[0].MenuItems.Image}
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (route?.params?.screen == 'MyOrders') {
+        setscreenname(route?.params?.screen);
+      } else if (route?.params?.screen == 'Checkout') {
+        setscreenname(route?.params?.screen);
+      }
+      // console.log(screenname,'ahehakhdkaehjkahejkhakjehjkahejkahejk');
+    });
+
+    //  Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation, route]);
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <FocusAwareStatusBar
@@ -90,7 +117,7 @@ const PreparingFood = ({navigation}) => {
                   fontSize: fontSize.fifteen,
                   fontFamily: 'Inter-Bold',
                 }}>
-                30 Min
+                {orderResult[0]?.EstimatedDeliveryMinutes} Min
               </Text>
 
               <Image
@@ -276,7 +303,9 @@ const PreparingFood = ({navigation}) => {
                         fontSize: fontSize.ten,
                         color: '#F55050',
                       }}>
-                      #000
+                      {screenname == 'MyOrders'
+                        ? orderResult[0]?.OrderNo
+                        : orderdetails?.OrderNo}
                     </Text>
                   </View>
                 </View>
@@ -306,7 +335,9 @@ const PreparingFood = ({navigation}) => {
                       width: '50%',
                     }}>
                     {/* abc */}
-                    {restrauntdetails.Address}
+                    {screenname == 'MyOrders'
+                      ? orderResult[0]?.RestaurantBranch.Address
+                      : restrauntdetails?.Address}
                   </Text>
                 </View>
                 <View
@@ -335,7 +366,10 @@ const PreparingFood = ({navigation}) => {
                       color: '#000',
                       width: '50%',
                     }}>
-                    {Selectedcurrentaddress[0].address}
+                    {screenname == 'MyOrders'
+                      ? orderResult[0]?.Address
+                      : Selectedcurrentaddress[0]?.address}
+                    {/* {Selectedcurrentaddress[0].address} */}
                   </Text>
                 </View>
                 <View
@@ -360,7 +394,10 @@ const PreparingFood = ({navigation}) => {
                       fontSize: fontSize.ten,
                       color: '#000',
                     }}>
-                    ABC Restaurant
+                    AED{' '}
+                    {screenname == 'Myorders'
+                      ? orderResult[0]?.TotalAmount
+                      : orderdetails?.TotalAmount}
                   </Text>
                 </View>
               </View>
@@ -432,7 +469,11 @@ const PreparingFood = ({navigation}) => {
               flexGrow: 1,
               paddingBottom: scalableheight.three,
             }}
-            data={completeorderdetails}
+            data={
+              screenname == 'MyOrders'
+                ? orderResult[0]?.OrderDetails
+                : completeorderdetails
+            }
             renderItem={(data, index) => {
               return (
                 <View
@@ -441,10 +482,26 @@ const PreparingFood = ({navigation}) => {
                     marginVertical: scalableheight.pointfive,
                   }}>
                   <ItemDetailsStatus
-                    qty={data?.item?.Qty}
-                    title={data?.item?.Name}
-                    index={data?.index}
-                    price={data?.item?.completeitemorderprice}
+                    qty={
+                      screenname == 'MyOrders'
+                        ? data.item.Quantity
+                        : data?.item?.Qty
+                    }
+                    title={
+                      screenname == 'MyOrders'
+                        ? data.item.MenuItems.Name
+                        : data?.item?.Name
+                    }
+                    price={
+                      screenname == ''
+                        ? data.item.TotalPrice
+                        : data?.item?.completeitemorderprice
+                    }
+                    image={
+                      screenname == 'MyOrders'
+                        ? data.item.MenuItems.Image
+                        : data?.item?.Image
+                    }
                     onPress={() => {
                       setitemmodaldata(data?.item);
                       setitemmodalVisible(true);

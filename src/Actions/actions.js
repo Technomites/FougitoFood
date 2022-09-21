@@ -62,6 +62,7 @@ export const NewpasswordChanged2 = 'NewpasswordChanged2';
 export const OrderList = 'OrderList';
 export const Contactusdetails = 'Contactusdetails';
 export const contactusemail = 'contactusemail';
+export const DeliveryStatus = 'DeliveryStatus';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -84,39 +85,36 @@ export const storelatlong = (lat, long) => {
   }
 };
 
-  export const getmyfavourites = (Latitude,Longitude, token) => {
-    try {
-      console.log('getmyfavourites');
-      return async dispatch => {
-        const result = await fetch(
-          API_URl + 'Customer/Favourite/Branches',
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              "Latitude": Latitude,
-              "Longitude": Longitude
-            }),
-          },
-        );
-  
-        const json = await result.json();
-        console.log('getmyfavourites' + JSON.stringify(json));
-  
-        if (json.Status == 'Success') {
-          dispatch({
-            type: MYFAVOURITES,
-            payload: json.Result,
-          });
-        }
-      };
-    } catch (error) {
-      console.log(error);
-    }
-  };
+export const getmyfavourites = (Latitude, Longitude, token) => {
+  try {
+    console.log('getmyfavourites');
+    return async dispatch => {
+      const result = await fetch(API_URl + 'Customer/Favourite/Branches', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Latitude: Latitude,
+          Longitude: Longitude,
+        }),
+      });
+
+      const json = await result.json();
+      console.log('getmyfavourites' + JSON.stringify(json));
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: MYFAVOURITES,
+          payload: json.Result,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const updatepriceafterdiscount = (price, discount) => {
   try {
@@ -407,7 +405,6 @@ export const verifycoupon = (code, phonenumber, origin) => {
         payloadstatus: json.Status,
         payloadmessage: json.Message,
         payloadResult: json.Result,
-
       });
     };
   } catch (error) {
@@ -415,14 +412,14 @@ export const verifycoupon = (code, phonenumber, origin) => {
   }
 };
 
-export const createorder = data => {
+export const createorder = (AuthToken, data) => {
   try {
     console.log('placeorder');
     return async dispatch => {
       const result = await fetch(API_URl + 'Customer/Restaurant/PlaceOrder', {
         method: 'POST',
         headers: {
-          // Authorization: 'Bearer ' + JSON.parse(token),
+          Authorization: `Bearer ${AuthToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
@@ -432,15 +429,21 @@ export const createorder = data => {
       console.log('postserviceratings' + JSON.stringify(json));
 
       if (json.Status === 'Success') {
+        console.log(
+          json.Result,
+         
+        );
         dispatch({
           type: CreateOrder,
           payload: 'success',
+          payloadorderresult: json.Result,
         });
       } else {
         dispatch({
           type: CreateOrder,
           payload:
             'We are unable to place your order at the moment. Please try again later.',
+          payloadorderresult: [],
         });
       }
     };
@@ -721,6 +724,42 @@ export const ForgetPassword = number => {
           type: ChangedPasswordMessage,
           ChangedPasswordMessagePayLoad: json?.Status,
           MessageError: json?.Message,
+        });
+      }
+    };
+  } catch (error) {}
+};
+
+export const OrderStatus = (AuthToken, id) => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${AuthToken}`);
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+
+      const result = await fetch(
+        API_URl + `Customer/Order/${id}`,
+        requestOptions,
+      );
+      json = await result.json();
+      console.log(json, 'ForgetPassword ForgetPassword ForgetPassword');
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: DeliveryStatus,
+          DeliveryStatusCondition: json?.Status,
+          DeliveryStatusSuccess: json?.Result,
+        });
+      } else if (json?.Status == 'Error') {
+        dispatch({
+          type: DeliveryStatus,
+          DeliveryStatusCondition: '',
+          DeliveryStatusSuccess: '',
         });
       }
     };
@@ -1081,20 +1120,18 @@ export const getpopularcategoriesbyid = id => {
 export const getallrestrauntsbyid = (id, token) => {
   try {
     return async dispatch => {
-
       const result = await fetch(
         API_URl + 'Customer/Restaurant/Branch/' + id + '/Details',
         {
           method: 'GET',
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
-         
         },
       );
 
       const json = await result.json();
-     console.log(" this was the token" + token)
+      console.log(' this was the token' + token);
       console.log('getallrestrauntsbyid -- new' + JSON.stringify(json.Result));
 
       if (json.Status == 'Success') {
@@ -1222,9 +1259,7 @@ export const MyCoupons = AuthToken => {
           type: couponsCart,
           payloadcoupon: json?.Result,
         });
-
-    
-      } 
+      }
     };
   } catch (error) {
     console.log(error);
