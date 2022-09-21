@@ -35,7 +35,13 @@ export default function ChnagePasswordModel(props) {
   const [password, setpassword] = useState('');
   const [oldpassword, setoldpassword] = useState('');
   const [confirmpassword, Setconfirmpassword] = useState('');
-  const [newpasswordshow, setnewpasswordshow] = useState(false);
+
+
+
+  const [oldpasswordshow, setoldpasswordshow] = useState(true);
+  const [newpasswordshow, setnewpasswordshow] = useState(true);
+  const [confirmnewpasswordshow, setconfirmnewpasswordshow] = useState(true);
+
   const [inscreenanimation, setinscreenanimation] = useState(false);
   const [changenewpassword, setchangenewpassword] = useState(true);
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
@@ -261,7 +267,7 @@ export default function ChnagePasswordModel(props) {
                               ...styleSheet.TextInput,
                               ...styleSheet.shadow,
                             }}
-                            secureTextEntry={newpasswordshow}
+                            secureTextEntry={oldpasswordshow}
                             placeholderTextColor="#8c8c8c"
                             placeholder={'Old Password'}
                             onChangeText={text => setoldpassword(text)}
@@ -269,12 +275,12 @@ export default function ChnagePasswordModel(props) {
                           />
                           <TouchableOpacity
                             onPress={() => {
-                              setnewpasswordshow(!newpasswordshow);
+                              setoldpasswordshow(!oldpasswordshow);
                             }}
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ? 'eye-off' : 'eye'}
+                              name={oldpasswordshow ? 'eye': 'eye-off'}
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -306,7 +312,7 @@ export default function ChnagePasswordModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ? 'eye-off' : 'eye'}
+                              name={newpasswordshow ?  'eye' :'eye-off' }
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -324,7 +330,7 @@ export default function ChnagePasswordModel(props) {
                               ...styleSheet.TextInput,
                               ...styleSheet.shadow,
                             }}
-                            secureTextEntry={newpasswordshow}
+                            secureTextEntry={confirmnewpasswordshow}
                             placeholderTextColor="#8c8c8c"
                             placeholder={'New Confirm Password'}
                             onChangeText={text => Setconfirmpassword(text)}
@@ -332,12 +338,12 @@ export default function ChnagePasswordModel(props) {
                           />
                           <TouchableOpacity
                             onPress={() => {
-                              setnewpasswordshow(!newpasswordshow);
+                              setconfirmnewpasswordshow(!confirmnewpasswordshow);
                             }}
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ? 'eye-off' : 'eye'}
+                              name={confirmnewpasswordshow ? 'eye' :  'eye-off' }
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>

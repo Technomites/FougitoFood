@@ -24,6 +24,7 @@ import {
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 import ChnagePasswordModel from '../Shared/Components/ChnagePasswordModel';
 import AuthenticationModel from '../Shared/Components/AuthenticationModel';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Settings = ({navigation, drawerAnimationStyle}) => {
   const [modalVisible, setmodalVisible] = useState(false);
@@ -42,7 +43,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
       icon: 'lock',
       title: 'Change Password',
       onPress: () => {
-        setmodalVisible(true);
+        setmodalVisible2(true);
         // console.log('ancnnc');
         navigation.navigate('drawernavigation');
         //  navigation.dispatch(DrawerActions.closeDrawer());
@@ -94,15 +95,33 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
       },
       type: 1,
     },
-    {
-      icon: 'logout',
-      title: 'Logout',
-      onPress: () => {
-        navigation.navigate('Home');
-        //   navigation.dispatch(DrawerActions.closeDrawer());
-      },
-      type: 8,
-    },
+    // {
+    //   icon: 'logout',
+    //   title: 'Logout',
+    //   onPress: () => {
+    //     navigation.navigate('Home');
+    //     //   navigation.dispatch(DrawerActions.closeDrawer());
+    //   },
+    //   type: 8,
+    // },
+    // {
+    //   icon: 'logout',
+    //   title: 'Logout',
+    //   onPress: () => {
+    //     navigation.navigate('Home');
+    //     //   navigation.dispatch(DrawerActions.closeDrawer());
+    //   },
+    //   type: 8,
+    // },
+    // {
+    //   icon: 'logout',
+    //   title: 'Logout',
+    //   onPress: () => {
+    //     navigation.navigate('Home');
+    //     //   navigation.dispatch(DrawerActions.closeDrawer());
+    //   },
+    //   type: 8,
+    // },
   ]);
   const dispatch = useDispatch();
   const {Lang, notificationStatus, AuthToken, ProfileName, ProfileImage} =
@@ -113,31 +132,6 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
     dispatch(seticonfocus('setting'));
   }, []);
 
-  // useEffect(() => {
-  //   if (notificationStatus == 200) {
-  //     setIsEnabled(true);
-  //   } else {
-  //     if (notificationStatus != '') {
-  //       showToast(notificationStatus, {
-  //         duration: 500,
-  //       });
-  //     }
-  //   }
-  //   dispatch(eraseNotificationStatus());
-  // }, [notificationStatus]);
-
-  // React.useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     if (ProfileInfo.allowPushNotifications == true) {
-  //       setIsEnabled(true);
-  //     } else {
-  //       setIsEnabled(false);
-  //     }
-  //   });
-
-  //   //  Return the function to unsubscribe from the event so it gets removed on unmount
-  //   return unsubscribe;
-  // }, [navigation]);
 
   const toggleSwitch = async () => {
     dispatch(updateNotificationStatus(!isEnabled));
@@ -185,11 +179,12 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
                 justifyContent: 'center',
               }}>
               <Image
+              resizeMode="cover"
                 style={{
                   height: '99.5%',
                   width: '99.5%',
                   borderRadius: fontSize.circle,
-                  resizeMode: 'contain',
+                 
 
                   // marginBottom: scalableheight.one,
                 }}
@@ -238,19 +233,18 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
         <View
           style={{
             height: '100%',
+           flex:1,
             borderTopLeftRadius: fontSize.fourtyeight,
             borderTopRightRadius: fontSize.fourtyeight,
-            // shadowColor: '#470000',
-            // shadowOffset: {width: 0, height: 1},
-            // shadowOpacity: 0.2,
-            // elevation: 1,
             borderWidth: scalableheight.borderTopWidth,
             borderColor: 'rgba(211,211,211, 0.6)',
           }}>
-          <View
+          <ScrollView
+          showsHorizontalScrollIndicator={false}
             style={{
               paddingHorizontal: scalableheight.two,
-              paddingTop: scalableheight.four,
+              marginVertical:scalableheight.three
+           
             }}>
             {setting.map(item => {
               if (
@@ -271,7 +265,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
               }
             })}
             {/* <AccountInfotile  /> */}
-          </View>
+          </ScrollView>
         </View>
       </View>
       <ChnagePasswordModel

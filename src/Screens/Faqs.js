@@ -27,6 +27,7 @@ import {
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const Faqs = ({navigation, drawerAnimationStyle}) => {
+  const [search, setsearch] = useState("")
   const [Faqs, SetFaqs] = useState([
     {
       question: 'Curabitur vulputate arcu odio, ac facilisis diam accumsan ut',
@@ -113,6 +114,9 @@ const Faqs = ({navigation, drawerAnimationStyle}) => {
                 // numberOfLines={props.inputLine}
                 //value={props.value}
                 // onChangeText={props.onChangeText}
+                value={search}
+                onChangeText={text => setsearch(text)}
+               
                 placeholderTextColor={'lightgray'}
                 placeholder={'Search'}
                 style={styles.textInput}
@@ -120,7 +124,9 @@ const Faqs = ({navigation, drawerAnimationStyle}) => {
             </View>
           </View>
           {Faqs.map(item => {
-            return <Faqtitle data={item} />;
+            return (
+              item.question.includes(search.trim()) || item.answer.includes(search.trim()) ? 
+            <Faqtitle data={item} /> : null )
           })}
         </ScrollView>
       </View>

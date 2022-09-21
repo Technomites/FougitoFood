@@ -124,7 +124,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
       />
-      <SafeAreaView style={{flex: 1}}>
+  
         <View
           style={{
             height: '100%',
@@ -134,7 +134,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
             paddingTop: getStatusBarHeight(),
           }}>
           <PlainHeader title={'Settings'} />
-          <View style={{justifyContent: 'center', marginHorizontal: 20}}>
+          <View style={{justifyContent: 'center', paddingHorizontal: scalableheight.two}}>
             <View style={{marginVertical: 5}}>
               <Text
                 style={{
@@ -430,7 +430,16 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 />
               </TouchableOpacity>
             </View>
-            <View
+
+            {/* <SuccessModal
+              yesPress={() => {
+                setSuccessModal(false);
+              }}
+              bnText="OK"
+              message="Your message has been sent successfully"
+              visible={successModal}
+            /> */}
+               <View
               style={{
                 marginVertical: 10,
                 borderBottomWidth: 1,
@@ -442,6 +451,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 fontFamily: 'Inter-Bold',
                 color: '#29262A',
                 alignSelf: 'flex-start',
+                marginTop:scalableheight.one
               }}>
               Send us a Message
             </Text>
@@ -464,6 +474,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
             {/* <MyFormInputTile placeHolder="Type Here" /> */}
             <View
               style={{
+                marginTop:scalableheight.one,
                 backgroundColor: '#F9F9F9',
                 height: scalableheight.twenty,
                 borderRadius: scalableheight.one,
@@ -482,10 +493,13 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
               }}>
               <TextInput
+              multiline
                 value={message}
                 placeholderStyle={{
-                  fontSize: fontSize.eightteen,
+                  fontSize: fontSize.twenty,
+                      
                 }}
+                style={{marginVertical:scalableheight.one}}
                 placeholderTextColor="lightgray"
                 placeholder="Type here"
                 onChangeText={text => {
@@ -493,10 +507,20 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 }}
               />
             </View>
+          </View>
+          <View style={{position:"absolute", bottom:scalableheight.two, width:"100%", justifyContent: 'center', paddingHorizontal: scalableheight.two}}>
+         
             <View style={{marginTop: scalableheight.two}}>
               {loader == true ? (
                 <View
                   style={{
+
+    height: scalableheight.seven,
+
+   
+
+    marginTop: '1%',
+    marginBottom: '1%',
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
@@ -515,16 +539,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 />
               )}
             </View>
-
-            {/* <SuccessModal
-              yesPress={() => {
-                setSuccessModal(false);
-              }}
-              bnText="OK"
-              message="Your message has been sent successfully"
-              visible={successModal}
-            /> */}
-          </View>
+</View>
           <AuthenticationModel
             state={modalVisible}
             togglemodel={() => {
@@ -536,7 +551,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
             style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
           />
         </View>
-      </SafeAreaView>
+
     </Animated.View>
   );
 };

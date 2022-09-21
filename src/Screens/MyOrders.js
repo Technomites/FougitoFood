@@ -10,6 +10,7 @@ import {
   Modal,
   ScrollView,
   StatusBar,
+  RefreshControl
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
@@ -47,7 +48,8 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const {AuthToken, MyorderList, MyorderListpast} = useSelector(
     state => state.userReducer,
   );
-
+  
+  const [refreshing, setrefreshing] = useState(false)
   const [Order, SetOrders] = useState([
     {
       OrderNo: 'ORD-85814',
@@ -72,11 +74,24 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
   const [ordertype, Setordertype] = useState('On Going');
-  useEffect(() => {
-    dispatch(Myorders(AuthToken));
-  }, [AuthToken]);
+  // useEffect(() => {
+  //   dispatch(Myorders(AuthToken));
+  // }, [AuthToken]);
 
-  console.log(MyorderList, 'ababbababbab');
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+ 
+      dispatch(Myorders(AuthToken));
+    });
+
+    //  Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
+  function onRefresh(){
+    dispatch(Myorders(AuthToken));
+  }
+
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -173,6 +188,9 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
             <View
               style={{width: '100%', paddingHorizontal: scalableheight.two}}>
               <FlatList
+                 refreshControl={
+                  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
                 data={ordertype == 'On Going' ? MyorderList : MyorderListpast}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{

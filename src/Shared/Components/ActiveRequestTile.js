@@ -12,7 +12,7 @@ import {fontSize, scalableheight} from '../../Utilities/fonts';
 import moment from 'moment';
 import {height} from 'react-native-dimension';
 export default function ActiveRequestTile(props) {
-  console.log(props?.details?.RestaurantLogo, 'OrderNoOrderNo OrderNo');
+  // console.log(props?.details?.RestaurantLogo, 'OrderNoOrderNo OrderNo');
   return (
     <TouchableOpacity
       activeOpacity={0.9}
