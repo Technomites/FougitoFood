@@ -63,6 +63,7 @@ export const OrderList = 'OrderList';
 export const Contactusdetails = 'Contactusdetails';
 export const contactusemail = 'contactusemail';
 export const DeliveryStatus = 'DeliveryStatus';
+export const internetCHECK = 'internetCHECK';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
@@ -71,6 +72,20 @@ const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
 
+
+
+export const isconnected = (state) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: internetCHECK,
+        payload: state
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const storelatlong = (lat, long) => {
   try {
     return async dispatch => {

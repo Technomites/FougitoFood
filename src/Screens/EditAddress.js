@@ -709,10 +709,13 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
               <View
                 style={{
                   height: '100%',
-                  width: '85%',
+                  width: '100%',
                   justifyContent: 'center',
+                  paddingVertical: scalableheight.one
+                  
                 }}>
                 <TextInput
+                multiline
                   returnKeyType="next"
                   value={note}
                   onChangeText={text => setnote(text)}
@@ -735,6 +738,8 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                     paddingHorizontal: '5%',
                     textAlignVertical: 'top',
                     height: '100%',
+                
+                 
                   }}
                 />
               </View>
@@ -775,6 +780,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
           {loader == true ? (
             <View
               style={{
+                height: scalableheight.seven,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>

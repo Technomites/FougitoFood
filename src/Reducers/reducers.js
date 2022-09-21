@@ -56,6 +56,7 @@ import {
   Contactusdetails,
   contactusemail,
   DeliveryStatus,
+  internetCHECK
 } from '../Actions/actions';
 
 const initialState = {
@@ -122,11 +123,21 @@ const initialState = {
   orderstatus: '',
   orderResult: [],
   orderdetails: [],
-  // orderstatus
+  internetconnectionstate: true,
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
+  
+
+    case internetCHECK:
+      return {
+        ...state,
+        internetconnectionstate: action.payload,
+    
+     
+      };
+
     case MYFAVOURITES:
       return {
         ...state,

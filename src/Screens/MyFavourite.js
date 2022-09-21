@@ -9,7 +9,13 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
-  getmyfavourites
+  getmyfavourites,
+  storerestrauntbasicdata,
+  storedistance,
+  storecartprice,
+  cleancart,
+  storerestrauntid,
+  getallrestrauntsbyid
 } from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -34,7 +40,8 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
     storedlat,
     storedlong,
     AuthToken,
-    favouriterestuarants
+    favouriterestuarants,
+    currentRestrauntid
   } = useSelector(
     state => state.userReducer,
   );
@@ -67,7 +74,22 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
       title={item.NameAsPerTradeLicense}
       reviews={`${item.AvgRating} (${item.RatingCount} reviews)`}
       time={`${item.OpeningTime} AM - ${item.ClosingTime}PM`}
-      onPress={() => {}}
+      onPress={() => {
+        dispatch(storerestrauntbasicdata(item));
+        dispatch(storedistance(item?.Distance));
+        if (currentRestrauntid != item?.Id) {
+          dispatch(storecartprice(0));
+          dispatch(cleancart());
+          dispatch(storerestrauntid(item?.Id));
+        }
+        dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
+        navigation.navigate('Restaurantpage', {
+          latitude: storedlat,
+          longitude: storedlong,
+        });
+
+
+      }}
       distance={`${item.Distance}KM AWAY`}
     />
   );

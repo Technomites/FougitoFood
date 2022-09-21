@@ -1349,6 +1349,7 @@ for(const index in dataSourceCords){
         onPressnewlocation={() => {
           getnewlocation();
         }}
+       setlocation = {false}
         latitude={lat}
         longitude={long}
       />
