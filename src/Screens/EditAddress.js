@@ -15,7 +15,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {
   getalladdresses,
   savemyaddress,
-  clearaddressresponse
+  clearaddressresponse,
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Geocoder from 'react-native-geocoding';
@@ -47,7 +47,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
   const [long, setlong] = useState(67.0011);
   const [placeselected, SetPlaceSelected] = useState('');
   const [modelpopup, SetModelPopUP] = useState(false);
-  const [address, setaddress] = useState("");
+  const [address, setaddress] = useState('');
   const [pinlatitude, SetPinLatitude] = useState(0);
   const [pinLongitude, SetPinLongitude] = useState(0);
   const [hidemarker, sethidemarker] = useState(false);
@@ -228,53 +228,56 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
   const refMap = useRef(null);
-  const {notificationList, notificationCount, AuthToken, addresscreationresponse} = useSelector(
-    state => state.userReducer,
-  );
+  const {
+    notificationList,
+    notificationCount,
+    AuthToken,
+    addresscreationresponse,
+  } = useSelector(state => state.userReducer);
 
   useEffect(() => {
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
     Geolocation.getCurrentPosition(info => {
       SetPinLatitude(info?.coords?.latitude);
       SetPinLongitude(info?.coords?.longitude);
-      console.log( info?.coords?.latitude);
-      console.log( info?.coords?.longitude);
+      console.log(info?.coords?.latitude);
+      console.log(info?.coords?.longitude);
     });
-  
+
     getLocation();
   }, []);
 
-
   useEffect(() => {
-  if(addresscreationresponse != ""){
-    setloader(false)
-    if(addresscreationresponse == "Success"){
-      toast.current.show("New address created", {
-        type: 'normal',
-        placement: 'bottom',
-        duration: 4000,
-        offset: 10,
-        animationType: 'slide-in',
-        zIndex: 2,
-      })
-      dispatch(getalladdresses(AuthToken))
-      navigation.goBack();
-    }else{
-      toast.current.show("There was an error saving your address. Please try again later", {
-        type: 'normal',
-        placement: 'bottom',
-        duration: 4000,
-        offset: 10,
-        animationType: 'slide-in',
-        zIndex: 2,
-      })
+    if (addresscreationresponse != '') {
+      setloader(false);
+      if (addresscreationresponse == 'Success') {
+        toast.current.show('New address created', {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+          zIndex: 2,
+        });
+        dispatch(getalladdresses(AuthToken));
+        navigation.goBack();
+      } else {
+        toast.current.show(
+          'There was an error saving your address. Please try again later',
+          {
+            type: 'normal',
+            placement: 'bottom',
+            duration: 4000,
+            offset: 10,
+            animationType: 'slide-in',
+            zIndex: 2,
+          },
+        );
+      }
+      dispatch(clearaddressresponse());
     }
-dispatch(clearaddressresponse())
-  }
   }, [addresscreationresponse]);
 
-
-  
   useEffect(() => {
     if (pinlatitude != null && pinLongitude != null) {
       Geocoder.from(pinlatitude, pinLongitude)
@@ -370,65 +373,54 @@ dispatch(clearaddressresponse())
     return false;
   };
 
-  function addresssave(){
-
-    if(placeselected == ""){
-
-      toast.current.show("Pleace label your address as Home/Work/Other", {
+  function addresssave() {
+    if (placeselected == '') {
+      toast.current.show('Pleace label your address as Home/Work/Other', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
         offset: 10,
         animationType: 'slide-in',
         zIndex: 2,
-      })
-    }else if(pinlocation == ""){
-
-        toast.current.show("Pleace select a location", {
-          type: 'normal',
-          placement: 'bottom',
-          duration: 4000,
-          offset: 10,
-          animationType: 'slide-in',
-          zIndex: 2,
-        })
-      }else if(street == ""){
-
-        toast.current.show("Pleace enter your street", {
-          type: 'normal',
-          placement: 'bottom',
-          duration: 4000,
-          offset: 10,
-          animationType: 'slide-in',
-          zIndex: 2,
-        })
-      }else{
-console.log("placeselected " + JSON.stringify(placeselected.title))
-console.log("pinlocation " + pinlocation)
-console.log("street " + street)
-console.log("floor " + floor)
-console.log("pinlatitude " + pinlatitude)
-console.log("pinLongitude " + placeselected)
-let data ={
-  id: 0,
-  address: pinlocation,
-  latitude: pinlatitude,
-  longitude: pinLongitude,
-  type: placeselected.title,
-Street: street,
-Floor: floor,
-NoteToRider:note
-}
-setloader(true)
-dispatch(savemyaddress(data, AuthToken))
-
-      }
- 
- 
-  
-  
-  
-  
+      });
+    } else if (pinlocation == '') {
+      toast.current.show('Pleace select a location', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+    } else if (street == '') {
+      toast.current.show('Pleace enter your street', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+    } else {
+      console.log('placeselected ' + JSON.stringify(placeselected.title));
+      console.log('pinlocation ' + pinlocation);
+      console.log('street ' + street);
+      console.log('floor ' + floor);
+      console.log('pinlatitude ' + pinlatitude);
+      console.log('pinLongitude ' + placeselected);
+      let data = {
+        id: 0,
+        address: pinlocation,
+        latitude: pinlatitude,
+        longitude: pinLongitude,
+        type: placeselected.title,
+        Street: street,
+        Floor: floor,
+        NoteToRider: note,
+      };
+      setloader(true);
+      dispatch(savemyaddress(data, AuthToken));
+    }
   }
   return (
     <Animated.View
@@ -446,177 +438,173 @@ dispatch(savemyaddress(data, AuthToken))
         }}>
         <PlainHeader title={'Create Address'} />
         <View style={{height: scalableheight.three}} />
-        <ScrollView 
-        keyboardShouldPersistTaps = {true}
-        style={{width: '100%', paddingHorizontal: scalableheight.two, }}>
-       
-        <View style={{height: scalableheight.one}} />
+        <ScrollView
+          keyboardShouldPersistTaps={true}
+          style={{width: '100%', paddingHorizontal: scalableheight.two}}>
+          <View style={{height: scalableheight.one}} />
 
-<GooglePlacesAutocomplete
-  suppressDefaultStyles={false}
-  //  styles ={{
+          <GooglePlacesAutocomplete
+            suppressDefaultStyles={false}
+            //  styles ={{
 
-  //   ...styleSheet.shadow,
-  //   width: '100%',
-  //   height: scalableheight.six,
-  //   fontSize: fontSize.fifteen,
-  //   backgroundColor: '#F9F9F9',
-  //   alignSelf: 'center',
-  //   borderRadius: fontSize.borderradiusmedium,
-  //   paddingHorizontal: '5%',
-  //   marginHorizontal: '0.4%',
-  // }}
-  styles={{
-    textInput: {
-      ...styleSheet.shadow,
-      width: '100%',
-      height: scalableheight.six,
-      fontSize: fontSize.fifteen,
-      backgroundColor: '#F9F9F9',
-      alignSelf: 'center',
-      borderRadius: fontSize.borderradiusmedium,
-      paddingHorizontal: '5%',
-      marginHorizontal: '0.4%',
-    
-    },
-  }}
-  placeholder="Search"
-  onPress={(data, details = null) => {
-    setpinlocation(data.description);
-    Geocoder.from(data.description)
-      .then(json => {
-        var location = json.results[0].geometry.location;
-        SetPinLatitude(location.lat);
-        SetPinLongitude(location.lng);
-      })
-      .catch(error => console.warn(error));
-  }}
-  query={{
-    key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
-    language: 'en',
-  }}
-/>
+            //   ...styleSheet.shadow,
+            //   width: '100%',
+            //   height: scalableheight.six,
+            //   fontSize: fontSize.fifteen,
+            //   backgroundColor: '#F9F9F9',
+            //   alignSelf: 'center',
+            //   borderRadius: fontSize.borderradiusmedium,
+            //   paddingHorizontal: '5%',
+            //   marginHorizontal: '0.4%',
+            // }}
+            styles={{
+              textInput: {
+                ...styleSheet.shadow,
+                width: '100%',
+                height: scalableheight.six,
+                fontSize: fontSize.fifteen,
+                backgroundColor: '#F9F9F9',
+                alignSelf: 'center',
+                borderRadius: fontSize.borderradiusmedium,
+                paddingHorizontal: '5%',
+                marginHorizontal: '0.4%',
+              },
+            }}
+            placeholder="Search"
+            onPress={(data, details = null) => {
+              setpinlocation(data.description);
+              Geocoder.from(data.description)
+                .then(json => {
+                  var location = json.results[0].geometry.location;
+                  SetPinLatitude(location.lat);
+                  SetPinLongitude(location.lng);
+                })
+                .catch(error => console.warn(error));
+            }}
+            query={{
+              key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
+              language: 'en',
+            }}
+          />
 
           <View
+            style={{
+              marginTop: scalableheight.one,
+              height: scalableheight.twentysix,
+              borderRadius: fontSize.eight,
+              overflow: 'hidden',
+
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {hidemarker == false ? (
+              <MaterialIcons
                 style={{
-                  marginTop: scalableheight.one,
-                  height: scalableheight.twentysix,
-                  borderRadius: fontSize.eight,
-                  overflow: 'hidden',
-                 
+                  position: 'absolute',
+                  alignSelf: 'center',
+                  alignContent: 'center',
+                  zIndex: 3,
+                  elevation: 3,
+                }}
+                name="location-pin"
+                color={'#F55050'}
+                size={scalableheight.six}
+              />
+            ) : (
+              <Entypo
+                style={{
+                  position: 'absolute',
+                  alignSelf: 'center',
+                  alignContent: 'center',
+                  zIndex: 3,
+                  elevation: 3,
+                }}
+                name="dot-single"
+                color={'#F55050'}
+                size={scalableheight.six}
+              />
+            )}
+            <MapView
+              // provider={PROVIDER_GOOGLE}
+              customMapStyle={customStyle}
+              ref={refMap}
+              showsUserLocation
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: fontSize.fifteen,
+              }}
+              region={{
+                latitude: pinlatitude,
+                longitude: pinLongitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+              initialRegion={{
+                latitude: pinlatitude,
+                longitude: pinLongitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+              onRegionChange={region => {
+                //  console.log(region)
+                if (
+                  region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
+                  region.longitude.toFixed(6) === pinLongitude.toFixed(6)
+                ) {
+                  return;
+                } else {
+                  sethidemarker(true);
+                }
+              }}
+              onRegionChangeComplete={region => {
+                // console.log(region)
 
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {hidemarker == false ? (
-                  <MaterialIcons
-                    style={{
-                      position: 'absolute',
-                      alignSelf: 'center',
-                      alignContent: 'center',
-                      zIndex: 3,
-                      elevation: 3,
-                    }}
-                    name="location-pin"
-                    color={'#F55050'}
-                    size={scalableheight.six}
-                  />
-                ) : (
-                  <Entypo
-                    style={{
-                      position: 'absolute',
-                      alignSelf: 'center',
-                      alignContent: 'center',
-                      zIndex: 3,
-                      elevation: 3,
-                    }}
-                    name="dot-single"
-                    color={'#F55050'}
-                    size={scalableheight.six}
-                  />
-                )}
-                <MapView
-                  // provider={PROVIDER_GOOGLE}
-                  customMapStyle={customStyle}
-                  ref={refMap}
-                  showsUserLocation
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: fontSize.fifteen,
-                  }}
-                  region={{
-                    latitude: pinlatitude,
-                    longitude: pinLongitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                  }}
-                  initialRegion={{
-                    latitude: pinlatitude,
-                    longitude: pinLongitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                  }}
-                  onRegionChange={region => {
-                    //  console.log(region)
-                    if (
-                      region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
-                      region.longitude.toFixed(6) === pinLongitude.toFixed(6)
-                    ) {
-                      return;
-                    } else {
-                      sethidemarker(true);
-                    }
-                  }}
-                  onRegionChangeComplete={region => {
-                    // console.log(region)
+                if (
+                  region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
+                  region.longitude.toFixed(6) === pinLongitude.toFixed(6)
+                ) {
+                  return;
+                } else {
+                  sethidemarker(false);
+                  SetPinLatitude(region.latitude),
+                    SetPinLongitude(region.longitude);
+                }
+              }}></MapView>
+          </View>
 
-                    if (
-                      region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
-                      region.longitude.toFixed(6) === pinLongitude.toFixed(6)
-                    ) {
-                      return;
-                    } else {
-                      sethidemarker(false);
-                      SetPinLatitude(region.latitude),
-                        SetPinLongitude(region.longitude);
-                    }
-                  }}>
-                 
-                </MapView>
-              </View>
-      
-          <View  style={{
-            marginTop: scalableheight.two,
-            ...styleSheet.shadow,
-            width: '99%',
-            height: scalableheight.eight,
-            fontSize: fontSize.fifteen,
-            backgroundColor: '#F9F9F9',
-            alignSelf: 'center',
-            borderRadius: fontSize.borderradiusmedium,
-            paddingHorizontal: '5%',
-            justifyContent: 'center',
-          
-              
-             }}>
-        <Text
-        numberOfLines={2}
-        >{pinlocation}</Text>
+          <View
+            style={{
+              marginTop: scalableheight.two,
+              ...styleSheet.shadow,
+              width: '99%',
+              height: scalableheight.eight,
+              fontSize: fontSize.fifteen,
+              backgroundColor: '#F9F9F9',
+              alignSelf: 'center',
+              borderRadius: fontSize.borderradiusmedium,
+              paddingHorizontal: '5%',
+              justifyContent: 'center',
+            }}>
+            <Text numberOfLines={2}>{pinlocation}</Text>
           </View>
           <View>
-            <View style={{marginTop: scalableheight.two, marginBottom: scalableheight.one}}>
+            <View
+              style={{
+                marginTop: scalableheight.two,
+                marginBottom: scalableheight.one,
+              }}>
               <Text
                 style={{
                   fontFamily: 'Inter-Bold',
                   fontSize: fontSize.fifteen,
                   color: 'black',
-                  opacity:0.5
+                  opacity: 0.5,
                 }}>
                 Street
               </Text>
             </View>
-            <View style={{...styleSheet.container,    ...styleSheet.shadow,}}>
+            <View style={{...styleSheet.container, ...styleSheet.shadow}}>
               <View
                 style={{
                   height: '100%',
@@ -629,7 +617,6 @@ dispatch(savemyaddress(data, AuthToken))
                   // keyboardType={props.keyboardType}
                   value={street}
                   onChangeText={text => setstreet(text)}
-             
                   placeholderTextColor={'lightgray'}
                   placeholder={'Enter Street'}
                   // secureTextEntry={props.secure}
@@ -649,18 +636,22 @@ dispatch(savemyaddress(data, AuthToken))
           </View>
 
           <View>
-          <View style={{marginTop: scalableheight.two, marginBottom: scalableheight.one}}>
+            <View
+              style={{
+                marginTop: scalableheight.two,
+                marginBottom: scalableheight.one,
+              }}>
               <Text
                 style={{
                   fontFamily: 'Inter-Bold',
                   fontSize: fontSize.fifteen,
                   color: 'black',
-                  opacity:0.5
+                  opacity: 0.5,
                 }}>
                 Floor (Optional)
               </Text>
             </View>
-            <View style={{...styleSheet.container,    ...styleSheet.shadow,}}>
+            <View style={{...styleSheet.container, ...styleSheet.shadow}}>
               <View
                 style={{
                   height: '100%',
@@ -694,13 +685,17 @@ dispatch(savemyaddress(data, AuthToken))
           </View>
 
           <View>
-          <View style={{marginTop: scalableheight.two, marginBottom: scalableheight.one}}>
+            <View
+              style={{
+                marginTop: scalableheight.two,
+                marginBottom: scalableheight.one,
+              }}>
               <Text
                 style={{
                   fontFamily: 'Inter-Bold',
                   fontSize: fontSize.fifteen,
                   color: 'black',
-                  opacity:0.5
+                  opacity: 0.5,
                 }}>
                 Note To Rider (Optional)
               </Text>
@@ -709,7 +704,7 @@ dispatch(savemyaddress(data, AuthToken))
               style={{
                 ...styleSheet.container,
                 height: scalableheight.thirteen,
-               ...styleSheet.shadow
+                ...styleSheet.shadow,
               }}>
               <View
                 style={{
@@ -729,7 +724,7 @@ dispatch(savemyaddress(data, AuthToken))
                   placeholder={'Enter Note to Rider'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
-                
+
                   style={{
                     width: '100%',
                     height: scalableheight.six,
@@ -766,29 +761,36 @@ dispatch(savemyaddress(data, AuthToken))
             })}
           </View>
 
-     <View style={{height:scalableheight.tweleve}}></View>
+          <View style={{height: scalableheight.tweleve}}></View>
         </ScrollView>
-       
-        <View style={{marginVertical: fontSize.eight, position: "absolute", bottom: scalableheight.two, width:"100%", paddingHorizontal: scalableheight.two}}>
-          
-        {loader == true ? (
-                          <View
-                            style={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <ActivityIndicator size={'large'} color="#E14E4E" />
-                          </View>
-                        ) : (
+
+        <View
+          style={{
+            marginVertical: fontSize.eight,
+            position: 'absolute',
+            bottom: scalableheight.two,
+            width: '100%',
+            paddingHorizontal: scalableheight.two,
+          }}>
+          {loader == true ? (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color="#E14E4E" />
+            </View>
+          ) : (
             <MYButton
               onPress={() => {
-             addresssave()
+                addresssave();
               }}
               color={'rgba(225, 78, 78, 1)'}
               title={'SAVE NEW ADDRESS'}
               textcolor={'white'}
-            />)}
-          </View>
+            />
+          )}
+        </View>
       </View>
       <SuccessModal
         successModalShown={modelpopup}
@@ -797,7 +799,7 @@ dispatch(savemyaddress(data, AuthToken))
           navigation.navigate('Home');
         }}
       />
-        <Toast
+      <Toast
         ref={toast}
         style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
       />
@@ -812,7 +814,7 @@ const styleSheet = StyleSheet.create({
     width: '99%',
     flexDirection: 'row',
     borderRadius: fontSize.eight,
-    marginHorizontal:"0.5%"
+    marginHorizontal: '0.5%',
   },
   textInput: {
     marginLeft: scalableheight.one,

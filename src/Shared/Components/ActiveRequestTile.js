@@ -12,7 +12,7 @@ import {fontSize, scalableheight} from '../../Utilities/fonts';
 import moment from 'moment';
 import {height} from 'react-native-dimension';
 export default function ActiveRequestTile(props) {
-  console.log(props?.deatils);
+  console.log(props?.details?.RestaurantLogo, 'OrderNoOrderNo OrderNo');
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -27,16 +27,20 @@ export default function ActiveRequestTile(props) {
         }}>
         <View style={{}}>
           <Image
-            source={require('../../Resources/images/food.jpg')}
+            source={{uri: props?.details?.RestaurantLogo}}
             style={{
               height: scalableheight.ten,
               width: scalableheight.ten,
-              resizeMode: 'cover',
+              resizeMode: 'contain',
               borderRadius: fontSize.eight,
             }}
           />
         </View>
-        <View style={{paddingHorizontal: scalableheight.two, justifyContent:"center"}}>
+        <View
+          style={{
+            paddingHorizontal: scalableheight.two,
+            justifyContent: 'center',
+          }}>
           <View>
             <Text
               style={{
@@ -50,9 +54,9 @@ export default function ActiveRequestTile(props) {
               fontSize: 13,
               color: Color.btnBgColor,
             }}
-            text={'ORDER# ' + props.deatils?.OrderNo}
+            text={'ORDER# ' + props.details?.OrderNo}
           /> */}
-              {'ORDER# ' + props?.deatils?.OrderNo}
+              {'ORDER# ' + props?.details?.OrderNo}
               {/* ORDER# 0000 */}
             </Text>
           </View>
@@ -69,9 +73,9 @@ export default function ActiveRequestTile(props) {
               fontSize: 13,
               color: Color.btnBgColor,
             }}
-            text={'ORDER# ' + props.deatils?.OrderNo}
+            text={'ORDER# ' + props.details?.OrderNo}
           /> */}
-              {props?.deatils?.Restaurant}
+              {props?.details?.RestaurantBranchName}
             </Text>
           </View>
           <View>
@@ -81,10 +85,10 @@ export default function ActiveRequestTile(props) {
                 fontSize: fontSize.eleven,
                 color: '#707070',
               }}>
-              {/* {moment(props.deatils?.timmings).format(
+              {/* {moment(props.details?.timmings).format(
               'dddd, MMMM Do YYYY, h:mm:ss a',
             )} */}
-              {props.deatils?.timmings}
+              {props.details?.Date}
             </Text>
           </View>
         </View>
@@ -92,12 +96,12 @@ export default function ActiveRequestTile(props) {
 
       <View
         style={{
-          borderBottomColor:  '#707070',
+          borderBottomColor: '#707070',
           borderBottomWidth: scalableheight.borderTopWidth,
           margin: scalableheight.two,
-       width:"90%",
-       alignSelf:"center",
-       opacity: 0.4
+          width: '90%',
+          alignSelf: 'center',
+          opacity: 0.4,
         }}></View>
       <View
         style={{flexDirection: 'row', marginHorizontal: scalableheight.two}}>
@@ -117,7 +121,7 @@ export default function ActiveRequestTile(props) {
                 fontSize: fontSize.fourteen,
                 color: '#707070',
               }}>
-              {'AED ' + props.deatils?.Amount}
+              {'AED ' + props.details?.OrderAmount}
             </Text>
           </View>
 
@@ -136,7 +140,7 @@ export default function ActiveRequestTile(props) {
           color: Color.normaltextColor,
         }}
         text={
-          props.deatils?.Status === 'FoodReady'
+          props.details?.Status === 'FoodReady'
             ? 'Ready for Pickup'
             : 'Picked Up'
         }
@@ -155,7 +159,7 @@ export default function ActiveRequestTile(props) {
               fontSize: fontSize.sixteen,
               color: '#E14E4E',
             }}>
-            {props?.deatils.OrderStatus}
+            {props?.details.Status}
           </Text>
         </View>
       </View>

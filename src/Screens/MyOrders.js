@@ -22,6 +22,7 @@ import {
   notificationCountHandle,
   readNotification,
   seticonfocus,
+  Myorders,
 } from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -43,7 +44,7 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
-  const {notificationList, notificationCount} = useSelector(
+  const {AuthToken, MyorderList, MyorderListpast} = useSelector(
     state => state.userReducer,
   );
 
@@ -70,7 +71,12 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
       OrderStatus: 'Delivered',
     },
   ]);
+  const [ordertype, Setordertype] = useState('On Going');
+  useEffect(() => {
+    dispatch(Myorders(AuthToken));
+  }, [AuthToken]);
 
+  console.log(MyorderList, 'ababbababbab');
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -89,31 +95,110 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
           paddingTop: getStatusBarHeight(),
         }}>
         <PlainHeader title={'My Orders'} />
-
-        <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
-          <FlatList
-            data={Order}
-            showsVerticalScrollIndicator={false}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+            // height: '15%',
+            paddingHorizontal: scalableheight.three,
+          }}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => {
+              Setordertype('On Going');
+            }}
             style={{
-              width: '100%',
-              marginBottom: 20,
-              height: '100%',
+              height: scalableheight.five,
+              width: scalableheight.twenty,
+              backgroundColor:
+                ordertype == 'On Going' ? 'rgba(245, 80, 80, 0.3)' : '#F9F9F9',
+              borderRadius: fontSize.borderradiusmedium,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                color:
+                  ordertype == 'On Going' ? '#F55050' : 'rgba(17, 17, 17, 0.2)',
+                  fontFamily: 'Inter-SemiBold',
+                fontSize: fontSize.fifteen,
+              }}>
+              On Going
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => {
+              Setordertype('Past Orders');
             }}
-            renderItem={({item, i}) => {
-              return (
-                <ActiveRequestTile
-                  onPress={() =>
-                    navigation.navigate('OrderDetails', {
-                      orderId: item.OrderNo,
-                      completedetails: Order,
-                    })
-                  }
-                  // onModelPopUp={changestatus}
-                  deatils={item}
-                />
-              );
-            }}
-          />
+            style={{
+              height: scalableheight.five,
+              width: scalableheight.twenty,
+              backgroundColor:
+                ordertype == 'Past Orders'
+                  ? 'rgba(245, 80, 80, 0.3)'
+                  : '#F9F9F9',
+              borderRadius: fontSize.borderradiusmedium,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                color:
+                  ordertype == 'Past Orders'
+                    ? '#F55050'
+                    : 'rgba(17, 17, 17, 0.2)',
+                    fontFamily: 'Inter-SemiBold',
+                fontSize: fontSize.fifteen,
+              }}>
+              Past Orders
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{marginVertical: scalableheight.one}}>
+          {MyorderList.length == 0 || MyorderListpast.length == 0 ? (
+            <View
+              style={{
+                // justifyContent: 'center',
+                // alignItems: 'center',
+                alignSelf: 'center',
+                marginVertical: scalableheight.fourty,
+              }}>
+              <Text style={{fontSize: fontSize.fifteen, color: '#000'}}>
+                NO DATA FOUND
+              </Text>
+            </View>
+          ) : (
+            <View
+              style={{width: '100%', paddingHorizontal: scalableheight.two}}>
+              <FlatList
+                data={ordertype == 'On Going' ? MyorderList : MyorderListpast}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  paddingBottom: scalableheight.fourteen,
+                  
+                }}
+                renderItem={({item, i}) => {
+                  return (
+                    <ActiveRequestTile
+                      onPress={() =>
+                        navigation.navigate('OrderDetails', {
+                          orderId: item.OrderNo,
+                          completedetails: Order,
+                        })
+                      }
+                      // onModelPopUp={changestatus}
+                      details={item}
+                      // restaurantLogo={item?.Ongoing.RestaurantLogo}
+                      // orderNo={item,}
+                    />
+                  );
+                }}
+              />
+            </View>
+          )}
         </View>
       </View>
     </Animated.View>

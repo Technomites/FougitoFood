@@ -46,7 +46,12 @@ import {
   Updated_Profile_PictureClear,
   DetailsCart,
   MarkFAVOURITE,
-  ClearFavourite
+  ClearFavourite,
+  NewpasswordChanged,
+  NewpasswordChanged2,
+  OrderList,
+  Contactusdetails,
+  contactusemail,
 } from '../Actions/actions';
 
 const initialState = {
@@ -93,45 +98,74 @@ const initialState = {
   alladdresses: [],
   orderplacementstatus: '',
   refreshtokendata: null,
-  imageupdationstatus: "",
-
+  imageupdationstatus: '',
   completeorderdetails: [],
-  addedtofavourite: "",
-  origin: ""
+  addedtofavourite: '',
+  origin: '',
+  NewchangedpasswordStatus: '',
+  NewchangedpasswordMessage: '',
+  MyorderList: [],
+  MyorderListpast: [],
+  detailsContact: [],
+  detailsContactstatus: '',
+  detailsContactmessage: '',
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
-    
-  
     case ClearFavourite:
       return {
         ...state,
         addedtofavourite: action.payload,
-     
       };
 
     case MarkFAVOURITE:
       return {
         ...state,
         addedtofavourite: action.payload,
-     
       };
-    
+    case NewpasswordChanged:
+      return {
+        ...state,
+        NewchangedpasswordStatus: action.changedPassword,
+        NewchangedpasswordMessage: action.Message,
+      };
+    case Contactusdetails:
+      return {
+        ...state,
+        detailsContact: action.PayloadContactus,
+      };
+
+    case contactusemail:
+      return {
+        ...state,
+        detailsContactstatus: action.emailpayload,
+        detailsContactmessage: action.messagepayload,
+      };
+    case OrderList:
+      return {
+        ...state,
+        MyorderList: action.payloadorder,
+        MyorderListpast: action.payloadPastorder,
+      };
+
+    case NewpasswordChanged2:
+      return {
+        ...state,
+        NewchangedpasswordStatus: action.changedPassword,
+        NewchangedpasswordMessage: action.Message,
+      };
     case Updated_Profile_PictureClear:
       return {
         ...state,
         imageupdationstatus: action.payload,
-     
       };
 
-
-          case Updated_Profile_Picture:
-            return {
-              ...state,
-              imageupdationstatus: action.payloadimagestatus,
-           
-            };
+    case Updated_Profile_Picture:
+      return {
+        ...state,
+        imageupdationstatus: action.payloadimagestatus,
+      };
 
     case StoreNEWRefreshTokenDATA:
       return {
@@ -408,10 +442,7 @@ function userReducer(state = initialState, action) {
       return {
         ...state,
         completeorderdetails: action.orderDetails,
-
       };
-
-      ;
     default:
       return state;
   }

@@ -25,32 +25,39 @@ export default function Addresstile(props) {
             justifyContent: 'flex-start',
             alignItems: 'center',
           }}>
-          <View style={{width: '5%', alignSelf:"flex-start"  }}>
-           
-            <View style={{height: scalableheight.six, width: scalableheight.six,      backgroundColor:'#F9F9F9', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
-              {props?.icon == "Home" ?
-            <FontAwesome5
-          style={{alignSelf: 'center'}}
-          name={"home"}
-          color={"#F55050"}
-          size={fontSize.twenty}
-        />
-        : props?.icon == "Work" ? 
-        <FontAwesome5
-        style={{alignSelf: 'center'}}
-        name={"briefcase"}
-        color={"#F55050"}
-        size={fontSize.twenty}
-      />
-          : 
-          <FontAwesome5
-          style={{alignSelf: 'center'}}
-          name={"building"}
-          color={"#F55050"}
-          size={fontSize.twenty}
-        />
-        }
-            {/* <Image
+          <View style={{width: '5%', alignSelf: 'flex-start'}}>
+            <View
+              style={{
+                height: scalableheight.six,
+                width: scalableheight.six,
+                backgroundColor: '#F9F9F9',
+                borderRadius: fontSize.borderradiusmedium,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              {props?.icon == 'Home' ? (
+                <FontAwesome5
+                  style={{alignSelf: 'center'}}
+                  name={'home'}
+                  color={'#F55050'}
+                  size={fontSize.twenty}
+                />
+              ) : props?.icon == 'Work' ? (
+                <FontAwesome5
+                  style={{alignSelf: 'center'}}
+                  name={'briefcase'}
+                  color={'#F55050'}
+                  size={fontSize.twenty}
+                />
+              ) : (
+                <FontAwesome5
+                  style={{alignSelf: 'center'}}
+                  name={'building'}
+                  color={'#F55050'}
+                  size={fontSize.twenty}
+                />
+              )}
+              {/* <Image
           resizeMode="stretch"
           style={{
             width: scalableheight.five,
@@ -58,7 +65,7 @@ export default function Addresstile(props) {
             borderRadius: fontSize.eleven,
           }}
           source={props?.icon}></Image> */}
-</View>
+            </View>
           </View>
           <View
             style={{
@@ -76,16 +83,16 @@ export default function Addresstile(props) {
                 }}>
                 {props?.place}
               </Text>
-              {props?.screenname != "checkout" &&
-              <TouchableOpacity onPress={props.onPress} activeOpacity={0.9}>
-                <Entypo
-                  style={{alignSelf: 'center'}}
-                  name="edit"
-                  color={'rgba(41, 38, 42, 0.5)'}
-                  size={fontSize.fifteen}
-                />
-              </TouchableOpacity>
-                }
+              {props?.screenname != 'checkout' && (
+                <TouchableOpacity onPress={props.onPress} activeOpacity={0.9}>
+                  <Entypo
+                    style={{alignSelf: 'center'}}
+                    name="edit"
+                    color={'rgba(41, 38, 42, 0.5)'}
+                    size={fontSize.fifteen}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <Text
               style={{
@@ -134,7 +141,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)',
-    
-    backgroundColor:"white"
+
+    backgroundColor: 'white',
   },
 });

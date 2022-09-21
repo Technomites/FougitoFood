@@ -15,8 +15,6 @@ import {
 
 import renderIf from 'render-if';
 
-
-
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -27,6 +25,8 @@ import {useNavigation} from '@react-navigation/native';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import SavedAddresses from './SavedAddresses';
 import MYButton from '../Components/MYButton';
+import {getalladdresses, storecurrentaddress} from '../../Actions/actions';
+import Addresstile from '../../Shared/Components/Addresstile';
 
 import * as Animatable from 'react-native-animatable';
 import PaymentOptions from '../../Shared/Components/PaymentOptions';
@@ -35,6 +35,7 @@ import CountDown from 'react-native-countdown-component';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 export default function Custombottomsheet(props) {
+  const {AuthToken, alladdresses} = useSelector(state => state.userReducer);
   // alert(props?.latitudepin, props?.longitudepin);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -75,6 +76,9 @@ export default function Custombottomsheet(props) {
       setanimationstate(true);
     }
   }, [props.state]);
+  useEffect(() => {
+    dispatch(getalladdresses(AuthToken));
+  }, []);
 
   useEffect(() => {
     if (props?.longitude != null && props?.latitude != null) {
@@ -266,7 +270,6 @@ export default function Custombottomsheet(props) {
     },
   ];
 
-
   return (
     <>
       {props.state && (
@@ -363,22 +366,74 @@ export default function Custombottomsheet(props) {
                   </Text>
                 </View>
               </TouchableOpacity>
-
-              <Text
-                style={{
-                  color: 'black',
-                  opacity: 0.6,
-                  fontFamily: 'Inter-Regular',
-                  fontSize: fontSize.sixteen,
-                  paddingTop: scalableheight.one,
-                }}>
-                My Saved Addresses
-              </Text>
-              <SavedAddresses
-                title={'Home'}
-                address={'Mann Crossing 332 Ardith Highway'}
-              />
-              <SavedAddresses title={'Home'} address={'Clifton block 2'} />
+              {AuthToken != '' ? (
+                // <View>
+                //   <Text
+                //     style={{
+                //       color: 'black',
+                //       opacity: 0.6,
+                //       fontFamily: 'Inter-Regular',
+                //       fontSize: fontSize.sixteen,
+                //       paddingTop: scalableheight.one,
+                //     }}>
+                //     My Saved Addresses
+                //   </Text>
+                //   <SavedAddresses
+                //     title={'Home'}
+                //     address={'Mann Crossing 332 Ardith Highway'}
+                //   />
+                //   <SavedAddresses title={'Home'} address={'Clifton block 2'} />
+                // </View>
+                <FlatList
+                  data={alladdresses}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{
+                    flexGrow: 1,
+                    //   paddingBottom: scalableheight.three,
+                  }}
+                  renderItem={({item, i}) => {
+                    return (
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => {
+                          let currentaddress = [
+                            {
+                              Latitude: item.Latitude,
+                              Longitude: item.Longitude,
+                              icon: item.Type,
+                              place: item.Type,
+                              address: item.Address,
+                              note: item.NoteToRider,
+                              Street: item.Street,
+                              Floor: item.Floor,
+                            },
+                          ];
+                          console.log(currentaddress);
+                          dispatch(storecurrentaddress(currentaddress));
+                          //navigation.goBack();
+                        }}
+                        //  disabled={screenname == 'checkout' ? false : true}
+                      >
+                        <Text
+                          style={{
+                            color: 'black',
+                            opacity: 0.6,
+                            fontFamily: 'Inter-Regular',
+                            fontSize: fontSize.sixteen,
+                            paddingTop: scalableheight.one,
+                          }}>
+                          My Saved Addresses
+                        </Text>
+                        <SavedAddresses
+                          icon={item.Type}
+                          title={item.Type}
+                          address={item.Address}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              ) : null}
 
               <TouchableOpacity
                 onPress={() => {
@@ -427,24 +482,37 @@ export default function Custombottomsheet(props) {
                   marginVertical: scalableheight.two,
                   borderRadius: fontSize.fifteen,
                   overflow: 'hidden',
-                justifyContent:'center',
-                alignItems:'center'
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-{hidemarker == false ? 
+                {hidemarker == false ? (
                   <MaterialIcons
-                     style={{  position:"absolute", alignSelf:"center", alignContent:"center", zIndex:3, elevation:3}}
-                      name="location-pin"
-                      color={'#F55050'}
-                      size={scalableheight.six}
-                    /> :
-                    <Entypo
-                    style={{  position:"absolute", alignSelf:"center", alignContent:"center", zIndex:3, elevation:3}}
-                     name="dot-single"
-                     color={'#F55050'}
-                     size={scalableheight.six}
-                   />
-}
-                  
+                    style={{
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      alignContent: 'center',
+                      zIndex: 3,
+                      elevation: 3,
+                    }}
+                    name="location-pin"
+                    color={'#F55050'}
+                    size={scalableheight.six}
+                  />
+                ) : (
+                  <Entypo
+                    style={{
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      alignContent: 'center',
+                      zIndex: 3,
+                      elevation: 3,
+                    }}
+                    name="dot-single"
+                    color={'#F55050'}
+                    size={scalableheight.six}
+                  />
+                )}
+
                 <MapView
                   // provider={PROVIDER_GOOGLE}
                   style={{
@@ -464,37 +532,37 @@ export default function Custombottomsheet(props) {
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
-          
-                  onRegionChange={(region) => {
-                //  console.log(region)
-                if(region.latitude.toFixed(5) === pinlatitude.toFixed(5)
-                && region.longitude.toFixed(5) === pinLongitude.toFixed(5)){
-                  return;
-              }else{
-                sethidemarker(true)
-              }
+                  onRegionChange={region => {
+                    //  console.log(region)
+                    if (
+                      region.latitude.toFixed(5) === pinlatitude.toFixed(5) &&
+                      region.longitude.toFixed(5) === pinLongitude.toFixed(5)
+                    ) {
+                      return;
+                    } else {
+                      sethidemarker(true);
+                    }
                   }}
-                  onRegionChangeComplete = {(region) => {
+                  onRegionChangeComplete={region => {
                     // console.log(region)
-                
-               
-    if(region.latitude.toFixed(5) === pinlatitude.toFixed(5)
-    && region.longitude.toFixed(5) === pinLongitude.toFixed(5)){
-      return;
-  }else{
-    sethidemarker(false)
-    SetPinLatitude(region.latitude),
-    SetPinLongitude(region.longitude)
-  }
 
- 
-                     }}
+                    if (
+                      region.latitude.toFixed(5) === pinlatitude.toFixed(5) &&
+                      region.longitude.toFixed(5) === pinLongitude.toFixed(5)
+                    ) {
+                      return;
+                    } else {
+                      sethidemarker(false);
+                      SetPinLatitude(region.latitude),
+                        SetPinLongitude(region.longitude);
+                    }
+                  }}
 
-                    //  onDragEnd={e => (
-                    //   SetPinLatitude(e.nativeEvent.coordinate.latitude),
-                    //   SetPinLongitude(e.nativeEvent.coordinate.longitude)
-                    // )}
-                  >
+                  //  onDragEnd={e => (
+                  //   SetPinLatitude(e.nativeEvent.coordinate.latitude),
+                  //   SetPinLongitude(e.nativeEvent.coordinate.longitude)
+                  // )}
+                >
                   {/* <Marker
                     draggable
                     onDragEnd={e => (
@@ -554,6 +622,12 @@ export default function Custombottomsheet(props) {
                   onPress={() => {
                     if (showmap == true) {
                       setshowmap(false);
+                      console.log(
+                        pinlatitude,
+                        'Latiutde',
+                        pinLongitude,
+                        'pinLongitude',
+                      );
                     } else {
                       clearandclose();
                     }

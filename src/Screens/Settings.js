@@ -22,8 +22,12 @@ import {
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
+import ChnagePasswordModel from '../Shared/Components/ChnagePasswordModel';
+import AuthenticationModel from '../Shared/Components/AuthenticationModel';
 
 const Settings = ({navigation, drawerAnimationStyle}) => {
+  const [modalVisible, setmodalVisible] = useState(false);
+  const [modalVisible2, setmodalVisible2] = useState(false);
   const [setting, SetSetting] = useState([
     {
       icon: 'person-outline',
@@ -38,7 +42,9 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
       icon: 'lock',
       title: 'Change Password',
       onPress: () => {
-        navigation.navigate('Home');
+        setmodalVisible(true);
+        // console.log('ancnnc');
+        navigation.navigate('drawernavigation');
         //  navigation.dispatch(DrawerActions.closeDrawer());
       },
       type: 2,
@@ -99,9 +105,8 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
     },
   ]);
   const dispatch = useDispatch();
-  const {Lang, notificationStatus,AuthToken} = useSelector(
-    state => state.userReducer,
-  );
+  const {Lang, notificationStatus, AuthToken, ProfileName, ProfileImage} =
+    useSelector(state => state.userReducer);
   const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
@@ -188,7 +193,13 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
 
                   // marginBottom: scalableheight.one,
                 }}
-                source={require('../Resources/images/logoguest.png')}
+                source={
+                  AuthToken != ''
+                    ? {
+                        uri: ProfileImage,
+                      }
+                    : require('../Resources/images/logoguest.png')
+                }
               />
             </View>
           </View>
@@ -205,17 +216,21 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
                 color: '#29262A',
                 fontFamily: 'Inter-SemiBold',
               }}>
-              Tom Lucas
+              {AuthToken != '' ? ProfileName : 'Guest User'}
             </Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate('AccountSettings')}>
+              onPress={() =>
+                AuthToken !== ''
+                  ? navigation.navigate('AccountSettings')
+                  : setmodalVisible(true)
+              }>
               <Text
                 style={{
                   fontSize: fontSize.thirteen,
                   color: '#E14E4E',
                   fontFamily: 'Inter-SemiBold',
                 }}>
-                ACCOUNT SETTINGS
+                {AuthToken !== '' ? 'ACCOUNT SETTINGS' : 'Login/Signup'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -238,21 +253,39 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
               paddingTop: scalableheight.four,
             }}>
             {setting.map(item => {
-              return (
-                <AccountInfotile
-                  onPress={() => {
-                    // SetPlaceSelected(item);
-                  }}
-                  data={item}
-                  // selection={placeselected}
-                />
-              );
+              if (
+                AuthToken !== '' ||
+                (item.title !== 'Account Info' &&
+                  item.title !== 'Change Password' &&
+                  item.title !== 'Logout')
+              ) {
+                return (
+                  <AccountInfotile
+                    onPress={() => {
+                      // SetPlaceSelected(item);
+                    }}
+                    data={item}
+                    // selection={placeselected}
+                  />
+                );
+              }
             })}
             {/* <AccountInfotile  /> */}
           </View>
         </View>
       </View>
-
+      <ChnagePasswordModel
+        state={modalVisible2}
+        togglemodel={() => {
+          setmodalVisible2(false);
+        }}
+      />
+      <AuthenticationModel
+        state={modalVisible}
+        togglemodel={() => {
+          setmodalVisible(false);
+        }}
+      />
       <GToastContainer paddingBottom={100} style={{height: 40, width: 60}} />
     </Animated.View>
   );
