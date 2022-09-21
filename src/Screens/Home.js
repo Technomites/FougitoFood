@@ -27,6 +27,7 @@ import {
   ActivityIndicatorBase,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import Toast from 'react-native-toast-notifications';
 import renderIf from 'render-if';
 // import Modal from "react-native-modal";
 import {
@@ -40,7 +41,8 @@ import {
   storedistance,
   storerestrauntbasicdata,
   GetProfile,
-  storelatlong
+  storelatlong,
+  isconnected
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -100,6 +102,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [cartvisible, setcartvisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
+  const [loader, setloader] = useState(false);
   const [search, setsearch] = useState('');
   const [showmap, setshowmap] = useState(false);
   const [count, setcount] = useState(0);
@@ -151,6 +154,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const refMap = useRef(null);
   const ref = useRef();
   const refRBSheet = useRef();
+  const toast = useRef();
 
   const [flavours, setflavours] = useState([
     {
@@ -166,7 +170,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       serving: 'Pasta',
     },
   ]);
-  const {newNotificationCount, allrestraunts, currentRestrauntid, AuthToken} =
+  const {newNotificationCount, allrestraunts, currentRestrauntid, AuthToken, internetconnectionstate} =
     useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
@@ -525,92 +529,14 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     },
   ];
 
-  const [dished, setdisdhed] = useState([
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-    {
-      selected: false,
-      serving: 'Chicken Munchurian',
-    },
-    {
-      selected: false,
-      serving: 'Pasta',
-    },
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-    {
-      selected: false,
-      serving: 'Chicken Munchurian',
-    },
-    {
-      selected: false,
-      serving: 'Pasta',
-    },
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-    {
-      selected: false,
-      serving: 'Chicken Munchurian',
-    },
-    {
-      selected: false,
-      serving: 'Pasta',
-    },
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-    {
-      selected: false,
-      serving: 'Chicken Munchurian',
-    },
-    {
-      selected: false,
-      serving: 'Pasta',
-    },
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-    {
-      selected: false,
-      serving: 'Chicken Munchurian',
-    },
-    {
-      selected: false,
-      serving: 'Pasta',
-    },
-  ]);
-
-  // React.useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     StatusBar.setBarStyle('light-content');
-  //   });
-
-  //   //  Return the function to unsubscribe from the event so it gets removed on unmount
-  //   return unsubscribe;
-  // }, [navigation]);
-
-  useEffect(() => {
-    StatusBar.setHidden(false);
-    //  StatusBar.setBackgroundColor('transparent');
-    // StatusBar.setBarStyle('light-content');
-  }, []);
-  useEffect(() => {
-    listeners();
-  }, []);
-  useEffect(() => {
-    if (lat != null && long != null) {
-      dispatch(getallrestraunts(lat, long));
-      dispatch(storelatlong(lat, long))
-    }
-  }, [lat, long]);
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      dispatch(seticonfocus('home'));
+      StatusBar.setHidden(false);
+   
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -633,27 +559,45 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     };
   }, []);
   useEffect(() => {
-    // console.log(
-    //   AuthToken,
-    //   'UpdateProfile UpdateProfile UpdateProfile UpdateProfile',
-    // );
-    dispatch(GetProfile(AuthToken));
-  }, [AuthToken]);
+    StatusBar.setHidden(false);
+    listeners();
+  }, []);
   useEffect(() => {
+    if(internetconnectionstate == true){
+      dispatch(GetProfile(AuthToken));
+    }
+  
+  }, [AuthToken, internetconnectionstate]);
+  useEffect(() => {
+    if(internetconnectionstate ==true){
+    if (lat != null && long != null) {
+      setloader(true)
+      dispatch(getallrestraunts(lat, long));
+      dispatch(storelatlong(lat, long))
+    }}
+  }, [lat, long]);
+  useEffect(() => {
+    if(internetconnectionstate == true){
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
     Geolocation.getCurrentPosition(info => {
       setlat(info?.coords?.latitude);
       setlong(info?.coords?.longitude);
       setinlat(info?.coords?.latitude);
       setinlong(info?.coords?.longitude);
-      console.log('hello' + info?.coords?.latitude);
-      console.log('hello' + info?.coords?.longitude);
+      // console.log('hello' + info?.coords?.latitude);
+      // console.log('hello' + info?.coords?.longitude);
     });
     console.log('hello');
     getLocation();
-  }, []);
+  }
+  }, [internetconnectionstate]);
 
   useEffect(() => {
+   setloader(false)
+  }, [allrestraunts]);
+  
+  useEffect(() => {
+    if(internetconnectionstate == true){
     if (lat != null && long != null) {
       Geocoder.from(lat, long)
         .then(json => {
@@ -663,9 +607,136 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         })
         .catch(error => console.warn(error));
     }
+  }
   }, [lat, long]);
 
+
+
+
+
+  function onRefresh() {
+    NetInfo.fetch().then(state => {
+      if (state.isConnected == true && state.isInternetReachable == true) {
+        dispatch(GetProfile(AuthToken));
+        getnewlocation()
+      } else {
+             toast.current.show('No Internet Connection', {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+          zIndex: 2,
+        });
+      }
+    });
+  }
+
+  function updatecoordinates(lat, long){
+    setlat(lat);
+    setlong(long);
+    setinlat(lat);
+    setinlong(long);
+    getLocation();
+  }
+
+
+
+
+  const rendernearby = ({item, index}) => (
+    item?.NameAsPerTradeLicense.includes(search.trim()) ? 
+    <View
+      style={{
+        width: Dimensions.get('window').width / 1.2,
+        marginRight: scalableheight.two,
+      }}>
+      <Favourites
+        image={item?.Logo}
+        title={item?.NameAsPerTradeLicense}
+        reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
+        time={item?.OpeningTime + ' - ' + item?.ClosingTime}
+        onPress={() => {
+          dispatch(storerestrauntbasicdata(item));
+          dispatch(storedistance(item?.Distance));
+          if (currentRestrauntid != item?.Id) {
+            dispatch(storecartprice(0));
+            dispatch(cleancart());
+            dispatch(storerestrauntid(item?.Id));
+          }
+         
+          dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
+
+          navigation.navigate('Restaurantpage', {
+            latitude: lat,
+            longitude: long,
+          });
+        }}
+        distance={item?.Distance + ' AWAY'}
+      />
+    </View>
+: null
+    //  onPress={()=>{activaterestaurant(index, 24.8475, 67.0330 )}}
+  );
+  const renderItem = ({item, index}) => (
+    
+    item?.NameAsPerTradeLicense.includes(search.trim()) ? 
+    <Animatable.View
+      animation="zoomInLeft"
+      easing="ease"
+      iterationCount={1}
+      style={{}}>
+      <Favourites
+        image={item?.Logo}
+        title={item?.NameAsPerTradeLicense}
+        reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
+        time={item?.OpeningTime + ' - ' + item?.ClosingTime}
+        onPress={() => {
+          dispatch(storerestrauntbasicdata(item));
+          dispatch(storedistance(item?.Distance));
+          if (currentRestrauntid != item?.Id) {
+            dispatch(storecartprice(0));
+            dispatch(cleancart());
+            dispatch(storerestrauntid(item?.Id));
+          }
+          dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
+          navigation.navigate('Restaurantpage', {
+            latitude: lat,
+            longitude: long,
+          });
+        }}
+        distance={item?.Distance + ' AWAY'}
+      />
+    </Animatable.View>
+    : null
+  );
+  function activaterestaurant(key, lat, long) {
+    
+    setinlat(lat);
+    setinlong(long);
+    console.log('selected');
+    let arr = [...allrestraunts];
+    for (const index in arr) {
+      arr[index].expanded = false;
+    }
+    arr[key].expanded = true;
+    // setpin(arr);
+    dispatch(updaterestraunts(arr));
+
+    ref.current?.scrollToIndex({
+      index: key,
+      animated: true,
+    });
+  }
+
+
   function getnewlocation() {
+    Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
+    Geolocation.getCurrentPosition(info => {
+      setlat(info?.coords?.latitude);
+      setlong(info?.coords?.longitude);
+      setinlat(info?.coords?.latitude);
+      setinlong(info?.coords?.longitude);
+    });
     Geocoder.from(lat, long)
       .then(json => {
         var addressComponent = json.results[0].formatted_address;
@@ -747,114 +818,6 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     }
     return false;
   };
-
-  const renderItem = ({item, index}) => (
-    
-    item?.NameAsPerTradeLicense.includes(search.trim()) ? 
-    <Animatable.View
-      animation="zoomInLeft"
-      easing="ease"
-      iterationCount={1}
-      style={{}}>
-      <Favourites
-        image={item?.Logo}
-        title={item?.NameAsPerTradeLicense}
-        reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
-        time={item?.OpeningTime + ' - ' + item?.ClosingTime}
-        onPress={() => {
-          dispatch(storerestrauntbasicdata(item));
-          dispatch(storedistance(item?.Distance));
-          if (currentRestrauntid != item?.Id) {
-            dispatch(storecartprice(0));
-            dispatch(cleancart());
-            dispatch(storerestrauntid(item?.Id));
-          }
-          dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
-          navigation.navigate('Restaurantpage', {
-            latitude: lat,
-            longitude: long,
-          });
-        }}
-        distance={item?.Distance + ' AWAY'}
-      />
-    </Animatable.View>
-    : null
-  );
-  function onRefresh() {
-    NetInfo.fetch().then(state => {
-      if (state.isConnected == true && state.isInternetReachable == true) {
-      } else {
-        showToast('No Internet Connection', {
-          duration: 500,
-        });
-      }
-    });
-  }
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(seticonfocus('home'));
-      StatusBar.setHidden(false);
-      //  StatusBar.setBackgroundColor('transparent');
-      //   StatusBar.setBarStyle('light-content');
-    });
-
-    //  Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, [navigation]);
-
-  const rendernearby = ({item, index}) => (
-    item?.NameAsPerTradeLicense.includes(search.trim()) ? 
-    <View
-      style={{
-        width: Dimensions.get('window').width / 1.2,
-        marginRight: scalableheight.two,
-      }}>
-      <Favourites
-        image={item?.Logo}
-        title={item?.NameAsPerTradeLicense}
-        reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
-        time={item?.OpeningTime + ' - ' + item?.ClosingTime}
-        onPress={() => {
-          dispatch(storerestrauntbasicdata(item));
-          dispatch(storedistance(item?.Distance));
-          if (currentRestrauntid != item?.Id) {
-            dispatch(storecartprice(0));
-            dispatch(cleancart());
-            dispatch(storerestrauntid(item?.Id));
-          }
-         
-          dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
-
-          navigation.navigate('Restaurantpage', {
-            latitude: lat,
-            longitude: long,
-          });
-        }}
-        distance={item?.Distance + ' AWAY'}
-      />
-    </View>
-: null
-    //  onPress={()=>{activaterestaurant(index, 24.8475, 67.0330 )}}
-  );
-
-  function activaterestaurant(key, lat, long) {
-    console.log('hello');
-    setinlat(lat);
-    setinlong(long);
-    console.log('selected');
-    let arr = [...allrestraunts];
-    for (const index in arr) {
-      arr[index].expanded = false;
-    }
-    arr[key].expanded = true;
-    // setpin(arr);
-    dispatch(updaterestraunts(arr));
-
-    ref.current?.scrollToIndex({
-      index: key,
-      animated: true,
-    });
-  }
 
   return (
     <Animated.View
@@ -1100,6 +1063,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                     style={{
                       paddingTop: scalableheight.one,
                       paddingBottom: scalableheight.pointfive,
+                      
                       justifyContent: 'center',
                     }}>
                     <Text
@@ -1111,8 +1075,23 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                       RESTAURANTS NEARBY
                     </Text>
                   </Animatable.View>
-                ) : null}
+                ) : 
+                <View
+                style={{
+                  width: Dimensions.get('window').width / 1.05,
+                  height: scalableheight.twenty,
+                  justifyContent:"center",
+                  alignItems:"center",
+               
+             
+                }}>
+           <Text style={{ fontFamily: 'Inter-Bold',
+            fontSize: fontSize.sixteen,
+            color: '#29262A', opacity:0.4}}>No Restraunts NearBy</Text>
+              </View>}
+            
                 <FlatList
+                 
                   key={'1'}
                   showsHorizontalScrollIndicator={false}
                   ref={ref}
@@ -1128,15 +1107,62 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             </>
           )}
           {showmap != true && (
-            // <View
-            //   style={{
-            //     width: '100%',
-            //     paddingHorizontal: scalableheight.one,
-            //     marginTop: scalableheight.two,
+            internetconnectionstate == false ?
+            <>
+          
+            <Text style={{   
+              width:"100%",
+              fontFamily: 'Inter-SemiBold',
+              fontSize: fontSize.twenty,
+              color:'#E14E4E',
+              position:"absolute",
+              textAlign:"center",
+           top: scalableheight.fourty,
 
-            // //  height: Dimensions.get('window').height + scalableheight.five -  scalableheight.fifteen - getStatusBarHeight()
-            //   }}>
+             }}>Tap to Retry</Text>
+               <TouchableOpacity
+               onPress={() => {
+                NetInfo.fetch().then(state => {
+                  if (state.isConnected == true && state.isInternetReachable == true) {
+                   dispatch(isconnected(true))
+                   console.log("true")
+                  } else {
+                    dispatch(isconnected(false))
+                    console.log("false" + state.isConnected)
+                  }
+                });
+                
+                
+               }}
+               >
+          <Image
+         style={{
+           height:  "100%",
+           width: "100%",
+           textAlign: 'center',
+       
+         }}
+         resizeMode={'contain'}
+         source={require('../Resources/images/Skeleton/1.gif')}
+       />
+       </TouchableOpacity>
+            </>
+            :
+         loader == true ?
+         <Image
+         style={{
+           height:  "100%",
+           width: "100%",
+           textAlign: 'center',
+         }}
+         resizeMode={'cover'}
+         source={require('../Resources/images/Skeleton/4.gif')}
+       /> :(
+            allrestraunts?.length > 0 && allrestraunts?.find(data => data?.NameAsPerTradeLicense.includes(search.trim())) != undefined   ? (
             <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
               key="1"
               data={allrestraunts}
               renderItem={renderItem}
@@ -1151,7 +1177,20 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               contentContainerStyle={{flexGrow: 1, paddingBottom: 5}}
               // contentContainerStyle={{paddingBottom: 54}}
               keyExtractor={(item, index) => index.toString()}
-            />
+            />) : 
+            <View
+            style={{
+              width: Dimensions.get('window').width / 1.05,
+              height:Dimensions.get('window').height / 1.5,
+              justifyContent:"center",
+              alignItems:"center",
+           
+         
+            }}>
+       <Text style={{ fontFamily: 'Inter-Bold',
+        fontSize: fontSize.sixteen,
+        color: '#29262A', opacity:0.4}}>No Restraunts NearBy</Text>
+          </View>)
             // {/* </View> */}
           )}
         </View>
@@ -1189,17 +1228,24 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       <Custombottomsheet
         state={showbottomsheet}
         locationpin={pinlocation}
+        
+        onPressnewCoordinates={(a,b) => {
+       
+          updatecoordinates(a,b)
+        }}
         onPress={() => {
           setshowbottomsheet(false);
         }}
         onPressnewlocation={() => {
           getnewlocation();
         }}
-        // OnPressPinLocation={() => {
-        //   setshowpinmap(!showpinmap);
-        // }}
+        
         latitude={lat}
         longitude={long}
+      />
+        <Toast
+        ref={toast}
+        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
       />
     </Animated.View>
   );

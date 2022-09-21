@@ -20,13 +20,14 @@ import changeNavigationBarColor, {
 import AsyncStorage from '@react-native-community/async-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {fontSize, scalableheight} from '../Utilities/fonts';
+import NetInfo from '@react-native-community/netinfo';
 // import AuthButton from '../Shared/Components/AuthButton';
 import * as Animatable from 'react-native-animatable';
 import MYButton from '../Shared/Components/MYButton';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
 // import Modal from "react-native-modal";
-import {storetoken, storetokenrefresh, refreshmytoken} from '../Actions/actions';
+import {storetoken, storetokenrefresh, refreshmytoken, isconnected} from '../Actions/actions';
 
 const GettingStarted = props => {
   const {refreshtokendata, AuthToken} = useSelector(state => state.userReducer);
@@ -71,6 +72,13 @@ const GettingStarted = props => {
   }, []);
 
   useEffect(() => {
+    NetInfo.fetch().then(state => {
+      if (state.isConnected == true && state.isInternetReachable == true) {
+       dispatch(isconnected(true))
+      } else {
+        dispatch(isconnected(false))
+      }
+    });
     gettoken();
   }, []);
 

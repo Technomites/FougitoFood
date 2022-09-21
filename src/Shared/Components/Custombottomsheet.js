@@ -82,16 +82,14 @@ export default function Custombottomsheet(props) {
 
   useEffect(() => {
     if (props?.longitude != null && props?.latitude != null) {
-      console.log(props?.latitude, 'props?.latitude not null');
-      console.log(props?.longitude, 'props?.longitude not null');
+      console.log(props?.latitude, 'props?.latitude not null----------------------------');
+      console.log(props?.longitude, 'props?.longitude not null---------------------------');
       SetPinLatitude(props?.latitude);
       SetPinLongitude(props?.longitude);
     }
   }, [props?.longitude, props?.latitude]);
 
-  // function togglescreen(index) {
-  //   setanimationstate(true);
-  // }
+  
   function clearandclose() {
     toggleanimation();
     setanimationstate(true);
@@ -329,7 +327,7 @@ export default function Custombottomsheet(props) {
           {showmap != true ? (
             <>
               <TouchableOpacity
-                disabled={props.locationpin == '' ? false : true}
+                // disabled={props.locationpin == '' ? false : true}
                 onPress={props.onPressnewlocation}
                 style={{
                   flexDirection: 'row',
@@ -362,7 +360,7 @@ export default function Custombottomsheet(props) {
                       fontFamily: 'Inter-SemiBold',
                       fontSize: fontSize.eleven,
                     }}>
-                    {props.pinlocation == null ? 'Use GPS' : props.pinlocation}
+                    {props.locationpin == null ? 'Use GPS' : props.locationpin}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -384,6 +382,17 @@ export default function Custombottomsheet(props) {
                 //   />
                 //   <SavedAddresses title={'Home'} address={'Clifton block 2'} />
                 // </View>
+                <>
+                 <Text
+                          style={{
+                            color: 'black',
+                            opacity: 0.6,
+                            fontFamily: 'Inter-Regular',
+                            fontSize: fontSize.sixteen,
+                            paddingVertical: scalableheight.one,
+                          }}>
+                          My Saved Addresses
+                        </Text>
                 <FlatList
                   data={alladdresses}
                   showsVerticalScrollIndicator={false}
@@ -391,6 +400,10 @@ export default function Custombottomsheet(props) {
                     flexGrow: 1,
                     //   paddingBottom: scalableheight.three,
                   }}
+                  ListEmptyComponent={() => <Text style={{       color: 'black',
+                  opacity: 0.5,
+                  fontFamily: 'Inter-SemiBold',
+                  fontSize: fontSize.eleven, }} >No addresses available</Text>}
                   renderItem={({item, i}) => {
                     return (
                       <TouchableOpacity
@@ -414,17 +427,10 @@ export default function Custombottomsheet(props) {
                         }}
                         //  disabled={screenname == 'checkout' ? false : true}
                       >
-                        <Text
-                          style={{
-                            color: 'black',
-                            opacity: 0.6,
-                            fontFamily: 'Inter-Regular',
-                            fontSize: fontSize.sixteen,
-                            paddingTop: scalableheight.one,
-                          }}>
-                          My Saved Addresses
-                        </Text>
+                       
                         <SavedAddresses
+                         Latitude = {item.Latitude}
+                         Longitude = {item.Longitude}
                           icon={item.Type}
                           title={item.Type}
                           address={item.Address}
@@ -433,8 +439,9 @@ export default function Custombottomsheet(props) {
                     );
                   }}
                 />
+                </>
               ) : null}
-
+{props.setlocation != false &&
               <TouchableOpacity
                 onPress={() => {
                   setshowmap(true);
@@ -472,6 +479,7 @@ export default function Custombottomsheet(props) {
                   </Text>
                 </View>
               </TouchableOpacity>
+}
             </>
           ) : (
             <View>
@@ -558,29 +566,9 @@ export default function Custombottomsheet(props) {
                     }
                   }}
 
-                  //  onDragEnd={e => (
-                  //   SetPinLatitude(e.nativeEvent.coordinate.latitude),
-                  //   SetPinLongitude(e.nativeEvent.coordinate.longitude)
-                  // )}
+                
                 >
-                  {/* <Marker
-                    draggable
-                    onDragEnd={e => (
-                      SetPinLatitude(e.nativeEvent.coordinate.latitude),
-                      SetPinLongitude(e.nativeEvent.coordinate.longitude)
-                    )}
-                    coordinate={{
-                      latitude: pinlatitude,
-                      longitude: pinLongitude,
-                    }}
-                    //  description={props?.pinlocation}
-                    onPress={() => console.log('hello')}>
-                    <MaterialIcons
-                      name="location-pin"
-                      color={'#F55050'}
-                      size={scalableheight.six}
-                    />
-                  </Marker> */}
+               
                 </MapView>
                 <View
                   style={{
@@ -622,12 +610,8 @@ export default function Custombottomsheet(props) {
                   onPress={() => {
                     if (showmap == true) {
                       setshowmap(false);
-                      console.log(
-                        pinlatitude,
-                        'Latiutde',
-                        pinLongitude,
-                        'pinLongitude',
-                      );
+                       props.onPressnewCoordinates(pinlatitude, pinLongitude)
+                    
                     } else {
                       clearandclose();
                     }
