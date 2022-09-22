@@ -55,8 +55,8 @@ const PreparingFood = ({navigation, route}, props) => {
   }, []);
 
   useEffect(() => {
-    dispatch(OrderStatus(AuthToken, orderdetails?.OrderDetails[0]?.OrderId));
-  }, [AuthToken, orderdetails?.OrderDetails[0]?.OrderId]);
+    dispatch(OrderStatus(AuthToken, orderdetails));
+  }, [orderdetails]);
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>

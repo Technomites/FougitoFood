@@ -64,12 +64,28 @@ export const Contactusdetails = 'Contactusdetails';
 export const contactusemail = 'contactusemail';
 export const DeliveryStatus = 'DeliveryStatus';
 export const internetCHECK = 'internetCHECK';
+export const OrderID = 'OrderID';
 
 const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
 const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
+};
+
+
+
+export const storeorderid = id => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: OrderID,
+        payload: id,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const isconnected = state => {
@@ -442,18 +458,18 @@ export const createorder = (AuthToken, data) => {
       console.log('postserviceratings' + JSON.stringify(json));
 
       if (json.Status === 'Success') {
-        console.log(json.Result, 'hekksdka;ldka;lkd;lakd;lka;ldka;kd;l');
+        console.log(json.Result.Id, 'hekksdka;ldka;lkd;lakd;lka;ldka;kd;l');
         dispatch({
           type: CreateOrder,
           payload: 'success',
-          payloadorderresult: json.Result,
+          payloadorderresult: json.Result.Id,
         });
       } else {
         dispatch({
           type: CreateOrder,
           payload:
             'We are unable to place your order at the moment. Please try again later.',
-          payloadorderresult: [],
+          payloadorderresult: 0,
         });
       }
     };

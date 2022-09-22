@@ -12,7 +12,7 @@ import {
   StatusBar,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {OrderStatus, Myorders} from '../Actions/actions';
+import {OrderStatus, Myorders, storeorderid} from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
@@ -174,8 +174,10 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                       onPress={() => {
                         // navigation.navigate('PreparingFood');
                         // dispatch(OrderStatus(AuthToken, item.Id));
+                        dispatch(storeorderid(item.Id))
                         navigation.navigate('PreparingFood');
-                        dispatch(OrderStatus(AuthToken, item.Id));
+                       
+                        // dispatch(OrderStatus(AuthToken, item.Id));
                       }}
                       // onModelPopUp={changestatus}
                       details={item}

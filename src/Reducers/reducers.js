@@ -59,7 +59,8 @@ import {
   Contactusdetails,
   contactusemail,
   DeliveryStatus,
-  internetCHECK
+  internetCHECK,
+  OrderID
 } from '../Actions/actions';
 
 const initialState = {
@@ -125,14 +126,22 @@ const initialState = {
   detailsContactmessage: '',
   orderstatus: '',
   orderResult: [],
-  orderdetails: [],
+  orderdetails: 0,
   internetconnectionstate: true,
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
   
+  
 
+    case OrderID:
+      return {
+        ...state,
+        orderdetails: action.payload,
+    
+     
+      };
     case internetCHECK:
       return {
         ...state,
