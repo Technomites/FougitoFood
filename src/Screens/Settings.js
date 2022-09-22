@@ -124,8 +124,9 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
     // },
   ]);
   const dispatch = useDispatch();
-  const {Lang, notificationStatus, AuthToken, ProfileName, ProfileImage} =
+  const {Lang, notificationStatus, AuthToken, ProfileName, ProfileImage, internetconnectionstate} =
     useSelector(state => state.userReducer);
+
   const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
@@ -189,7 +190,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
                   // marginBottom: scalableheight.one,
                 }}
                 source={
-                  AuthToken != ''
+                  AuthToken != '' && internetconnectionstate == true 
                     ? {
                         uri: ProfileImage,
                       }
@@ -211,7 +212,8 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
                 color: '#29262A',
                 fontFamily: 'Inter-SemiBold',
               }}>
-              {AuthToken != '' ? ProfileName : 'Guest User'}
+                  
+              {AuthToken != '' && internetconnectionstate == true ? ProfileName : 'Guest User'}
             </Text>
             <TouchableOpacity
               onPress={() =>
@@ -225,7 +227,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
                   color: '#E14E4E',
                   fontFamily: 'Inter-SemiBold',
                 }}>
-                {AuthToken !== '' ? 'ACCOUNT SETTINGS' : 'Login/Signup'}
+                {   AuthToken !== '' && internetconnectionstate == true ? 'ACCOUNT SETTINGS' : 'Login/Signup'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -248,7 +250,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
             }}>
             {setting.map(item => {
               if (
-                AuthToken !== '' ||
+                AuthToken !== '' && internetconnectionstate == true ||
                 (item.title !== 'Account Info' &&
                   item.title !== 'Change Password' &&
                   item.title !== 'Logout')

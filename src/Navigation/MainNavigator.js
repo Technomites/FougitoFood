@@ -117,6 +117,7 @@ const CustomDrawerStyle = ({navigation}) => {
     LoginCustomer,
     ProfileName,
     ProfileImage,
+    internetconnectionstate
   } = useSelector(state => state.userReducer);
 
   let options = [
@@ -293,7 +294,7 @@ const CustomDrawerStyle = ({navigation}) => {
                 borderColor: 'black',
               }}
               source={
-                AuthToken != ''
+                AuthToken != '' && internetconnectionstate == true
                   ? {
                       uri: ProfileImage,
                     }
@@ -301,7 +302,7 @@ const CustomDrawerStyle = ({navigation}) => {
               }
             />
             <View style={{alignItems: 'center', marginTop: scalableheight.one}}>
-              {AuthToken != '' ? (
+              {AuthToken != '' && internetconnectionstate == true ? (
                 <TouchableOpacity
                   activeOpacity={0.9}
                   style={{alignItems: 'center'}}
@@ -452,7 +453,7 @@ const CustomDrawerStyle = ({navigation}) => {
           {/* {renderIf(ProfileInfo != '')(
             <> */}
 
-          {AuthToken != '' ? (
+          {AuthToken != ''  && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
@@ -495,7 +496,7 @@ const CustomDrawerStyle = ({navigation}) => {
             </TouchableOpacity>
           ) : null}
 
-          {AuthToken != '' ? (
+          {AuthToken != ''  && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
@@ -537,7 +538,7 @@ const CustomDrawerStyle = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           ) : null}
-          {AuthToken != '' ? (
+          {AuthToken != ''  && internetconnectionstate == true? (
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
@@ -580,7 +581,7 @@ const CustomDrawerStyle = ({navigation}) => {
             </TouchableOpacity>
           ) : null}
 
-          {AuthToken != '' ? (
+          {AuthToken != ''  && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {

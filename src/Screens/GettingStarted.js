@@ -26,8 +26,9 @@ import * as Animatable from 'react-native-animatable';
 import MYButton from '../Shared/Components/MYButton';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
+
 // import Modal from "react-native-modal";
-import {storetoken, storetokenrefresh, refreshmytoken, isconnected} from '../Actions/actions';
+import {storetoken, storetokenrefresh, refreshmytoken, isconnected, storecartdata, storerestrauntid, storecartprice} from '../Actions/actions';
 
 const GettingStarted = props => {
   const {refreshtokendata, AuthToken} = useSelector(state => state.userReducer);
@@ -73,6 +74,7 @@ const GettingStarted = props => {
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
+   
       if (state.isConnected == true && state.isInternetReachable == true) {
        dispatch(isconnected(true))
       } else {
@@ -83,6 +85,15 @@ const GettingStarted = props => {
   }, []);
 
   async function gettoken() {
+    const cartdatastore = await AsyncStorage.getItem('cartdata');
+    // console.log("my cart data" + JSON.stringify(JSON.parse(cartdatastore)))
+    dispatch(storecartdata(JSON.parse(cartdatastore)));
+    const currentRestrauntidstore = await AsyncStorage.getItem('currentRestrauntid');
+    dispatch(storerestrauntid(JSON.parse(currentRestrauntidstore)));
+    const pricestore = await AsyncStorage.getItem('price');
+    dispatch(storecartprice(JSON.parse(pricestore)));
+    
+    
     const value = await AsyncStorage.getItem('AccessToken');
      const refresh = await AsyncStorage.getItem('TokenInfo');
     console.log(value);
@@ -90,7 +101,7 @@ const GettingStarted = props => {
       dispatch(storetoken(JSON.parse(value)));
 
       if (refresh != undefined && refresh != '') {
-
+   
         dispatch(storetokenrefresh(JSON.parse(refresh)));
       }
     }

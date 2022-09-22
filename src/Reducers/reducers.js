@@ -1,3 +1,6 @@
+
+    import AsyncStorage from '@react-native-community/async-storage';
+ 
 import {
   set_IconFocus,
   GET_allRestraunts,
@@ -365,30 +368,35 @@ function userReducer(state = initialState, action) {
       };
 
     case CARTDataDelete:
+       AsyncStorage.setItem('cartdata', JSON.stringify(action.payload));
       return {
         ...state,
         cartdata: action.payload,
       };
 
     case CleanCartData:
+       AsyncStorage.setItem('cartdata', JSON.stringify(action.payload));
       return {
         ...state,
         cartdata: action.payload,
       };
 
     case Store_RestrauntId:
+      AsyncStorage.setItem('currentRestrauntid', JSON.stringify(action.payload));
       return {
         ...state,
         currentRestrauntid: action.payload,
       };
 
     case Cart_CURRENTPRICE:
+      AsyncStorage.setItem('price', JSON.stringify(action.payload));
       return {
         ...state,
         price: action.payload,
       };
 
     case STORE_Cart_DATA:
+       AsyncStorage.setItem('cartdata', JSON.stringify([...state.cartdata, ...action.payload]));
       return {
         ...state,
         cartdata: [...state.cartdata, ...action.payload],
