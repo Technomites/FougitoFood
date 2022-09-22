@@ -238,6 +238,7 @@ const PreparingFood = ({navigation, route}, props) => {
                     style={{
                       height: scalableheight.onepointfive,
                       width: scalableheight.six,
+                      
                       borderRadius: fontSize.borderradiusmedium,
                       alignItems: 'center',
                       justifyContent: 'center',
