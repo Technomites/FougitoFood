@@ -625,7 +625,7 @@ export const ReVerification = number => {
   try {
     return async dispatch => {
       var myHeaders = new Headers();
-      console.log(number, 'numbernumbernumbernumbernumber number');
+
       var requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -905,13 +905,6 @@ export const ChangedNewPassword = (
   confirmpassword,
 ) => {
   try {
-    console.log(
-      AuthToken,
-      oldpassword,
-      newpassword,
-      confirmpassword,
-      'hdajkdhajksdhjk',
-    );
     return async dispatch => {
       var myHeaders = new Headers();
       myHeaders.append('Authorization', `Bearer ${AuthToken}`);
@@ -1291,7 +1284,6 @@ export const MyCoupons = AuthToken => {
 };
 
 export const Myorders = AuthToken => {
-  console.log(AuthToken, 'MyCouponsMyCouponsMyCouponsMyCoupons');
   try {
     return async dispatch => {
       var myHeaders = new Headers();
@@ -1376,10 +1368,8 @@ export const Contactus = () => {
 export const GetProfile = AuthToken => {
   try {
     return async dispatch => {
-      console.log(AuthToken, 'Action Action Action Actioon');
       var myHeaders = new Headers();
       myHeaders.append('Authorization', `Bearer ${AuthToken}`);
-      console.log(AuthToken, 'AuthToken AuthToken AuthToken AuthToken');
       var requestOptions = {
         method: 'GET',
         headers: myHeaders,
@@ -1427,7 +1417,6 @@ export const logout = AuthToken => {
       );
 
       json = await result.json();
-      console.log(json, 'Logout Logout Logout');
 
       if (json?.Status == 'Success') {
         dispatch({
@@ -1435,8 +1424,6 @@ export const logout = AuthToken => {
           LogoutSatusPayload: json?.Status,
           LogoutPayload: json?.Message,
         });
-        console.log(json?.Message, 'Logout Logout');
-        console.log('Logout Success');
       } else if (json?.Status == 'Error') {
         dispatch({
           type: Logoutuser,
