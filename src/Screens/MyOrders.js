@@ -10,21 +10,9 @@ import {
   Modal,
   ScrollView,
   StatusBar,
-  RefreshControl
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {
-  readallnotifications,
-  addReadNotifications,
-  clearNotificationCount,
-  clearNotifications,
-  getAllNotifications,
-  GetNotifications,
-  notificationCountHandle,
-  readNotification,
-  seticonfocus,
-  Myorders,
-} from '../Actions/actions';
+import {OrderStatus, Myorders} from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
@@ -48,8 +36,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const {AuthToken, MyorderList, MyorderListpast} = useSelector(
     state => state.userReducer,
   );
-  
-  const [refreshing, setrefreshing] = useState(false)
+
   const [Order, SetOrders] = useState([
     {
       OrderNo: 'ORD-85814',
@@ -74,24 +61,11 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
   const [ordertype, Setordertype] = useState('On Going');
-  // useEffect(() => {
-  //   dispatch(Myorders(AuthToken));
-  // }, [AuthToken]);
-
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
- 
-      dispatch(Myorders(AuthToken));
-    });
-
-    //  Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, [navigation]);
-
-  function onRefresh(){
+  useEffect(() => {
     dispatch(Myorders(AuthToken));
-  }
+  }, [AuthToken]);
 
+  console.log(MyorderList, 'ababbababbab');
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -136,7 +110,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
               style={{
                 color:
                   ordertype == 'On Going' ? '#F55050' : 'rgba(17, 17, 17, 0.2)',
-                  fontFamily: 'Inter-SemiBold',
+                fontFamily: 'Inter-SemiBold',
                 fontSize: fontSize.fifteen,
               }}>
               On Going
@@ -164,7 +138,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                   ordertype == 'Past Orders'
                     ? '#F55050'
                     : 'rgba(17, 17, 17, 0.2)',
-                    fontFamily: 'Inter-SemiBold',
+                fontFamily: 'Inter-SemiBold',
                 fontSize: fontSize.fifteen,
               }}>
               Past Orders
@@ -188,25 +162,21 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
             <View
               style={{width: '100%', paddingHorizontal: scalableheight.two}}>
               <FlatList
-                 refreshControl={
-                  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
                 data={ordertype == 'On Going' ? MyorderList : MyorderListpast}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   flexGrow: 1,
                   paddingBottom: scalableheight.fourteen,
-                  
                 }}
                 renderItem={({item, i}) => {
                   return (
                     <ActiveRequestTile
-                      onPress={() =>
-                        navigation.navigate('OrderDetails', {
-                          orderId: item.OrderNo,
-                          completedetails: Order,
-                        })
-                      }
+                      onPress={() => {
+                        // navigation.navigate('PreparingFood');
+                        // dispatch(OrderStatus(AuthToken, item.Id));
+                        navigation.navigate('PreparingFood');
+                        dispatch(OrderStatus(AuthToken, item.Id));
+                      }}
                       // onModelPopUp={changestatus}
                       details={item}
                       // restaurantLogo={item?.Ongoing.RestaurantLogo}

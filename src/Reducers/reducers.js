@@ -58,6 +58,7 @@ import {
   OrderList,
   Contactusdetails,
   contactusemail,
+  DeliveryStatus,
   internetCHECK
 } from '../Actions/actions';
 
@@ -107,14 +108,14 @@ const initialState = {
   refreshtokendata: null,
   imageupdationstatus: '',
   completeorderdetails: [],
-  addedtofavourite: "",
-  origin: "",
+  addedtofavourite: '',
+  origin: '',
   discount: 0,
   couponresponseresult: undefined,
-   UserCoupons: [],
-   storedlat: 0,
-   storedlong: 0,
-   favouriterestuarants: [],
+  UserCoupons: [],
+  storedlat: 0,
+  storedlong: 0,
+  favouriterestuarants: [],
   NewchangedpasswordStatus: '',
   NewchangedpasswordMessage: '',
   MyorderList: [],
@@ -122,6 +123,9 @@ const initialState = {
   detailsContact: [],
   detailsContactstatus: '',
   detailsContactmessage: '',
+  orderstatus: '',
+  orderResult: [],
+  orderdetails: [],
   internetconnectionstate: true,
 };
 
@@ -141,22 +145,24 @@ function userReducer(state = initialState, action) {
       return {
         ...state,
         favouriterestuarants: action.payload,
-    
-     
+      };
+    case DeliveryStatus:
+      return {
+        ...state,
+        orderstatus: action.DeliveryStatusCondition,
+        orderResult: action.DeliveryStatusSuccess,
       };
     case STORELATLONG:
       return {
         ...state,
         storedlat: action.payloadlat,
         storedlong: action.payloadlong,
-     
       };
     case PriceAFTERDISCOUNT:
       return {
         ...state,
         price: action.payloadprice,
         discount: action.payloaddiscount,
-     
       };
 
     case ClearFavourite:
@@ -236,6 +242,7 @@ function userReducer(state = initialState, action) {
       return {
         ...state,
         orderplacementstatus: action.payload,
+        orderdetails: action.payloadorderresult,
       };
 
     case GetALLUSERADDRESSES:
@@ -276,7 +283,7 @@ function userReducer(state = initialState, action) {
         ...state,
         couponresponsestatus: action.payload,
         couponresponsemessage: action.payload,
-        couponresponseresult: undefined
+        couponresponseresult: undefined,
       };
 
     case VerifyCoupon:
@@ -284,9 +291,7 @@ function userReducer(state = initialState, action) {
         ...state,
         couponresponsestatus: action.payloadstatus,
         couponresponsemessage: action.payloadmessage,
-        couponresponseresult: action.payloadResult
-       
-    
+        couponresponseresult: action.payloadResult,
       };
 
     case PICKUPState:

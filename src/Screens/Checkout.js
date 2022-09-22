@@ -27,7 +27,7 @@ import {
   clearorderplacementstatus,
   cleancart,
   CartDetails,
-  updatepriceafterdiscount
+  updatepriceafterdiscount,
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -127,7 +127,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     orderplacementstatus,
     origin,
     couponresponseresult,
-    discount
+    discount,
+    orderdetails,
   } = useSelector(state => state.userReducer);
   const refMap = useRef(null);
   const toast = useRef();
@@ -328,37 +329,38 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         zIndex: 2,
       });
 
-      if(couponresponseresult != undefined){
+      if (couponresponseresult != undefined) {
+        console.log(
+          'this is the result' + JSON.stringify(couponresponseresult),
+        );
+        let newprice = price;
+        let discountedamount = 0;
+        if (couponresponseresult.Type == 'Percentage') {
+          if (newprice > couponresponseresult.MaxAmount) {
+            let subtractibleamount =
+              (couponresponseresult.MaxAmount / 100) *
+              couponresponseresult.Value;
+            discountedamount = subtractibleamount;
+            newprice = newprice - subtractibleamount;
+          } else {
+            let subtractibleamount =
+              (newprice / 100) * couponresponseresult.Value;
+            discountedamount = subtractibleamount;
+            newprice = newprice - subtractibleamount;
+          }
+        } else {
+          discountedamount = couponresponseresult.Value;
+          newprice = newprice - couponresponseresult.Value;
+        }
 
-console.log("this is the result" +  JSON.stringify(couponresponseresult))
-let newprice = price
-let discountedamount = 0
-if(couponresponseresult.Type == "Percentage"){
-if(newprice > couponresponseresult.MaxAmount){
-  let subtractibleamount = couponresponseresult.MaxAmount/100 * couponresponseresult.Value
-  discountedamount = subtractibleamount
-  newprice = newprice - subtractibleamount
-}else{
-  let subtractibleamount = newprice/100 * couponresponseresult.Value
-  discountedamount = subtractibleamount
-  newprice = newprice - subtractibleamount
-}
-}else{
-  discountedamount = couponresponseresult.Value
-  newprice = newprice - couponresponseresult.Value
-}
-
-
-console.log("this is the discountedamount price" +  JSON.stringify(discountedamount))
-console.log("this is the new price" +  JSON.stringify(newprice))
-dispatch(updatepriceafterdiscount(newprice, discountedamount))
+        console.log(
+          'this is the discountedamount price' +
+            JSON.stringify(discountedamount),
+        );
+        console.log('this is the new price' + JSON.stringify(newprice));
+        dispatch(updatepriceafterdiscount(newprice, discountedamount));
       }
       dispatch(clearcouponresponse());
-
-
-   
-
-
     }
   }, [couponresponsestatus, couponresponsemessage]);
 
@@ -376,7 +378,6 @@ dispatch(updatepriceafterdiscount(newprice, discountedamount))
         });
         dispatch(CartDetails(cartdata));
         dispatch(cleancart());
-
         navigation.replace('PreparingFood');
       } else {
         toast.current.show(orderplacementstatus, {
@@ -550,10 +551,10 @@ dispatch(updatepriceafterdiscount(newprice, discountedamount))
         orderItems: order,
       };
 
-      console.log("all data-----" + JSON.stringify(data))
+      console.log('all data-----' + JSON.stringify(data));
 
       setloader2(true);
-      dispatch(createorder(data));
+      dispatch(createorder(AuthToken, data));
     }
   }
   function selectpaymentmethod(index) {
@@ -628,7 +629,13 @@ dispatch(updatepriceafterdiscount(newprice, discountedamount))
     //  }
     else {
       setcouponloader(true);
-      dispatch(verifycoupon(couponvalue, AuthToken != '' ? ProfileContact : phonenumber, origin));
+      dispatch(
+        verifycoupon(
+          couponvalue,
+          AuthToken != '' ? ProfileContact : phonenumber,
+          origin,
+        ),
+      );
     }
   }
   /////////guest/////
@@ -1242,7 +1249,6 @@ dispatch(updatepriceafterdiscount(newprice, discountedamount))
                 : restrauntdetails?.DeliveryCharges * restrauntdistance
             }
           />
-        
 
           <View style={styleSheet.Container}>
             <View style={{flexDirection: 'row'}}>
@@ -1258,19 +1264,17 @@ dispatch(updatepriceafterdiscount(newprice, discountedamount))
             </Text>
           </View>
 
-          {discount > 0 &&
- 
-      
+          {discount > 0 && (
             <View style={styleSheet.Container}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={styleSheet.Text3}>Coupon Discount</Text>
-             
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styleSheet.Text3}>Coupon Discount</Text>
+              </View>
+              <Text style={{...styleSheet.Text3, color: '#E14E4E'}}>
+                AED{' -'}
+                {discount}
+              </Text>
             </View>
-            <Text style={{...styleSheet.Text3, color: '#E14E4E'}}>
-           AED{' -'}{discount}
-            </Text>
-          </View>
-       }
+          )}
           <View style={{height: scalableheight.one}} />
 
           {couponvisible == false ? (
@@ -1285,7 +1289,6 @@ dispatch(updatepriceafterdiscount(newprice, discountedamount))
           ) : (
             <View style={{marginVertical: scalableheight.two}}>
               <TextInput
-              
                 editable={couponloader || discount > 0 ? false : true}
                 value={couponvalue}
                 onChangeText={text => setcouponvalue(text)}
@@ -1318,7 +1321,7 @@ dispatch(updatepriceafterdiscount(newprice, discountedamount))
                 </View>
               ) : (
                 <TouchableOpacity
-                disabled ={discount > 0 ? true : false}
+                  disabled={discount > 0 ? true : false}
                   onPress={() => {
                     applycoupon();
                   }}
@@ -1329,12 +1332,16 @@ dispatch(updatepriceafterdiscount(newprice, discountedamount))
                     alignItems: 'center',
                     borderRadius: fontSize.borderradiusmedium,
 
-                    backgroundColor: discount > 0 ? "transparent" : '#E14E4E',
+                    backgroundColor: discount > 0 ? 'transparent' : '#E14E4E',
                     position: 'absolute',
                     right: 2,
                   }}>
-                  <Text style={{...styleSheet.Text4, color:discount > 0 ? "#E14E4E" : 'white'}}>
-                  {discount > 0 ? "Applied" : "Apply"}  
+                  <Text
+                    style={{
+                      ...styleSheet.Text4,
+                      color: discount > 0 ? '#E14E4E' : 'white',
+                    }}>
+                    {discount > 0 ? 'Applied' : 'Apply'}
                   </Text>
                 </TouchableOpacity>
               )}

@@ -16,7 +16,7 @@ import {
   Platform,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {changelang, seticonfocus} from '../Actions/actions';
+import {OrderStatus} from '../Actions/actions';
 import * as Animatable from 'react-native-animatable';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -41,16 +41,22 @@ import {
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 import Navigation from '../Shared/Components/Navigation';
 
-const PreparingFood = ({navigation}) => {
+const PreparingFood = ({navigation, route}, props) => {
   const [togglelist, settogglelist] = useState(false);
+  const [screenname, setscreenname] = useState('');
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(false);
-  const {completeorderdetails, Selectedcurrentaddress, restrauntdetails} =
-    useSelector(state => state.userReducer);
+  const {AuthToken, orderdetails, orderResult} = useSelector(
+    state => state.userReducer,
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     StatusBar.setHidden(false);
   }, []);
+
+  useEffect(() => {
+    dispatch(OrderStatus(AuthToken, orderdetails?.OrderDetails[0]?.OrderId));
+  }, [AuthToken, orderdetails?.OrderDetails[0]?.OrderId]);
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -90,7 +96,7 @@ const PreparingFood = ({navigation}) => {
                   fontSize: fontSize.fifteen,
                   fontFamily: 'Inter-Bold',
                 }}>
-                30 Min
+                {orderResult[0]?.EstimatedDeliveryMinutes} Min
               </Text>
 
               <Image
@@ -276,7 +282,7 @@ const PreparingFood = ({navigation}) => {
                         fontSize: fontSize.ten,
                         color: '#F55050',
                       }}>
-                      #000
+                      {orderResult[0]?.OrderNo}
                     </Text>
                   </View>
                 </View>
@@ -306,7 +312,7 @@ const PreparingFood = ({navigation}) => {
                       width: '50%',
                     }}>
                     {/* abc */}
-                    {restrauntdetails.Address}
+                    {orderResult[0]?.RestaurantBranch.Address}
                   </Text>
                 </View>
                 <View
@@ -335,7 +341,8 @@ const PreparingFood = ({navigation}) => {
                       color: '#000',
                       width: '50%',
                     }}>
-                    {Selectedcurrentaddress[0].address}
+                    {orderResult[0]?.Address}
+                    {/* {Selectedcurrentaddress[0].address} */}
                   </Text>
                 </View>
                 <View
@@ -360,7 +367,7 @@ const PreparingFood = ({navigation}) => {
                       fontSize: fontSize.ten,
                       color: '#000',
                     }}>
-                    ABC Restaurant
+                    AED {orderResult[0]?.TotalAmount}
                   </Text>
                 </View>
               </View>
@@ -432,7 +439,7 @@ const PreparingFood = ({navigation}) => {
               flexGrow: 1,
               paddingBottom: scalableheight.three,
             }}
-            data={completeorderdetails}
+            data={orderResult[0]?.OrderDetails}
             renderItem={(data, index) => {
               return (
                 <View
@@ -441,10 +448,10 @@ const PreparingFood = ({navigation}) => {
                     marginVertical: scalableheight.pointfive,
                   }}>
                   <ItemDetailsStatus
-                    qty={data?.item?.Qty}
-                    title={data?.item?.Name}
-                    index={data?.index}
-                    price={data?.item?.completeitemorderprice}
+                    qty={data.item.Quantity}
+                    title={data.item.MenuItems.Name}
+                    price={data.item.TotalPrice}
+                    image={data.item.MenuItems.Image}
                     onPress={() => {
                       setitemmodaldata(data?.item);
                       setitemmodalVisible(true);
