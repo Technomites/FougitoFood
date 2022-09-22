@@ -42,7 +42,7 @@ import {
   storerestrauntbasicdata,
   GetProfile,
   storelatlong,
-  isconnected
+  isconnected,
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -170,8 +170,13 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       serving: 'Pasta',
     },
   ]);
-  const {newNotificationCount, allrestraunts, currentRestrauntid, AuthToken, internetconnectionstate} =
-    useSelector(state => state.userReducer);
+  const {
+    newNotificationCount,
+    allrestraunts,
+    currentRestrauntid,
+    AuthToken,
+    internetconnectionstate,
+  } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
   const [pin, setpin] = useState([
@@ -534,11 +539,10 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
       NetInfo.fetch().then(state => {
-   
         if (state.isConnected == true && state.isInternetReachable == true) {
-         dispatch(isconnected(true))
+          dispatch(isconnected(true));
         } else {
-          dispatch(isconnected(false))
+          dispatch(isconnected(false));
         }
       });
     });
@@ -570,64 +574,60 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     listeners();
   }, []);
   useEffect(() => {
-    if(internetconnectionstate == true){
+    if (internetconnectionstate == true) {
       dispatch(GetProfile(AuthToken));
     }
-  
   }, [AuthToken, internetconnectionstate]);
   useEffect(() => {
-    if(internetconnectionstate ==true){
-    if (lat != null && long != null) {
-      setloader(true)
-      dispatch(getallrestraunts(lat, long));
-      dispatch(storelatlong(lat, long))
-    }}
+    if (internetconnectionstate == true) {
+      if (lat != null && long != null) {
+        setloader(true);
+        dispatch(getallrestraunts(lat, long));
+        dispatch(storelatlong(lat, long));
+      }
+    }
   }, [lat, long]);
   useEffect(() => {
-    if(internetconnectionstate == true){
-    Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
-    Geolocation.getCurrentPosition(info => {
-      setlat(info?.coords?.latitude);
-      setlong(info?.coords?.longitude);
-      setinlat(info?.coords?.latitude);
-      setinlong(info?.coords?.longitude);
-      // console.log('hello' + info?.coords?.latitude);
-      // console.log('hello' + info?.coords?.longitude);
-    });
-    console.log('hello');
-    getLocation();
-  }
+    if (internetconnectionstate == true) {
+      Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
+      Geolocation.getCurrentPosition(info => {
+        setlat(info?.coords?.latitude);
+        setlong(info?.coords?.longitude);
+        setinlat(info?.coords?.latitude);
+        setinlong(info?.coords?.longitude);
+        // console.log('hello' + info?.coords?.latitude);
+        // console.log('hello' + info?.coords?.longitude);
+      });
+      console.log('hello');
+      getLocation();
+    }
   }, [internetconnectionstate]);
 
   useEffect(() => {
-   setloader(false)
+    setloader(false);
   }, [allrestraunts]);
-  
+
   useEffect(() => {
-    if(internetconnectionstate == true){
-    if (lat != null && long != null) {
-      Geocoder.from(lat, long)
-        .then(json => {
-          var addressComponent = json.results[0].formatted_address;
-          console.log(addressComponent);
-          setpinlocation(addressComponent);
-        })
-        .catch(error => console.warn(error));
+    if (internetconnectionstate == true) {
+      if (lat != null && long != null) {
+        Geocoder.from(lat, long)
+          .then(json => {
+            var addressComponent = json.results[0].formatted_address;
+            console.log(addressComponent);
+            setpinlocation(addressComponent);
+          })
+          .catch(error => console.warn(error));
+      }
     }
-  }
   }, [lat, long]);
-
-
-
-
 
   function onRefresh() {
     NetInfo.fetch().then(state => {
       if (state.isConnected == true && state.isInternetReachable == true) {
         dispatch(GetProfile(AuthToken));
-        getnewlocation()
+        getnewlocation();
       } else {
-             toast.current.show('No Internet Connection', {
+        toast.current.show('No Internet Connection', {
           type: 'normal',
           placement: 'bottom',
           duration: 4000,
@@ -639,7 +639,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     });
   }
 
-  function updatecoordinates(lat, long){
+  function updatecoordinates(lat, long) {
     setlat(lat);
     setlong(long);
     setinlat(lat);
@@ -647,77 +647,70 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     getLocation();
   }
 
+  const rendernearby = ({item, index}) =>
+    item?.NameAsPerTradeLicense.includes(search.trim()) ? (
+      <View
+        style={{
+          width: Dimensions.get('window').width / 1.2,
+          marginRight: scalableheight.two,
+        }}>
+        <Favourites
+          image={item?.Logo}
+          title={item?.NameAsPerTradeLicense}
+          reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
+          time={item?.OpeningTime + ' - ' + item?.ClosingTime}
+          onPress={() => {
+            dispatch(storerestrauntbasicdata(item));
+            dispatch(storedistance(item?.Distance));
+            if (currentRestrauntid != item?.Id) {
+              dispatch(storecartprice(0));
+              dispatch(cleancart());
+              dispatch(storerestrauntid(item?.Id));
+            }
 
+            dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
 
-
-  const rendernearby = ({item, index}) => (
-    item?.NameAsPerTradeLicense.includes(search.trim()) ? 
-    <View
-      style={{
-        width: Dimensions.get('window').width / 1.2,
-        marginRight: scalableheight.two,
-      }}>
-      <Favourites
-        image={item?.Logo}
-        title={item?.NameAsPerTradeLicense}
-        reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
-        time={item?.OpeningTime + ' - ' + item?.ClosingTime}
-        onPress={() => {
-          dispatch(storerestrauntbasicdata(item));
-          dispatch(storedistance(item?.Distance));
-          if (currentRestrauntid != item?.Id) {
-            dispatch(storecartprice(0));
-            dispatch(cleancart());
-            dispatch(storerestrauntid(item?.Id));
-          }
-         
-          dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
-
-          navigation.navigate('Restaurantpage', {
-            latitude: lat,
-            longitude: long,
-          });
-        }}
-        distance={item?.Distance + ' AWAY'}
-      />
-    </View>
-: null
-    //  onPress={()=>{activaterestaurant(index, 24.8475, 67.0330 )}}
-  );
-  const renderItem = ({item, index}) => (
-    
-    item?.NameAsPerTradeLicense.includes(search.trim()) ? 
-    <Animatable.View
-      animation="zoomInLeft"
-      easing="ease"
-      iterationCount={1}
-      style={{}}>
-      <Favourites
-        image={item?.Logo}
-        title={item?.NameAsPerTradeLicense}
-        reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
-        time={item?.OpeningTime + ' - ' + item?.ClosingTime}
-        onPress={() => {
-          dispatch(storerestrauntbasicdata(item));
-          dispatch(storedistance(item?.Distance));
-          if (currentRestrauntid != item?.Id) {
-            dispatch(storecartprice(0));
-            dispatch(cleancart());
-            dispatch(storerestrauntid(item?.Id));
-          }
-          dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
-          navigation.navigate('Restaurantpage', {
-            latitude: lat,
-            longitude: long,
-          });
-        }}
-        distance={item?.Distance + ' AWAY'}
-      />
-    </Animatable.View>
-    : null
-  );
+            navigation.navigate('Restaurantpage', {
+              latitude: lat,
+              longitude: long,
+            });
+          }}
+          distance={item?.Distance + ' AWAY'}
+        />
+      </View>
+    ) : null;
+  //  onPress={()=>{activaterestaurant(index, 24.8475, 67.0330 )}}
+  const renderItem = ({item, index}) =>
+    item?.NameAsPerTradeLicense.includes(search.trim()) ? (
+      <Animatable.View
+        animation="zoomInLeft"
+        easing="ease"
+        iterationCount={1}
+        style={{}}>
+        <Favourites
+          image={item?.Logo}
+          title={item?.NameAsPerTradeLicense}
+          reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
+          time={item?.OpeningTime + ' - ' + item?.ClosingTime}
+          onPress={() => {
+            dispatch(storerestrauntbasicdata(item));
+            dispatch(storedistance(item?.Distance));
+            if (currentRestrauntid != item?.Id) {
+              dispatch(storecartprice(0));
+              dispatch(cleancart());
+              dispatch(storerestrauntid(item?.Id));
+            }
+            dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
+            navigation.navigate('Restaurantpage', {
+              latitude: lat,
+              longitude: long,
+            });
+          }}
+          distance={item?.Distance + ' AWAY'}
+        />
+      </Animatable.View>
+    ) : null;
   function activaterestaurant(key, lat, long) {
-    
     setinlat(lat);
     setinlong(long);
     console.log('selected');
@@ -734,7 +727,6 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       animated: true,
     });
   }
-
 
   function getnewlocation() {
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
@@ -1062,7 +1054,10 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                   zIndex: 200,
                   elevation: 200,
                 }}>
-                {allrestraunts?.length > 0 &&   allrestraunts?.find(data => data?.NameAsPerTradeLicense.includes(search.trim())) != undefined   ? (
+                {allrestraunts?.length > 0 &&
+                allrestraunts?.find(data =>
+                  data?.NameAsPerTradeLicense.includes(search.trim()),
+                ) != undefined ? (
                   <Animatable.View
                     animation="bounceInRight"
                     easing="ease"
@@ -1070,7 +1065,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                     style={{
                       paddingTop: scalableheight.one,
                       paddingBottom: scalableheight.pointfive,
-                      
+
                       justifyContent: 'center',
                     }}>
                     <Text
@@ -1082,23 +1077,27 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                       RESTAURANTS NEARBY
                     </Text>
                   </Animatable.View>
-                ) : 
-                <View
-                style={{
-                  width: Dimensions.get('window').width / 1.05,
-                  height: scalableheight.twenty,
-                  justifyContent:"center",
-                  alignItems:"center",
-               
-             
-                }}>
-           <Text style={{ fontFamily: 'Inter-Bold',
-            fontSize: fontSize.sixteen,
-            color: '#29262A', opacity:0.4}}>No Restraunts NearBy</Text>
-              </View>}
-            
+                ) : (
+                  <View
+                    style={{
+                      width: Dimensions.get('window').width / 1.05,
+                      height: scalableheight.twenty,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter-Bold',
+                        fontSize: fontSize.sixteen,
+                        color: '#29262A',
+                        opacity: 0.4,
+                      }}>
+                      No Restraunts NearBy
+                    </Text>
+                  </View>
+                )}
+
                 <FlatList
-                 
                   key={'1'}
                   showsHorizontalScrollIndicator={false}
                   ref={ref}
@@ -1113,134 +1112,146 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               </View>
             </>
           )}
-          {showmap != true && (
-            internetconnectionstate == false ?
-            <>
-          
-            <Text style={{   
-              width:"100%",
-              fontFamily: 'Inter-SemiBold',
-              fontSize: fontSize.twenty,
-              color:'#E14E4E',
-              position:"absolute",
-              textAlign:"center",
-           top: scalableheight.fourty,
-
-             }}>Tap to Retry</Text>
-               <TouchableOpacity
-               onPress={() => {
-                NetInfo.fetch().then(state => {
-                  if (state.isConnected == true && state.isInternetReachable == true) {
-                   dispatch(isconnected(true))
-                   console.log("true")
-                  } else {
-                    dispatch(isconnected(false))
-                    console.log("false" + state.isConnected)
+          {
+            showmap != true &&
+              (internetconnectionstate == false ? (
+                <>
+                  {/* <Text
+                    style={{
+                      width: '100%',
+                      fontFamily: 'Inter-SemiBold',
+                      fontSize: fontSize.twenty,
+                      color: '#E14E4E',
+                      position: 'absolute',
+                      textAlign: 'center',
+                      top: scalableheight.fourty,
+                    }}>
+                    Tap to Retry
+                  </Text> */}
+                  <TouchableOpacity
+                    activeOpacity={0.9}
+                    onPress={() => {
+                      NetInfo.fetch().then(state => {
+                        if (
+                          state.isConnected == true &&
+                          state.isInternetReachable == true
+                        ) {
+                          dispatch(isconnected(true));
+                          console.log('true');
+                        } else {
+                          dispatch(isconnected(false));
+                          console.log('false' + state.isConnected);
+                        }
+                      });
+                    }}>
+                    <Image
+                      style={{
+                        // marginVertical: scalableheight.five,
+                        height: '100%',
+                        width: '100%',
+                        textAlign: 'center',
+                      }}
+                      resizeMode={'contain'}
+                      source={require('../Resources/images/Skeleton/Retry.gif')}
+                    />
+                  </TouchableOpacity>
+                </>
+              ) : loader == true ? (
+                <Image
+                  style={{
+                    height: '100%',
+                    width: '100%',
+                    textAlign: 'center',
+                  }}
+                  resizeMode={'cover'}
+                  source={require('../Resources/images/Skeleton/4.gif')}
+                />
+              ) : allrestraunts?.length > 0 &&
+                allrestraunts?.find(data =>
+                  data?.NameAsPerTradeLicense.includes(search.trim()),
+                ) != undefined ? (
+                <FlatList
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
                   }
-                });
-                
-                
-               }}
-               >
-          <Image
-         style={{
-           height:  "100%",
-           width: "100%",
-           textAlign: 'center',
-       
-         }}
-         resizeMode={'contain'}
-         source={require('../Resources/images/Skeleton/1.gif')}
-       />
-       </TouchableOpacity>
-            </>
-            :
-         loader == true ?
-         <Image
-         style={{
-           height:  "100%",
-           width: "100%",
-           textAlign: 'center',
-         }}
-         resizeMode={'cover'}
-         source={require('../Resources/images/Skeleton/4.gif')}
-       /> :(
-            allrestraunts?.length > 0 && allrestraunts?.find(data => data?.NameAsPerTradeLicense.includes(search.trim())) != undefined   ? (
-            <FlatList
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-              key="1"
-              data={allrestraunts}
-              renderItem={renderItem}
-              // ListFooterComponent={renderFooter}
-              // onEndReached={loadMoreNotifications}
+                  key="1"
+                  data={allrestraunts}
+                  renderItem={renderItem}
+                  // ListFooterComponent={renderFooter}
+                  // onEndReached={loadMoreNotifications}
+                  style={{
+                    width: '100%',
+                    paddingHorizontal: scalableheight.one,
+                    marginTop: scalableheight.two,
+                  }}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{flexGrow: 1, paddingBottom: 5}}
+                  // contentContainerStyle={{paddingBottom: 54}}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              ) : (
+                <View
+                  style={{
+                    width: Dimensions.get('window').width / 1.05,
+                    height: Dimensions.get('window').height / 1.5,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter-Bold',
+                      fontSize: fontSize.sixteen,
+                      color: '#29262A',
+                      opacity: 0.4,
+                    }}>
+                    No Restraunts NearBy
+                  </Text>
+                </View>
+              ))
+            // {/* </View> */}
+          }
+        </View>
+        {internetconnectionstate == true && (
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => {
+              setshowmap(!showmap);
+            }}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: fontSize.circle,
+              position: 'absolute',
+              right: scalableheight.two,
+              bottom: scalableheight.five,
+              height: scalableheight.seven,
+              width: scalableheight.seven,
+            }}>
+            <Image
+              resizeMode="stretch"
               style={{
                 width: '100%',
-                paddingHorizontal: scalableheight.one,
-                marginTop: scalableheight.two,
+                height: '100%',
+                zIndex: 201,
+                elevation: 201,
               }}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{flexGrow: 1, paddingBottom: 5}}
-              // contentContainerStyle={{paddingBottom: 54}}
-              keyExtractor={(item, index) => index.toString()}
-            />) : 
-            <View
-            style={{
-              width: Dimensions.get('window').width / 1.05,
-              height:Dimensions.get('window').height / 1.5,
-              justifyContent:"center",
-              alignItems:"center",
-           
-         
-            }}>
-       <Text style={{ fontFamily: 'Inter-Bold',
-        fontSize: fontSize.sixteen,
-        color: '#29262A', opacity:0.4}}>No Restraunts NearBy</Text>
-          </View>)
-            // {/* </View> */}
-          )}
-        </View>
-        {internetconnectionstate == true &&
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={() => {
-            setshowmap(!showmap);
-          }}
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: fontSize.circle,
-            position: 'absolute',
-            right: scalableheight.two,
-            bottom: scalableheight.five,
-            height: scalableheight.seven,
-            width: scalableheight.seven,
-          }}>
-          <Image
-            resizeMode="stretch"
-            style={{
-              width: '100%',
-              height: '100%',
-              zIndex: 201,
-              elevation: 201,
-            }}
-            source={
-              showmap
-                ? require('../Resources/images/listicon.png')
-                : require('../Resources/images/mapicon.png')
-            }
-          />
-        </TouchableOpacity>
-}
+              source={
+                showmap
+                  ? require('../Resources/images/listicon.png')
+                  : require('../Resources/images/mapicon.png')
+              }
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <Custombottomsheet
         state={showbottomsheet}
         locationpin={pinlocation}
-        
-        onPressnewCoordinates={(a,b) => {
-       
-          updatecoordinates(a,b)
+        onPressnewCoordinates={(a, b) => {
+          updatecoordinates(a, b);
         }}
         onPress={() => {
           setshowbottomsheet(false);
@@ -1248,11 +1259,10 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         onPressnewlocation={() => {
           getnewlocation();
         }}
-        
         latitude={lat}
         longitude={long}
       />
-        <Toast
+      <Toast
         ref={toast}
         style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
       />
