@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -10,15 +10,16 @@ import {
   Modal,
   ScrollView,
   StatusBar,
+  RefreshControl
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {OrderStatus, Myorders, storeorderid} from '../Actions/actions';
+import {OrderStatus, Myorders, storeorderid, isconnected} from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
 import Favourites from '../Shared/Components/Favourites';
 import ActiveRequestTile from '../Shared/Components/ActiveRequestTile';
-
+import Toast from 'react-native-toast-notifications';
 import BottomTab from '../Shared/Components/BottomTab';
 import Animated from 'react-native-reanimated';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -33,6 +34,7 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
   const {AuthToken, MyorderList, MyorderListpast} = useSelector(
     state => state.userReducer,
   );
@@ -61,11 +63,32 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
     },
   ]);
   const [ordertype, Setordertype] = useState('On Going');
+  const toast = useRef();
   useEffect(() => {
     dispatch(Myorders(AuthToken));
   }, [AuthToken]);
 
-  console.log(MyorderList, 'ababbababbab');
+
+  function onRefresh() {
+    NetInfo.fetch().then(state => {
+      if (state.isConnected == true && state.isInternetReachable == true) {
+        dispatch(Myorders(AuthToken));
+        dispatch(isconnected(true))
+      } else {
+        dispatch(isconnected(false))
+        navigation.replace('Drawernavigator');
+          toast.current.show('No Internet Connection', {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+          zIndex: 2,
+        });
+      }
+    });
+  }
+
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -162,6 +185,9 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
             <View
               style={{width: '100%', paddingHorizontal: scalableheight.two}}>
               <FlatList
+                refreshControl={
+                  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
                 data={ordertype == 'On Going' ? MyorderList : MyorderListpast}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
@@ -191,6 +217,10 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
           )}
         </View>
       </View>
+      <Toast
+        ref={toast}
+        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
+      />
     </Animated.View>
   );
 };

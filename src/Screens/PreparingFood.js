@@ -44,6 +44,7 @@ import Navigation from '../Shared/Components/Navigation';
 
 const PreparingFood = ({navigation, route}, props) => {
   const [togglelist, settogglelist] = useState(false);
+
   const [indexstate, setindexstate] = useState(0);
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(false);
@@ -240,8 +241,7 @@ const PreparingFood = ({navigation, route}, props) => {
                     style={{
                       height: scalableheight.onepointfive,
                       width: scalableheight.six,
-                      borderWidth: 1,
-                      borderColor: 'blue',
+                      
                       borderRadius: fontSize.borderradiusmedium,
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -618,6 +618,7 @@ const PreparingFood = ({navigation, route}, props) => {
         </View>
         {togglelist == true ? (
           <FlatList
+     
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps={true}
             style={{
