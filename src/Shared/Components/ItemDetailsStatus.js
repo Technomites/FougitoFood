@@ -106,7 +106,7 @@ export default function ItemDetailsStatus(props) {
               height: scalableheight.six,
               borderRadius: fontSize.eleven,
             }}
-            //source={{uri: props.image}}
+            source={{uri: props.image}}
           />
         </View>
         <View style={{marginLeft: scalableheight.one, width: '70%'}}>
