@@ -238,10 +238,7 @@ const PreparingFood = ({navigation, route}, props) => {
                     style={{
                       height: scalableheight.onepointfive,
                       width: scalableheight.six,
-<<<<<<< Updated upstream
                       
-=======
->>>>>>> Stashed changes
                       borderRadius: fontSize.borderradiusmedium,
                       alignItems: 'center',
                       justifyContent: 'center',
