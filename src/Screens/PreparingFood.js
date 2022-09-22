@@ -63,8 +63,6 @@ const PreparingFood = ({navigation, route}, props) => {
     return unsubscribe;
   }, [navigation, orderdetails]);
 
- 
-
   useEffect(() => {
     if (orderResult.length > 0) {
       if (
@@ -236,12 +234,14 @@ const PreparingFood = ({navigation, route}, props) => {
                   bottom: scalableheight.three,
                 }}>
                 {indexstate == 1 ? (
-                  // <View style={{borderWidth:1,borderColor:'blue'}}>
                   <Image
                     style={{
                       height: scalableheight.onepointfive,
                       width: scalableheight.six,
+<<<<<<< Updated upstream
                       
+=======
+>>>>>>> Stashed changes
                       borderRadius: fontSize.borderradiusmedium,
                       alignItems: 'center',
                       justifyContent: 'center',
