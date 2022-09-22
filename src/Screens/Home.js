@@ -533,7 +533,14 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     const unsubscribe = navigation.addListener('focus', () => {
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
+      NetInfo.fetch().then(state => {
    
+        if (state.isConnected == true && state.isInternetReachable == true) {
+         dispatch(isconnected(true))
+        } else {
+          dispatch(isconnected(false))
+        }
+      });
     });
     return unsubscribe;
   }, [navigation]);
@@ -1194,6 +1201,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             // {/* </View> */}
           )}
         </View>
+        {internetconnectionstate == true &&
         <TouchableOpacity
           activeOpacity={0.6}
           onPress={() => {
@@ -1224,6 +1232,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             }
           />
         </TouchableOpacity>
+}
       </View>
       <Custombottomsheet
         state={showbottomsheet}

@@ -57,7 +57,7 @@ const PreparingFood = ({navigation, route}, props) => {
   useEffect(() => {
     dispatch(OrderStatus(AuthToken, orderdetails));
   }, [orderdetails]);
-console.log('abcbbc')
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <FocusAwareStatusBar

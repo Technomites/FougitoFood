@@ -277,6 +277,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       setcartvisible(true)
     }else{
       setcartvisible(false)
+   
     }
    console.log("all cart data length" + cartdata.length + "data " + JSON.stringify(cartdata))
   }, [cartdata]);
@@ -367,10 +368,6 @@ found = 1
 
   useEffect(() => {
     StatusBar.setHidden(false);
-    // StatusBar.setBackgroundColor('transparent');
-    // StatusBar.setBarStyle('light-content');
-
-    // listeners()
   }, []);
 
 

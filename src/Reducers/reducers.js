@@ -390,9 +390,13 @@ function userReducer(state = initialState, action) {
 
     case CleanCartData:
        AsyncStorage.setItem('cartdata', JSON.stringify(action.payload));
+       AsyncStorage.setItem('price', JSON.stringify(0));
+       AsyncStorage.setItem('currentRestrauntid', JSON.stringify(0));
       return {
         ...state,
         cartdata: action.payload,
+        price: 0,
+        currentRestrauntid: 0
       };
 
     case Store_RestrauntId:

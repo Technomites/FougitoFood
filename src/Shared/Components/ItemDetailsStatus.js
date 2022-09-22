@@ -65,8 +65,8 @@ export default function ItemDetailsStatus(props) {
         }}>
         <View
           style={{
-            height: scalableheight.six,
-            width: scalableheight.six,
+            height: scalableheight.five,
+            width: scalableheight.five,
             backgroundColor: '#F9F9F9',
             borderRadius: fontSize.borderradiusmedium,
             alignItems: 'center',
@@ -83,22 +83,7 @@ export default function ItemDetailsStatus(props) {
           </Text>
         </View>
       </View>
-
-      <TouchableOpacity
-        // activeOpacity={1}
-        // onPress={props.onPress}
-        disabled={true}
-        style={{
-          overflow: 'hidden',
-          height: '100%',
-          width: '55%',
-          justifyContent: 'center',
-          padding: scalableheight.one,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-        }}>
-        <View style={{width: '25%'}}>
+      <View style={{}}>
           <Image
             resizeMode="stretch"
             style={{
@@ -106,9 +91,24 @@ export default function ItemDetailsStatus(props) {
               height: scalableheight.six,
               borderRadius: fontSize.eleven,
             }}
-            //source={{uri: props.image}}
+            source={{uri: props.image}}
           />
         </View>
+      <TouchableOpacity
+        // activeOpacity={1}
+        // onPress={props.onPress}
+        disabled={true}
+        style={{
+          overflow: 'hidden',
+          height: '100%',
+          width: '40%',
+          justifyContent: 'center',
+          padding: scalableheight.one,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+        }}>
+     
         <View style={{marginLeft: scalableheight.one, width: '70%'}}>
           <Text
             numberOfLines={1}
