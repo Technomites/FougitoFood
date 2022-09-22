@@ -615,7 +615,6 @@ const PreparingFood = ({navigation, route}, props) => {
         </View>
         {togglelist == true ? (
           <FlatList
-     
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps={true}
             style={{

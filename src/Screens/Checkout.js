@@ -35,6 +35,7 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Validations from '../Validations/Validations';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -773,7 +774,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
             width: '100%',
             paddingHorizontal: scalableheight.one,
             marginTop: scalableheight.two,
-            marginBottom:scalableheight.one
+            marginBottom: scalableheight.one,
           }}
           contentContainerStyle={{flexGrow: 1, paddingBottom: 5}}>
           <View
@@ -1172,132 +1173,135 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                 />
               </View>
               <View style={{height: scalableheight.three}} />
-          <Bll label={'Sub Total'} price={price} />
-          <Bll
-            label={'Delivery Charges'}
-            price={
-              restrauntdetails?.RestaurantDeliveryType == 'Fixed'
-                ? restrauntdetails?.DeliveryCharges
-                : restrauntdetails?.DeliveryCharges * restrauntdistance
-            }
-          />
-
-          <View style={styleSheet.Container}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={styleSheet.Text3}>Vat Amount </Text>
-              <Text
-                style={styleSheet.Text4}>{`(${restrauntdetails?.VAT}%)`}</Text>
-            </View>
-            <Text style={styleSheet.Text3}>
-              AED{' '}
-              {((restrauntdetails?.DeliveryCharges + price) *
-                restrauntdetails?.VAT) /
-                100}
-            </Text>
-          </View>
-
-          {discount > 0 && (
-            <View style={styleSheet.Container}>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={styleSheet.Text3}>Coupon Discount</Text>
-              </View>
-              <Text style={{...styleSheet.Text3, color: '#E14E4E'}}>
-                AED{' -'}
-                {discount}
-              </Text>
-            </View>
-          )}
-          <View style={{height: scalableheight.one}} />
-
-          {couponvisible == false ? (
-            <TouchableOpacity
-              onPress={() => {
-                setcouponvisible(true);
-              }}>
-              <Text style={{...styleSheet.Text4, textAlign: 'right'}}>
-                I HAVE A COUPON
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <View style={{marginVertical: scalableheight.two}}>
-              <TextInput
-                editable={couponloader || discount > 0 ? false : true}
-                value={couponvalue}
-                onChangeText={text => setcouponvalue(text)}
-                placeholder={'Enter Code'}
-                style={{
-                  ...styleSheet.shadow,
-                  width: '99%',
-                  height: scalableheight.six,
-                  fontSize: fontSize.fifteen,
-                  backgroundColor: '#F9F9F9',
-                  alignSelf: 'center',
-                  borderRadius: fontSize.borderradiusmedium,
-                  paddingHorizontal: '5%',
-                  marginHorizontal: '0.4%',
-                }}
+              <Bll label={'Sub Total'} price={price} />
+              <Bll
+                label={'Delivery Charges'}
+                price={
+                  restrauntdetails?.RestaurantDeliveryType == 'Fixed'
+                    ? restrauntdetails?.DeliveryCharges
+                    : restrauntdetails?.DeliveryCharges * restrauntdistance
+                }
               />
-              {couponloader ? (
-                <View
-                  style={{
-                    height: scalableheight.six,
-                    width: scalableheight.ten,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: fontSize.borderradiusmedium,
 
-                    position: 'absolute',
-                    right: 2,
-                  }}>
-                  <ActivityIndicator size={'small'} color="#E14E4E" />
-                </View>
-              ) : (
-                <TouchableOpacity
-                  disabled={discount > 0 ? true : false}
-                  onPress={() => {
-                    applycoupon();
-                  }}
-                  style={{
-                    height: scalableheight.six,
-                    width: scalableheight.ten,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: fontSize.borderradiusmedium,
-
-                    backgroundColor: discount > 0 ? 'transparent' : '#E14E4E',
-                    position: 'absolute',
-                    right: 2,
-                  }}>
+              <View style={styleSheet.Container}>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={styleSheet.Text3}>Vat Amount </Text>
                   <Text
-                    style={{
-                      ...styleSheet.Text4,
-                      color: discount > 0 ? '#E14E4E' : 'white',
-                    }}>
-                    {discount > 0 ? 'Applied' : 'Apply'}
+                    style={
+                      styleSheet.Text4
+                    }>{`(${restrauntdetails?.VAT}%)`}</Text>
+                </View>
+                <Text style={styleSheet.Text3}>
+                  AED{' '}
+                  {((restrauntdetails?.DeliveryCharges + price) *
+                    restrauntdetails?.VAT) /
+                    100}
+                </Text>
+              </View>
+
+              {discount > 0 && (
+                <View style={styleSheet.Container}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={styleSheet.Text3}>Coupon Discount</Text>
+                  </View>
+                  <Text style={{...styleSheet.Text3, color: '#E14E4E'}}>
+                    AED{' -'}
+                    {discount}
+                  </Text>
+                </View>
+              )}
+              <View style={{height: scalableheight.one}} />
+
+              {couponvisible == false ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    setcouponvisible(true);
+                  }}>
+                  <Text style={{...styleSheet.Text4, textAlign: 'right'}}>
+                    I HAVE A COUPON
                   </Text>
                 </TouchableOpacity>
+              ) : (
+                <View style={{marginVertical: scalableheight.two}}>
+                  <TextInput
+                    editable={couponloader || discount > 0 ? false : true}
+                    value={couponvalue}
+                    onChangeText={text => setcouponvalue(text)}
+                    placeholder={'Enter Code'}
+                    style={{
+                      ...styleSheet.shadow,
+                      width: '99%',
+                      height: scalableheight.six,
+                      fontSize: fontSize.fifteen,
+                      backgroundColor: '#F9F9F9',
+                      alignSelf: 'center',
+                      borderRadius: fontSize.borderradiusmedium,
+                      paddingHorizontal: '5%',
+                      marginHorizontal: '0.4%',
+                    }}
+                  />
+                  {couponloader ? (
+                    <View
+                      style={{
+                        height: scalableheight.six,
+                        width: scalableheight.ten,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: fontSize.borderradiusmedium,
+
+                        position: 'absolute',
+                        right: 2,
+                      }}>
+                      <ActivityIndicator size={'small'} color="#E14E4E" />
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      disabled={discount > 0 ? true : false}
+                      onPress={() => {
+                        applycoupon();
+                      }}
+                      style={{
+                        height: scalableheight.six,
+                        width: scalableheight.ten,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: fontSize.borderradiusmedium,
+
+                        backgroundColor:
+                          discount > 0 ? 'transparent' : '#E14E4E',
+                        position: 'absolute',
+                        right: 2,
+                      }}>
+                      <Text
+                        style={{
+                          ...styleSheet.Text4,
+                          color: discount > 0 ? '#E14E4E' : 'white',
+                        }}>
+                        {discount > 0 ? 'Applied' : 'Apply'}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
               )}
-            </View>
-          )}
-          <View
-            style={{
-              borderTopColor: 'rgba(211,211,211, 0.5)',
-              borderTopWidth: scalableheight.borderTopWidth,
-              marginVertical: scalableheight.one,
-            }}></View>
-          <Bll
-            label={'Total'}
-            price={
-              price +
-              (restrauntdetails?.RestaurantDeliveryType == 'Fixed'
-                ? restrauntdetails?.DeliveryCharges
-                : restrauntdetails?.DeliveryCharges * restrauntdistance) +
-              ((restrauntdetails?.DeliveryCharges + price) *
-                restrauntdetails?.VAT) /
-                100
-            }
-          />
-          <View style={{height: scalableheight.two}} />
+              <View
+                style={{
+                  borderTopColor: 'rgba(211,211,211, 0.5)',
+                  borderTopWidth: scalableheight.borderTopWidth,
+                  marginVertical: scalableheight.one,
+                }}></View>
+              <Bll
+                label={'Total'}
+                price={
+                  price +
+                  (restrauntdetails?.RestaurantDeliveryType == 'Fixed'
+                    ? restrauntdetails?.DeliveryCharges
+                    : restrauntdetails?.DeliveryCharges * restrauntdistance) +
+                  ((restrauntdetails?.DeliveryCharges + price) *
+                    restrauntdetails?.VAT) /
+                    100
+                }
+              />
+              <View style={{height: scalableheight.two}} />
             </>
           )}
 
@@ -1366,136 +1370,140 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
               )}
             </>
           )}
-{AuthToken != '' && (
-  <>
-          <View style={{height: scalableheight.three}} />
-          <Bll label={'Sub Total'} price={price} />
-          <Bll
-            label={'Delivery Charges'}
-            price={
-              restrauntdetails?.RestaurantDeliveryType == 'Fixed'
-                ? restrauntdetails?.DeliveryCharges
-                : restrauntdetails?.DeliveryCharges * restrauntdistance
-            }
-          />
-
-          <View style={styleSheet.Container}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={styleSheet.Text3}>Vat Amount </Text>
-              <Text
-                style={styleSheet.Text4}>{`(${restrauntdetails?.VAT}%)`}</Text>
-            </View>
-            <Text style={styleSheet.Text3}>
-              AED{' '}
-              {((restrauntdetails?.DeliveryCharges + price) *
-                restrauntdetails?.VAT) /
-                100}
-            </Text>
-          </View>
-
-          {discount > 0 && (
-            <View style={styleSheet.Container}>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={styleSheet.Text3}>Coupon Discount</Text>
-              </View>
-              <Text style={{...styleSheet.Text3, color: '#E14E4E'}}>
-                AED{' -'}
-                {discount}
-              </Text>
-            </View>
-          )}
-          <View style={{height: scalableheight.one}} />
-
-          {couponvisible == false ? (
-            <TouchableOpacity
-              onPress={() => {
-                setcouponvisible(true);
-              }}>
-              <Text style={{...styleSheet.Text4, textAlign: 'right'}}>
-                I HAVE A COUPON
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <View style={{marginVertical: scalableheight.two}}>
-              <TextInput
-                editable={couponloader || discount > 0 ? false : true}
-                value={couponvalue}
-                onChangeText={text => setcouponvalue(text)}
-                placeholder={'Enter Code'}
-                style={{
-                  ...styleSheet.shadow,
-                  width: '99%',
-                  height: scalableheight.six,
-                  fontSize: fontSize.fifteen,
-                  backgroundColor: '#F9F9F9',
-                  alignSelf: 'center',
-                  borderRadius: fontSize.borderradiusmedium,
-                  paddingHorizontal: '5%',
-                  marginHorizontal: '0.4%',
-                }}
+          {AuthToken != '' && (
+            <>
+              <View style={{height: scalableheight.three}} />
+              <Bll label={'Sub Total'} price={price} />
+              <Bll
+                label={'Delivery Charges'}
+                price={
+                  restrauntdetails?.RestaurantDeliveryType == 'Fixed'
+                    ? restrauntdetails?.DeliveryCharges
+                    : restrauntdetails?.DeliveryCharges * restrauntdistance
+                }
               />
-              {couponloader ? (
-                <View
-                  style={{
-                    height: scalableheight.six,
-                    width: scalableheight.ten,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: fontSize.borderradiusmedium,
 
-                    position: 'absolute',
-                    right: 2,
-                  }}>
-                  <ActivityIndicator size={'small'} color="#E14E4E" />
-                </View>
-              ) : (
-                <TouchableOpacity
-                  disabled={discount > 0 ? true : false}
-                  onPress={() => {
-                    applycoupon();
-                  }}
-                  style={{
-                    height: scalableheight.six,
-                    width: scalableheight.ten,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: fontSize.borderradiusmedium,
-
-                    backgroundColor: discount > 0 ? 'transparent' : '#E14E4E',
-                    position: 'absolute',
-                    right: 2,
-                  }}>
+              <View style={styleSheet.Container}>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={styleSheet.Text3}>Vat Amount </Text>
                   <Text
-                    style={{
-                      ...styleSheet.Text4,
-                      color: discount > 0 ? '#E14E4E' : 'white',
-                    }}>
-                    {discount > 0 ? 'Applied' : 'Apply'}
+                    style={
+                      styleSheet.Text4
+                    }>{`(${restrauntdetails?.VAT}%)`}</Text>
+                </View>
+                <Text style={styleSheet.Text3}>
+                  AED{' '}
+                  {((restrauntdetails?.DeliveryCharges + price) *
+                    restrauntdetails?.VAT) /
+                    100}
+                </Text>
+              </View>
+
+              {discount > 0 && (
+                <View style={styleSheet.Container}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={styleSheet.Text3}>Coupon Discount</Text>
+                  </View>
+                  <Text style={{...styleSheet.Text3, color: '#E14E4E'}}>
+                    AED{' -'}
+                    {discount}
+                  </Text>
+                </View>
+              )}
+              <View style={{height: scalableheight.one}} />
+
+              {couponvisible == false ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    setcouponvisible(true);
+                  }}>
+                  <Text style={{...styleSheet.Text4, textAlign: 'right'}}>
+                    I HAVE A COUPON
                   </Text>
                 </TouchableOpacity>
+              ) : (
+                <View style={{marginVertical: scalableheight.two}}>
+                  <TextInput
+                    editable={couponloader || discount > 0 ? false : true}
+                    value={couponvalue}
+                    onChangeText={text => setcouponvalue(text)}
+                    placeholder={'Enter Code'}
+                    style={{
+                      ...styleSheet.shadow,
+                      width: '99%',
+                      height: scalableheight.six,
+                      fontSize: fontSize.fifteen,
+                      backgroundColor: '#F9F9F9',
+                      alignSelf: 'center',
+                      borderRadius: fontSize.borderradiusmedium,
+                      paddingHorizontal: '5%',
+                      marginHorizontal: '0.4%',
+                    }}
+                  />
+                  {couponloader ? (
+                    <View
+                      style={{
+                        height: scalableheight.six,
+                        width: scalableheight.ten,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: fontSize.borderradiusmedium,
+
+                        position: 'absolute',
+                        right: 2,
+                      }}>
+                      <ActivityIndicator size={'small'} color="#E14E4E" />
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      disabled={discount > 0 ? true : false}
+                      onPress={() => {
+                        applycoupon();
+                      }}
+                      style={{
+                        height: scalableheight.six,
+                        width: scalableheight.ten,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: fontSize.borderradiusmedium,
+
+                        backgroundColor:
+                          discount > 0 ? 'transparent' : '#E14E4E',
+                        position: 'absolute',
+                        right: 2,
+                      }}>
+                      <Text
+                        style={{
+                          ...styleSheet.Text4,
+                          color: discount > 0 ? '#E14E4E' : 'white',
+                        }}>
+                        {discount > 0 ? 'Applied' : 'Apply'}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
               )}
-            </View>
+              <View
+                style={{
+                  borderTopColor: 'rgba(211,211,211, 0.5)',
+                  borderTopWidth: scalableheight.borderTopWidth,
+                  marginVertical: scalableheight.one,
+                }}></View>
+              <Bll
+                label={'Total'}
+                price={
+                  price +
+                  (restrauntdetails?.RestaurantDeliveryType == 'Fixed'
+                    ? restrauntdetails?.DeliveryCharges
+                    : restrauntdetails?.DeliveryCharges * restrauntdistance) +
+                  ((restrauntdetails?.DeliveryCharges + price) *
+                    restrauntdetails?.VAT) /
+                    100
+                }
+              />
+              <View style={{height: scalableheight.two}} />
+            </>
           )}
-          <View
-            style={{
-              borderTopColor: 'rgba(211,211,211, 0.5)',
-              borderTopWidth: scalableheight.borderTopWidth,
-              marginVertical: scalableheight.one,
-            }}></View>
-          <Bll
-            label={'Total'}
-            price={
-              price +
-              (restrauntdetails?.RestaurantDeliveryType == 'Fixed'
-                ? restrauntdetails?.DeliveryCharges
-                : restrauntdetails?.DeliveryCharges * restrauntdistance) +
-              ((restrauntdetails?.DeliveryCharges + price) *
-                restrauntdetails?.VAT) /
-                100
-            }
-          />
-          <View style={{height: scalableheight.two}} />
-          </>)}
           {AuthToken == '' &&
             (loader1 == true ? (
               <View
@@ -1511,8 +1519,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                 }}>
                 <ActivityIndicator size={'large'} color="#E14E4E" />
               </View>
-            ) : (
-              cartdata.length > 0 ?
+            ) : cartdata.length > 0 ? (
               <MYButton
                 title={'Proceed as Guest'}
                 onPress={() => {
@@ -1521,21 +1528,26 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                 color="black"
                 textcolor="white"
               />
-              :
-              <View style={{
-                width: '100%',
-  
-                justifyContent: 'center',
-                alignItems: 'center',
-            
-                height: scalableheight.seven,
-            
-                borderRadius: fontSize.borderradiusmedium,
-            
-                marginTop: '1%',
-                marginBottom: '1%',
-              }}>
-              <Text style={{...styleSheet.Text4}}>Cart cannot be empty</Text>
+            ) : (
+              <View
+                style={{
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  height: scalableheight.seven,
+                  borderRadius: fontSize.borderradiusmedium,
+                  marginTop: '1%',
+                  marginBottom: '1%',
+                }}>
+                <View style={{marginRight: scalableheight.one}}>
+                  <MaterialCommunityIcons
+                    name="cart-remove"
+                    color={'#F55050'}
+                    size={scalableheight.three}
+                  />
+                </View>
+                <Text style={{...styleSheet.Text4}}>Cart cannot be empty</Text>
               </View>
             ))}
 
@@ -1553,8 +1565,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
               }}>
               <ActivityIndicator size={'large'} color="#E14E4E" />
             </View>
-          ) : (
-            cartdata.length > 0 ?
+          ) : cartdata.length > 0 ? (
             <MYButton
               title={AuthToken != '' ? 'Place Order' : 'Login to Place Order'}
               onPress={() => {
@@ -1566,21 +1577,26 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
               color="#E14E4E"
               textcolor="white"
             />
-            : 
-            <View style={{
-              width: '100%',
-
-              justifyContent: 'center',
-              alignItems: 'center',
-          
-              height: scalableheight.seven,
-          
-              borderRadius: fontSize.borderradiusmedium,
-          
-              marginTop: '1%',
-              marginBottom: '1%',
-            }}>
-            <Text style={{...styleSheet.Text4}}>Cart cannot be empty</Text>
+          ) : (
+            <View
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: scalableheight.seven,
+                flexDirection: 'row',
+                borderRadius: fontSize.borderradiusmedium,
+                marginTop: '1%',
+                marginBottom: '1%',
+              }}>
+              <View style={{marginRight: scalableheight.one}}>
+                <MaterialCommunityIcons
+                  name="cart-remove"
+                  color={'#F55050'}
+                  size={scalableheight.three}
+                />
+              </View>
+              <Text style={{...styleSheet.Text4}}>Cart cannot be empty</Text>
             </View>
           )}
         </View>
