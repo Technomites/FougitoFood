@@ -72,14 +72,12 @@ const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
 
-
-
-export const isconnected = (state) => {
+export const isconnected = state => {
   try {
     return async dispatch => {
       dispatch({
         type: internetCHECK,
-        payload: state
+        payload: state,
       });
     };
   } catch (error) {
@@ -444,10 +442,7 @@ export const createorder = (AuthToken, data) => {
       console.log('postserviceratings' + JSON.stringify(json));
 
       if (json.Status === 'Success') {
-        console.log(
-          json.Result,
-         
-        );
+        console.log(json.Result, 'hekksdka;ldka;lkd;lakd;lka;ldka;kd;l');
         dispatch({
           type: CreateOrder,
           payload: 'success',

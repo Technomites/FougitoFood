@@ -174,9 +174,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                       onPress={() => {
                         // navigation.navigate('PreparingFood');
                         // dispatch(OrderStatus(AuthToken, item.Id));
-                        navigation.navigate('PreparingFood', {
-                          screen: 'MyOrders',
-                        });
+                        navigation.navigate('PreparingFood');
                         dispatch(OrderStatus(AuthToken, item.Id));
                       }}
                       // onModelPopUp={changestatus}

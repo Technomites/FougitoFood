@@ -128,6 +128,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     origin,
     couponresponseresult,
     discount,
+    orderdetails,
   } = useSelector(state => state.userReducer);
   const refMap = useRef(null);
   const toast = useRef();
@@ -377,9 +378,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         });
         dispatch(CartDetails(cartdata));
         dispatch(cleancart());
-        navigation.replace('PreparingFood', {
-          screen: 'Checkout',
-        });
+        navigation.replace('PreparingFood');
       } else {
         toast.current.show(orderplacementstatus, {
           type: 'normal',
