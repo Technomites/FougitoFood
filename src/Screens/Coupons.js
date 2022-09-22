@@ -123,11 +123,18 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
       />
       <View
         style={{
-          flex: 1,
+     flex:1,
+   
 
           alignSelf: 'center',
           marginTop: getStatusBarHeight(),
+    
         }}>
+          <View style={{
+              height: "99%",
+              width:"100%",
+              overflow:"hidden",
+          }}>
         {/* <StatusBar
           barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         /> */}
@@ -186,7 +193,7 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
           />
         )}
       </View>
-
+</View>
       <Toast
           ref={toast}
           style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}

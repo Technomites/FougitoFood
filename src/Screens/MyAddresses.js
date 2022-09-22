@@ -110,7 +110,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   }, []);
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white', overflow:"hidden"}}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"

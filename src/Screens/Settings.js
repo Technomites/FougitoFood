@@ -236,8 +236,9 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
           style={{
             height: '100%',
            flex:1,
-            borderTopLeftRadius: fontSize.fourtyeight,
-            borderTopRightRadius: fontSize.fourtyeight,
+            borderRadius: fontSize.fourtyeight,
+        
+
             borderWidth: scalableheight.borderTopWidth,
             borderColor: 'rgba(211,211,211, 0.6)',
           }}>

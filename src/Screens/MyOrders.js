@@ -101,10 +101,12 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
       /> */}
       <View
         style={{
-          height: '100%',
+          height: '99%',
           width: '100%',
           alignSelf: 'center',
           paddingTop: getStatusBarHeight(),
+            overflow: "hidden",
+      
         }}>
         <PlainHeader title={'My Orders'} />
         <View
@@ -168,7 +170,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{marginVertical: scalableheight.one}}>
+        <View style={{marginVertical: scalableheight.one, }}>
           {MyorderList.length == 0 || MyorderListpast.length == 0 ? (
             <View
               style={{
@@ -193,6 +195,10 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                 contentContainerStyle={{
                   flexGrow: 1,
                   paddingBottom: scalableheight.fourteen,
+               
+                }}
+                style={{
+               
                 }}
                 renderItem={({item, i}) => {
                   return (

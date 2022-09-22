@@ -480,8 +480,17 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
           {loader == true ? (
             <View
               style={{
+                width: '100%',
+
                 justifyContent: 'center',
                 alignItems: 'center',
+            
+                height: scalableheight.seven,
+            
+                borderRadius: fontSize.borderradiusmedium,
+            
+                marginTop: '1%',
+                marginBottom: '1%',
               }}>
               <ActivityIndicator size={'large'} color="#E14E4E" />
             </View>

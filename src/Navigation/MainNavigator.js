@@ -328,6 +328,7 @@ const CustomDrawerStyle = ({navigation}) => {
                   </View>
                 </TouchableOpacity>
               ) : (
+                internetconnectionstate == true &&
                 <TouchableOpacity
                   style={{alignItems: 'center'}}
                   activeOpacity={0.9}
@@ -697,7 +698,7 @@ const CustomDrawerStyle = ({navigation}) => {
             })}
           </View>
 
-          {renderIf(AuthToken != '')(
+          {renderIf(AuthToken != '' && internetconnectionstate == true )(
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
