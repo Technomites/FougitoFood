@@ -1,6 +1,5 @@
+import AsyncStorage from '@react-native-community/async-storage';
 
-    import AsyncStorage from '@react-native-community/async-storage';
- 
 import {
   set_IconFocus,
   GET_allRestraunts,
@@ -60,7 +59,7 @@ import {
   contactusemail,
   DeliveryStatus,
   internetCHECK,
-  OrderID
+  OrderID,
 } from '../Actions/actions';
 
 const initialState = {
@@ -132,22 +131,15 @@ const initialState = {
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
-  
-  
-
     case OrderID:
       return {
         ...state,
         orderdetails: action.payload,
-    
-     
       };
     case internetCHECK:
       return {
         ...state,
         internetconnectionstate: action.payload,
-    
-     
       };
 
     case MYFAVOURITES:
@@ -382,7 +374,7 @@ function userReducer(state = initialState, action) {
       };
 
     case CARTDataDelete:
-       AsyncStorage.setItem('cartdata', JSON.stringify(action.payload));
+      AsyncStorage.setItem('cartdata', JSON.stringify(action.payload));
       return {
         ...state,
         cartdata: action.payload,
@@ -400,7 +392,10 @@ function userReducer(state = initialState, action) {
       };
 
     case Store_RestrauntId:
-      AsyncStorage.setItem('currentRestrauntid', JSON.stringify(action.payload));
+      AsyncStorage.setItem(
+        'currentRestrauntid',
+        JSON.stringify(action.payload),
+      );
       return {
         ...state,
         currentRestrauntid: action.payload,
@@ -414,7 +409,10 @@ function userReducer(state = initialState, action) {
       };
 
     case STORE_Cart_DATA:
-       AsyncStorage.setItem('cartdata', JSON.stringify([...state.cartdata, ...action.payload]));
+      AsyncStorage.setItem(
+        'cartdata',
+        JSON.stringify([...state.cartdata, ...action.payload]),
+      );
       return {
         ...state,
         cartdata: [...state.cartdata, ...action.payload],

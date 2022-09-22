@@ -32,6 +32,7 @@ import Whyuscomponent from '../Shared/Components/Whyuscomponent';
 import BottomTab from '../Shared/Components/BottomTab';
 import Infobar from '../Shared/Components/Infobar';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
+import {totalSize, height} from 'react-native-dimension';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {
   createDrawerNavigator,
@@ -43,7 +44,7 @@ import Navigation from '../Shared/Components/Navigation';
 
 const PreparingFood = ({navigation, route}, props) => {
   const [togglelist, settogglelist] = useState(false);
-  const [screenname, setscreenname] = useState('');
+  const [indexstate, setindexstate] = useState(0);
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(false);
   const {AuthToken, orderdetails, orderResult} = useSelector(
@@ -54,9 +55,36 @@ const PreparingFood = ({navigation, route}, props) => {
     StatusBar.setHidden(false);
   }, []);
 
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (orderdetails != 0) dispatch(OrderStatus(AuthToken, orderdetails));
+    });
+    return unsubscribe;
+  }, [navigation, orderdetails]);
+
+ 
+
   useEffect(() => {
-    dispatch(OrderStatus(AuthToken, orderdetails));
-  }, [orderdetails]);
+    if (orderResult.length > 0) {
+      if (
+        orderResult[0]?.Status == 'Pending' ||
+        orderResult[0]?.Status == 'Confirmed'
+      ) {
+        setindexstate(1);
+      } else if (orderResult[0]?.Status == 'Preparing') {
+        setindexstate(2);
+      } else if (orderResult[0]?.Status == 'FoodReady') {
+        setindexstate(3);
+      } else if (orderResult[0]?.Status == 'OnTheWay') {
+        setindexstate(4);
+      } else if (
+        orderResult[0]?.Status == 'Delivered' ||
+        orderResult[0]?.Status == 'Cancelled'
+      ) {
+        setindexstate(5);
+      }
+    }
+  }, [orderResult]);
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -82,33 +110,121 @@ const PreparingFood = ({navigation, route}, props) => {
                 alignItems: 'center',
                 marginTop: scalableheight.five,
               }}>
-              <Text
-                style={{
-                  fontSize: fontSize.fourteen,
-                  fontFamily: 'Inter-Bold',
-                  color: '#29262A',
-                }}>
-                Estimated Delivery Time
-              </Text>
-              <Text
-                style={{
-                  color: '#E14E4E',
-                  fontSize: fontSize.fifteen,
-                  fontFamily: 'Inter-Bold',
-                }}>
-                {orderResult[0]?.EstimatedDeliveryMinutes} Min
-              </Text>
+              {orderResult[0]?.EstimatedDeliveryMinutes > 0 && (
+                <Text
+                  style={{
+                    fontSize: fontSize.fourteen,
+                    fontFamily: 'Inter-Bold',
+                    color: '#29262A',
+                  }}>
+                  Estimated Delivery Time
+                </Text>
+              )}
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Text
+                  style={{
+                    fontFamily: 'Inter-SemiBold',
+                    fontSize: fontSize.sixteen,
+                    color: '#E14E4E',
+                  }}>
+                  {orderResult[0]?.Status + ' '}
+                </Text>
+                {orderResult[0]?.EstimatedDeliveryMinutes > 0 && (
+                  <Text
+                    style={{
+                      color: '#000',
+                      fontSize: fontSize.twelve,
+                      fontFamily: 'Inter-Bold',
+                      textAlign: 'center',
+                    }}>
+                    {orderResult[0]?.EstimatedDeliveryMinutes} Min
+                  </Text>
+                )}
+              </View>
 
-              <Image
-                style={{
-                  height: scalableheight.twenty,
-                  width: scalableheight.twenty,
-                  //    backgroundColor:'red'
-                  // textAlign: 'center',
-                }}
-                resizeMode={'contain'}
-                source={require('../Resources/images/FoodPreperainggif.gif')}
-              />
+              {orderResult[0]?.Status == 'Pending' && (
+                <Image
+                  style={{
+                    height: scalableheight.twenty,
+                    width: scalableheight.twenty,
+                    marginTop: -scalableheight.three,
+                  }}
+                  resizeMode={'contain'}
+                  source={require('../Resources/images/Pending.gif')}
+                />
+              )}
+
+              {orderResult[0]?.Status == 'Confirmed' && (
+                <Image
+                  style={{
+                    height: scalableheight.twenty,
+                    width: scalableheight.twenty,
+                    marginTop: -scalableheight.three,
+                  }}
+                  resizeMode={'contain'}
+                  source={require('../Resources/images/Confirmed.gif')}
+                />
+              )}
+
+              {orderResult[0]?.Status == 'Preparing' && (
+                <Image
+                  style={{
+                    height: scalableheight.twenty,
+                    width: scalableheight.twenty,
+                    marginTop: -scalableheight.three,
+                  }}
+                  resizeMode={'contain'}
+                  source={require('../Resources/images/FoodPreperainggif.gif')}
+                />
+              )}
+
+              {orderResult[0]?.Status == 'FoodReady' && (
+                <Image
+                  style={{
+                    height: scalableheight.twenty,
+                    width: scalableheight.twenty,
+                    marginTop: -scalableheight.three,
+                  }}
+                  resizeMode={'contain'}
+                  source={require('../Resources/images/FoodReady.gif')}
+                />
+              )}
+
+              {orderResult[0]?.Status == 'OnTheWay' && (
+                <Image
+                  style={{
+                    height: scalableheight.twenty,
+                    width: scalableheight.twenty,
+                    marginTop: -scalableheight.three,
+                  }}
+                  resizeMode={'contain'}
+                  source={require('../Resources/images/Ontheway.gif')}
+                />
+              )}
+
+              {orderResult[0]?.Status == 'Delivered' && (
+                <Image
+                  style={{
+                    height: scalableheight.twenty,
+                    width: scalableheight.twenty,
+                    marginTop: -scalableheight.three,
+                  }}
+                  resizeMode={'contain'}
+                  source={require('../Resources/images/Ontheway.gif')}
+                />
+              )}
+
+              {orderResult[0]?.Status == 'Canceled' && (
+                <Image
+                  style={{
+                    height: scalableheight.twenty,
+                    width: scalableheight.twenty,
+                    marginTop: -scalableheight.three,
+                  }}
+                  resizeMode={'contain'}
+                  source={require('../Resources/images/Cancelled.gif')}
+                />
+              )}
 
               <View
                 style={{
@@ -118,44 +234,119 @@ const PreparingFood = ({navigation, route}, props) => {
                   position: 'relative',
                   bottom: scalableheight.three,
                 }}>
-                <View
-                  style={{
-                    height: scalableheight.one,
-                    width: scalableheight.six,
-                    backgroundColor: 'rgba(211,211,211,0.9)',
-                    borderRadius: fontSize.borderradiusmedium,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}></View>
-                <View
-                  style={{
-                    height: scalableheight.one,
-                    width: scalableheight.six,
-                    backgroundColor: 'rgba(211,211,211,0.9)',
-                    borderRadius: fontSize.borderradiusmedium,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginHorizontal: scalableheight.one,
-                  }}></View>
-                <View
-                  style={{
-                    height: scalableheight.one,
-                    width: scalableheight.six,
-                    backgroundColor: 'rgba(211,211,211,0.9)',
-                    borderRadius: fontSize.borderradiusmedium,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}></View>
-                <View
-                  style={{
-                    height: scalableheight.one,
-                    width: scalableheight.six,
-                    backgroundColor: 'rgba(211,211,211,0.9)',
-                    borderRadius: fontSize.borderradiusmedium,
-                    marginHorizontal: scalableheight.one,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}></View>
+                {indexstate == 1 ? (
+                  // <View style={{borderWidth:1,borderColor:'blue'}}>
+                  <Image
+                    style={{
+                      height: scalableheight.onepointfive,
+                      width: scalableheight.six,
+                      borderWidth: 1,
+                      borderColor: 'blue',
+                      borderRadius: fontSize.borderradiusmedium,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginRight: scalableheight.one,
+                    }}
+                    resizeMode={'stretch'}
+                    source={require('../Resources/images/lineloader.gif')}
+                  />
+                ) : (
+                  // </View>
+                  <View
+                    style={{
+                      height: scalableheight.one,
+                      width: scalableheight.six,
+                      backgroundColor:
+                        indexstate >= 1 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
+                      borderRadius: fontSize.borderradiusmedium,
+                      marginTop: height(0.2),
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginRight: scalableheight.one,
+                    }}></View>
+                )}
+
+                {indexstate == 2 ? (
+                  <Image
+                    style={{
+                      height: scalableheight.onepointfive,
+                      width: scalableheight.six,
+                      borderRadius: fontSize.borderradiusmedium,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginRight: scalableheight.one,
+                    }}
+                    resizeMode={'stretch'}
+                    source={require('../Resources/images/lineloader.gif')}
+                  />
+                ) : (
+                  <View
+                    style={{
+                      height: scalableheight.one,
+                      width: scalableheight.six,
+                      backgroundColor:
+                        indexstate >= 2 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
+                      borderRadius: fontSize.borderradiusmedium,
+                      marginTop: height(0.2),
+                      marginRight: scalableheight.one,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}></View>
+                )}
+
+                {indexstate == 3 ? (
+                  <Image
+                    style={{
+                      height: scalableheight.onepointfive,
+                      width: scalableheight.six,
+                      borderRadius: fontSize.borderradiusmedium,
+                      alignItems: 'center',
+                      marginRight: scalableheight.one,
+                      justifyContent: 'center',
+                    }}
+                    resizeMode={'stretch'}
+                    source={require('../Resources/images/lineloader.gif')}
+                  />
+                ) : (
+                  <View
+                    style={{
+                      height: scalableheight.one,
+                      width: scalableheight.six,
+                      backgroundColor:
+                        indexstate >= 3 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
+                      borderRadius: fontSize.borderradiusmedium,
+                      marginTop: height(0.2),
+                      alignItems: 'center',
+                      marginRight: scalableheight.one,
+                      justifyContent: 'center',
+                    }}></View>
+                )}
+
+                {indexstate == 4 ? (
+                  <Image
+                    style={{
+                      height: scalableheight.onepointfive,
+                      width: scalableheight.six,
+                      borderRadius: fontSize.borderradiusmedium,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    resizeMode={'stretch'}
+                    source={require('../Resources/images/lineloader.gif')}
+                  />
+                ) : (
+                  <View
+                    style={{
+                      height: scalableheight.one,
+                      width: scalableheight.six,
+                      backgroundColor:
+                        indexstate >= 4 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
+                      marginTop: height(0.2),
+                      borderRadius: fontSize.borderradiusmedium,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}></View>
+                )}
               </View>
             </View>
             <View

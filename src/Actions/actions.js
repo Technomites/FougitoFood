@@ -73,8 +73,6 @@ const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
 
-
-
 export const storeorderid = id => {
   try {
     return async dispatch => {
