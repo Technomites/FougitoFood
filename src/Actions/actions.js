@@ -456,7 +456,7 @@ export const createorder = (AuthToken, data) => {
       console.log('postserviceratings' + JSON.stringify(json));
 
       if (json.Status === 'Success') {
-        console.log(json.Result.Id, 'hekksdka;ldka;lkd;lakd;lka;ldka;kd;l');
+       
         dispatch({
           type: CreateOrder,
           payload: 'success',

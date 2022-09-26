@@ -58,6 +58,7 @@ const PreparingFood = ({navigation, route}, props) => {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      console.log("this is the placement order id " + orderdetails)
       if (orderdetails != 0) dispatch(OrderStatus(AuthToken, orderdetails));
     });
     return unsubscribe;
@@ -103,6 +104,7 @@ const PreparingFood = ({navigation, route}, props) => {
         />
         <View style={{justifyContent: 'center', marginHorizontal: 20}}>
           <View>
+            {orderResult != undefined &&
             <View
               style={{
                 justifyContent: 'center',
@@ -345,7 +347,7 @@ const PreparingFood = ({navigation, route}, props) => {
                     }}></View>
                 )}
               </View>
-            </View>
+            </View>}
             <View
               style={{
                 ...styleSheet.shadow,

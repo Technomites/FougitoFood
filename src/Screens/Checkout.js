@@ -367,6 +367,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
 
   useEffect(() => {
     setloader2(false);
+    setloader1(false)
+    console.log("this is the id " + orderdetails)
     if (orderplacementstatus != '') {
       if (orderplacementstatus == 'success') {
         toast.current.show('Order Placed', {
@@ -485,7 +487,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (Selectedcurrentaddress?.length == 0) {
+    } else if (Selectedcurrentaddress?.length == 0 && AuthToken != '') {
       toast.current.show('Please Select a Delivery Address', {
         type: 'normal',
         placement: 'bottom',
@@ -553,8 +555,13 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       };
 
       console.log('all data-----' + JSON.stringify(data));
-
-      setloader2(true);
+      if( AuthToken == ''){
+setloader1(true)
+      }else{
+        setloader2(true);
+      }
+      
+   
       dispatch(createorder(AuthToken, data));
     }
   }
