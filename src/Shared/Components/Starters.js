@@ -79,7 +79,7 @@ const navigation = useNavigation();
 
     }}
    
-      source={props.image}></Image>
+      source={{uri: props.image}}></Image>
       <View style={{width:scalableheight.three, height:scalableheight.three, backgroundColor:"red", position:"absolute", bottom: scalableheight.onepointfive ,right: scalableheight.one, borderBottomRightRadius: fontSize.eleven, alignItems:"center", justifyContent:"center"}}>
 
       <Entypo 

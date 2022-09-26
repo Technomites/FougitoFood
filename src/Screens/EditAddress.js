@@ -443,6 +443,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
           style={{width: '100%', paddingHorizontal: scalableheight.two}}>
           <View style={{height: scalableheight.one}} />
 
+      
           <GooglePlacesAutocomplete
             suppressDefaultStyles={false}
             //  styles ={{

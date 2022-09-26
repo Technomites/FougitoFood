@@ -91,6 +91,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   const [dataSourceCords, setDataSourceCords] = useState([]);
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(false);
+  const [selecteditemimage, setselecteditemimage] = useState("");
   const [dataSourceCordsHorizontal, setdataSourceCordsHorizontal] = useState(
     [],
   );
@@ -643,7 +644,7 @@ found = 1
                       width: '100%',
                       height: '100%',
                     }}
-                    source={require('../Resources/images/foods.png')}
+                    source={{uri: selecteditemimage}}
                   />
                   {renderIf(
                     serving?.filter(item => item.selected == true) != '',
@@ -1309,13 +1310,14 @@ for(const index in dataSourceCords){
                 item?.Name.toLowerCase().includes(search.trim().toLowerCase()) ? 
                 <View style={{width: '100%', alignItems: 'center'}}>
                   <Starters
-                    image={require('../Resources/images/food.jpg')}
+                    image={item?.Image}
                     title={item?.Name}
                     description={
                      item?.Description
                     }
                     price={item?.Price}
                     onPress={() => {
+                      setselecteditemimage(item?.Image)
                       setmodaldataoptions(item)
                       setmodaldataoptionsindex(key)
                       dispatch(savemenucategoryoptiondetailsdata(item))
