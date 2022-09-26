@@ -14,6 +14,7 @@ import {
   TextInput,
   FlatList,
   Platform,
+  Linking,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {OrderStatus} from '../Actions/actions';
@@ -43,11 +44,12 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 import Navigation from '../Shared/Components/Navigation';
 
 const PreparingFood = ({navigation, route}, props) => {
-  const [togglelist, settogglelist] = useState(false);
+  const [togglelist, settogglelist] = useState(true);
 
   const [indexstate, setindexstate] = useState(0);
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(false);
+  const [ridercontact, setriderContact] = useState('03342044037');
   const {AuthToken, orderdetails, orderResult} = useSelector(
     state => state.userReducer,
   );
@@ -58,7 +60,7 @@ const PreparingFood = ({navigation, route}, props) => {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log("this is the placement order id " + orderdetails)
+      console.log('this is the placement order id ' + orderdetails);
       if (orderdetails != 0) dispatch(OrderStatus(AuthToken, orderdetails));
     });
     return unsubscribe;
@@ -104,250 +106,251 @@ const PreparingFood = ({navigation, route}, props) => {
         />
         <View style={{justifyContent: 'center', marginHorizontal: 20}}>
           <View>
-            {orderResult != undefined &&
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: scalableheight.five,
-              }}>
-              {orderResult[0]?.EstimatedDeliveryMinutes > 0 && (
-                <Text
-                  style={{
-                    fontSize: fontSize.fourteen,
-                    fontFamily: 'Inter-Bold',
-                    color: '#29262A',
-                  }}>
-                  Estimated Delivery Time
-                </Text>
-              )}
-              <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text
-                  style={{
-                    fontFamily: 'Inter-SemiBold',
-                    fontSize: fontSize.sixteen,
-                    color: '#E14E4E',
-                  }}>
-                  {orderResult[0]?.Status + ' '}
-                </Text>
+            {orderResult != undefined && (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: scalableheight.five,
+                }}>
                 {orderResult[0]?.EstimatedDeliveryMinutes > 0 && (
                   <Text
                     style={{
-                      color: '#000',
-                      fontSize: fontSize.twelve,
+                      fontSize: fontSize.fourteen,
                       fontFamily: 'Inter-Bold',
-                      textAlign: 'center',
+                      color: '#29262A',
                     }}>
-                    {orderResult[0]?.EstimatedDeliveryMinutes} Min
+                    Estimated Delivery Time
                   </Text>
                 )}
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter-SemiBold',
+                      fontSize: fontSize.sixteen,
+                      color: '#E14E4E',
+                    }}>
+                    {orderResult[0]?.Status + ' '}
+                  </Text>
+                  {orderResult[0]?.EstimatedDeliveryMinutes > 0 && (
+                    <Text
+                      style={{
+                        color: '#000',
+                        fontSize: fontSize.twelve,
+                        fontFamily: 'Inter-Bold',
+                        textAlign: 'center',
+                      }}>
+                      {orderResult[0]?.EstimatedDeliveryMinutes} Min
+                    </Text>
+                  )}
+                </View>
+
+                {orderResult[0]?.Status == 'Pending' && (
+                  <Image
+                    style={{
+                      height: scalableheight.twenty,
+                      width: scalableheight.twenty,
+                      marginTop: -scalableheight.three,
+                    }}
+                    resizeMode={'contain'}
+                    source={require('../Resources/images/Pending.gif')}
+                  />
+                )}
+
+                {orderResult[0]?.Status == 'Confirmed' && (
+                  <Image
+                    style={{
+                      height: scalableheight.twenty,
+                      width: scalableheight.twenty,
+                      marginTop: -scalableheight.three,
+                    }}
+                    resizeMode={'contain'}
+                    source={require('../Resources/images/Confirmed.gif')}
+                  />
+                )}
+
+                {orderResult[0]?.Status == 'Preparing' && (
+                  <Image
+                    style={{
+                      height: scalableheight.twenty,
+                      width: scalableheight.twenty,
+                      marginTop: -scalableheight.three,
+                    }}
+                    resizeMode={'contain'}
+                    source={require('../Resources/images/FoodPreperainggif.gif')}
+                  />
+                )}
+
+                {orderResult[0]?.Status == 'FoodReady' && (
+                  <Image
+                    style={{
+                      height: scalableheight.twenty,
+                      width: scalableheight.twenty,
+                      marginTop: -scalableheight.three,
+                    }}
+                    resizeMode={'contain'}
+                    source={require('../Resources/images/FoodReady.gif')}
+                  />
+                )}
+
+                {orderResult[0]?.Status == 'OnTheWay' && (
+                  <Image
+                    style={{
+                      height: scalableheight.twenty,
+                      width: scalableheight.twenty,
+                      marginTop: -scalableheight.three,
+                    }}
+                    resizeMode={'contain'}
+                    source={require('../Resources/images/Ontheway.gif')}
+                  />
+                )}
+
+                {orderResult[0]?.Status == 'Delivered' && (
+                  <Image
+                    style={{
+                      height: scalableheight.twenty,
+                      width: scalableheight.twenty,
+                      marginTop: -scalableheight.three,
+                    }}
+                    resizeMode={'contain'}
+                    source={require('../Resources/images/Delivered.gif')}
+                  />
+                )}
+
+                {orderResult[0]?.Status == 'Canceled' && (
+                  <Image
+                    style={{
+                      height: scalableheight.twenty,
+                      width: scalableheight.twenty,
+                      marginTop: -scalableheight.three,
+                    }}
+                    resizeMode={'contain'}
+                    source={require('../Resources/images/Cancelled.gif')}
+                  />
+                )}
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginVertical: scalableheight.two,
+                    justifyContent: 'space-between',
+                    position: 'relative',
+                    bottom: scalableheight.three,
+                  }}>
+                  {indexstate == 1 ? (
+                    <Image
+                      style={{
+                        height: scalableheight.onepointfive,
+                        width: scalableheight.six,
+
+                        borderRadius: fontSize.borderradiusmedium,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: scalableheight.one,
+                      }}
+                      resizeMode={'stretch'}
+                      source={require('../Resources/images/lineloader.gif')}
+                    />
+                  ) : (
+                    // </View>
+                    <View
+                      style={{
+                        height: scalableheight.one,
+                        width: scalableheight.six,
+                        backgroundColor:
+                          indexstate >= 1 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
+                        borderRadius: fontSize.borderradiusmedium,
+                        marginTop: height(0.2),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: scalableheight.one,
+                      }}></View>
+                  )}
+
+                  {indexstate == 2 ? (
+                    <Image
+                      style={{
+                        height: scalableheight.onepointfive,
+                        width: scalableheight.six,
+                        borderRadius: fontSize.borderradiusmedium,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: scalableheight.one,
+                      }}
+                      resizeMode={'stretch'}
+                      source={require('../Resources/images/lineloader.gif')}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        height: scalableheight.one,
+                        width: scalableheight.six,
+                        backgroundColor:
+                          indexstate >= 2 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
+                        borderRadius: fontSize.borderradiusmedium,
+                        marginTop: height(0.2),
+                        marginRight: scalableheight.one,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}></View>
+                  )}
+
+                  {indexstate == 3 ? (
+                    <Image
+                      style={{
+                        height: scalableheight.onepointfive,
+                        width: scalableheight.six,
+                        borderRadius: fontSize.borderradiusmedium,
+                        alignItems: 'center',
+                        marginRight: scalableheight.one,
+                        justifyContent: 'center',
+                      }}
+                      resizeMode={'stretch'}
+                      source={require('../Resources/images/lineloader.gif')}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        height: scalableheight.one,
+                        width: scalableheight.six,
+                        backgroundColor:
+                          indexstate >= 3 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
+                        borderRadius: fontSize.borderradiusmedium,
+                        marginTop: height(0.2),
+                        alignItems: 'center',
+                        marginRight: scalableheight.one,
+                        justifyContent: 'center',
+                      }}></View>
+                  )}
+
+                  {indexstate == 4 ? (
+                    <Image
+                      style={{
+                        height: scalableheight.onepointfive,
+                        width: scalableheight.six,
+                        borderRadius: fontSize.borderradiusmedium,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      resizeMode={'stretch'}
+                      source={require('../Resources/images/lineloader.gif')}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        height: scalableheight.one,
+                        width: scalableheight.six,
+                        backgroundColor:
+                          indexstate >= 4 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
+                        marginTop: height(0.2),
+                        borderRadius: fontSize.borderradiusmedium,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}></View>
+                  )}
+                </View>
               </View>
-
-              {orderResult[0]?.Status == 'Pending' && (
-                <Image
-                  style={{
-                    height: scalableheight.twenty,
-                    width: scalableheight.twenty,
-                    marginTop: -scalableheight.three,
-                  }}
-                  resizeMode={'contain'}
-                  source={require('../Resources/images/Pending.gif')}
-                />
-              )}
-
-              {orderResult[0]?.Status == 'Confirmed' && (
-                <Image
-                  style={{
-                    height: scalableheight.twenty,
-                    width: scalableheight.twenty,
-                    marginTop: -scalableheight.three,
-                  }}
-                  resizeMode={'contain'}
-                  source={require('../Resources/images/Confirmed.gif')}
-                />
-              )}
-
-              {orderResult[0]?.Status == 'Preparing' && (
-                <Image
-                  style={{
-                    height: scalableheight.twenty,
-                    width: scalableheight.twenty,
-                    marginTop: -scalableheight.three,
-                  }}
-                  resizeMode={'contain'}
-                  source={require('../Resources/images/FoodPreperainggif.gif')}
-                />
-              )}
-
-              {orderResult[0]?.Status == 'FoodReady' && (
-                <Image
-                  style={{
-                    height: scalableheight.twenty,
-                    width: scalableheight.twenty,
-                    marginTop: -scalableheight.three,
-                  }}
-                  resizeMode={'contain'}
-                  source={require('../Resources/images/FoodReady.gif')}
-                />
-              )}
-
-              {orderResult[0]?.Status == 'OnTheWay' && (
-                <Image
-                  style={{
-                    height: scalableheight.twenty,
-                    width: scalableheight.twenty,
-                    marginTop: -scalableheight.three,
-                  }}
-                  resizeMode={'contain'}
-                  source={require('../Resources/images/Ontheway.gif')}
-                />
-              )}
-
-              {orderResult[0]?.Status == 'Delivered' && (
-                <Image
-                  style={{
-                    height: scalableheight.twenty,
-                    width: scalableheight.twenty,
-                    marginTop: -scalableheight.three,
-                  }}
-                  resizeMode={'contain'}
-                  source={require('../Resources/images/Ontheway.gif')}
-                />
-              )}
-
-              {orderResult[0]?.Status == 'Canceled' && (
-                <Image
-                  style={{
-                    height: scalableheight.twenty,
-                    width: scalableheight.twenty,
-                    marginTop: -scalableheight.three,
-                  }}
-                  resizeMode={'contain'}
-                  source={require('../Resources/images/Cancelled.gif')}
-                />
-              )}
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginVertical: scalableheight.two,
-                  justifyContent: 'space-between',
-                  position: 'relative',
-                  bottom: scalableheight.three,
-                }}>
-                {indexstate == 1 ? (
-                  <Image
-                    style={{
-                      height: scalableheight.onepointfive,
-                      width: scalableheight.six,
-                      
-                      borderRadius: fontSize.borderradiusmedium,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginRight: scalableheight.one,
-                    }}
-                    resizeMode={'stretch'}
-                    source={require('../Resources/images/lineloader.gif')}
-                  />
-                ) : (
-                  // </View>
-                  <View
-                    style={{
-                      height: scalableheight.one,
-                      width: scalableheight.six,
-                      backgroundColor:
-                        indexstate >= 1 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
-                      borderRadius: fontSize.borderradiusmedium,
-                      marginTop: height(0.2),
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginRight: scalableheight.one,
-                    }}></View>
-                )}
-
-                {indexstate == 2 ? (
-                  <Image
-                    style={{
-                      height: scalableheight.onepointfive,
-                      width: scalableheight.six,
-                      borderRadius: fontSize.borderradiusmedium,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginRight: scalableheight.one,
-                    }}
-                    resizeMode={'stretch'}
-                    source={require('../Resources/images/lineloader.gif')}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      height: scalableheight.one,
-                      width: scalableheight.six,
-                      backgroundColor:
-                        indexstate >= 2 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
-                      borderRadius: fontSize.borderradiusmedium,
-                      marginTop: height(0.2),
-                      marginRight: scalableheight.one,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}></View>
-                )}
-
-                {indexstate == 3 ? (
-                  <Image
-                    style={{
-                      height: scalableheight.onepointfive,
-                      width: scalableheight.six,
-                      borderRadius: fontSize.borderradiusmedium,
-                      alignItems: 'center',
-                      marginRight: scalableheight.one,
-                      justifyContent: 'center',
-                    }}
-                    resizeMode={'stretch'}
-                    source={require('../Resources/images/lineloader.gif')}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      height: scalableheight.one,
-                      width: scalableheight.six,
-                      backgroundColor:
-                        indexstate >= 3 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
-                      borderRadius: fontSize.borderradiusmedium,
-                      marginTop: height(0.2),
-                      alignItems: 'center',
-                      marginRight: scalableheight.one,
-                      justifyContent: 'center',
-                    }}></View>
-                )}
-
-                {indexstate == 4 ? (
-                  <Image
-                    style={{
-                      height: scalableheight.onepointfive,
-                      width: scalableheight.six,
-                      borderRadius: fontSize.borderradiusmedium,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                    resizeMode={'stretch'}
-                    source={require('../Resources/images/lineloader.gif')}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      height: scalableheight.one,
-                      width: scalableheight.six,
-                      backgroundColor:
-                        indexstate >= 4 ? '#E14E4E' : 'rgba(211,211,211,0.9)',
-                      marginTop: height(0.2),
-                      borderRadius: fontSize.borderradiusmedium,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}></View>
-                )}
-              </View>
-            </View>}
+            )}
             <View
               style={{
                 ...styleSheet.shadow,
@@ -417,11 +420,17 @@ const PreparingFood = ({navigation, route}, props) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <MaterialIcons
-                  name="message"
-                  color={'#00000029'}
-                  size={fontSize.twentyeight}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    Linking.openURL(`tel:${ridercontact}`);
+                  }}
+                  activeOpacity={0.9}>
+                  <MaterialIcons
+                    name="call"
+                    color={'#00000029'}
+                    size={fontSize.twentyeight}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
             <View style={{marginVertical: scalableheight.one}}>

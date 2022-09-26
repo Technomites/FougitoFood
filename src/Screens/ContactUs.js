@@ -124,363 +124,197 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
       />
-  
+
+      <View
+        style={{
+          height: '100%',
+          width: '100%',
+          alignSelf: 'center',
+          flex: 12,
+          paddingTop: getStatusBarHeight(),
+        }}>
+        <PlainHeader title={'Settings'} />
         <View
           style={{
-            height: '100%',
-            width: '100%',
-            alignSelf: 'center',
-            flex: 12,
-            paddingTop: getStatusBarHeight(),
+            justifyContent: 'center',
+            paddingHorizontal: scalableheight.two,
           }}>
-          <PlainHeader title={'Settings'} />
-          <View style={{justifyContent: 'center', paddingHorizontal: scalableheight.two}}>
-            <View style={{marginVertical: 5}}>
-              <Text
-                style={{
-                  fontSize: fontSize.fourteen,
-                  fontFamily: 'Inter-Bold',
-                  color: '#29262A',
-                  alignSelf: 'flex-start',
-                }}>
-                {detailsContact[0]?.Title}
-              </Text>
-              <Text
-                style={{
-                  fontSize: fontSize.twelve,
-                  fontFamily: 'Inter-Medium',
-                  color: 'rgba(41, 38, 42, 0.5)',
-                  textAlign: 'justify',
-                }}>
-                We’re always available and happy to chat with you! Reach out to
-                us"
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginVertical: scalableheight.one,
-              }}>
-              <View
-                style={{
-                  width: scalableheight.five,
-                  height: scalableheight.five,
-                  backgroundColor: '#E14E4E',
-                  borderRadius: scalableheight.five,
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    padding: scalableheight.one,
-                  }}>
-                  <Icon
-                    name="call-sharp"
-                    size={scalableheight.three}
-                    color="#fff"
-                  />
-                </View>
-              </View>
-              <View style={{paddingLeft: scalableheight.one}}>
-                <Text
-                  style={{
-                    fontSize: fontSize.twelve,
-                    fontFamily: 'Inter-Medium',
-                    color: '#29262A',
-                    textAlign: 'justify',
-                  }}>
-                  {detailsContact[0]?.Contact}
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginVertical: scalableheight.one,
-              }}>
-              <View
-                style={{
-                  width: scalableheight.five,
-                  height: scalableheight.five,
-                  backgroundColor: '#E14E4E',
-                  borderRadius: scalableheight.five,
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    padding: scalableheight.one,
-                  }}>
-                  <Icon name="mail" size={scalableheight.three} color="#fff" />
-                </View>
-              </View>
-              <View style={{paddingLeft: scalableheight.one}}>
-                <Text
-                  style={{
-                    fontSize: fontSize.twelve,
-                    fontFamily: 'Inter-Medium',
-                    color: '#29262A',
-                    textAlign: 'justify',
-                  }}>
-                  {detailsContact[0]?.Email}
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginVertical: scalableheight.one,
-              }}>
-              <View
-                style={{
-                  width: scalableheight.five,
-                  height: scalableheight.five,
-                  backgroundColor: '#E14E4E',
-                  borderRadius: scalableheight.five,
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    padding: scalableheight.one,
-                  }}>
-                  <Icon
-                    name="location"
-                    size={scalableheight.three}
-                    color="#fff"
-                  />
-                </View>
-              </View>
-              <View style={{paddingLeft: scalableheight.one}}>
-                <Text
-                  style={{
-                    fontSize: fontSize.twelve,
-                    fontFamily: 'Inter-Medium',
-                    color: '#29262A',
-                    textAlign: 'justify',
-                  }}>
-                  {detailsContact[0]?.StreetAddress}
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginVertical: scalableheight.two,
-              }}>
-              <TouchableOpacity
-                onPress={() =>
-                  Linking.openURL(`${detailsContact[0]?.Facebook}`)
-                }
-                activeOpacity={0.9}
-                style={{
-                  backgroundColor: '#F9F9F9',
-                  borderRadius: scalableheight.one,
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.23,
-                  shadowRadius: 2.62,
-                  elevation: 2,
-                  borderWidth: scalableheight.borderTopWidth,
-                  borderColor: 'rgba(211,211,211, 0.6)',
-                }}>
-                <FontAwesome
-                  style={{alignSelf: 'center'}}
-                  name={'facebook'}
-                  color={'#1980e7'}
-                  size={fontSize.twentysix}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() =>
-                  Linking.openURL(`${detailsContact[0]?.Instagram}`)
-                }
-                style={{
-                  backgroundColor: '#F9F9F9',
-                  borderRadius: scalableheight.one,
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.23,
-                  shadowRadius: 2.62,
-
-                  elevation: 2,
-                  borderWidth: scalableheight.borderTopWidth,
-                  borderColor: 'rgba(211,211,211, 0.6)',
-                }}>
-                <FontAwesome
-                  style={{alignSelf: 'center'}}
-                  name={'instagram'}
-                  color={'#d72e75'}
-                  size={fontSize.twentysix}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => Linking.openURL(`${detailsContact[0]?.Twitter}`)}
-                activeOpacity={0.9}
-                style={{
-                  backgroundColor: '#F9F9F9',
-                  borderRadius: scalableheight.one,
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.23,
-                  shadowRadius: 2.62,
-
-                  elevation: 2,
-                  borderWidth: scalableheight.borderTopWidth,
-                  borderColor: 'rgba(211,211,211, 0.6)',
-                }}>
-                <FontAwesome
-                  style={{alignSelf: 'center'}}
-                  name={'twitter'}
-                  color={'#7fcdf8'}
-                  size={fontSize.twentysix}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => Linking.openURL(`${detailsContact[0]?.Youtube}`)}
-                style={{
-                  backgroundColor: '#F9F9F9',
-                  borderRadius: scalableheight.one,
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.23,
-                  shadowRadius: 2.62,
-
-                  elevation: 2,
-                  borderWidth: scalableheight.borderTopWidth,
-                  borderColor: 'rgba(211,211,211, 0.6)',
-                }}>
-                <FontAwesome
-                  style={{alignSelf: 'center'}}
-                  name={'youtube-play'}
-                  color={'#E14E4E'}
-                  size={fontSize.twentysix}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() =>
-                  Linking.openURL(
-                    'whatsapp://send?text=&phone=' +
-                      `${detailsContact[0]?.WhatsApp}`,
-                  )
-                }
-                activeOpacity={0.9}
-                style={{
-                  backgroundColor: '#F9F9F9',
-                  borderRadius: scalableheight.one,
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.23,
-                  shadowRadius: 2.62,
-
-                  elevation: 2,
-                  borderWidth: scalableheight.borderTopWidth,
-                  borderColor: 'rgba(211,211,211, 0.6)',
-                }}>
-                <FontAwesome
-                  style={{alignSelf: 'center'}}
-                  name={'whatsapp'}
-                  color={'#26c54b'}
-                  size={fontSize.twentysix}
-                />
-              </TouchableOpacity>
-            </View>
-
-            {/* <SuccessModal
-              yesPress={() => {
-                setSuccessModal(false);
-              }}
-              bnText="OK"
-              message="Your message has been sent successfully"
-              visible={successModal}
-            /> */}
-               <View
-              style={{
-                marginVertical: 10,
-                borderBottomWidth: 1,
-                borderColor: 'rgba(112, 112, 112, 0.15)',
-              }}></View>
+          <View style={{marginVertical: 5}}>
             <Text
               style={{
                 fontSize: fontSize.fourteen,
                 fontFamily: 'Inter-Bold',
                 color: '#29262A',
                 alignSelf: 'flex-start',
-                marginTop:scalableheight.one
               }}>
-              Send us a Message
+              {detailsContact[0]?.Title}
             </Text>
-
             <Text
               style={{
                 fontSize: fontSize.twelve,
                 fontFamily: 'Inter-Medium',
                 color: 'rgba(41, 38, 42, 0.5)',
-
-                marginBottom: scalableheight.one,
+                textAlign: 'justify',
               }}>
-              We’d love to hear from you! Get in touch with us here
+              We’re always available and happy to chat with you! Reach out to
+              us"
             </Text>
-
-            {/* <SubHeading
-            style={{marginVertical: 5, color: 'black'}}
-            text="Your Message"
-          /> */}
-            {/* <MyFormInputTile placeHolder="Type Here" /> */}
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              marginVertical: scalableheight.one,
+            }}>
             <View
               style={{
-                marginTop:scalableheight.one,
+                width: scalableheight.five,
+                height: scalableheight.five,
+                backgroundColor: '#E14E4E',
+                borderRadius: scalableheight.five,
+              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  padding: scalableheight.one,
+                }}>
+                <Icon
+                  name="call-sharp"
+                  size={scalableheight.three}
+                  color="#fff"
+                />
+              </View>
+            </View>
+            <View style={{paddingLeft: scalableheight.one}}>
+              <Text
+                style={{
+                  fontSize: fontSize.twelve,
+                  fontFamily: 'Inter-Medium',
+                  color: '#29262A',
+                  textAlign: 'justify',
+                }}>
+                {detailsContact[0]?.Contact}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              marginVertical: scalableheight.one,
+            }}>
+            <View
+              style={{
+                width: scalableheight.five,
+                height: scalableheight.five,
+                backgroundColor: '#E14E4E',
+                borderRadius: scalableheight.five,
+              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  padding: scalableheight.one,
+                }}>
+                <Icon name="mail" size={scalableheight.three} color="#fff" />
+              </View>
+            </View>
+            <View style={{paddingLeft: scalableheight.one}}>
+              <Text
+                style={{
+                  fontSize: fontSize.twelve,
+                  fontFamily: 'Inter-Medium',
+                  color: '#29262A',
+                  textAlign: 'justify',
+                }}>
+                {detailsContact[0]?.Email}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              marginVertical: scalableheight.one,
+            }}>
+            <View
+              style={{
+                width: scalableheight.five,
+                height: scalableheight.five,
+                backgroundColor: '#E14E4E',
+                borderRadius: scalableheight.five,
+              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  padding: scalableheight.one,
+                }}>
+                <Icon
+                  name="location"
+                  size={scalableheight.three}
+                  color="#fff"
+                />
+              </View>
+            </View>
+            <View style={{paddingLeft: scalableheight.one}}>
+              <Text
+                style={{
+                  fontSize: fontSize.twelve,
+                  fontFamily: 'Inter-Medium',
+                  color: '#29262A',
+                  textAlign: 'justify',
+                }}>
+                {detailsContact[0]?.StreetAddress}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginVertical: scalableheight.two,
+            }}>
+            <TouchableOpacity
+              onPress={() => Linking.openURL(`${detailsContact[0]?.Facebook}`)}
+              activeOpacity={0.9}
+              style={{
                 backgroundColor: '#F9F9F9',
-                height: scalableheight.twenty,
                 borderRadius: scalableheight.one,
-                paddingHorizontal: scalableheight.one,
-                width: '100%',
+                width: scalableheight.six,
+                height: scalableheight.six,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.23,
+                shadowRadius: 2.62,
+                elevation: 2,
+                borderWidth: scalableheight.borderTopWidth,
+                borderColor: 'rgba(211,211,211, 0.6)',
+              }}>
+              <FontAwesome
+                style={{alignSelf: 'center'}}
+                name={'facebook'}
+                color={'#1980e7'}
+                size={fontSize.twentysix}
+              />
+            </TouchableOpacity>
 
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() => Linking.openURL(`${detailsContact[0]?.Instagram}`)}
+              style={{
+                backgroundColor: '#F9F9F9',
+                borderRadius: scalableheight.one,
+                width: scalableheight.six,
+                height: scalableheight.six,
+                justifyContent: 'center',
+                alignItems: 'center',
                 shadowColor: '#000',
                 shadowOffset: {
                   width: 0,
@@ -489,69 +323,236 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 shadowOpacity: 0.23,
                 shadowRadius: 2.62,
 
-                elevation: 1,
-                // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+                elevation: 2,
+                borderWidth: scalableheight.borderTopWidth,
+                borderColor: 'rgba(211,211,211, 0.6)',
               }}>
-              <TextInput
-              multiline
-                value={message}
-                placeholderStyle={{
-                  fontSize: fontSize.twenty,
-                      
-                }}
-                style={{marginVertical:scalableheight.one}}
-                placeholderTextColor="lightgray"
-                placeholder="Type here"
-                onChangeText={text => {
-                  setMessage(text);
-                }}
+              <FontAwesome
+                style={{alignSelf: 'center'}}
+                name={'instagram'}
+                color={'#d72e75'}
+                size={fontSize.twentysix}
               />
-            </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => Linking.openURL(`${detailsContact[0]?.Twitter}`)}
+              activeOpacity={0.9}
+              style={{
+                backgroundColor: '#F9F9F9',
+                borderRadius: scalableheight.one,
+                width: scalableheight.six,
+                height: scalableheight.six,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.23,
+                shadowRadius: 2.62,
+
+                elevation: 2,
+                borderWidth: scalableheight.borderTopWidth,
+                borderColor: 'rgba(211,211,211, 0.6)',
+              }}>
+              <FontAwesome
+                style={{alignSelf: 'center'}}
+                name={'twitter'}
+                color={'#7fcdf8'}
+                size={fontSize.twentysix}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() => Linking.openURL(`${detailsContact[0]?.Youtube}`)}
+              style={{
+                backgroundColor: '#F9F9F9',
+                borderRadius: scalableheight.one,
+                width: scalableheight.six,
+                height: scalableheight.six,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.23,
+                shadowRadius: 2.62,
+
+                elevation: 2,
+                borderWidth: scalableheight.borderTopWidth,
+                borderColor: 'rgba(211,211,211, 0.6)',
+              }}>
+              <FontAwesome
+                style={{alignSelf: 'center'}}
+                name={'youtube-play'}
+                color={'#E14E4E'}
+                size={fontSize.twentysix}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  'whatsapp://send?text=&phone=' +
+                    `${detailsContact[0]?.WhatsApp}`,
+                )
+              }
+              activeOpacity={0.9}
+              style={{
+                backgroundColor: '#F9F9F9',
+                borderRadius: scalableheight.one,
+                width: scalableheight.six,
+                height: scalableheight.six,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.23,
+                shadowRadius: 2.62,
+
+                elevation: 2,
+                borderWidth: scalableheight.borderTopWidth,
+                borderColor: 'rgba(211,211,211, 0.6)',
+              }}>
+              <FontAwesome
+                style={{alignSelf: 'center'}}
+                name={'whatsapp'}
+                color={'#26c54b'}
+                size={fontSize.twentysix}
+              />
+            </TouchableOpacity>
           </View>
-          <View style={{position:"absolute", bottom:scalableheight.two, width:"100%", justifyContent: 'center', paddingHorizontal: scalableheight.two}}>
-         
-            <View style={{marginTop: scalableheight.two}}>
-              {loader == true ? (
-                <View
-                  style={{
 
-    height: scalableheight.seven,
+          {/* <SuccessModal
+              yesPress={() => {
+                setSuccessModal(false);
+              }}
+              bnText="OK"
+              message="Your message has been sent successfully"
+              visible={successModal}
+            /> */}
+          <View
+            style={{
+              marginVertical: 10,
+              borderBottomWidth: 1,
+              borderColor: 'rgba(112, 112, 112, 0.15)',
+            }}></View>
+          <Text
+            style={{
+              fontSize: fontSize.fourteen,
+              fontFamily: 'Inter-Bold',
+              color: '#29262A',
+              alignSelf: 'flex-start',
+              marginTop: scalableheight.one,
+            }}>
+            Send us a Message
+          </Text>
 
-   
+          <Text
+            style={{
+              fontSize: fontSize.twelve,
+              fontFamily: 'Inter-Medium',
+              color: 'rgba(41, 38, 42, 0.5)',
 
-    marginTop: '1%',
-    marginBottom: '1%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <ActivityIndicator size={'large'} color="#E14E4E" />
-                </View>
-              ) : (
-                <MYButton
-                  onPress={() => {
-                    {
-                      AuthToken != '' ? emailsend() : setmodalVisible(true);
-                    }
-                  }}
-                  title={AuthToken != '' ? 'SEND' : 'Login'}
-                  color={'#E14E4E'}
-                  textcolor={'white'}
-                />
-              )}
-            </View>
-</View>
-          <AuthenticationModel
-            state={modalVisible}
-            togglemodel={() => {
-              setmodalVisible(false);
-            }}
-          />
-          <Toast
-            ref={toast}
-            style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
-          />
+              marginBottom: scalableheight.one,
+            }}>
+            We’d love to hear from you! Get in touch with us here
+          </Text>
+
+          {/* <SubHeading
+            style={{marginVertical: 5, color: 'black'}}
+            text="Your Message"
+          /> */}
+          {/* <MyFormInputTile placeHolder="Type Here" /> */}
+          <View
+            style={{
+              marginTop: scalableheight.one,
+              backgroundColor: '#F9F9F9',
+              height: scalableheight.twenty,
+              borderRadius: scalableheight.one,
+              paddingHorizontal: scalableheight.one,
+              width: '100%',
+
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.23,
+              shadowRadius: 2.62,
+
+              elevation: 1,
+              // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+            }}>
+            <TextInput
+              multiline
+              value={message}
+              placeholderStyle={{
+                fontSize: fontSize.twenty,
+              }}
+              style={{marginVertical: scalableheight.one}}
+              placeholderTextColor="lightgray"
+              placeholder="Type here"
+              onChangeText={text => {
+                setMessage(text);
+              }}
+            />
+          </View>
         </View>
+        <View
+          style={{
+            position: 'absolute',
+            bottom: scalableheight.two,
+            width: '100%',
+            justifyContent: 'center',
+            paddingHorizontal: scalableheight.two,
+          }}>
+          <View style={{marginTop: scalableheight.two}}>
+            {loader == true ? (
+              <View
+                style={{
+                  height: scalableheight.seven,
 
+                  marginTop: '1%',
+                  marginBottom: '1%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <ActivityIndicator size={'large'} color="#E14E4E" />
+              </View>
+            ) : (
+              <MYButton
+                onPress={() => {
+                  {
+                    AuthToken != '' ? emailsend() : setmodalVisible(true);
+                  }
+                }}
+                title={AuthToken != '' ? 'SEND' : 'Login'}
+                color={'#E14E4E'}
+                textcolor={'white'}
+              />
+            )}
+          </View>
+        </View>
+        <AuthenticationModel
+          state={modalVisible}
+          togglemodel={() => {
+            setmodalVisible(false);
+          }}
+        />
+        <Toast
+          ref={toast}
+          style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
+        />
+      </View>
     </Animated.View>
   );
 };

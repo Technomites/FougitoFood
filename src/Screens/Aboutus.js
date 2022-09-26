@@ -4,16 +4,10 @@ import {
   Text,
   StatusBar,
   Image,
-  Button,
-  ImageBackground,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
-  Dimensions,
-  TextInput,
-  FlatList,
-  Platform,
+  Linking,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {changelang, seticonfocus} from '../Actions/actions';
@@ -65,7 +59,7 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
       image: require('../Resources/images/person.jpg'),
     },
   ]);
-  const {Lang} = useSelector(state => state.userReducer);
+  const {detailsContact} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   useEffect(() => {
     StatusBar.setHidden(false);
@@ -191,6 +185,9 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
                 marginVertical: scalableheight.two,
               }}>
               <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL(`${detailsContact[0]?.Facebook}`)
+                }
                 activeOpacity={0.9}
                 style={{
                   ...styleSheet.shadow,
@@ -210,6 +207,9 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               </TouchableOpacity>
 
               <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL(`${detailsContact[0]?.Instagram}`)
+                }
                 activeOpacity={0.9}
                 style={{
                   ...styleSheet.shadow,
@@ -229,6 +229,7 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               </TouchableOpacity>
 
               <TouchableOpacity
+                onPress={() => Linking.openURL(`${detailsContact[0]?.Twitter}`)}
                 activeOpacity={0.9}
                 style={{
                   ...styleSheet.shadow,
@@ -249,24 +250,41 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
 
               <TouchableOpacity
                 activeOpacity={0.9}
+                onPress={() => Linking.openURL(`${detailsContact[0]?.Youtube}`)}
                 style={{
-                  ...styleSheet.shadow,
-                  backgroundColor: '#F5F5F5',
+                  backgroundColor: '#F9F9F9',
                   borderRadius: scalableheight.one,
                   width: scalableheight.six,
                   height: scalableheight.six,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.23,
+                  shadowRadius: 2.62,
+
+                  elevation: 2,
+                  borderWidth: scalableheight.borderTopWidth,
+                  borderColor: 'rgba(211,211,211, 0.6)',
                 }}>
                 <FontAwesome
                   style={{alignSelf: 'center'}}
-                  name={'linkedin'}
-                  color={'#1980e7'}
+                  name={'youtube-play'}
+                  color={'#E14E4E'}
                   size={fontSize.twentysix}
                 />
               </TouchableOpacity>
 
               <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL(
+                    'whatsapp://send?text=&phone=' +
+                      `${detailsContact[0]?.WhatsApp}`,
+                  )
+                }
                 activeOpacity={0.9}
                 style={{
                   ...styleSheet.shadow,

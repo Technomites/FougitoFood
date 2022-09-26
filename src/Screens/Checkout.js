@@ -1165,6 +1165,7 @@ setloader1(true)
                 <TextInput
                   value={phonenumber}
                   onChangeText={text => setphonenumber(text)}
+                  keyboardType={'number-pad'}
                   placeholder={'Phone Number'}
                   style={{
                     ...styleSheet.shadow,
