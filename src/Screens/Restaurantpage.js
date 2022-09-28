@@ -637,6 +637,7 @@ found = 1
                   height: '90%',
                   borderRadius: fontSize.eleven,
                   backgroundColor: 'white',
+                  overflow:"hidden"
                 }}>
                 <View style={{width: '100%', height: '30%'}}>
                   <Image

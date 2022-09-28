@@ -66,7 +66,7 @@ export const DeliveryStatus = 'DeliveryStatus';
 export const internetCHECK = 'internetCHECK';
 export const OrderID = 'OrderID';
 
-const API_URl = 'https://api.fougito.com/api/';
+const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
 const header1 = {

@@ -424,6 +424,7 @@ export default function Custombottomsheet(props) {
                           ];
                           console.log(currentaddress);
                           dispatch(storecurrentaddress(currentaddress));
+                          props.onPressnewCoordinates( item.Latitude, item.Longitude)
                           //navigation.goBack();
                         }}
                         //  disabled={screenname == 'checkout' ? false : true}
