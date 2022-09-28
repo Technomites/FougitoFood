@@ -12,7 +12,14 @@ import {
   StyleSheet,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {changelang, seticonfocus} from '../Actions/actions';
+import {
+  getallrestrauntsbyid,
+  storerestrauntbasicdata,
+  storedistance,
+  storecartprice,
+  cleancart,
+  storerestrauntid,
+} from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
@@ -26,17 +33,23 @@ import Favourites from '../Shared/Components/Favourites';
 
 import {CameraScreen} from 'react-native-camera-kit';
 
-const Qrcode = ({navigation, drawerAnimationStyle}) => {
+const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
+  console.log(route?.params?.latitude, 'latitude');
+  console.log(route?.params?.longitude, 'longitude');
+
   const [qrvalue, setQrvalue] = useState('');
   const [camscanner, setCamScanner] = useState(false);
   const [scanpermission, setScanPermission] = useState(true);
   const [animationstate, setanimationstate] = useState(false);
-  const [animationtype, setanimationtype] = useState("fadeInUpBig");
+  const [animationtype, setanimationtype] = useState('fadeInUpBig');
+  const [kmaway, SetKmAway] = useState(0);
 
-  
+  const {AuthToken, restrauntdetails, currentRestrauntid} = useSelector(
+    state => state.userReducer,
+  );
+  const dispatch = useDispatch();
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('hehhehehehh');
       setCamScanner(false);
       setTimeout(async () => {
         setCamScanner(true);
@@ -46,6 +59,39 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
     return unsubscribe;
   }, [navigation]);
 
+  useEffect(() => {
+    if (restrauntdetails != null) {
+      setanimationstate(true);
+      calculateLoc();
+    }
+  }, [restrauntdetails]);
+  const calculateLoc = () => {
+    console.log(
+      restrauntdetails.Latitude,
+      restrauntdetails.Longitude,
+      'Restaurant',
+      route?.params?.latitude,
+      route?.params?.longitude,
+      'USER',
+    );
+    let rlat1 = (Math.PI * restrauntdetails.Latitude) / 180;
+    // console.log('rlat1' + rlat1);
+    let rlat2 = (Math.PI * route?.params?.latitude) / 180;
+    // console.log('rlat2' + rlat2);
+    let theta = restrauntdetails.Longitude - route?.params?.longitude;
+    // console.log('theta' + theta);
+    let rtheta = (Math.PI * theta) / 180;
+    // console.log('rtheta' + rtheta);
+    let dist =
+      Math.sin(rlat1) * Math.sin(rlat2) +
+      Math.cos(rlat1) * Math.cos(rlat2) * Math.cos(rtheta);
+    dist = Math.acos(dist);
+    dist = (dist * 180) / Math.PI;
+    dist = dist * 60 * 1.1515;
+    dist = dist * 1.609344;
+    SetKmAway(dist.toFixed(2));
+    // console.log(dist, 'final dist');
+  };
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
       <View
@@ -55,7 +101,6 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
           width: '100%',
           backgroundColor: '#000',
         }}>
-                
         <View style={{position: 'absolute', top: getStatusBarHeight()}}>
           <TransparentHeader
             title={'Scan QR Code'}
@@ -72,61 +117,91 @@ const Qrcode = ({navigation, drawerAnimationStyle}) => {
             onReadCode={event => {
               setQrvalue(event.nativeEvent.codeStringValue),
                 setScanPermission(false);
-                setanimationstate(true)
+              dispatch(
+                getallrestrauntsbyid(
+                  event.nativeEvent.codeStringValue,
+                  AuthToken,
+                ),
+              );
+              // console.log(event.nativeEvent.codeStringValue, 'eventtt');
             }}
             showFrame={true} // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
             laserColor="red" // (default red) optional, color of laser in scanner frame
             frameColor="#962E2B" // (default white) optional, color of border of scanner frame
           />
         )}
-{animationstate &&
-<Animatable.View
-        
-         
-        animation={animationstate && qrvalue != "" ? "fadeInUpBig" : animationstate && qrvalue == "" ? "fadeOutDownBig" : null}
-        onAnimationEnd={() => {
-          // setanimationstate(false);
-        
-      
-          // if(animationtype == "fadeInUpBig"){
-          //   setanimationtype("fadeOutDownBig")
-          // //  setlogoutmodal(false)
-          
-          // }else{
-          //   setanimationtype("fadeInUpBig")
-       
-          // }
-         
-        
-        }}
-        easing="ease"
-        iterationCount={1}>
-        <View
-          style={{
-            width: '100%',
-            paddingHorizontal: scalableheight.three,
-
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-bottom: scalableheight.three,
-            elevation: 100000,
-            zIndex: 1000000,
-          }}>
-          <Favourites
-            image={require('../Resources/images/food.jpg')}
-            title={'Mexican Enchiladas'}
-            reviews={'8.9 (350 reviews)'}
-            time={'9:00 AM - 10:00PM'}
-            onPress={() => {
-              navigation.navigate('Restaurantpage');
-              setQrvalue('');
-              setScanPermission(true);
+        {animationstate && (
+          <Animatable.View
+            animation={
+              animationstate && qrvalue != ''
+                ? 'fadeInUpBig'
+                : animationstate && qrvalue == ''
+                ? 'fadeOutDownBig'
+                : null
+            }
+            onAnimationEnd={() => {
+              // setanimationstate(false);
+              // if(animationtype == "fadeInUpBig"){
+              //   setanimationtype("fadeOutDownBig")
+              // //  setlogoutmodal(false)
+              // }else{
+              //   setanimationtype("fadeInUpBig")
+              // }
             }}
-            distance={'2.5KM AWAY'}
-          />
-        </View>
-      </Animatable.View>}
+            easing="ease"
+            iterationCount={1}>
+            <View
+              style={{
+                width: '100%',
+                paddingHorizontal: scalableheight.three,
+
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                bottom: scalableheight.three,
+                elevation: 100000,
+                zIndex: 1000000,
+              }}>
+              <Favourites
+                image={restrauntdetails?.Logo}
+                title={restrauntdetails?.BranchName}
+                reviews={
+                  restrauntdetails?.AvgRating +
+                  ' (' +
+                  restrauntdetails?.RatingCount +
+                  ' reviews)'
+                }
+                time={
+                  restrauntdetails?.OpeningTime +
+                  ' - ' +
+                  restrauntdetails?.ClosingTime
+                }
+                onPress={() => {
+                  dispatch(storerestrauntbasicdata(restrauntdetails));
+                  dispatch(storedistance(restrauntdetails?.Distance));
+
+                  if (
+                    currentRestrauntid != restrauntdetails?.RestaurantBranchId
+                  ) {
+                    dispatch(storecartprice(0));
+                    dispatch(cleancart());
+                    dispatch(
+                      storerestrauntid(restrauntdetails?.RestaurantBranchId),
+                    );
+                  }
+
+                  navigation.navigate('Restaurantpage', {
+                    latitude: route?.params?.latitude,
+                    longitude: route?.params?.longitude,
+                  });
+                  setQrvalue('');
+                  setScanPermission(true);
+                }}
+                distance={kmaway + ' KM AWAY'}
+              />
+            </View>
+          </Animatable.View>
+        )}
       </View>
     </Animated.View>
   );

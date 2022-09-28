@@ -176,6 +176,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     currentRestrauntid,
     AuthToken,
     internetconnectionstate,
+    Selectedcurrentaddress
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
@@ -852,7 +853,10 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                   setsearch(val);
                 }}
                 OnPress={() => {
-                  navigation.navigate('Qrcode');
+                  navigation.navigate('Qrcode', {
+                    latitude: lat,
+                    longitude: long,
+                  });
                 }}
               />
             </View>
@@ -1042,9 +1046,10 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                   onPress={() => {
                     setshowbottomsheet(true);
                   }}
-                  Heading={'Home'}
-                  Details={'Clifton block 2, plot no 245, near bilawal house'}
+                  Heading={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].place : 'Current Location'}
+                  Details={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].address :  pinlocation}
                 />
+                        
               </View>
               <View
                 style={{

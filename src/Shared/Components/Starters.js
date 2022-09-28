@@ -71,7 +71,7 @@ const navigation = useNavigation();
 </View>
 <View style={{height:"100%", width: "25%", alignItems:"flex-end", justifyContent:"center", paddingRight: scalableheight.one}}>
 <Image
-    resizeMode= "contain"
+    resizeMode= "cover"
     style={{
       width: scalableheight.tweleve,
       height: scalableheight.tweleve,

@@ -34,7 +34,7 @@ export default function Categoriescard(props) {
       }}>
       <ImageBackground
         borderRadius={scalableheight.one}
-        resizeMode="stretch"
+        resizeMode="cover"
         style={{
           alignItems: 'center',
           justifyContent: 'center',

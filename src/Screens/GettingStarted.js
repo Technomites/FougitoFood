@@ -72,49 +72,49 @@ const GettingStarted = props => {
     // StatusBar.setBarStyle('light-content');
   }, []);
 
-  useEffect(() => {
-    NetInfo.fetch().then(state => {
+//   useEffect(() => {
+//     NetInfo.fetch().then(state => {
    
-      if (state.isConnected == true && state.isInternetReachable == true) {
-       dispatch(isconnected(true))
-      } else {
-        dispatch(isconnected(false))
-      }
-    });
-    gettoken();
-  }, []);
+//       if (state.isConnected == true && state.isInternetReachable == true) {
+//        dispatch(isconnected(true))
+//       } else {
+//         dispatch(isconnected(false))
+//       }
+//     });
+//     gettoken();
+//   }, []);
 
-  async function gettoken() {
-    const cartdatastore = await AsyncStorage.getItem('cartdata');
-    // console.log("my cart data" + JSON.stringify(JSON.parse(cartdatastore)))
-    dispatch(storecartdata(JSON.parse(cartdatastore)));
-    const currentRestrauntidstore = await AsyncStorage.getItem('currentRestrauntid');
-    dispatch(storerestrauntid(JSON.parse(currentRestrauntidstore)));
-    const pricestore = await AsyncStorage.getItem('price');
-    dispatch(storecartprice(JSON.parse(pricestore)));
+//   async function gettoken() {
+//     const cartdatastore = await AsyncStorage.getItem('cartdata');
+//     // console.log("my cart data" + JSON.stringify(JSON.parse(cartdatastore)))
+//     dispatch(storecartdata(JSON.parse(cartdatastore)));
+//     const currentRestrauntidstore = await AsyncStorage.getItem('currentRestrauntid');
+//     dispatch(storerestrauntid(JSON.parse(currentRestrauntidstore)));
+//     const pricestore = await AsyncStorage.getItem('price');
+//     dispatch(storecartprice(JSON.parse(pricestore)));
     
     
-    const value = await AsyncStorage.getItem('AccessToken');
-     const refresh = await AsyncStorage.getItem('TokenInfo');
-    console.log(value);
-    if (value != undefined && value != '') {
-      dispatch(storetoken(JSON.parse(value)));
+//     const value = await AsyncStorage.getItem('AccessToken');
+//      const refresh = await AsyncStorage.getItem('TokenInfo');
+//     console.log(value);
+//     if (value != undefined && value != '') {
+//       dispatch(storetoken(JSON.parse(value)));
 
-      if (refresh != undefined && refresh != '') {
+//       if (refresh != undefined && refresh != '') {
    
-        dispatch(storetokenrefresh(JSON.parse(refresh)));
-      }
-    }
+//         dispatch(storetokenrefresh(JSON.parse(refresh)));
+//       }
+//     }
    
-  }
+//   }
 
-  useEffect(() => {
-    if(refreshtokendata != null){
-      dispatch(refreshmytoken(refreshtokendata))
-// console.log("yoooo1" + JSON.stringify(refreshtokendata))
-    }
+//   useEffect(() => {
+//     if(refreshtokendata != null){
+//       dispatch(refreshmytoken(refreshtokendata))
+// // console.log("yoooo1" + JSON.stringify(refreshtokendata))
+//     }
 
-  }, [refreshtokendata]);
+//   }, [refreshtokendata]);
   
 
   return (
@@ -207,7 +207,12 @@ const GettingStarted = props => {
                 setanimationstate(true);
                 count < 2
                   ? setcount(count + 1)
-                  : props.navigation.replace('Drawernavigator');
+                  : (
+                     AsyncStorage.setItem(
+                      'GettingStarted',
+                      "Done",
+                    ),
+                    props.navigation.replace('Drawernavigator'))
                 // getstarted[count]?.onPress
               }}
             />

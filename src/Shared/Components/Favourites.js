@@ -129,7 +129,7 @@ export default function Favourites(props) {
           paddingRight: scalableheight.one,
         }}>
         <Image
-          resizeMode="stretch"
+          resizeMode="contain"
           style={{
             width: '100%',
             height: scalableheight.tweleve,

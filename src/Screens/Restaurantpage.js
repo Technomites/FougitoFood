@@ -209,7 +209,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     cartdata,
     price,
     AuthToken,
-    addedtofavourite
+    addedtofavourite,
+    Selectedcurrentaddress
  
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
@@ -1034,8 +1035,8 @@ found = 1
                 }}>
                 <View style={{width: '95%'}}>
                   <Infobar
-                    Heading={'Home'}
-                    Details={'Clifton block 2, plot no 245, near bilawal house'}
+                      Heading={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].place : 'Current Location'}
+                      Details={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].address :  pinlocation}
                     onPress={() => {
                       setshowbottomsheet(true);
                     }}

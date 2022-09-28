@@ -11,6 +11,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import NetInfo from '@react-native-community/netinfo';
 import messaging from '@react-native-firebase/messaging';
 import {useSelector, useDispatch} from 'react-redux';
 import {changelang, seticonfocus} from '../Actions/actions';
@@ -21,8 +22,10 @@ import changeNavigationBarColor, {
 import * as Animatable from 'react-native-animatable';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import LottieView from 'lottie-react-native';
+import {storetoken, storetokenrefresh, refreshmytoken, isconnected, storecartdata, storerestrauntid, storecartprice} from '../Actions/actions';
 // import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 const SplashScreen = props => {
+  const {refreshtokendata, AuthToken} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   useEffect(() => {
     StatusBar.setHidden(false);
@@ -32,8 +35,59 @@ const SplashScreen = props => {
   }, []);
 
   async function navigatetogettingstarted() {
-    props.navigation.replace('GettingStarted');
+    const getgettingstartedvisited = await AsyncStorage.getItem('GettingStarted');
+    if (getgettingstartedvisited != undefined && getgettingstartedvisited != '') {
+      props.navigation.replace('Drawernavigator');
+    }else{
+      props.navigation.replace('GettingStarted');
+    }
+
   }
+
+
+  useEffect(() => {
+    NetInfo.fetch().then(state => {
+   
+      if (state.isConnected == true && state.isInternetReachable == true) {
+       dispatch(isconnected(true))
+      } else {
+        dispatch(isconnected(false))
+      }
+    });
+    gettoken();
+  }, []);
+
+  async function gettoken() {
+    const cartdatastore = await AsyncStorage.getItem('cartdata');
+    // console.log("my cart data" + JSON.stringify(JSON.parse(cartdatastore)))
+    dispatch(storecartdata(JSON.parse(cartdatastore)));
+    const currentRestrauntidstore = await AsyncStorage.getItem('currentRestrauntid');
+    dispatch(storerestrauntid(JSON.parse(currentRestrauntidstore)));
+    const pricestore = await AsyncStorage.getItem('price');
+    dispatch(storecartprice(JSON.parse(pricestore)));
+    
+    
+    const value = await AsyncStorage.getItem('AccessToken');
+     const refresh = await AsyncStorage.getItem('TokenInfo');
+    console.log(value);
+    if (value != undefined && value != '') {
+      dispatch(storetoken(JSON.parse(value)));
+
+      if (refresh != undefined && refresh != '') {
+   
+        dispatch(storetokenrefresh(JSON.parse(refresh)));
+      }
+    }
+   
+  }
+
+  useEffect(() => {
+    if(refreshtokendata != null){
+      dispatch(refreshmytoken(refreshtokendata))
+// console.log("yoooo1" + JSON.stringify(refreshtokendata))
+    }
+
+  }, [refreshtokendata]);
   return (
     <View style={styleSheet.BackgroundImage}>
       {/* 

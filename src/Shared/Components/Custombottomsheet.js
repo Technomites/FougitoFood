@@ -83,14 +83,19 @@ export default function Custombottomsheet(props) {
 
   useEffect(() => {
     if (props?.longitude != null && props?.latitude != null) {
-      console.log(props?.latitude, 'props?.latitude not null----------------------------');
-      console.log(props?.longitude, 'props?.longitude not null---------------------------');
+      console.log(
+        props?.latitude,
+        'props?.latitude not null----------------------------',
+      );
+      console.log(
+        props?.longitude,
+        'props?.longitude not null---------------------------',
+      );
       SetPinLatitude(props?.latitude);
       SetPinLongitude(props?.longitude);
     }
   }, [props?.longitude, props?.latitude]);
 
-  
   function clearandclose() {
     toggleanimation();
     setanimationstate(true);
@@ -384,152 +389,161 @@ export default function Custombottomsheet(props) {
                 //   <SavedAddresses title={'Home'} address={'Clifton block 2'} />
                 // </View>
                 <>
-                 <Text
-                          style={{
-                            color: 'black',
-                            opacity: 0.6,
-                            fontFamily: 'Inter-Regular',
-                            fontSize: fontSize.sixteen,
-                            paddingVertical: scalableheight.one,
-                          }}>
-                          My Saved Addresses
-                        </Text>
-                <FlatList
-                  data={alladdresses}
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{
-                    flexGrow: 1,
-                    //   paddingBottom: scalableheight.three,
-                  }}
-                  ListEmptyComponent={() => <Text style={{       color: 'black',
-                  opacity: 0.5,
-                  fontFamily: 'Inter-SemiBold',
-                  fontSize: fontSize.eleven, }} >No addresses available</Text>}
-                  renderItem={({item, i}) => {
-                    return (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                          let currentaddress = [
-                            {
-                              Latitude: item.Latitude,
-                              Longitude: item.Longitude,
-                              icon: item.Type,
-                              place: item.Type,
-                              address: item.Address,
-                              note: item.NoteToRider,
-                              Street: item.Street,
-                              Floor: item.Floor,
-                            },
-                          ];
-                          console.log(currentaddress);
-                          dispatch(storecurrentaddress(currentaddress));
-                          props.onPressnewCoordinates( item.Latitude, item.Longitude)
-                          //navigation.goBack();
-                        }}
-                        //  disabled={screenname == 'checkout' ? false : true}
-                      >
-                       
-                        <SavedAddresses
-                         Latitude = {item.Latitude}
-                         Longitude = {item.Longitude}
-                          icon={item.Type}
-                          title={item.Type}
-                          address={item.Address}
-                        />
-                      </TouchableOpacity>
-                    );
-                  }}
-                />
-                </>
-              ) : null}
-{props.setlocation != false &&
-              <TouchableOpacity
-                onPress={() => {
-                  setshowmap(true);
-                }}
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 1,
-                  borderColor: 'rgba(211,211,211, 0.5)',
-                  paddingVertical: scalableheight.one,
-                }}>
-                <View style={{justifyContent: 'center'}}>
-                  <FontAwesome5
-                    name={'map-marked-alt'}
-                    color={'#F55050'}
-                    size={fontSize.twenty}
-                  />
-                </View>
-                <View style={{marginLeft: scalableheight.two}}>
-                  <Text
-                    style={{
-                      color: '#F55050',
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.sixteen,
-                    }}>
-                    Pin your Location
-                  </Text>
                   <Text
                     style={{
                       color: 'black',
+                      opacity: 0.6,
                       fontFamily: 'Inter-Regular',
-                      opacity: 0.5,
-                      fontSize: fontSize.fourteen,
+                      fontSize: fontSize.sixteen,
+                      paddingVertical: scalableheight.one,
                     }}>
-                    Open Map
+                    My Saved Addresses
                   </Text>
-                </View>
-              </TouchableOpacity>
-}
+                  <FlatList
+                    data={alladdresses}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{
+                      flexGrow: 1,
+                      //   paddingBottom: scalableheight.three,
+                    }}
+                    ListEmptyComponent={() => (
+                      <Text
+                        style={{
+                          color: 'black',
+                          opacity: 0.5,
+                          fontFamily: 'Inter-SemiBold',
+                          fontSize: fontSize.eleven,
+                        }}>
+                        No addresses available
+                      </Text>
+                    )}
+                    renderItem={({item, i}) => {
+                      return (
+                        <TouchableOpacity
+                          activeOpacity={0.8}
+                          onPress={() => {
+                            let currentaddress = [
+                              {
+                                Latitude: item.Latitude,
+                                Longitude: item.Longitude,
+                                icon: item.Type,
+                                place: item.Type,
+                                address: item.Address,
+                                note: item.NoteToRider,
+                                Street: item.Street,
+                                Floor: item.Floor,
+                              },
+                            ];
+                            console.log(currentaddress);
+                            dispatch(storecurrentaddress(currentaddress));
+                            props.onPressnewCoordinates(
+                              item.Latitude,
+                              item.Longitude,
+                            );
+                            clearandclose();
+                            //navigation.goBack();
+                          }}
+                          //  disabled={screenname == 'checkout' ? false : true}
+                        >
+                          <SavedAddresses
+                            Latitude={item.Latitude}
+                            Longitude={item.Longitude}
+                            icon={item.Type}
+                            title={item.Type}
+                            address={item.Address}
+                          />
+                        </TouchableOpacity>
+                      );
+                    }}
+                  />
+                </>
+              ) : null}
+              {props.setlocation != false && (
+                <TouchableOpacity
+                  onPress={() => {
+                    setshowmap(true);
+                  }}
+                  style={{
+                    flexDirection: 'row',
+                    borderBottomWidth: 1,
+                    borderColor: 'rgba(211,211,211, 0.5)',
+                    paddingVertical: scalableheight.one,
+                  }}>
+                  <View style={{justifyContent: 'center'}}>
+                    <FontAwesome5
+                      name={'map-marked-alt'}
+                      color={'#F55050'}
+                      size={fontSize.twenty}
+                    />
+                  </View>
+                  <View style={{marginLeft: scalableheight.two}}>
+                    <Text
+                      style={{
+                        color: '#F55050',
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: fontSize.sixteen,
+                      }}>
+                      Pin your Location
+                    </Text>
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontFamily: 'Inter-Regular',
+                        opacity: 0.5,
+                        fontSize: fontSize.fourteen,
+                      }}>
+                      Open Map
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )}
             </>
           ) : (
             <View>
-           <View style={{height: scalableheight.two}}></View>
-          <GooglePlacesAutocomplete
-            suppressDefaultStyles={false}
-            //  styles ={{
+              <View style={{height: scalableheight.two}}></View>
+              <GooglePlacesAutocomplete
+                suppressDefaultStyles={false}
+                //  styles ={{
 
-            //   ...styleSheet.shadow,
-            //   width: '100%',
-            //   height: scalableheight.six,
-            //   fontSize: fontSize.fifteen,
-            //   backgroundColor: '#F9F9F9',
-            //   alignSelf: 'center',
-            //   borderRadius: fontSize.borderradiusmedium,
-            //   paddingHorizontal: '5%',
-            //   marginHorizontal: '0.4%',
-            // }}
-            styles={{
-              textInput: {
-                ...styleSheet.shadow,
-                width: '100%',
-                height: scalableheight.six,
-                fontSize: fontSize.fifteen,
-                backgroundColor: '#F9F9F9',
-                alignSelf: 'center',
-                borderRadius: fontSize.borderradiusmedium,
-                paddingHorizontal: '5%',
-                marginHorizontal: '0.4%',
-              },
-            }}
-            placeholder="Search"
-            onPress={(data, details = null) => {
-              setpinlocation(data.description);
-              Geocoder.from(data.description)
-                .then(json => {
-                  var location = json.results[0].geometry.location;
-                  SetPinLatitude(location.lat),
-                  SetPinLongitude(location.lng);
-            
-                })
-                .catch(error => console.warn(error));
-            }}
-            query={{
-              key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
-              language: 'en',
-            }}
-          />
+                //   ...styleSheet.shadow,
+                //   width: '100%',
+                //   height: scalableheight.six,
+                //   fontSize: fontSize.fifteen,
+                //   backgroundColor: '#F9F9F9',
+                //   alignSelf: 'center',
+                //   borderRadius: fontSize.borderradiusmedium,
+                //   paddingHorizontal: '5%',
+                //   marginHorizontal: '0.4%',
+                // }}
+                styles={{
+                  textInput: {
+                    ...styleSheet.shadow,
+                    width: '100%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                  },
+                }}
+                placeholder="Search"
+                onPress={(data, details = null) => {
+                  setpinlocation(data.description);
+                  Geocoder.from(data.description)
+                    .then(json => {
+                      var location = json.results[0].geometry.location;
+                      SetPinLatitude(location.lat),
+                        SetPinLongitude(location.lng);
+                    })
+                    .catch(error => console.warn(error));
+                }}
+                query={{
+                  key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
+                  language: 'en',
+                }}
+              />
               <View
                 style={{
                   width: '100%',
@@ -611,12 +625,7 @@ export default function Custombottomsheet(props) {
                       SetPinLatitude(region.latitude),
                         SetPinLongitude(region.longitude);
                     }
-                  }}
-
-                
-                >
-               
-                </MapView>
+                  }}></MapView>
                 <View
                   style={{
                     width: scalableheight.eight,
@@ -657,8 +666,7 @@ export default function Custombottomsheet(props) {
                   onPress={() => {
                     if (showmap == true) {
                       setshowmap(false);
-                       props.onPressnewCoordinates(pinlatitude, pinLongitude)
-                    
+                      props.onPressnewCoordinates(pinlatitude, pinLongitude);
                     } else {
                       clearandclose();
                     }
