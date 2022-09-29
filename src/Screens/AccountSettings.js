@@ -176,6 +176,17 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
       });
       setLoader(false);
     }
+    else if (UserUpdateProfileStatus === 'Network Request Failed') {
+      toast.current.show('Network Request Failed', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      setLoader(false);
+    }
   }, [UserUpdateProfileStatus, UserUpdateProfileMessage]);
   // function postupdatedprofile() {
   //   if (Name == '') {

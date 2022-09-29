@@ -21,6 +21,7 @@ import {fontSize, scalableheight} from '../../Utilities/fonts';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 export default function Favourites(props) {
+  console.log(props?.image, 'as ff');
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -43,7 +44,7 @@ export default function Favourites(props) {
       <View
         style={{
           height: '100%',
-          width: '60%',
+          width: '70%',
           justifyContent: 'center',
           padding: scalableheight.two,
         }}>
@@ -123,17 +124,21 @@ export default function Favourites(props) {
       <View
         style={{
           height: '100%',
-          width: '40%',
+          width: scalableheight.thirteen,
+          //  width:''
           alignItems: 'flex-end',
           justifyContent: 'center',
           paddingRight: scalableheight.one,
         }}>
         <Image
           resizeMode="contain"
+          resizeMethod="resize"
           style={{
             width: '100%',
             height: scalableheight.tweleve,
             borderRadius: fontSize.eleven,
+            borderWidth: 1,
+            alignItems: 'center',
           }}
           source={{uri: props?.image}}></Image>
       </View>

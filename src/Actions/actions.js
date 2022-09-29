@@ -27,6 +27,7 @@ export const ChangedPasswordMessage = 'ChangedPasswordMessage';
 export const OTP_Verify = 'OTP_Verify';
 export const OTP_Verify2 = 'OTP_Verify2';
 export const Reset_Password = 'Reset_Password';
+export const Reset_Password2 = 'Reset_Password2';
 export const couponsCart = 'couponsCart';
 export const Restraunt_Distance = 'Restraunt_Distance';
 export const StoreToken = 'StoreToken';
@@ -364,9 +365,19 @@ export const savemyaddress = (data, token) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
+      }).catch(error => {
+        dispatch({
+          type: SAVEADDRESS,
+          payloadstatus: 'Network Request Failed',
+        });
       });
 
-      const json = await result.json();
+      const json = await result.json().catch(error => {
+        dispatch({
+          type: SAVEADDRESS,
+          payloadstatus: 'Network Request Failed',
+        });
+      });
       console.log('savemyaddress' + JSON.stringify(json));
 
       dispatch({
@@ -450,13 +461,26 @@ export const createorder = (AuthToken, data) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
+      }).catch(error => {
+        dispatch({
+          type: CreateOrder,
+          payload:
+            'We are unable to place your order at the moment. Please try again later.',
+          payloadorderresult: 0,
+        });
+      });
+      const json = await result.json().catch(error => {
+        dispatch({
+          type: CreateOrder,
+          payload:
+            'We are unable to place your order at the moment. Please try again later.',
+          payloadorderresult: 0,
+        });
       });
 
-      const json = await result.json();
       console.log('postserviceratings' + JSON.stringify(json));
 
       if (json.Status === 'Success') {
-       
         dispatch({
           type: CreateOrder,
           payload: 'success',
@@ -551,8 +575,23 @@ export const Signup = (number, fullname, email, password) => {
       const result = await fetch(
         API_URl + 'customer/account/Register',
         requestOptions,
-      );
-      json = await result.json();
+      ).catch(error => {
+        dispatch({
+          type: SignUP_User,
+          SignUpPayLoad: '',
+          SignUpstatus: 'Network Request Failed',
+          SignUpMessage: 'Network Request Failed',
+        });
+      });
+
+      json = await result.json().catch(error => {
+        dispatch({
+          type: SignUP_User,
+          SignUpPayLoad: '',
+          SignUpstatus: 'Network Request Failed',
+          SignUpMessage: 'Network Request Failed',
+        });
+      });
       console.log(json?.Result, 'Register Register Register');
       if (json.Status == 'Success') {
         dispatch({
@@ -595,17 +634,21 @@ export const Verification = (otp, userid) => {
       const result = await fetch(
         API_URl + `Customer/Account/VerifyOTP/${otp}/${userid}`,
         requestOptions,
-      );
-      json = await result.json();
+      ).catch(error => {
+        dispatch({
+          type: OTP_Verify,
+          payloadVerify: 'Network Request Failed',
+        });
+      });
+
+      json = await result.json().catch(error => {
+        dispatch({
+          type: OTP_Verify,
+          payloadVerify: 'Network Request Failed',
+        });
+      });
       //  console.log(json, 'IF CONDITION OUTER');
       if (json.Status == 'Success') {
-        // dispatch({
-        //   type: Login_User,
-        //   payload: json?.Result,
-        //   payloadtoken: json?.Result.AuthData.TokenInfo.Token,
-        //   payloadCustomer: json?.Result.Customer,
-        //   LoadLoginStatus: json?.Status,
-        // });
         dispatch({
           type: OTP_Verify,
           payloadVerify: json?.Status,
@@ -613,8 +656,8 @@ export const Verification = (otp, userid) => {
         console.log('Success', 'OTP OTP OTP');
       } else if (json.Status == 'Error') {
         dispatch({
-          type: OTP_Verify2,
-          payloadVerify: json?.Status,
+          type: OTP_Verify,
+          payloadVerify: json.Message,
         });
       }
     };
@@ -669,8 +712,25 @@ export const Login = (number, password) => {
       const result = await fetch(
         API_URl + 'Customer/Account/Login',
         requestOptions,
-      );
-      json = await result.json();
+      ).catch(error => {
+        dispatch({
+          type: Login_User,
+          payload: '',
+          payloadtoken: '',
+          payloadCustomer: '',
+          LoadLoginStatus: 'Network request failed',
+        });
+      });
+
+      json = await result.json().catch(error => {
+        dispatch({
+          type: Login_User,
+          payload: '',
+          payloadtoken: '',
+          payloadCustomer: '',
+          LoadLoginStatus: 'Network request failed',
+        });
+      });
       console.log(json, 'LOGIN LOGIN LOGIN');
 
       if (json.Status == 'Success') {
@@ -692,7 +752,7 @@ export const Login = (number, password) => {
         );
         await AsyncStorage.setItem('Password', password);
         console.log('Success');
-      } else if (json?.Status == 'Error') {
+      } else {
         console.log(json?.Message, 'EROORRR');
         dispatch({
           type: Login_User,
@@ -703,8 +763,11 @@ export const Login = (number, password) => {
         });
       }
     };
-  } catch (error) {}
+  } catch (error) {
+    console.log('ahaha');
+  }
 };
+
 export const LoginStateNull = () => {
   return async dispatch => {
     dispatch({
@@ -728,8 +791,20 @@ export const ForgetPassword = number => {
       const result = await fetch(
         API_URl + `Customer/Account/ForgetPassword/${number}`,
         requestOptions,
-      );
-      json = await result.json();
+      ).catch(error => {
+        dispatch({
+          type: ChangedPasswordMessage,
+          ChangedPasswordMessagePayLoad: 'Network Request Failed',
+          MessageError: 'Network Request Failed',
+        });
+      });
+      json = await result.json().catch(error => {
+        dispatch({
+          type: ChangedPasswordMessage,
+          ChangedPasswordMessagePayLoad: 'Network Request Failed',
+          MessageError: 'Network Request Failed',
+        });
+      });
       console.log(json, 'ForgetPassword ForgetPassword ForgetPassword');
 
       if (json.Status == 'Success') {
@@ -795,6 +870,7 @@ export const ForgetPasswordNullstate = () => {
     dispatch({
       type: ChangedPasswordMessage,
       ChangedPasswordMessagePayLoad: '',
+      MessageError: '',
     });
   };
 };
@@ -803,7 +879,7 @@ export const OTPNullstate = () => {
   return async dispatch => {
     dispatch({
       type: OTP_Verify2,
-      payloadVerify: json?.Status,
+      payloadVerify: '',
     });
   };
 };
@@ -831,8 +907,20 @@ export const ChangedPassword = (userid, newpassword, confirmpassword) => {
       const result = await fetch(
         API_URl + `Customer/Account/ResetPassword`,
         requestOptions,
-      );
-      json = await result.json();
+      ).catch(error => {
+        dispatch({
+          type: Reset_Password,
+          newPassword: 'Network Request Failed',
+          Message: 'Network Request Failed',
+        });
+      });
+      json = await result.json().catch(error => {
+        dispatch({
+          type: Reset_Password,
+          newPassword: 'Network Request Failed',
+          Message: 'Network Request Failed',
+        });
+      });
       if (json.Status == 'Success') {
         console.log(json.Status, 'Customer/Account/ResetPassword');
         dispatch({
@@ -852,7 +940,15 @@ export const ChangedPassword = (userid, newpassword, confirmpassword) => {
     console.log(error);
   }
 };
-
+export const ResetpasswordChangednull = () => {
+  return async dispatch => {
+    dispatch({
+      type: Reset_Password2,
+      newPassword: '',
+      Message: '',
+    });
+  };
+};
 export const Contactemail = (AuthToken, message) => {
   try {
     return async dispatch => {
@@ -871,8 +967,22 @@ export const Contactemail = (AuthToken, message) => {
         redirect: 'follow',
       };
 
-      const result = await fetch(API_URl + `ContactUs`, requestOptions);
-      json = await result.json();
+      const result = await fetch(API_URl + `ContactUs`, requestOptions).catch(
+        error => {
+          dispatch({
+            type: contactusemail,
+            emailpayload: 'Network Request Failed',
+            messagepayload: 'Network Request Failed',
+          });
+        },
+      );
+      json = await result.json().catch(error => {
+        dispatch({
+          type: contactusemail,
+          emailpayload: 'Network Request Failed',
+          messagepayload: 'Network Request Failed',
+        });
+      });
       if (json.Status == 'Success') {
         dispatch({
           type: contactusemail,
@@ -880,7 +990,11 @@ export const Contactemail = (AuthToken, message) => {
           messagepayload: json?.Message,
         });
       } else if (json.Status == 'Error') {
-        console.log();
+        dispatch({
+          type: contactusemail,
+          emailpayload: json?.Status,
+          messagepayload: json?.Message,
+        });
       }
     };
   } catch (error) {
@@ -926,8 +1040,20 @@ export const ChangedNewPassword = (
       const result = await fetch(
         API_URl + `Customer/Account/ChangePassword`,
         requestOptions,
-      );
-      json = await result.json();
+      ).catch(error => {
+        dispatch({
+          type: NewpasswordChanged,
+          changedPassword: 'Network Request Failed',
+          Message: 'Network Request Failed',
+        });
+      });
+      json = await result.json().catch(error => {
+        dispatch({
+          type: NewpasswordChanged,
+          changedPassword: 'Network Request Failed',
+          Message: 'Network Request Failed',
+        });
+      });
       if (json.Status == 'Success') {
         console.log(json.Status, 'Customer/Account/ChangePassword');
         dispatch({
@@ -1191,8 +1317,8 @@ export const getallrestraunts = (lat, long) => {
             PageNumber: 1,
             PageSize: 10,
           },
-          "Latitude": lat,
-          "Longitude": long
+          Latitude: lat,
+          Longitude: long,
           // Latitude: 24.8581087,
           // Longitude: 67.0605057,
         }),
@@ -1414,9 +1540,21 @@ export const logout = AuthToken => {
       const result = await fetch(
         API_URl + `Customer/Account/Logout`,
         requestOptions,
-      );
+      ).catch(error => {
+        dispatch({
+          type: Logoutuser,
+          LogoutSatusPayload: 'Network Request Failed',
+          LogoutPayload: 'Network Request Failed',
+        });
+      });
 
-      json = await result.json();
+      json = await result.json().catch(error => {
+        dispatch({
+          type: Logoutuser,
+          LogoutSatusPayload: 'Network Request Failed',
+          LogoutPayload: 'Network Request Failed',
+        });
+      });
 
       if (json?.Status == 'Success') {
         dispatch({
@@ -1467,7 +1605,13 @@ export const ProfileUpdate = (Name, EmailAddress, PhoneNumber, AuthToken) => {
       const result = await fetch(
         API_URl + `Customer/Account/Update`,
         requestOptions,
-      );
+      ).catch(error => {
+        dispatch({
+          type: UpdateProfile,
+          UpdateProfileStatus: 'Network Request Failed',
+          UpdateProfileStatusMessage: 'Network Request Failed',
+        });
+      });
       json = await result.json();
       console.log(json, 'Hello ,HELLO');
 
