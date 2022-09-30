@@ -1154,10 +1154,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@r0b0t3d/react-native-collapsible@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@r0b0t3d/react-native-collapsible/-/react-native-collapsible-1.2.0.tgz#8baf68826d316b78eb7b383547fd73fb356634c9"
-  integrity sha512-og36R+JCYLsvVo6v8h8mWX9SgUH0YcR71k+ORyt4GXG9gBZW2A2tVfgE84PIo47dKoP7w1QDau0GuO3ysN1OTQ==
+"@r0b0t3d/react-native-collapsible@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@r0b0t3d/react-native-collapsible/-/react-native-collapsible-1.2.1.tgz#aaa42d51e045fd0f9971bf52a5f8d14d47c1194d"
+  integrity sha512-XayWImQnu95vpXASG3GQ8fQXTeVlYs+wYYkz09jFTPE3oBPkBrvqDBZ3IkVxnAd35U6MxMU7zqZ8Lk0WKrpuzw==
 
 "@react-native-community/async-storage@^1.12.1":
   version "1.12.1"

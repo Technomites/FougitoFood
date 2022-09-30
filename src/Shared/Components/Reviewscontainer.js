@@ -29,7 +29,7 @@ const navigation = useNavigation();
         ...styleSheet.shadow,
         width: '100%',
         alignSelf: 'center',
-        height: scalableheight.fifteen,
+        height: scalableheight.thirteen,
        flexDirection:"row",
         alignItems: 'center',
         justifyContent: 'center',

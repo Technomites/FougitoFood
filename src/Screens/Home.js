@@ -60,7 +60,6 @@ import NetInfo from '@react-native-community/netinfo';
 import BookingHeader from '../Shared/Components/BookingHeader';
 import HeaderComponent from '../Shared/Components/HeaderComponent';
 import Infobar from '../Shared/Components/Infobar';
-import Categoriescard from '../Shared/Components/Categoriescard';
 import Animated from 'react-native-reanimated';
 import Transparentinfobar from '../Shared/Components/Transparentinfobar';
 import Transparentsearch from '../Shared/Components/Transparentsearch';
@@ -675,6 +674,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               latitude: lat,
               longitude: long,
             });
+            // navigation.navigate('Restaurantpage');
           }}
           distance={item?.Distance + ' AWAY'}
         />

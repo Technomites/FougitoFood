@@ -1,46 +1,54 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { ImageBackground, Text, View, StyleSheet, Animated, Image, FlatList } from 'react-native';
+import { ImageBackground, Text, View, StyleSheet, Image, FlatList, Animated } from 'react-native';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import Reviewscontainer from './Reviewscontainer';
 import Categoriescard from './Categoriescard';
 import SearchBar from './SearchBar';
 import Infobar from './Infobar';
+
 import AnimatableInfoBar from './AnimatableInfoBar';
 import AnimatableRestaurantContainer from './AnimatableRestaurantContainer';
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import renderIf from 'render-if';
-
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  getpopularcategoriesbyid,
+  getrestrauntmenubyid,
+  updatedmenuselection,
+  savemenucategoryoptiondetailsdata,
+  storecartdata,
+  storecartprice,
+  pickupstate,
+  markfavourite,
+  getallrestrauntsbyid,
+  clearfavourite
+} from '../../Actions/actions';
 const DynamicHeader = ( props) => {
-  const [flavours, setflavours] = useState([
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-    {
-      selected: false,
-      serving: 'Chicken Munchurian',
-    },
-    {
-      selected: false,
-      serving: 'Pasta',
-    },
-    {
-      selected: false,
-      serving: 'Onion',
-    },
-    {
-      selected: false,
-      serving: 'Lettuce',
-    },
-  ])
-  const Max_Header_Height = scalableheight.sixtythree  + getStatusBarHeight();
+
+  const {
+    restrauntdetails,
+    popularcategories,
+    restrauntmenu,
+    retaurantmenucategorydataoption,
+    cartdata,
+    price,
+    AuthToken,
+    addedtofavourite,
+    Selectedcurrentaddress
+ 
+  } = useSelector(state => state.userReducer);
+  const dispatch = useDispatch();
+
+  const Max_Header_Height = scalableheight.sixtyone  + getStatusBarHeight();
+  //const Max_Header_Height = scalableheight.ninety  + getStatusBarHeight();
+  
 const Min_Header_Height = 0;
 const Scroll_Distance = Max_Header_Height - Min_Header_Height
 const [search, setsearch] = useState('');
 const animatedHeaderHeight =  props.animHeaderValue.interpolate({
-  inputRange: [ 0, Scroll_Distance],
+  inputRange: [0, 10],
   outputRange: [Max_Header_Height , Min_Header_Height],
   extrapolate: 'clamp',
   useNativeDriver: true 
@@ -54,11 +62,12 @@ const animateHeaderBackgroundColor = props.animHeaderValue.interpolate({
 
 const renderpopularcategories = ({item}) => (
   <Categoriescard
-    image={require('../../Resources/images/food.jpg')}
-    type={'Pizza'}
-    price={20}
+    image={item?.Image}
+    type={item?.CategoryName}
+    price={item?.AvgPrice}
   />
 );
+
 
   return (
     <>
@@ -70,108 +79,131 @@ const renderpopularcategories = ({item}) => (
       {
         height: animatedHeaderHeight,
         backgroundColor: animateHeaderBackgroundColor,
-       
    
+
       }
 
     ]}
   >
-{/*   
-          // height:"33%"
-         // eight: "21%", */}
 
-              <View style={{width: "100%", height:scalableheight.twentythree,}}>
-              <ImageBackground
-            resizeMode="stretch"
-            style={{
-              width: '100%',
-              height: "100%" ,
-           
-   justifyContent:"flex-end",
 
-            
-              // scalableheight.twenty + getStatusBarHeight()
-            }}
-            imageStyle={{
-              borderBottomLeftRadius: fontSize.twenty,
-              borderBottomRightRadius: fontSize.twenty,
-           
-              
-            }}
-            source={require('../../Resources/images/homebackground.png')}>
-              
-             
-    <View style={{width: "95%", backgroundColor:"black", height:"33%", alignSelf:"center" , marginBottom: scalableheight.onepointfive}}>
- <AnimatableInfoBar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}
-    onPress={
-     props.showlocation
-    }
- />
-   </View>
-
-  
-
-              </ImageBackground>  
-              </View>
-              <View style={{height: scalableheight.fourteen, width:"100%"}}>
-              <AnimatableRestaurantContainer rating={"8.9"} reviews={"350"} title={"Perfect Grill"} description={"Its the food you love"} image={require('../../Resources/images/grill.png')}/>
-              </View>
-     
-              
-              <View style={{paddingHorizontal: scalableheight.one, alignSelf: 'flex-start', width:"100%",}}>
-<Animatable.View
-        animation="bounceInRight"
-             easing="ease"
-              // iterationCount="infinite"
-              iterationCount={1}
+          
+   <ImageBackground
+              resizeMode="cover"
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: scalableheight.two,
-                justifyContent: 'flex-start',
                 width: '100%',
-              }}>
+                height: scalableheight.twenty + getStatusBarHeight(),
+                zIndex: 2000,
+                elevation: 2000,
+                // scalableheight.twenty + getStatusBarHeight()
+              }}
+              imageStyle={{
+                borderBottomLeftRadius: fontSize.twenty,
+                borderBottomRightRadius: fontSize.twenty,
+              }}
+              source={require('../../Resources/images/homebackground.png')}>
+            
+
               <View
                 style={{
-                  width: scalableheight.three,
-                  height: scalableheight.three,
+                  width: '100%',
+                  alignSelf: 'center',
+                  height: scalableheight.tweleve,
+                  flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: '#E14E4E',
-                  borderRadius: fontSize.borderradius,
+                  backgroundColor: 'transparent',
+                  paddingHorizontal: scalableheight.one,
+                  bottom: scalableheight.onepointfive,
+                  position:"absolute"
                 }}>
-                <MaterialIcons
-                  name="local-fire-department"
-                  color={'white'}
-                  size={fontSize.fifteen}
-                />
+                <View style={{width: '95%'}}>
+                  <Infobar
+                      Heading={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].place : 'Current Location'}
+                      Details={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].address :  props.pinlocation}
+                    onPress={
+                      props.showlocation
+                    }
+                  />
+                </View>
               </View>
-              <Text
-                style={{
-                  marginLeft: scalableheight.one,
-                  fontFamily: 'Inter-Bold',
-                  fontSize: fontSize.sixteen,
-                  color: '#29262A',
-                }}>
-                Popular Categories
-              </Text>
-            </Animatable.View>
-            <FlatList
-              keyExtractor={(item, index) => index.toString()}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={flavours}
-              renderItem={renderpopularcategories}
-              // onEndReached={() => LoadFeaturedProjectPagination()}
-              // onEndReachedThreshold={0.1}
+            </ImageBackground>
+            <Reviewscontainer
+            token= {AuthToken}
+              rating={restrauntdetails?.AvgRating}
+              reviews={restrauntdetails?.RatingCount}
+              title={restrauntdetails?.BranchName}
+              description={'Its the food you love'}
+              onPress={() => {
+                // console.log(JSON.stringify(restrauntdetails.RestaurantBranchId))
+                // console.log( restrauntdetails?.Isfavourite)
+
+                 dispatch(markfavourite(restrauntdetails?.RestaurantBranchId, restrauntdetails?.Isfavourite ? "DELETE" : "POST", AuthToken))
+              }}
+              Isfavourite = {restrauntdetails?.Isfavourite}
+              image={restrauntdetails?.Logo}
             />
-        
-</View> 
+             <View style={{paddingHorizontal: scalableheight.one,   backgroundColor: '#F6F6F6', width:"100%"}}>
+          
+              <Animatable.View
+                animation="bounceInRight"
+                easing="ease"
+                // iterationCount="infinite"
+                iterationCount={1}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingVertical: scalableheight.two,
+                  justifyContent: 'flex-start',
+                  width: '100%',
+            
+                }}>
+                <View
+                  style={{
+                    width: scalableheight.three,
+                    height: scalableheight.three,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#E14E4E',
+                    borderRadius: fontSize.borderradius,
+                  
+                  }}>
+                  <MaterialIcons
+                    name="local-fire-department"
+                    color={'white'}
+                    size={fontSize.fifteen}
+                  />
+                </View>
+                <Text
+                  style={{
+                    marginLeft: scalableheight.one,
+                    fontFamily: 'Inter-Bold',
+                    color: 'black',
+                    fontSize: fontSize.twenty,
+                  }}>
+                  POPULAR CATEGORIES
+                </Text>
+              </Animatable.View>
 
-<View style={{paddingHorizontal: scalableheight.one, width:"100%",}}>
-<SearchBar search={search} onchange={(val) => {setsearch(val)}}/>
-</View> 
-
+              <FlatList
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={popularcategories}
+                renderItem={renderpopularcategories}
+                // onEndReached={() => LoadFeaturedProjectPagination()}
+                // onEndReachedThreshold={0.1}
+              />
+              <SearchBar
+                // search={search}
+                onchange={val => {
+                  props.search(val)
+                  // setsearch(val);
+                }}
+              /> 
+   
+            </View> 
+     
            
 </Animated.View>
 </>
@@ -184,7 +216,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',      
     // borderBottomLeftRadius: fontSize.twenty,
     //           borderBottomRightRadius: fontSize.twenty,
-           overflow:"hidden"
+            overflow:"hidden"
   },
   headerText: {
     color: '#fff',

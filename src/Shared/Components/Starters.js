@@ -32,7 +32,7 @@ const navigation = useNavigation();
       onPress={props.onPress}
       style={{
         ...styleSheet.shadow,
-        height: scalableheight.fifteen,
+        height: scalableheight.fourteen,
         width: "99%",
         alignItems: 'center',
         justifyContent: 'center',
@@ -80,7 +80,7 @@ const navigation = useNavigation();
     }}
    
       source={{uri: props.image}}></Image>
-      <View style={{width:scalableheight.three, height:scalableheight.three, backgroundColor:"red", position:"absolute", bottom: scalableheight.onepointfive ,right: scalableheight.one, borderBottomRightRadius: fontSize.eleven, alignItems:"center", justifyContent:"center"}}>
+      <View style={{width:scalableheight.three, height:scalableheight.three, backgroundColor:"red", position:"absolute", bottom: scalableheight.pointeightfive ,right: scalableheight.one, borderBottomRightRadius: fontSize.eleven, alignItems:"center", justifyContent:"center"}}>
 
       <Entypo 
                 name="plus"

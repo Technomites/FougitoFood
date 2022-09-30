@@ -213,6 +213,10 @@ export default function AuthenticationModel(props) {
         zIndex: 2,
       });
       console.log('OTP has been expired');
+      setCodeOne('');
+      setCodeTwo('');
+      setCodeThree('');
+      setCodeFour('');
       setLoader(false);
       dispatch(OTPNullstate());
     }
@@ -411,6 +415,10 @@ export default function AuthenticationModel(props) {
         zIndex: 2,
       });
       console.log('OTP has been expired');
+      setCodeOne('');
+      setCodeTwo('');
+      setCodeThree('');
+      setCodeFour('');
       setLoader(false);
       dispatch(OTPNullstate());
     }

@@ -613,7 +613,7 @@ export const Verification = (otp, userid) => {
         console.log('Success', 'OTP OTP OTP');
       } else if (json.Status == 'Error') {
         dispatch({
-          type: OTP_Verify2,
+          type: OTP_Verify,
           payloadVerify: json?.Status,
         });
       }
@@ -803,7 +803,7 @@ export const OTPNullstate = () => {
   return async dispatch => {
     dispatch({
       type: OTP_Verify2,
-      payloadVerify: json?.Status,
+      payloadVerify: "",
     });
   };
 };

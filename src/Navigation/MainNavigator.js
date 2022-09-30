@@ -53,7 +53,7 @@ import * as Animatable from 'react-native-animatable';
 import Home from '../Screens/Home';
 import Restaurantpage from '../Screens/Restaurantpage';
 import Checkout from '../Screens/Checkout';
-import RestaurantPageAnimation from '../Screens/RestaurantPageAnimation';
+// import RestaurantPageAnimation from '../Screens/RestaurantPageAnimation';
 import Settings from '../Screens/Settings';
 import Help from '../Screens/Help';
 import Coupons from '../Screens/Coupons';
@@ -1070,7 +1070,7 @@ const Drawernavigator = props => {
       <Drawer.Screen name="Qrcode" options={{headerShown: false}}>
         {props => <Qrcode {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="RestaurantPageAnimation"
         options={{headerShown: false}}>
         {props => (
@@ -1079,7 +1079,7 @@ const Drawernavigator = props => {
             drawerAnimationStyle={animatedStyle}
           />
         )}
-      </Drawer.Screen>
+      </Drawer.Screen> */}
 
       <Drawer.Screen name="Settings" options={{headerShown: false}}>
         {props => <Settings {...props} drawerAnimationStyle={animatedStyle} />}

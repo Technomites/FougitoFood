@@ -36,12 +36,15 @@ const navigation = useNavigation();
       borderRadius: fontSize.ten,
       marginTop: '3%',
       alignSelf: 'center',
-      marginBottom: '3%',
+      marginBottom:"2%"
+     
     }}>
+
     <TextInput
     value={props.search}
       onChangeText={text => props.onchange(text)}
       placeholder={"Search here"}
+      
       style={{
         width: '100%',
         height: '98%',
@@ -49,12 +52,19 @@ fontSize:fontSize.fifteen,
         backgroundColor:"white",
         alignSelf: 'center',
         borderRadius: fontSize.ten,
-        paddingHorizontal: '5%',
+        paddingHorizontal: scalableheight.seven,
         alignItems:"center",
         justifyContent:"center"
       
       }}
     />
+
+<Ionicons
+        name="search"
+        color={'grey'}
+        size={fontSize.twenty}
+        style={{position: 'absolute', left: '5%', alignSelf: 'center'}}
+      />
       
 
 

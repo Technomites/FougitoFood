@@ -10,7 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@r0b0t3d/react-native-collapsible": "^1.2.0",
+    "@r0b0t3d/react-native-collapsible": "^1.2.1",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/clipboard": "^1.5.1",
     "@react-native-community/datetimepicker": "^6.1.2",

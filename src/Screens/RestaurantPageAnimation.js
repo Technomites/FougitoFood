@@ -36,7 +36,7 @@ import Feather from 'react-native-vector-icons/Feather';
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 
-const RestaurantPageAnimation = ({navigation, drawerAnimationStyle}) => {
+const RestaurantpageAnimation = ({navigation, drawerAnimationStyle}) => {
   const [specialinstructions, setspecialinstructions] = useState('');
   const [cartvisible, setcartvisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
@@ -883,4 +883,4 @@ const styleSheet = StyleSheet.create({
     fontFamily: 'Inter-Bold', color: "black", fontSize: fontSize.twenty, paddingVertical: scalableheight.one
   }
 });
-export default RestaurantPageAnimation;
+export default RestaurantpageAnimation;

@@ -72,7 +72,7 @@ export default function Infobar(props) {
             color: '#29262A',
             opacity: 0.4,
           }}
-          numberOfLines={2}>
+          numberOfLines={1}>
           {props.Details}
         </Text>
       </View>

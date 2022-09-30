@@ -7,6 +7,9 @@ const scalableheight = {
   borderwidth3: height(0.3),
   pointfive: height(0.5),
   pointsevenfive: height(0.75),
+  pointeight: height(0.8),
+  pointeightfive: height(0.85),
+ 
   zeropointnine: height(0.4),
   zeropointsix: height(0.6),
   zeropointeight: height(0.8),
@@ -50,6 +53,8 @@ const scalableheight = {
   fifty: height(50),
   fiftyfive: height(55),
   sixty: height(60),
+  sixtyone: height(61),
+  sixtytwo: height(62),
   sixtythree: height(63),
   sixtyfive: height(65),
   sixtysix: height(66),
