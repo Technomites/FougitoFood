@@ -367,8 +367,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
 
   useEffect(() => {
     setloader2(false);
-    setloader1(false)
-    console.log("this is the id " + orderdetails)
+    setloader1(false);
+    console.log('this is the id ' + orderdetails);
     if (orderplacementstatus != '') {
       if (orderplacementstatus == 'success') {
         toast.current.show('Order Placed', {
@@ -555,13 +555,12 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       };
 
       console.log('all data-----' + JSON.stringify(data));
-      if( AuthToken == ''){
-setloader1(true)
-      }else{
+      if (AuthToken == '') {
+        setloader1(true);
+      } else {
         setloader2(true);
       }
-      
-   
+
       dispatch(createorder(AuthToken, data));
     }
   }

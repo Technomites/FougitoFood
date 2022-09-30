@@ -203,6 +203,19 @@ const CustomDrawerStyle = ({navigation}) => {
       // setLoader(false);
       console.log(UserLogout, 'abcc');
     }
+    else if (userLogoutStatus === 'Network Request Failed') {
+      toast.current.show('Network Request Failed', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      
+       setLoader(false);
+      console.log(UserLogout, 'abcc');
+    }
   }, [userLogoutStatus, UserLogout]);
   const logoutHandle = () => {
     // dispatch(logout(AuthToken));
@@ -211,11 +224,19 @@ const CustomDrawerStyle = ({navigation}) => {
     // console.log(deviceId);
     NetInfo.fetch().then(state => {
       if (state.isConnected == false && state.isInternetReachable == false) {
-        // showToast('Problem with internet connectivity', {
-        //   duration: 500,
-        // });
+        toast.current.show('Network Request Failed', {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+          zIndex: 10,
+          elevation:10
+        });
+        setanimationtype('fadeOutDownBig');
         console.log('no internet');
         setnointernet(true);
+        
         // setLoader(false);
       } else {
         // setModalVisible(false);

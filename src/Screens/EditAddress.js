@@ -261,6 +261,17 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
         });
         dispatch(getalladdresses(AuthToken));
         navigation.goBack();
+      } else if (addresscreationresponse == 'Network Request Failed') {
+        toast.current.show('Network Request Failed', {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+          zIndex: 2,
+        });
+        dispatch(clearaddressresponse());
+        setloader(false);
       } else {
         toast.current.show(
           'There was an error saving your address. Please try again later',
@@ -443,7 +454,6 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
           style={{width: '100%', paddingHorizontal: scalableheight.two}}>
           <View style={{height: scalableheight.one}} />
 
-      
           <GooglePlacesAutocomplete
             suppressDefaultStyles={false}
             //  styles ={{
@@ -712,11 +722,10 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   height: '100%',
                   width: '100%',
                   justifyContent: 'center',
-                  paddingVertical: scalableheight.one
-                  
+                  paddingVertical: scalableheight.one,
                 }}>
                 <TextInput
-                multiline
+                  multiline
                   returnKeyType="next"
                   value={note}
                   onChangeText={text => setnote(text)}
@@ -739,8 +748,6 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                     paddingHorizontal: '5%',
                     textAlignVertical: 'top',
                     height: '100%',
-                
-                 
                   }}
                 />
               </View>

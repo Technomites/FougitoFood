@@ -80,6 +80,19 @@ export default function ChnagePasswordModel(props) {
       console.log('LOGIN ERROROROOROROORO');
       dispatch(NewpasswordChangednull());
       setLoader(false);
+    }else if (NewchangedpasswordStatus === 'Network Request Failed') {
+      toast.current.show("Network Request Failed", {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+
+      console.log('LOGIN ERROROROOROROORO');
+      dispatch(NewpasswordChangednull());
+      setLoader(false);
     }
   }, [NewchangedpasswordStatus, NewchangedpasswordMessage]);
 

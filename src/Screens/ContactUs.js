@@ -99,6 +99,18 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
       dispatch(emailNullstate());
       setMessage('');
       setLoader(false);
+    } else if (detailsContactstatus === 'Network Request Failed') {
+      toast.current.show('Network Request Failed', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      dispatch(emailNullstate());
+      setMessage('');
+      setLoader(false);
     }
   }, [detailsContactstatus, detailsContactmessage]);
 

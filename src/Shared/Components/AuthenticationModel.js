@@ -34,6 +34,7 @@ import {
   OTPNullstate,
   signupnullstate,
   LoginStateNull,
+  ResetpasswordChangednull,
 } from '../../Actions/actions';
 
 import MYButton from './MYButton';
@@ -120,6 +121,18 @@ export default function AuthenticationModel(props) {
       console.log('LOGIN ERROROROOROROORO');
       dispatch(LoginStateNull());
       setLoader(false);
+    } else if (PayLoadLoginStatus === 'Network request failed') {
+      toast.current.show('Network request failed', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      console.log('LOGIN ERROROROOROROORO');
+      dispatch(LoginStateNull());
+      setLoader(false);
     }
   }, [PayLoadLoginStatus]);
   const LoginHandler = () => {
@@ -174,6 +187,18 @@ export default function AuthenticationModel(props) {
       console.log('FAKE FAL+KE');
       setLoader(false);
       dispatch(ForgetPasswordNullstate());
+    } else if (PasswordMessage === 'Network Request Failed') {
+      toast.current.show('Network Request Failed', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      console.log('FAKE FAL+KE');
+      setLoader(false);
+      dispatch(ForgetPasswordNullstate());
     }
   }, [PasswordMessage]);
 
@@ -203,15 +228,17 @@ export default function AuthenticationModel(props) {
       }
 
       dispatch(OTPNullstate());
-    } else if (OtpVerificationStatus === 'Error') {
-      toast.current.show('OTP has been expired', {
-        type: 'normal',
-        placement: 'bottom',
-        duration: 4000,
-        offset: 10,
-        animationType: 'slide-in',
-        zIndex: 2,
-      });
+    } else {
+      if (OtpVerificationStatus != '') {
+        toast.current.show(OtpVerificationStatus, {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+          zIndex: 2,
+        });
+      }
       console.log('OTP has been expired');
       setCodeOne('');
       setCodeTwo('');
@@ -247,11 +274,71 @@ export default function AuthenticationModel(props) {
         animationType: 'slide-in',
         zIndex: 2,
       });
-      console.log('OTP has been expired');
+
+      setLoader(false);
+      dispatch(signupnullstate());
+    } else if (signupStatus === 'Network Request Failed') {
+      toast.current.show(signupmessage, {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+
       setLoader(false);
       dispatch(signupnullstate());
     }
   }, [signupStatus, signupmessage]);
+
+  // Change Password
+  useEffect(() => {
+    console.log(
+      Reset_PasswordStatus,
+      'hhih',
+      MessagePasswordStatus,
+
+      'CHANGE PASSWORD as',
+    );
+    if (Reset_PasswordStatus === 'Success') {
+      toast.current.show(MessagePasswordStatus, {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+
+      setLoader(false);
+      togglescreen(1);
+      setpassword('');
+      Setconfirmpassword('');
+      dispatch(ResetpasswordChangednull());
+    } else if (Reset_PasswordStatus === 'Error') {
+      toast.current.show(MessagePasswordStatus, {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      setLoader(false);
+      dispatch(ResetpasswordChangednull());
+    } else if (Reset_PasswordStatus === 'Network Request Failed') {
+      toast.current.show('Network Request Failed', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      setLoader(false);
+      dispatch(ResetpasswordChangednull());
+    }
+  }, [Reset_PasswordStatus, MessagePasswordStatus]);
 
   const signUpHandler = async () => {
     Keyboard.dismiss();
@@ -383,46 +470,10 @@ export default function AuthenticationModel(props) {
       });
       return;
     } else {
+      setLoader(true);
       dispatch(ChangedPassword(SignupRandomid, password, confirmpassword));
     }
   };
-
-  useEffect(() => {
-    console.log(
-      Reset_PasswordStatus,
-      MessagePasswordStatus,
-      'AuthTokenAuthToken',
-    );
-    if (Reset_PasswordStatus === 'Success') {
-      toast.current.show(MessagePasswordStatus, {
-        type: 'normal',
-        placement: 'bottom',
-        duration: 4000,
-        offset: 10,
-        animationType: 'slide-in',
-      });
-
-      setLoader(false);
-      togglescreen(1);
-      dispatch(OTPNullstate());
-    } else if (Reset_PasswordStatus === 'Error') {
-      toast.current.show(MessagePasswordStatus, {
-        type: 'normal',
-        placement: 'bottom',
-        duration: 4000,
-        offset: 10,
-        animationType: 'slide-in',
-        zIndex: 2,
-      });
-      console.log('OTP has been expired');
-      setCodeOne('');
-      setCodeTwo('');
-      setCodeThree('');
-      setCodeFour('');
-      setLoader(false);
-      dispatch(OTPNullstate());
-    }
-  }, [Reset_PasswordStatus, OtpVerificationStatus]);
 
   function toggleanimation() {
     if (animationtype == 'fadeInUpBig') {
@@ -753,6 +804,7 @@ export default function AuthenticationModel(props) {
                           placeholderTextColor="#8c8c8c"
                           placeholder={'Enter Phone Number'}
                           onChangeText={text => setnumber(text)}
+                          keyboardType={'number-pad'}
                           defaultValue={number}
                         />
                         <Text
@@ -1170,38 +1222,42 @@ export default function AuthenticationModel(props) {
                             textcolor="white"
                           />
                         )}
-
-                        {showtimer == true ? (
-                          <TouchableOpacity
-                            onPress={() => {
-                              ReVerifyOTP();
-                              setShowTimer(false);
-                            }}>
-                            <Text
-                              style={{
-                                ...styleSheet.Text4,
-                                textAlign: 'center',
-                                marginTop: scalableheight.one,
-                              }}>
-                              RESEND CODE
-                            </Text>
-                          </TouchableOpacity>
-                        ) : null}
-                        <View style={{marginTop: scalableheight.one}}></View>
-                        {showtimer == false ? (
-                          <CountDown
-                            onFinish={() => {
-                              settimeractive(false), setShowTimer(true);
-                            }}
-                            until={120}
-                            size={fontSize.fourteen}
-                            timeToShow={['M', 'S']}
-                            timeLabels={{m: 'Min', s: 'Sec'}}
-                            digitStyle={{backgroundColor: '#E14E4E'}}
-                            digitTxtStyle={{color: 'white'}}
-                            timeLabelStyle={{color: 'white'}}
-                          />
-                        ) : null}
+                        {loader != true && (
+                          <>
+                            {showtimer == true ? (
+                              <TouchableOpacity
+                                onPress={() => {
+                                  ReVerifyOTP();
+                                  setShowTimer(false);
+                                }}>
+                                <Text
+                                  style={{
+                                    ...styleSheet.Text4,
+                                    textAlign: 'center',
+                                    marginTop: scalableheight.one,
+                                  }}>
+                                  RESEND CODE
+                                </Text>
+                              </TouchableOpacity>
+                            ) : null}
+                            <View
+                              style={{marginTop: scalableheight.one}}></View>
+                            {showtimer == false ? (
+                              <CountDown
+                                onFinish={() => {
+                                  settimeractive(false), setShowTimer(true);
+                                }}
+                                until={120}
+                                size={fontSize.fourteen}
+                                timeToShow={['M', 'S']}
+                                timeLabels={{m: 'Min', s: 'Sec'}}
+                                digitStyle={{backgroundColor: '#E14E4E'}}
+                                digitTxtStyle={{color: 'white'}}
+                                timeLabelStyle={{color: 'white'}}
+                              />
+                            ) : null}
+                          </>
+                        )}
                       </Animatable.View>
                     </>,
                   )}
@@ -1226,7 +1282,7 @@ export default function AuthenticationModel(props) {
                             fontSize: fontSize.twentytwo,
                             color: 'black',
                           }}>
-                          Change Password
+                          Change Password 
                         </Text>
 
                         <Text

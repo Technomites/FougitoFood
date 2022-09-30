@@ -21,6 +21,7 @@ import {
   ChangedPasswordMessage,
   OTP_Verify,
   Reset_Password,
+  Reset_Password2,
   Restraunt_Distance,
   StoreToken,
   RESTRAUNTBASIC,
@@ -372,6 +373,13 @@ function userReducer(state = initialState, action) {
         Reset_PasswordStatus: action.newPassword,
         MessagePasswordStatus: action.Message,
       };
+
+      case Reset_Password2:
+        return {
+          ...state,
+          Reset_PasswordStatus: action.newPassword,
+          MessagePasswordStatus: action.Message,
+        };
 
     case CARTDataDelete:
       AsyncStorage.setItem('cartdata', JSON.stringify(action.payload));

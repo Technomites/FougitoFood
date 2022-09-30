@@ -648,6 +648,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   }
 
   const rendernearby = ({item, index}) =>
+
     item?.NameAsPerTradeLicense.includes(search.trim()) ? (
       <View
         style={{
