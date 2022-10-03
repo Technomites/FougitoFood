@@ -43,6 +43,7 @@ import {
   GetALLUSERADDRESSES,
   CreateOrder,
   ClearORDERPLACEMENTSTATUS,
+  ClearCARDORDERPLACEMENTSTATUS,
   RefreshToken,
   StoreNEWRefreshTokenDATA,
   Updated_Profile_Picture,
@@ -61,6 +62,7 @@ import {
   DeliveryStatus,
   internetCHECK,
   OrderID,
+  CardOrder,
 } from '../Actions/actions';
 
 const initialState = {
@@ -106,6 +108,7 @@ const initialState = {
   addresscreationresponse: '',
   alladdresses: [],
   orderplacementstatus: '',
+  cardorderplacementstatus: '',
   refreshtokendata: null,
   imageupdationstatus: '',
   completeorderdetails: [],
@@ -128,6 +131,7 @@ const initialState = {
   orderResult: [],
   orderdetails: 0,
   internetconnectionstate: true,
+  orderdetailslink: '',
 };
 
 function userReducer(state = initialState, action) {
@@ -239,12 +243,23 @@ function userReducer(state = initialState, action) {
         ...state,
         orderplacementstatus: action.payload,
       };
+    case ClearCARDORDERPLACEMENTSTATUS:
+      return {
+        ...state,
+        cardorderplacementstatus: action.payload,
+      };
 
     case CreateOrder:
       return {
         ...state,
         orderplacementstatus: action.payload,
         orderdetails: action.payloadorderresult,
+      };
+    case CardOrder:
+      return {
+        ...state,
+        cardorderplacementstatus: action.payload,
+        orderdetailslink: action.payloadCard,
       };
 
     case GetALLUSERADDRESSES:
@@ -374,12 +389,12 @@ function userReducer(state = initialState, action) {
         MessagePasswordStatus: action.Message,
       };
 
-      case Reset_Password2:
-        return {
-          ...state,
-          Reset_PasswordStatus: action.newPassword,
-          MessagePasswordStatus: action.Message,
-        };
+    case Reset_Password2:
+      return {
+        ...state,
+        Reset_PasswordStatus: action.newPassword,
+        MessagePasswordStatus: action.Message,
+      };
 
     case CARTDataDelete:
       AsyncStorage.setItem('cartdata', JSON.stringify(action.payload));
@@ -389,14 +404,14 @@ function userReducer(state = initialState, action) {
       };
 
     case CleanCartData:
-       AsyncStorage.setItem('cartdata', JSON.stringify(action.payload));
-       AsyncStorage.setItem('price', JSON.stringify(0));
-       AsyncStorage.setItem('currentRestrauntid', JSON.stringify(0));
+      AsyncStorage.setItem('cartdata', JSON.stringify(action.payload));
+      AsyncStorage.setItem('price', JSON.stringify(0));
+      AsyncStorage.setItem('currentRestrauntid', JSON.stringify(0));
       return {
         ...state,
         cartdata: action.payload,
         price: 0,
-        currentRestrauntid: 0
+        currentRestrauntid: 0,
       };
 
     case Store_RestrauntId:

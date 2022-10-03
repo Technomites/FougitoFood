@@ -15,6 +15,7 @@ import {
   Platform,
   PermissionsAndroid,
   Keyboard,
+  Linking,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import renderIf from 'render-if';
@@ -28,6 +29,7 @@ import {
   cleancart,
   CartDetails,
   updatepriceafterdiscount,
+  clearcardorderplacementstatus,
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -64,6 +66,7 @@ import Geocoder from 'react-native-geocoding';
 import Geolocation from '@react-native-community/geolocation';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 const Checkout = ({navigation, drawerAnimationStyle}) => {
+  console.log(orderdetailslink, 'orderdetailslink');
   const dispatch = useDispatch();
   const [modalVisible, setmodalVisible] = useState(false);
   const [itemmodalVisible, setitemmodalVisible] = useState(false);
@@ -130,6 +133,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     couponresponseresult,
     discount,
     orderdetails,
+    cardorderplacementstatus,
+    orderdetailslink,
   } = useSelector(state => state.userReducer);
   const refMap = useRef(null);
   const toast = useRef();
@@ -369,19 +374,33 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     setloader2(false);
     setloader1(false);
     console.log('this is the id ' + orderdetails);
-    if (orderplacementstatus != '') {
-      if (orderplacementstatus == 'success') {
-        toast.current.show('Order Placed', {
-          type: 'normal',
-          placement: 'bottom',
-          duration: 4000,
-          offset: 10,
-          animationType: 'slide-in',
-          zIndex: 2,
-        });
-        dispatch(CartDetails(cartdata));
-        dispatch(cleancart());
-        navigation.replace('PreparingFood');
+    console.log('this is the link ' + orderdetailslink);
+    if (orderplacementstatus != '' || cardorderplacementstatus != '') {
+      console.log('1 if');
+      if (
+        orderplacementstatus == 'success' ||
+        cardorderplacementstatus == 'success'
+      ) {
+        console.log('2 if');
+        if (orderdetails != 0) {
+          toast.current.show('Order Placed', {
+            type: 'normal',
+            placement: 'bottom',
+            duration: 4000,
+            offset: 10,
+            animationType: 'slide-in',
+            zIndex: 2,
+          });
+          dispatch(CartDetails(cartdata));
+          dispatch(cleancart());
+          console.log('PreparingFood');
+          navigation.replace('PreparingFood');
+        } else if (orderdetailslink != '') {
+          dispatch(CartDetails(cartdata));
+          // dispatch(cleancart());
+          console.log('PAYMENT GATEWAY');
+          Linking.openURL(`${orderdetailslink}`);
+        }
       } else {
         toast.current.show(orderplacementstatus, {
           type: 'normal',
@@ -394,7 +413,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       }
     }
     dispatch(clearorderplacementstatus());
-  }, [orderplacementstatus]);
+    dispatch(clearcardorderplacementstatus());
+  }, [orderplacementstatus, cardorderplacementstatus]);
 
   function placeorder() {
     if (pinlocation == '' && AuthToken == '') {

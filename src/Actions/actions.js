@@ -34,6 +34,7 @@ export const StoreToken = 'StoreToken';
 export const RESTRAUNTBASIC = 'RESTRAUNTBASIC';
 export const PICKUPState = 'PICKUPState';
 export const CreateOrder = 'CreateOrder';
+export const CardOrder = 'CardOrder';
 export const VerifyCoupon = 'VerifyCoupon';
 export const VerifyCouponClear = 'VerifyCouponClear';
 export const GetUserProfiles = 'GetUserProfiles';
@@ -48,6 +49,7 @@ export const SAVEADDRESS = 'SAVEADDRESS';
 export const ClearAddress = 'ClearAddress';
 export const GetALLUSERADDRESSES = 'GetALLUSERADDRESSES';
 export const ClearORDERPLACEMENTSTATUS = 'ClearORDERPLACEMENTSTATUS';
+export const ClearCARDORDERPLACEMENTSTATUS = 'ClearCARDORDERPLACEMENTSTATUS';
 export const RefreshToken = 'RefreshToken';
 export const StoreNEWRefreshTokenDATA = 'StoreNEWRefreshTokenDATA';
 export const Updated_Profile_Picture = 'Updated_Profile_Picture';
@@ -315,6 +317,19 @@ export const clearorderplacementstatus = () => {
   }
 };
 
+export const clearcardorderplacementstatus = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: ClearCARDORDERPLACEMENTSTATUS,
+        payload: '',
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getalladdresses = token => {
   try {
     return async dispatch => {
@@ -454,44 +469,80 @@ export const createorder = (AuthToken, data) => {
   try {
     console.log('placeorder');
     return async dispatch => {
-      const result = await fetch(API_URl + 'Customer/Restaurant/PlaceOrder', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${AuthToken}`,
-          'Content-Type': 'application/json',
+      const result = await fetch(
+        API_URl + 'Customer/Restaurant/PlaceOrder?Client=1',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${AuthToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      }).catch(error => {
-        dispatch({
-          type: CreateOrder,
-          payload:
-            'We are unable to place your order at the moment. Please try again later.',
-          payloadorderresult: 0,
+      )
+        .catch(error => {
+          dispatch({
+            type: CreateOrder,
+            payload:
+              'We are unable to place your order at the moment. Please try again later.',
+            payloadorderresult: 0,
+          });
+        })
+        .catch(error => {
+          dispatch({
+            type: CardOrder,
+            payload:
+              'We are unable to place your order at the moment. Please try again later.',
+            payloadCard: '',
+          });
         });
-      });
-      const json = await result.json().catch(error => {
-        dispatch({
-          type: CreateOrder,
-          payload:
-            'We are unable to place your order at the moment. Please try again later.',
-          payloadorderresult: 0,
+      const json = await result
+        .json()
+        .catch(error => {
+          dispatch({
+            type: CreateOrder,
+            payload:
+              'We are unable to place your order at the moment. Please try again later.',
+            payloadorderresult: 0,
+          });
+        })
+        .catch(error => {
+          dispatch({
+            type: CardOrder,
+            payload:
+              'We are unable to place your order at the moment. Please try again later.',
+            payloadCard: '',
+          });
         });
-      });
 
       console.log('postserviceratings' + JSON.stringify(json));
 
       if (json.Status === 'Success') {
-        dispatch({
-          type: CreateOrder,
-          payload: 'success',
-          payloadorderresult: json.Result.Id,
-        });
+        if (json.Result.Id != undefined) {
+          dispatch({
+            type: CreateOrder,
+            payload: 'success',
+            payloadorderresult: json.Result.Id,
+          });
+        } else  {
+          dispatch({
+            type: CardOrder,
+            payload: 'success',
+            payloadCard: json.Result,
+          });
+        }
       } else {
         dispatch({
           type: CreateOrder,
           payload:
             'We are unable to place your order at the moment. Please try again later.',
           payloadorderresult: 0,
+        });
+        dispatch({
+          type: CardOrder,
+          payload:
+            'We are unable to place your order at the moment. Please try again later.',
+          payloadCard: '',
         });
       }
     };
