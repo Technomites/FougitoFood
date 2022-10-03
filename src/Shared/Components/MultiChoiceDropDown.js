@@ -41,7 +41,7 @@ const navigation = useNavigation();
     }}>
     <Text  style={{fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fourteen,
-                color:"black",}}>{props?.title}</Text>
+                color:"black",}}>{props?.title} <Text style={{color:"#E14E4E"}}>{props?.IsRequired == true ? " " : " (Optional)"}</Text></Text>
 
 {props?.data?.map((item, index) => {
         return (

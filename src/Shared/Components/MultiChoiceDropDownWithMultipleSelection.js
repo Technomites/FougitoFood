@@ -41,12 +41,12 @@ const navigation = useNavigation();
     }}>
     <Text  style={{fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fourteen,
-                color:"black",}}>{props?.title}</Text>
+                color:"black",}}>{props?.title} <Text style={{color:"#E14E4E"}}>{props?.IsRequired == true ? " " : " (Optional)"}</Text></Text>
 
 {props?.data?.map((item, index) => {
         return (
             <TouchableOpacity 
-            activeOpacity={1}
+            // activeOpacity={1}
             onPress={() => {props.update(index, props.index)}}
             style={{flexDirection:"row", marginTop:scalableheight.pointfive, alignItems:"center"}}>
               {renderIf(item?.selected == true)(

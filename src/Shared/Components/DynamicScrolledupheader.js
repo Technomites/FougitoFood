@@ -45,25 +45,25 @@ const DynamicScrolledupheader = ( props) => {
   const dispatch = useDispatch();
 
   const Max_Header_Height = scalableheight.tweleve + getStatusBarHeight() 
-const OldMax_Header_Height = scalableheight.sixtyone  + getStatusBarHeight()
-   LayoutAnimation.easeInEaseOut();
+const OldMax_Header_Height = scalableheight.sixtyone - scalableheight.tweleve - getStatusBarHeight()
+  // LayoutAnimation.easeInEaseOut();
 const Min_Header_Height = 0;
 const Scroll_Distance = Max_Header_Height - Min_Header_Height
 const [search, setsearch] = useState('');
 const animatedHeaderHeight =  props.animHeaderValue.interpolate({
   
 //   inputRange: [OldMax_Header_Height - Max_Header_Height, OldMax_Header_Height  + Max_Header_Height, OldMax_Header_Height  + Max_Header_Height],
-inputRange: [0,1,1],
+inputRange: [OldMax_Header_Height,OldMax_Header_Height + 1,OldMax_Header_Height + 1],
   //outputRange: [Max_Header_Height , Min_Header_Height],
   outputRange: [0,Max_Header_Height,Max_Header_Height],
   extrapolate: 'clamp',
-  useNativeDriver: false 
+  useNativeDriver: true 
 })
 const animateHeaderBackgroundColor = props.animHeaderValue.interpolate({
   inputRange: [0, Max_Header_Height - Min_Header_Height],
   outputRange: ['white', "white"],
   extrapolate: 'clamp',
-  useNativeDriver: false 
+  useNativeDriver: true 
 })
 
 const rendertypes = ({item, index}) => (

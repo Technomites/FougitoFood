@@ -43,7 +43,7 @@ const navigation = useNavigation();
     }}>
     <Text  style={{fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fourteen,
-                color:"black",}}>{props?.title}</Text>
+                color:"black",}}>{props?.title} <Text style={{color:"#E14E4E"}}>{props?.IsRequired == true ? " " : " (Optional)"}</Text></Text>
 
       <FlatList
               keyExtractor={(item, index) => index.toString()}

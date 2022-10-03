@@ -43,7 +43,7 @@ const DynamicHeader = ( props) => {
 
   const Max_Header_Height = scalableheight.sixtyone  + getStatusBarHeight();
   //const Max_Header_Height = scalableheight.ninety  + getStatusBarHeight();
-   LayoutAnimation.easeInEaseOut();
+  // LayoutAnimation.easeInEaseOut();
 const Min_Header_Height = 0;
 const Scroll_Distance = Max_Header_Height - Min_Header_Height
 const [search, setsearch] = useState('');
@@ -53,13 +53,13 @@ const animatedHeaderHeight =  props.animHeaderValue.interpolate({
   //outputRange: [Max_Header_Height , Min_Header_Height],
   outputRange: [Max_Header_Height,0,0],
   extrapolate: 'clamp',
-  useNativeDriver: false 
+  useNativeDriver: true 
 })
 const animateHeaderBackgroundColor = props.animHeaderValue.interpolate({
   inputRange: [0, Max_Header_Height - Min_Header_Height],
   outputRange: ['white', "white"],
   extrapolate: 'clamp',
-  useNativeDriver: false 
+  useNativeDriver: true 
 })
 
 const renderpopularcategories = ({item}) => (

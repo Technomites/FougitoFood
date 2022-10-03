@@ -114,6 +114,7 @@ const PreparingFood = ({navigation, route}, props) => {
                   marginTop: scalableheight.five,
                 }}>
                 {orderResult[0]?.EstimatedDeliveryMinutes > 0 && (
+                  <>
                   <Text
                     style={{
                       fontSize: fontSize.fourteen,
@@ -122,7 +123,7 @@ const PreparingFood = ({navigation, route}, props) => {
                     }}>
                     Estimated Delivery Time
                   </Text>
-                )}
+            
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                   <Text
                     style={{
@@ -132,7 +133,7 @@ const PreparingFood = ({navigation, route}, props) => {
                     }}>
                     {orderResult[0]?.Status + ' '}
                   </Text>
-                  {orderResult[0]?.EstimatedDeliveryMinutes > 0 && (
+                
                     <Text
                       style={{
                         color: '#000',
@@ -142,9 +143,10 @@ const PreparingFood = ({navigation, route}, props) => {
                       }}>
                       {orderResult[0]?.EstimatedDeliveryMinutes} Min
                     </Text>
-                  )}
+                 
                 </View>
-
+                </>
+    )}
                 {orderResult[0]?.Status == 'Pending' && (
                   <Image
                     style={{
@@ -627,7 +629,7 @@ const PreparingFood = ({navigation, route}, props) => {
         {togglelist == true ? (
           <FlatList
             showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps={true}
+            keyboardShouldPersistTaps={"always"}
             style={{
               // width: '50%',
 

@@ -43,6 +43,7 @@ import {
   GetProfile,
   storelatlong,
   isconnected,
+  getalladdresses
 } from '../Actions/actions';
 import changeNavigationBarColor, {
   hideNavigationBar,
@@ -578,6 +579,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   useEffect(() => {
     if (internetconnectionstate == true) {
       dispatch(GetProfile(AuthToken));
+      dispatch(getalladdresses(AuthToken));
     }
   }, [AuthToken, internetconnectionstate]);
 

@@ -450,7 +450,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
         <PlainHeader title={'Create Address'} />
         <View style={{height: scalableheight.three}} />
         <ScrollView
-          keyboardShouldPersistTaps={true}
+        keyboardShouldPersistTaps={"always"}
           style={{width: '100%', paddingHorizontal: scalableheight.two}}>
           <View style={{height: scalableheight.one}} />
 

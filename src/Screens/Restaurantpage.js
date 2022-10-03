@@ -560,7 +560,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
             }  
                         }
 
-                        if(count < arr.MenuItemOptions[key].MaxLimit){
+                        if(count < arr.MenuItemOptions[key].MaxLimit || arr.MenuItemOptions[key].MaxLimit == 0){
                           arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = true;
                         }
          
@@ -791,6 +791,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                           
                         <MultiChoiceDropDown
                         title={item?.Title}
+                        IsRequired = {item?.IsRequired}
                         data={item?.MenuItemOptionValues}
                         index={key}
                         update={updateservingstate}
@@ -801,6 +802,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                         <>
                         <Mltichoicehorizontallist
                         title={item?.Title}
+                        IsRequired = {item?.IsRequired}
                         data={item?.MenuItemOptionValues}
                         index={key}
                         update={updateservingstate}
@@ -813,6 +815,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                
 <MultiChoiceDropDownWithMultipleSelection
 title={item?.Title}
+IsRequired = {item?.IsRequired}
 data={item?.MenuItemOptionValues}
 index={key}
 update={updateservingstatemultiple}
@@ -1020,7 +1023,8 @@ update={updateservingstatemultiple}
   
     
   <AnimatedScrollView
-      useNativeDriver = {false}
+  bounces={false}
+      useNativeDriver = {true}
     keyExtractor={(item, index) => index.toString()}
   ref={scrollviewref}
   
@@ -1070,7 +1074,7 @@ if (restrauntmenu[index - 1]?.visible != true) {
 }
 }
    }},
-  {useNativeDriver: false},
+  {useNativeDriver: true},
 
 )}
  

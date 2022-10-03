@@ -16,8 +16,10 @@ import {
   PermissionsAndroid,
   Keyboard,
   Linking,
+  Modal
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import { WebView } from 'react-native-webview';
 import renderIf from 'render-if';
 import {
   filteredcatdata,
@@ -30,6 +32,7 @@ import {
   CartDetails,
   updatepriceafterdiscount,
   clearcardorderplacementstatus,
+  storeorderid
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -66,7 +69,7 @@ import Geocoder from 'react-native-geocoding';
 import Geolocation from '@react-native-community/geolocation';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 const Checkout = ({navigation, drawerAnimationStyle}) => {
-  console.log(orderdetailslink, 'orderdetailslink');
+
   const dispatch = useDispatch();
   const [modalVisible, setmodalVisible] = useState(false);
   const [itemmodalVisible, setitemmodalVisible] = useState(false);
@@ -103,6 +106,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   const [email, setemail] = useState('');
   const [phonenumber, setphonenumber] = useState('');
   const [couponvisible, setcouponvisible] = useState(false);
+  const [modalVisiblepayment, setmodalVisiblepayment] = useState(false);
 
   const [loader1, setloader1] = useState(false);
   const [loader2, setloader2] = useState(false);
@@ -399,7 +403,9 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           dispatch(CartDetails(cartdata));
           // dispatch(cleancart());
           console.log('PAYMENT GATEWAY');
-          Linking.openURL(`${orderdetailslink}`);
+          console.log(orderdetailslink);
+          setmodalVisiblepayment(true)
+         
         }
       } else {
         toast.current.show(orderplacementstatus, {
@@ -773,6 +779,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     return false;
   };
   //////////////////////////////////////
+
+ 
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -780,6 +788,78 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
       />
+
+<Modal
+        transparent
+        style={{
+          width: '100%',
+          height: '100%',
+       
+     
+     
+        }}
+        statusBarTranslucent
+        visible={modalVisiblepayment}
+        onRequestClose={() => setmodalVisiblepayment(false)}>
+          <View style={{
+            paddingTop: getStatusBarHeight(),
+            width: '100%',
+            height: '100%',
+           
+          }}>
+{orderdetailslink != "" &&
+<WebView
+style={{
+  width: '100%',
+  height: '100%',
+
+}}
+source={{ uri: orderdetailslink}} 
+onMessage={(event) => {
+  console.log("humza");
+  let newdata= JSON.parse(event.nativeEvent.data)
+  console.log(newdata.data);
+  if(event.nativeEvent.data == "Exit"){
+    setmodalVisiblepayment(false)
+    toast.current.show('There was an network failure while processing your payment. Please tru again later', {
+      type: 'normal',
+      placement: 'bottom',
+      duration: 4000,
+      offset: 10,
+      animationType: 'slide-in',
+      zIndex: 2,
+    });
+  }else if(newdata.data.Result.paymentStatus == "Failed"){
+    setmodalVisiblepayment(false)
+    toast.current.show('There was an network failure while processing your payment. Please tru again later', {
+      type: 'normal',
+      placement: 'bottom',
+      duration: 4000,
+      offset: 10,
+      animationType: 'slide-in',
+      zIndex: 2,
+    });
+  }else if(newdata.data.Result.paymentStatus == "Paid"){
+    dispatch(storeorderid(newdata.data.Result.orderId))
+    orderdetails
+    toast.current.show('Order Placed', {
+      type: 'normal',
+      placement: 'bottom',
+      duration: 4000,
+      offset: 10,
+      animationType: 'slide-in',
+      zIndex: 2,
+    });
+    dispatch(CartDetails(cartdata));
+    dispatch(cleancart());
+    console.log('PreparingFood');
+    navigation.replace('PreparingFood');
+  }
+  }}
+/>
+}
+</View>
+        </Modal>
 
       <View
         style={{
@@ -795,7 +875,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
 
         <ScrollView
           showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps={true}
+          keyboardShouldPersistTaps={"always"}
           style={{
             width: '100%',
             paddingHorizontal: scalableheight.one,

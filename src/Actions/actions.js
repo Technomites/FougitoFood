@@ -488,14 +488,7 @@ export const createorder = (AuthToken, data) => {
             payloadorderresult: 0,
           });
         })
-        .catch(error => {
-          dispatch({
-            type: CardOrder,
-            payload:
-              'We are unable to place your order at the moment. Please try again later.',
-            payloadCard: '',
-          });
-        });
+       
       const json = await result
         .json()
         .catch(error => {
@@ -506,14 +499,7 @@ export const createorder = (AuthToken, data) => {
             payloadorderresult: 0,
           });
         })
-        .catch(error => {
-          dispatch({
-            type: CardOrder,
-            payload:
-              'We are unable to place your order at the moment. Please try again later.',
-            payloadCard: '',
-          });
-        });
+       
 
       console.log('postserviceratings' + JSON.stringify(json));
 
@@ -538,12 +524,7 @@ export const createorder = (AuthToken, data) => {
             'We are unable to place your order at the moment. Please try again later.',
           payloadorderresult: 0,
         });
-        dispatch({
-          type: CardOrder,
-          payload:
-            'We are unable to place your order at the moment. Please try again later.',
-          payloadCard: '',
-        });
+      
       }
     };
   } catch (error) {

@@ -633,7 +633,7 @@ export default function AuthenticationModel(props) {
                 </View>
 
                 <ScrollView
-                  keyboardShouldPersistTaps="always"
+                keyboardShouldPersistTaps={"always"}
                   showsVerticalScrollIndicator={false}
                   style={{width: '100%', height: '55%'}}
                   contentContainerStyle={{

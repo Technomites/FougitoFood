@@ -71,7 +71,7 @@
     "react-native-toast-notifications": "^3.3.1",
     "react-native-vector-icons": "^9.1.0",
     "react-native-video-controls": "^2.8.1",
-    "react-native-webview": "^11.18.1",
+    "react-native-webview": "^11.23.1",
     "react-navigation": "^4.4.4",
     "react-redux": "^7.2.8",
     "redux": "^4.1.2",
