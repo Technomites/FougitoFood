@@ -76,10 +76,10 @@ const navigation = useNavigation();
       width: scalableheight.tweleve,
       height: scalableheight.tweleve,
       borderRadius: fontSize.eleven
-
+      // 
     }}
-   
-      source={{uri: props.image}}></Image>
+    // source={{uri: props.image}}></Image>
+       source={props.image != "" && props.image != "NULL" && props.image != null ? {uri: props.image}:  require('../../Resources/images/Broken_Image.png')}></Image>
       <View style={{width:scalableheight.three, height:scalableheight.three, backgroundColor:"red", position:"absolute", bottom: scalableheight.pointeightfive ,right: scalableheight.one, borderBottomRightRadius: fontSize.eleven, alignItems:"center", justifyContent:"center"}}>
 
       <Entypo 

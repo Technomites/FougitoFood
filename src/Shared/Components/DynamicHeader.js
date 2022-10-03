@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { ImageBackground, Text, View, StyleSheet, Image, FlatList, Animated } from 'react-native';
+import { LayoutAnimation, ImageBackground, Text, View, StyleSheet, Image, FlatList, Animated } from 'react-native';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import Reviewscontainer from './Reviewscontainer';
@@ -7,7 +7,7 @@ import Categoriescard from './Categoriescard';
 import SearchBar from './SearchBar';
 import Infobar from './Infobar';
 
-import AnimatableInfoBar from './AnimatableInfoBar';
+import HeaderComponentRestaurant from './HeaderComponentRestaurant';
 import AnimatableRestaurantContainer from './AnimatableRestaurantContainer';
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -43,21 +43,23 @@ const DynamicHeader = ( props) => {
 
   const Max_Header_Height = scalableheight.sixtyone  + getStatusBarHeight();
   //const Max_Header_Height = scalableheight.ninety  + getStatusBarHeight();
-  
+   LayoutAnimation.easeInEaseOut();
 const Min_Header_Height = 0;
 const Scroll_Distance = Max_Header_Height - Min_Header_Height
 const [search, setsearch] = useState('');
 const animatedHeaderHeight =  props.animHeaderValue.interpolate({
-  inputRange: [0, 10],
-  outputRange: [Max_Header_Height , Min_Header_Height],
+  
+  inputRange: [0,Max_Header_Height, Max_Header_Height],
+  //outputRange: [Max_Header_Height , Min_Header_Height],
+  outputRange: [Max_Header_Height,0,0],
   extrapolate: 'clamp',
-  useNativeDriver: true 
+  useNativeDriver: false 
 })
 const animateHeaderBackgroundColor = props.animHeaderValue.interpolate({
   inputRange: [0, Max_Header_Height - Min_Header_Height],
   outputRange: ['white', "white"],
   extrapolate: 'clamp',
-  useNativeDriver: true 
+  useNativeDriver: false 
 })
 
 const renderpopularcategories = ({item}) => (
@@ -74,13 +76,15 @@ const renderpopularcategories = ({item}) => (
    
      
     <Animated.View 
+    
     style={[
       styles.header,
       {
-        height: animatedHeaderHeight,
+        // height: animatedHeaderHeight,
+        height: scalableheight.sixtyone  + getStatusBarHeight(),
         backgroundColor: animateHeaderBackgroundColor,
-   
-
+        elevation: 3000, zIndex:3000
+     // transform: [{translateY: animatedHeaderHeight}]
       }
 
     ]}
@@ -102,7 +106,13 @@ const renderpopularcategories = ({item}) => (
                 borderBottomRightRadius: fontSize.twenty,
               }}
               source={require('../../Resources/images/homebackground.png')}>
-            
+                <View style={{backgroundColor: "transparent", paddingTop: getStatusBarHeight(), elevation: 3000, zIndex:3000}}>
+              <HeaderComponentRestaurant
+                  // newNotificationCount={newNotificationCount}
+                  isEnabled={props.isEnabled}
+                  toggleSwitch={props.toggleSwitch}
+                />
+                </View>
 
               <View
                 style={{

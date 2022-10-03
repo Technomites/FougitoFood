@@ -154,7 +154,7 @@ export default function ItemDetailsModel(props) {
               }}>
               <View
                 style={{
-                  width: '80%',
+                  width: '90%',
                 //   height: '40%',
                 maxHeight: '40%',
                   borderRadius: fontSize.eleven,
@@ -162,7 +162,9 @@ export default function ItemDetailsModel(props) {
                   paddingVertical: scalableheight.two,
                   paddingHorizontal: scalableheight.two,
                 }}>
-            <ScrollView style={{ }}>
+            <ScrollView 
+            showsVerticalScrollIndicator={false}
+            style={{ }}>
                   <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
                   <View style={{height: scalableheight.four, width: scalableheight.four,     backgroundColor:'#F9F9F9', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
 <Text style={{
@@ -195,18 +197,21 @@ export default function ItemDetailsModel(props) {
             
                   {props?.data?.MenuItemOptions.map(item => {
             return (
+              item.MenuItemOptionValues?.find(data => data?.selected === true) != undefined &&
+         
               <View style={{}}>
                <Text style={{fontFamily: 'Inter-Bold',
                 fontSize: fontSize.twelve,
                 color:"#111111", marginTop: scalableheight.two }}>{item?.Title}</Text>
                {item?.MenuItemOptionValues.map(inneritem => {
             return (
+              
                 inneritem?.selected == true ? 
                <View style={{flexDirection:"row", justifyContent: "space-between", alignItems:"center"}}>
                 <Text style={{ 
             fontFamily: 'Inter-Medium',
             fontSize: fontSize.twelve,
-            color:"#111111",}} >{inneritem?.Value}</Text>
+            color:"#111111",}} >{inneritem?.Value.trim()}</Text>
             {inneritem?.Price > 0 ?
                 <Text style={{ 
             fontFamily: 'Inter-Medium',
@@ -221,6 +226,8 @@ export default function ItemDetailsModel(props) {
             );
           })} 
         
+        {props?.data?.SpecialInstructios != "" &&
+        <>
                   <Text style={{fontFamily: 'Inter-Bold',
                 fontSize: fontSize.twelve,
                 color:"#111111", marginTop: scalableheight.two }}>Special Instructions</Text>
@@ -228,7 +235,9 @@ export default function ItemDetailsModel(props) {
             fontFamily: 'Inter-Medium',
             fontSize: fontSize.twelve,
             color:"#111111", paddingBottom: scalableheight.two}}>{props?.data?.SpecialInstructios}</Text>
-                </ScrollView>
+             </>
+                  }
+            </ScrollView>
           
                       <TouchableOpacity
                     onPress={() => {

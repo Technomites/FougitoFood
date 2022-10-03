@@ -22,7 +22,7 @@ import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-export default function MultiChoiceDropDown(props) {
+export default function MultiChoiceDropDownWithMultipleSelection(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
 
@@ -46,11 +46,12 @@ const navigation = useNavigation();
 {props?.data?.map((item, index) => {
         return (
             <TouchableOpacity 
+            activeOpacity={1}
             onPress={() => {props.update(index, props.index)}}
-            style={{flexDirection:"row", marginTop:scalableheight.pointfive,  alignItems:"center"}}>
+            style={{flexDirection:"row", marginTop:scalableheight.pointfive, alignItems:"center"}}>
               {renderIf(item?.selected == true)(
                 <MaterialIcons
-                name="radio-button-checked"
+                name="check-box"
                 color={'#E14E4E'}
                 size={ fontSize.twenty}
                 style={{}}
@@ -58,7 +59,7 @@ const navigation = useNavigation();
               )}
                {renderIf(item?.selected == false)(
                  <MaterialIcons
-                 name="radio-button-unchecked"
+                 name="check-box-outline-blank"
                  color={'grey'}
                  size={ fontSize.twenty}
                  style={{}}

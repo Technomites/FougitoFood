@@ -1,9 +1,13 @@
 import React, {useState, useEffect, useRef, } from 'react';
-import {Animated, Modal, FlatList, TextInput, KeyboardAvoidingView, StatusBar, ScrollView, View, TouchableOpacity, StyleSheet, Image, Text, SafeAreaView, Keyboard, ImageBackground} from 'react-native';
+import {Dimensions, LogBox,LayoutAnimation, Animated, Modal, FlatList, TextInput, KeyboardAvoidingView, StatusBar, ScrollView, View, TouchableOpacity, StyleSheet, Image, Text, SafeAreaView, Keyboard, ImageBackground} from 'react-native';
 // import Animated from 'react-native-reanimated';
 import HeaderComponentRestaurant from '../Shared/Components/HeaderComponentRestaurant';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import DynamicHeader from '../Shared/Components/DynamicHeader';
+import DynamicScrolledupheader from '../Shared/Components/DynamicScrolledupheader';
+
+import MultiChoiceDropDownWithMultipleSelection from '../Shared/Components/MultiChoiceDropDownWithMultipleSelection';
+
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import renderIf from 'render-if';
@@ -102,6 +106,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       inputRange: [0, getStatusBarHeight() + scalableheight.tweleve],
       outputRange: [0 , getStatusBarHeight() + scalableheight.tweleve],
       extrapolate: 'clamp',
+      useNativeDriver: true 
     })
     const [serving, setserving] = useState([
       {
@@ -183,7 +188,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
         serving: 'Hummus',
       },
     ]);
-
+   
+   
 
     useEffect(() => {
       if(addedtofavourite == "Success"){
@@ -295,11 +301,12 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }
     
     function clearandclose() {
+     
+      toggleanimation();
+      setanimationstate(true);
       scrollviewref.current.scrollTo({ y: dataSourceCords[1] , animated: true, });
      
       Keyboard.dismiss();
-      toggleanimation();
-      setanimationstate(true);
     }
   
     function updatecoordinates(lat, long) {
@@ -312,6 +319,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
 
     useEffect(() => {
       StatusBar.setHidden(false);
+      LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
     }, []);
   
     useEffect(() => {
@@ -524,6 +532,57 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       // console.log('arr' + JSON.stringify(arr.MenuItemOptions.MenuItemOptionValues));
     }
   
+
+
+    function updateservingstatemultiple(index, arrindex) {
+      console.log(arrindex)
+  
+      let arr = retaurantmenucategorydataoption;
+     
+      for (const key in arr.MenuItemOptions) {
+  
+        if(key == arrindex){
+          for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
+         
+         
+           
+            if (item == index) {
+             
+                      if (arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true) {
+                        
+                        arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = false;
+                      } else{
+                        let count = 0
+                        for (const countindex in arr.MenuItemOptions[key].MenuItemOptionValues){
+                       
+            if(arr.MenuItemOptions[key].MenuItemOptionValues[countindex].selected == true){
+              count = count + 1
+            }  
+                        }
+
+                        if(count < arr.MenuItemOptions[key].MaxLimit){
+                          arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = true;
+                        }
+         
+           
+                      }
+                    } else {
+                      // console.log("bye")
+                      // arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = false;
+                    }
+          }
+        }
+  
+      }
+      // setmodaldataoptions(arr);
+      dispatch(savemenucategoryoptiondetailsdata(arr))
+      console.log('modaldataoptions' + JSON.stringify(arr));
+      // console.log('arr' + JSON.stringify(arr.MenuItemOptions.MenuItemOptionValues));
+    }
+
+
+
+    
     function updateflavourstate(index) {
       let arr = [...flavours];
       for (const key in arr) {
@@ -587,10 +646,12 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
           animation={animationstate ? animationtype : null}
           onAnimationEnd={() => {
             setanimationstate(false);
+
             if (animationtype == 'fadeOutDownBig') {
-              setanimationtype('fadeInUpBig');
 
               setmodalVisible(false);
+              setanimationtype('fadeInUpBig');
+
             }
           }}
           easing="ease"
@@ -723,6 +784,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                   
                   retaurantmenucategorydataoption.MenuItemOptions?.map((item, key) => {
                       return (
+                      item?.IsRadioButton == true ?
+                   
                         item?.MenuItemOptionValues[0].Price != 0.00 ? 
                         <>
                           
@@ -736,8 +799,6 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                       </>
                         : 
                         <>
-
-                 
                         <Mltichoicehorizontallist
                         title={item?.Title}
                         data={item?.MenuItemOptionValues}
@@ -746,6 +807,18 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                       />
                          <View style={{height: scalableheight.one}} />
                       </>
+             : 
+/////////////// multiple selection data
+<>
+               
+<MultiChoiceDropDownWithMultipleSelection
+title={item?.Title}
+data={item?.MenuItemOptionValues}
+index={key}
+update={updateservingstatemultiple}
+/>
+ <View style={{height: scalableheight.one}} />
+</>
                       )})
                  
 }
@@ -931,35 +1004,27 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
         </Animatable.View>
       )}
      
-         <View style={{position:"absolute",backgroundColor: "transparent", paddingTop: getStatusBarHeight(), elevation: 3000, zIndex:3000}}>
+         {/* <View style={{position:"absolute",backgroundColor: "transparent", paddingTop: getStatusBarHeight(), elevation: 3000, zIndex:3000}}>
      
          <HeaderComponentRestaurant
                   // newNotificationCount={newNotificationCount}
                   isEnabled={isEnabled}
                   toggleSwitch={toggleSwitch}
                 />
-          </View>
+          </View> */}
        
-          <DynamicHeader 
-         pinlocation ={pinlocation}
-      showlocation={() => {
-        setshowbottomsheet(true)
-       }}
-       search ={(val) => {
-      setsearch(val)
-       }}
-   animHeaderValue={scrollOffsetY} 
-  />
-
-
-
    
+
+
+
+  
     
   <AnimatedScrollView
-    
+      useNativeDriver = {false}
     keyExtractor={(item, index) => index.toString()}
   ref={scrollviewref}
-   scrollEventThrottle={64}
+  
+  scrollEventThrottle={1}
   onScroll={
     
     Animated.event(
@@ -968,6 +1033,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
  
  }}],
  {listener: (event) =>    {
+  //  LayoutAnimation.easeInEaseOut();
    let y = event.nativeEvent.contentOffset.y 
    
    
@@ -1004,17 +1070,36 @@ if (restrauntmenu[index - 1]?.visible != true) {
 }
 }
    }},
-  {useNativeDriver: true},
+  {useNativeDriver: false},
 
 )}
  
   showsVerticalScrollIndicator={false}
   style={{
     backgroundColor: '#F6F6F6',
-    paddingHorizontal: scalableheight.one,
-    marginTop: animatedtop
+    // paddingHorizontal: scalableheight.one,
+    //  marginTop: animatedtop
   }}>
-   
+   <>
+ 
+
+ 
+   <DynamicHeader 
+         pinlocation ={pinlocation}
+      showlocation={() => {
+        setshowbottomsheet(true)
+       }}
+       search ={(val) => {
+      setsearch(val)
+       }}
+   animHeaderValue={scrollOffsetY} 
+
+                  isEnabled={isEnabled}
+                  toggleSwitch={toggleSwitch}
+  />
+
+
+<View style={{ paddingHorizontal: scalableheight.one,}}>
    {restrauntmenu.map((item, key) => {
     return (
      <>
@@ -1055,19 +1140,42 @@ if (restrauntmenu[index - 1]?.visible != true) {
      </>
     );
   })}
-
+</View>
  
+</>
 
-
-</AnimatedScrollView>
+</AnimatedScrollView> 
  
+<DynamicScrolledupheader 
+scrollviewhorizontalref ={scrollviewhorizontalref}
+      //    pinlocation ={pinlocation}
+      // showlocation={() => {
+      //   setshowbottomsheet(true)
+      //  }}
+      scrolltocategory ={(index) => {
+        console.log(  dataSourceCords[index]);
 
-<View style={{backgroundColor:"#201F1F", position:"absolute", top: 0, width:"100%", height: scalableheight.tweleve + getStatusBarHeight() , zIndex: -2, elevation:-2, paddingTop: getStatusBarHeight() + scalableheight.ten}}>
+         scrollviewref.current.scrollTo({ y: dataSourceCords[index + 1] , animated: true, });
+      
+           let data = [...restrauntmenu];
+           for (const index in data) {
+             data[index].visible = false;
+           }
+           data[index].visible = true;
+         dispatch(updatedmenuselection(data))
+       }}
+   animHeaderValue={scrollOffsetY} 
+   dataSourceCordsHorizontal= {dataSourceCordsHorizontal}
+   isEnabled={isEnabled}
+   toggleSwitch={toggleSwitch}
+  />
+{/* <View style={{backgroundColor:"#201F1F", position:"absolute", top: 0, width:"100%", height: scalableheight.tweleve + getStatusBarHeight() , zIndex: -2, elevation:-2, paddingTop: getStatusBarHeight() + scalableheight.ten}}>
 <AnimatedFlatList
               key={"1"}
                 keyExtractor={(item, index) => index.toString()}
                 ref={scrollviewhorizontalref}
                 overflow={'hidden'}
+                useNativeDriver = {true}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
@@ -1084,10 +1192,11 @@ if (restrauntmenu[index - 1]?.visible != true) {
                 }}
                 data={restrauntmenu}
                 renderItem={rendertypes}
+                
                 // onEndReached={() => LoadFeaturedProjectPagination()}
                 // onEndReachedThreshold={0.1}
               /> 
-</View>
+</View> */}
 
 
 

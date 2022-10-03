@@ -58,7 +58,7 @@ const navigation = useNavigation();
                 {  return (
                 <TouchableOpacity 
                 onPress={() => {props.update(index,  props.index)}}
-                style={{flexDirection:"row", marginTop:scalableheight.pointfive}}>
+                style={{flexDirection:"row", marginTop:scalableheight.pointfive,  alignItems:"center"}}>
                   {renderIf(item?.selected == true)(
                     <MaterialIcons
                     name="radio-button-checked"

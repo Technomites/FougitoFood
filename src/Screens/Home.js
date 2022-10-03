@@ -569,24 +569,19 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
   useEffect(() => {
     StatusBar.setHidden(false);
     listeners();
   }, []);
+
   useEffect(() => {
     if (internetconnectionstate == true) {
       dispatch(GetProfile(AuthToken));
     }
   }, [AuthToken, internetconnectionstate]);
-  useEffect(() => {
-    if (internetconnectionstate == true) {
-      if (lat != null && long != null) {
-        setloader(true);
-        dispatch(getallrestraunts(lat, long));
-        dispatch(storelatlong(lat, long));
-      }
-    }
-  }, [lat, long]);
+
+ 
   useEffect(() => {
     if (internetconnectionstate == true) {
       Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
@@ -610,6 +605,11 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   useEffect(() => {
     if (internetconnectionstate == true) {
       if (lat != null && long != null) {
+
+        setloader(true);
+        dispatch(getallrestraunts(lat, long));
+        dispatch(storelatlong(lat, long));
+
         Geocoder.from(lat, long)
           .then(json => {
             var addressComponent = json.results[0].formatted_address;

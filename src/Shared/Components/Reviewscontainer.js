@@ -47,8 +47,8 @@ const navigation = useNavigation();
    style={{ marginRight:scalableheight.one}}
          onPress={props.onPress}>
       <FontAwesome 
-                name="star"
-                color={props?.Isfavourite == true ? "#FFD700" : '#00000029'}
+                name="heart"
+                color={props?.Isfavourite == true ? "red" : '#00000029'}
 
                 // #FFD700
                 size={fontSize.twenty}
