@@ -25,10 +25,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../Shared/Components/CustomButton';
 import {GToastContainer, showToast} from 'react-native-gtoast';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import {useDispatch, useSelector} from 'react-redux';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import MyInput from '../Shared/Components/MyInput';
@@ -1268,7 +1268,7 @@ const Login = ({navigation}) => {
     StatusBar.setHidden(false);
     // StatusBar.setBackgroundColor('transparent');
     // StatusBar.setBarStyle('light-content');
-    hideNavigationBar();
+    // hideNavigationBar();
     // changeNavigationBarColor("white");
   }, []);
 

@@ -35,9 +35,9 @@ export default function SavedAddresses(props) {
         borderColor: 'rgba(211,211,211, 0.5)',
         paddingVertical: scalableheight.one,
         borderWidth: Selectedcurrentaddress[0]?.Latitude == props.Latitude &&  Selectedcurrentaddress[0]?.Longitude == props.Longitude ? 1 : 0 , 
-        paddingHorizontal: scalableheight.one
+      
       }}>
-      <View style={{justifyContent: 'center'}}>
+      <View style={{justifyContent: 'flex-start'}}>
         {/* <FontAwesome
           name={'home'}
           color={'#F55050'}
@@ -81,9 +81,9 @@ export default function SavedAddresses(props) {
           ellipsizeMode="tail"
           style={{
             color: 'black',
-            fontFamily: 'Inter-Regular',
             opacity: 0.5,
-            fontSize: fontSize.fourteen,
+            fontFamily: 'Inter-SemiBold',
+            fontSize: fontSize.eleven,
           }}>
           {props.address}
         </Text>

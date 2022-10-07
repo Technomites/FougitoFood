@@ -12,7 +12,7 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
-
+import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 import renderIf from 'render-if';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -22,13 +22,14 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
+
 import {useNavigation} from '@react-navigation/native';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import SavedAddresses from './SavedAddresses';
 import MYButton from '../Components/MYButton';
 import {getalladdresses, storecurrentaddress} from '../../Actions/actions';
 import Addresstile from '../../Shared/Components/Addresstile';
-
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 import * as Animatable from 'react-native-animatable';
 import PaymentOptions from '../../Shared/Components/PaymentOptions';
 import Animated from 'react-native-reanimated';
@@ -41,7 +42,7 @@ export default function Custombottomsheet(props) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const refMap = useRef(null);
-
+  const ref = useRef();
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(false);
   const [showmap, setshowmap] = useState(false);
@@ -61,6 +62,10 @@ export default function Custombottomsheet(props) {
   const [pinlatitude, SetPinLatitude] = useState(0);
   const [pinLongitude, SetPinLongitude] = useState(0);
   const [hidemarker, sethidemarker] = useState(false);
+
+  const [showcurrent, setshowcurrent] = useState(false);
+  
+  const [selectedaddress, setselectedaddress] = useState("");
   const [activatehideshow, setactivatehideshow] = useState(false);
   // != null ? props?.longitude : 55.2708
 
@@ -72,17 +77,49 @@ export default function Custombottomsheet(props) {
     }
   }
 
+  function getnewlocation() {
+    Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
+    Geolocation.getCurrentPosition(info => {
+   
+      SetPinLatitude(info?.coords?.latitude),
+      SetPinLongitude(info?.coords?.longitude);
+
+      Geocoder.from(info?.coords?.latitude, info?.coords?.longitude)
+      .then(json => {
+        var addressComponent = json.results[0].formatted_address;
+        // console.log(addressComponent);
+        // setpinlocation(addressComponent);
+        ref.current?.clear();
+        setshowcurrent(false)
+        setselectedaddress(addressComponent)
+      })
+      .catch(error =>{
+    
+        requestResolution()
+        console.warn(error)});
+    });
+   
+
+
+
+        /////////////////////////
+
+
+
+     
+  }
+
   useEffect(() => {
     if (props.state == true) {
       setanimationstate(true);
     }
   }, [props.state]);
-  useEffect(() => {
-    dispatch(getalladdresses(AuthToken));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getalladdresses(AuthToken));
+  // }, []);
 
   useEffect(() => {
-    if (props?.longitude != null && props?.latitude != null) {
+    if (props?.longitude != null && props?.latitude != null && props?.longitude != 0 && props?.latitude != 0) {
       console.log(
         props?.latitude,
         'props?.latitude not null----------------------------',
@@ -277,26 +314,43 @@ export default function Custombottomsheet(props) {
   return (
     <>
       {props.state && (
-        <Animatable.View
-          animation={animationstate ? animationtype : null}
-          onAnimationEnd={() => {
-            setanimationstate(false);
-            if (animationtype == 'fadeOutDownBig') {
-              setanimationtype('fadeInUpBig');
-              props.onPress();
-            }
-          }}
-          easing="ease"
-          //  iterationCount="infinite"
-          iterationCount={1}
-          style={{
+        // <Animatable.View
+        //   animation={animationstate ? animationtype : null}
+        //   onAnimationEnd={() => {
+        //     setanimationstate(false);
+        //     if (animationtype == 'fadeOutDownBig') {
+        //       setanimationtype('fadeInUpBig');
+        //       props.onPress();
+        //     }
+        //   }}
+        //   easing="ease"
+        //   //  iterationCount="infinite"
+        //   iterationCount={1}
+        //   style={{
+        //     width: '100%',
+        //     height: showmap == true ? "100%" : null,
+        //     // marginTop: showmap == true ? getStatusBarHeight() : null,
+        //     backgroundColor: 'white',
+        //     position: 'absolute',
+        //     bottom: 0,
+        //     borderTopLeftRadius: fontSize.twenty,
+        //     borderTopRightRadius: fontSize.twenty,
+        //     padding: showmap == true ? null : scalableheight.two,
+        //     zIndex: 3,
+        //     elevation: 3,
+        //   }}
+        //   >
+
+            <View  style={{
             width: '100%',
+            height: showmap == true ? "100%" : null,
+            // marginTop: showmap == true ? getStatusBarHeight() : null,
             backgroundColor: 'white',
             position: 'absolute',
             bottom: 0,
             borderTopLeftRadius: fontSize.twenty,
             borderTopRightRadius: fontSize.twenty,
-            padding: scalableheight.two,
+            padding: showmap == true ? null : scalableheight.two,
             zIndex: 3,
             elevation: 3,
           }}>
@@ -304,32 +358,36 @@ export default function Custombottomsheet(props) {
             onPress={() => {
               if (showmap == true) {
                 setshowmap(false);
+                props.onPress()
               } else {
-                clearandclose();
+                props.onPress()
+                // clearandclose();
               }
             }}
             style={{
               position: 'absolute',
-              top: scalableheight.one,
+              top: showmap == true ? scalableheight.seven : scalableheight.one,
               right: scalableheight.one,
+              elevation:10,
+              zIndex:10
             }}>
             <Ionicons
               name="close-circle"
-              color={'rgba(211,211,211, 0.8)'}
+              color={ showmap == true ?  "#E14E4E":'rgba(211,211,211, 0.8)'}
               size={fontSize.thirtyseven}
               style={{}}
             />
           </TouchableOpacity>
 
-          <Text
+         { showmap != true ?   <Text
             style={{
               color: 'black',
               fontFamily: 'Inter-Bold',
               fontSize: fontSize.fifteen,
               alignSelf: 'center',
             }}>
-            Select A Delivery Address
-          </Text>
+            {/* Select A Delivery Address */}
+          </Text>: null}
           {showmap != true ? (
             <>
               <TouchableOpacity
@@ -341,7 +399,7 @@ export default function Custombottomsheet(props) {
                   borderColor: 'rgba(211,211,211, 0.5)',
                   paddingVertical: scalableheight.one,
                 }}>
-                <View style={{justifyContent: 'center'}}>
+                <View style={{justifyContent: "flex-start"}}>
                   <MaterialCommunityIcons
                     name={'crosshairs-gps'}
                     color={'#F55050'}
@@ -353,9 +411,9 @@ export default function Custombottomsheet(props) {
                     style={{
                       color: '#F55050',
                       fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.sixteen,
+                      fontSize: fontSize.fifteen,
                     }}>
-                    Detect current Location
+                    Detect Current Location
                   </Text>
 
                   <Text
@@ -370,7 +428,7 @@ export default function Custombottomsheet(props) {
                   </Text>
                 </View>
               </TouchableOpacity>
-              {AuthToken != '' ? (
+              {AuthToken != '' && alladdresses.length > 0 ? (
                 // <View>
                 //   <Text
                 //     style={{
@@ -391,11 +449,14 @@ export default function Custombottomsheet(props) {
                 <>
                   <Text
                     style={{
-                      color: 'black',
+                      // color: 'black',
                       opacity: 0.6,
-                      fontFamily: 'Inter-Regular',
-                      fontSize: fontSize.sixteen,
+                      // fontFamily: 'Inter-Regular',
+                      // fontSize: fontSize.fifteen,
                       paddingVertical: scalableheight.one,
+                      color: 'black',
+                      fontFamily: 'Inter-SemiBold',
+                      fontSize: fontSize.fifteen,
                     }}>
                     My Saved Addresses
                   </Text>
@@ -469,7 +530,7 @@ export default function Custombottomsheet(props) {
                     borderColor: 'rgba(211,211,211, 0.5)',
                     paddingVertical: scalableheight.one,
                   }}>
-                  <View style={{justifyContent: 'center'}}>
+                     <View style={{justifyContent: "flex-start"}}>
                     <FontAwesome5
                       name={'map-marked-alt'}
                       color={'#F55050'}
@@ -481,16 +542,17 @@ export default function Custombottomsheet(props) {
                       style={{
                         color: '#F55050',
                         fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.sixteen,
+                        fontSize: fontSize.fifteen,
                       }}>
-                      Pin your Location
+                      Pin Your Location
                     </Text>
                     <Text
                       style={{
                         color: 'black',
-                        fontFamily: 'Inter-Regular',
                         opacity: 0.5,
-                        fontSize: fontSize.fourteen,
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: fontSize.eleven,
+                         
                       }}>
                       Open Map
                     </Text>
@@ -499,22 +561,27 @@ export default function Custombottomsheet(props) {
               )}
             </>
           ) : (
-            <View>
-              <View style={{height: scalableheight.two}}></View>
+            <View style={{height:"100%"}}>
+              {/* <View style={{height: scalableheight.two}}></View> */}
+              <View
+              style={{
+                position:"absolute",
+                top:   getStatusBarHeight() + scalableheight.fourteen,
+                zIndex:10,
+                elevation:10,
+                width:"100%",
+                paddingHorizontal:scalableheight.two,
+                justifyContent:"center",
+              }}
+              >
               <GooglePlacesAutocomplete
-                suppressDefaultStyles={false}
-                //  styles ={{
-
-                //   ...styleSheet.shadow,
-                //   width: '100%',
-                //   height: scalableheight.six,
-                //   fontSize: fontSize.fifteen,
-                //   backgroundColor: '#F9F9F9',
-                //   alignSelf: 'center',
-                //   borderRadius: fontSize.borderradiusmedium,
-                //   paddingHorizontal: '5%',
-                //   marginHorizontal: '0.4%',
-                // }}
+                //  suppressDefaultStyles={false}
+          
+                //  autoFocus={true}
+                //  returnKeyType={'default'}
+                //  fetchDetails={true}
+                ref={ref}
+               
                 styles={{
                   textInput: {
                     ...styleSheet.shadow,
@@ -524,11 +591,17 @@ export default function Custombottomsheet(props) {
                     backgroundColor: '#F9F9F9',
                     alignSelf: 'center',
                     borderRadius: fontSize.borderradiusmedium,
-                    paddingHorizontal: '5%',
-                    marginHorizontal: '0.4%',
+                    paddingHorizontal: scalableheight.two,
+                    paddingRight: scalableheight.six,
+             
+                
+                    zIndex:10,
+                elevation:10,
+                  
                   },
                 }}
                 placeholder="Search"
+                
                 onPress={(data, details = null) => {
                   setpinlocation(data.description);
                   Geocoder.from(data.description)
@@ -536,19 +609,85 @@ export default function Custombottomsheet(props) {
                       var location = json.results[0].geometry.location;
                       SetPinLatitude(location.lat),
                         SetPinLongitude(location.lng);
+
+                        Geocoder.from(location.lat, location.lng)
+                        .then(json => {
+                          var addressComponent = json.results[0].formatted_address;
+                          console.log(addressComponent);
+                          setshowcurrent(false)
+                          setselectedaddress(addressComponent)
+                          //ref.current?.setAddressText(addressComponent);
+                          ref.current?.clear();
+                        
+                        })
+                        .catch(error =>{
+                          ref.current?.clear();
+                          console.warn(error)});
+                        ref.current?.clear();
                     })
                     .catch(error => console.warn(error));
                 }}
                 query={{
                   key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
                   language: 'en',
+                  components: "country:ae",
                 }}
               />
+              
+              </View>
+           
+                            <TouchableOpacity
+          //  onPress={() => {props.onPressnewlocation}
+          onPress={() => {
+            getnewlocation()}}
+            style={{
+              position: 'absolute',
+       top: getStatusBarHeight() + scalableheight.fifteenpointfive,
+              right: scalableheight.four,
+              elevation:112,
+              zIndex:112
+            }}>
+              <MaterialCommunityIcons
+                    name={'crosshairs-gps'}
+                    color={'#F55050'}
+                    size={fontSize.twentyfour}
+                  />
+          </TouchableOpacity>
+
+<View 
+  style={{
+    position: 'absolute',
+top: getStatusBarHeight() + scalableheight.six,
+    // left: scalableheight.two,
+    elevation:112,
+    zIndex:112,
+    width:"100%",
+    paddingHorizontal:scalableheight.two
+
+  }}>
+<Text 
+  style={{
+    color: '#F55050',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.fifteen,
+  }}
+        >My Location</Text>
+             <Text 
+              style={{
+                color: 'grey',
+                fontFamily: 'Inter-SemiBold',
+                fontSize: fontSize.twelve,
+              }}
+             numberOfLines={2}
+        
+          >{showcurrent ?  props.locationpin : selectedaddress}</Text>
+</View>
+       
               <View
                 style={{
                   width: '100%',
-                  height: scalableheight.thirty,
-                  marginVertical: scalableheight.two,
+                  height: "100%",
+                  // marginVertical: scalableheight.two,
                   borderRadius: fontSize.fifteen,
                   overflow: 'hidden',
                   justifyContent: 'center',
@@ -586,20 +725,23 @@ export default function Custombottomsheet(props) {
                   // provider={PROVIDER_GOOGLE}
                   style={{
                     width: '100%',
-                    height: '100%',
+                    height: '75%',
                     borderRadius: fontSize.fifteen,
+                 position:"absolute",
+                 bottom:0
+                
                   }}
                   region={{
                     latitude: pinlatitude,
                     longitude: pinLongitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.03,
                   }}
                   initialRegion={{
                     latitude: pinlatitude,
                     longitude: pinLongitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.03,
                   }}
                   onRegionChange={region => {
                     //  console.log(region)
@@ -624,9 +766,23 @@ export default function Custombottomsheet(props) {
                       sethidemarker(false);
                       SetPinLatitude(region.latitude),
                         SetPinLongitude(region.longitude);
+
+                        Geocoder.from(region.latitude, region.longitude)
+                        .then(json => {
+                          var addressComponent = json.results[0].formatted_address;
+                          console.log(addressComponent);
+                          //ref.current?.setAddressText(addressComponent);
+                          ref.current?.clear();
+                          setshowcurrent(false)
+                          setselectedaddress(addressComponent)
+                        })
+                        .catch(error =>{
+                          ref.current?.clear();
+                          console.warn(error)});
+                       
                     }
                   }}></MapView>
-                <View
+                {/* <View
                   style={{
                     width: scalableheight.eight,
                     height: scalableheight.four,
@@ -655,11 +811,15 @@ export default function Custombottomsheet(props) {
                     }}
                     source={require('../../Resources/images/logo-black.png')}
                   />
-                </View>
+                </View> */}
               </View>
               <View
                 style={{
                   width: '100%',
+                  position:"absolute",
+                  bottom: scalableheight.five,
+                  paddingHorizontal:scalableheight.two
+
                 }}>
                 <MYButton
                   // disabled
@@ -667,7 +827,10 @@ export default function Custombottomsheet(props) {
                     if (showmap == true) {
                       setshowmap(false);
                       props.onPressnewCoordinates(pinlatitude, pinLongitude);
+                      clearandclose();
+                      props.onPress()
                     } else {
+                  
                       clearandclose();
                     }
                   }}
@@ -678,7 +841,8 @@ export default function Custombottomsheet(props) {
               </View>
             </View>
           )}
-        </Animatable.View>
+          </View>
+ // </Animatable.View> 
       )}
       {/* {props.state && props.OnPressPinLocation != true && (
         

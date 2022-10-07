@@ -17,10 +17,10 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import AntDesign from 'react-native-vector-icons/AntDesign';

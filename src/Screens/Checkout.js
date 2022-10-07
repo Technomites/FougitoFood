@@ -591,7 +591,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     }
   }
   function selectpaymentmethod(index) {
-    console.log('ee' + index);
+    console.log('index' + index);
     let data = [...payment];
     for (const key in payment) {
       if (key == index) {
@@ -677,10 +677,10 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     Geolocation.getCurrentPosition(info => {
       SetPinLatitude(info?.coords?.latitude);
       SetPinLongitude(info?.coords?.longitude);
-      console.log('hello' + info?.coords?.latitude);
-      console.log('hello' + info?.coords?.longitude);
+      console.log('info?.coords?.latitude' + info?.coords?.latitude);
+      console.log('info?.coords?.longitude' + info?.coords?.longitude);
     });
-    console.log('hello');
+
     getLocation();
   }, []);
 
@@ -808,6 +808,31 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
            
           }}>
 {orderdetailslink != "" &&
+<>
+ <TouchableOpacity
+ onPress={() => {
+   // navigation.navigate("Home")
+ setmodalVisiblepayment(false)
+ }}
+ style={{
+   height: scalableheight.seven,
+   width: scalableheight.five,
+   justifyContent: 'center',
+   alignItems: 'center',
+   position:"absolute",
+   top:scalableheight.six,
+   left: scalableheight.one,
+   zIndex:10
+ }}>
+ {/* <View style={styleSheet.backButtonMain}> */}
+ <AntDesign
+   style={{alignSelf: 'center'}}
+   name="arrowleft"
+   color={'black'}
+   size={fontSize.twentyfour}
+ />
+ {/* </View> */}
+</TouchableOpacity>
 <WebView
 style={{
   width: '100%',
@@ -816,7 +841,7 @@ style={{
 }}
 source={{ uri: orderdetailslink}} 
 onMessage={(event) => {
-  console.log("humza");
+
   let newdata= JSON.parse(event.nativeEvent.data)
   console.log(newdata.data);
   if(event.nativeEvent.data == "Exit"){
@@ -857,6 +882,7 @@ onMessage={(event) => {
   }
   }}
 />
+</>
 }
 </View>
         </Modal>
@@ -1014,6 +1040,7 @@ onMessage={(event) => {
                 query={{
                   key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
                   language: 'en',
+                  components: "country:ae",
                 }}
               />
 

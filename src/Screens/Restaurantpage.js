@@ -15,10 +15,10 @@ import Starters from '../Shared/Components/Starters';
 import ScreenWrapper from '../Shared/Components/ScreenWrapper';
 import Infobar from '../Shared/Components/Infobar';
 import Toast from 'react-native-toast-notifications';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 // import  {Animated as DrawerAnimated} from 'react-native-reanimated';
 // import Animated,{interpolate} from 'react-native-reanimated';
 
@@ -82,6 +82,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   const [isEnabled, setisEnabled] = useState(false);
   const [inlat, setinlat] = useState();
   const [inlong, setinlong] = useState();
+  const [currentitemprice, setcurrentitemprice] = useState(0);
   const scrollviewhorizontalref = useRef();
   const scrollviewref = useRef();
   const drinksref = useRef();
@@ -232,7 +233,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }
   
     useEffect(() => {
-      hideNavigationBar();
+      // hideNavigationBar();
       if (modalVisible == true) {
         setanimationstate(true);
       }
@@ -304,9 +305,10 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
      
       toggleanimation();
       setanimationstate(true);
-      scrollviewref.current.scrollTo({ y: dataSourceCords[1] , animated: true, });
+      scrollviewref.current.scrollTo({ y: 0 , animated: true, });
      
       Keyboard.dismiss();
+      setmodalVisible(false)
     }
   
     function updatecoordinates(lat, long) {
@@ -321,6 +323,15 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       StatusBar.setHidden(false);
       LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
     }, []);
+
+  
+    React.useEffect(() => {
+      const unsubscribe = navigation.addListener('focus', () => {
+        scrollviewref.current.scrollTo({ y: 0 , animated: true, });
+      });
+      return unsubscribe;
+    }, [navigation]);
+    
   
     useEffect(() => {
       console.log(
@@ -328,28 +339,28 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       );
     }, [dataSourceCordsHorizontal]);
   
-    useEffect(() => {
-      const keyboardDidShowListener = Keyboard.addListener(
-        'keyboardDidShow',
-        () => {
-          hideNavigationBar();
-          console.log('Keyboard is open');
-          setkeyboardopen(true);
-        },
-      );
-      const keyboardDidHideListener = Keyboard.addListener(
-        'keyboardDidHide',
-        () => {
-          hideNavigationBar();
-          setkeyboardopen(false);
-          console.log('Keyboard is closed');
-        },
-      );
+    // useEffect(() => {
+    //   const keyboardDidShowListener = Keyboard.addListener(
+    //     'keyboardDidShow',
+    //     () => {
+    //       // hideNavigationBar();
+    //       console.log('Keyboard is open');
+    //       setkeyboardopen(true);
+    //     },
+    //   );
+    //   const keyboardDidHideListener = Keyboard.addListener(
+    //     'keyboardDidHide',
+    //     () => {
+    //       // hideNavigationBar();
+    //       setkeyboardopen(false);
+    //       console.log('Keyboard is closed');
+    //     },
+    //   );
   
-      return () => {
-        keyboardDidHideListener.remove();
-      };
-    }, []);
+    //   return () => {
+    //     keyboardDidHideListener.remove();
+    //   };
+    // }, []);
   
 
   
@@ -503,7 +514,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   
     function updateservingstate(index, arrindex) {
       console.log(arrindex)
-  
+  // let selectedprice = currentitemprice
       let arr = retaurantmenucategorydataoption;
      
       for (const key in arr.MenuItemOptions) {
@@ -515,8 +526,12 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                       if (arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true) {
                         
                         arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = false;
+                        // selectedprice = selectedprice - arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
+                     
                       } else {
                         arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = true;
+                        // selectedprice= selectedprice + arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
+                      
                       }
                     } else {
                       console.log("bye")
@@ -527,6 +542,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   
       }
       // setmodaldataoptions(arr);
+      // setcurrentitemprice(selectedprice)
       dispatch(savemenucategoryoptiondetailsdata(arr))
       console.log('modaldataoptions' + JSON.stringify(arr));
       // console.log('arr' + JSON.stringify(arr.MenuItemOptions.MenuItemOptionValues));
@@ -616,7 +632,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
         barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
         backgroundColor="transparent"
       />
-    {modalVisible && animationtype == 'fadeInUpBig' && (
+          {/* {modalVisible && animationtype == 'fadeInUpBig' && ( */}
+    {modalVisible &&  (
         <View
           style={{
             position: 'absolute',
@@ -638,27 +655,33 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
           // position: 'absolute',
         }}
         statusBarTranslucent
+        animationType="slide"
         visible={modalVisible}
         onRequestClose={() => setmodalVisible(false)}>
 {modalVisible && (
-        <Animatable.View
+        // <Animatable.View
         
-          animation={animationstate ? animationtype : null}
-          onAnimationEnd={() => {
-            setanimationstate(false);
+        //   animation={animationstate ? animationtype : null}
+        //   onAnimationEnd={() => {
+        //     setanimationstate(false);
 
-            if (animationtype == 'fadeOutDownBig') {
+        //     if (animationtype == 'fadeOutDownBig') {
 
-              setmodalVisible(false);
-              setanimationtype('fadeInUpBig');
+        //       setmodalVisible(false);
+        //       setanimationtype('fadeInUpBig');
 
-            }
-          }}
-          easing="ease"
-          //  iterationCount="infinite"
-          iterationCount={1}
-          style={{elevation: 4000, zIndex: 4000}}
-          >
+        //     }
+        //   }}
+        //   easing="ease"
+        //   //  iterationCount="infinite"
+        //   iterationCount={1}
+        //   style={{elevation: 4000, zIndex: 4000}}
+        //   >
+        <View
+        
+      
+        style={{elevation: 4000, zIndex: 4000}}
+        >
           <KeyboardAvoidingView
             style={{width: '100%', height: '100%'}}
             behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
@@ -686,10 +709,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                     }}
                     source={{uri: selecteditemimage}}
                   />
-                  {renderIf(
-                    serving?.filter(item => item.selected == true) != '',
-                  )(
-                    <View
+                 
+                    {/* <View
                       style={{
                         flexDirection: 'row',
                         paddingHorizontal: scalableheight.two,
@@ -710,27 +731,20 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                         }}>
                         AED{' '}
                       </Text>
-
-                      {serving
-                        ?.filter(function (item) {
-                          return item.selected == true;
-                        })
-                        .map(function ({price}) {
-                          return (
-                            <Text
+                      <Text
                               style={{
                                 color: 'white',
                                 fontFamily: 'Inter-SemiBold',
                                 fontSize: fontSize.fourteen,
                               }}>
-                              {price}
+                              {currentitemprice}
                             </Text>
-                          );
-                        })}
-                    </View>,
-                  )}
+                    
+                    </View> */}
+           
                   <TouchableOpacity
                     onPress={() => {
+                
                       clearandclose();
                     }}
                     style={{
@@ -787,9 +801,12 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                       item?.IsRadioButton == true ?
                    
                         item?.MenuItemOptionValues[0].Price != 0.00 ? 
-                        <>
+                        <View
+                        key={key.toString()} 
+                        >
                           
                         <MultiChoiceDropDown
+                      
                         title={item?.Title}
                         IsRequired = {item?.IsRequired}
                         data={item?.MenuItemOptionValues}
@@ -797,10 +814,13 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                         update={updateservingstate}
                       />
                          <View style={{height: scalableheight.one}} />
-                      </>
+                      </View>
                         : 
-                        <>
+                        <View
+                        key={key.toString()} 
+                        >
                         <Mltichoicehorizontallist
+                        
                         title={item?.Title}
                         IsRequired = {item?.IsRequired}
                         data={item?.MenuItemOptionValues}
@@ -808,10 +828,12 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                         update={updateservingstate}
                       />
                          <View style={{height: scalableheight.one}} />
-                      </>
+                      </View>
              : 
 /////////////// multiple selection data
-<>
+<View
+key={key.toString()} 
+>
                
 <MultiChoiceDropDownWithMultipleSelection
 title={item?.Title}
@@ -821,7 +843,7 @@ index={key}
 update={updateservingstatemultiple}
 />
  <View style={{height: scalableheight.one}} />
-</>
+</View>
                       )})
                  
 }
@@ -928,26 +950,40 @@ update={updateservingstatemultiple}
               </View>
             </View>
           </KeyboardAvoidingView>
-        </Animatable.View>
+          </View>
+      //  </Animatable.View>
       )}
       </Modal>
       {cartvisible && (
-        <Animatable.View
-          animation={'fadeInUpBig'}
-          easing="ease"
-          //  iterationCount="infinite"
-          iterationCount={1}
-          style={{
-            bottom: scalableheight.two,
-            position: 'absolute',
-            width: '90%',
-            backgroundColor: '#E14E4E',
-            zIndex: 2,
-            alignSelf: 'center',
-            borderRadius: fontSize.eleven,
-            paddingVertical: scalableheight.one,
-            paddingHorizontal: scalableheight.two,
-          }}>
+        // <Animatable.View
+        //   animation={'fadeInUpBig'}
+        //   easing="ease"
+        //   //  iterationCount="infinite"
+        //   iterationCount={1}
+        //   style={{
+        //     bottom: scalableheight.two,
+        //     position: 'absolute',
+        //     width: '90%',
+        //     backgroundColor: '#E14E4E',
+        //     zIndex: 2,
+        //     alignSelf: 'center',
+        //     borderRadius: fontSize.eleven,
+        //     paddingVertical: scalableheight.one,
+        //     paddingHorizontal: scalableheight.two,
+        //   }}>
+        <View
+       
+        style={{
+          bottom: scalableheight.two,
+          position: 'absolute',
+          width: '90%',
+          backgroundColor: '#E14E4E',
+          zIndex: 2,
+          alignSelf: 'center',
+          borderRadius: fontSize.eleven,
+          paddingVertical: scalableheight.one,
+          paddingHorizontal: scalableheight.two,
+        }}>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Checkout');
@@ -1004,7 +1040,8 @@ update={updateservingstatemultiple}
               </Text>
             </View>
           </TouchableOpacity>
-        </Animatable.View>
+          </View>
+       // </Animatable.View>
       )}
      
          {/* <View style={{position:"absolute",backgroundColor: "transparent", paddingTop: getStatusBarHeight(), elevation: 3000, zIndex:3000}}>
@@ -1029,6 +1066,9 @@ update={updateservingstatemultiple}
   ref={scrollviewref}
   
   scrollEventThrottle={1}
+  snapToAlignment="start"
+  decelerationRate={"fast"}
+  snapToInterval={scalableheight.fourtynine}
   onScroll={
     
     Animated.event(
@@ -1044,7 +1084,7 @@ update={updateservingstatemultiple}
 
 let closest = dataSourceCords[1];
 for(let item of dataSourceCords){
-if(Math.abs(item - y)<Math.abs(closest - y)){
+if(Math.abs(item - y)<Math.abs(closest - y)-scalableheight.fourtynine){
 closest = item;
 }
 }
@@ -1106,13 +1146,18 @@ if (restrauntmenu[index - 1]?.visible != true) {
 <View style={{ paddingHorizontal: scalableheight.one,}}>
    {restrauntmenu.map((item, key) => {
     return (
-     <>
-     {search == "" &&
-      <Text
-    onLayout={event => {
+     <View
+     key={key.toString()}
+     onLayout={event => {
       const layout = event.nativeEvent.layout;
       dataSourceCords[key + 1] = layout.y; // we store this offset values in an array
     }}
+     >
+    {/* <> */}
+     {search == "" &&
+      <Text
+     
+ 
     style={styleSheet.heading}>
     {item?.CategoryName}{' '}
   </Text>
@@ -1120,7 +1165,9 @@ if (restrauntmenu[index - 1]?.visible != true) {
   {item?.Items?.map((item, key) => {
     return (
       item?.Name.toLowerCase().includes(search.trim().toLowerCase()) ? 
-      <View style={{width: '100%', alignItems: 'center'}}>
+      <View
+       key={key.toString()}
+      style={{width: '100%', alignItems: 'center'}}>
         <Starters
           image={item?.Image}
           title={item?.Name}
@@ -1135,13 +1182,15 @@ if (restrauntmenu[index - 1]?.visible != true) {
             dispatch(savemenucategoryoptiondetailsdata(item))
             setspecialinstructions("")
             setcount(1)
+           
             setmodalVisible(true);
           }}
         />
       </View> : null
     );
   })}
-     </>
+   {/* </> */}
+   </View>
     );
   })}
 </View>
@@ -1159,7 +1208,7 @@ scrollviewhorizontalref ={scrollviewhorizontalref}
       scrolltocategory ={(index) => {
         console.log(  dataSourceCords[index]);
 
-         scrollviewref.current.scrollTo({ y: dataSourceCords[index + 1] , animated: true, });
+         scrollviewref.current.scrollTo({ y: dataSourceCords[index + 1] + scalableheight.fourtynine, animated: true, });
       
            let data = [...restrauntmenu];
            for (const index in data) {

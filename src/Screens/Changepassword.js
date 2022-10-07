@@ -17,10 +17,10 @@ import {
   Alert,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import {
   changelang,
   seticonfocus,

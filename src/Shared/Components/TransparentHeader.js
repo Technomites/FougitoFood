@@ -31,10 +31,8 @@ export default function TransparentHeader(props) {
           flexDirection: 'row',
         }}>
         <TouchableOpacity
-          onPress={() => {
-            // navigation.navigate("Home")
-            navigation.goBack();
-          }}
+       
+          onPress={props.onpressback}
           style={{
             height: scalableheight.seven,
             width: scalableheight.five,

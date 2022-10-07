@@ -23,12 +23,13 @@ import {
   GetProfile,
   clearstatusProfileupdate,
   updateprofilepicture,
-  clearimageresponse
+  clearimageresponse,
+  clearprofileupdationstatus  
 } from '../Actions/actions';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MYButton from '../Shared/Components/MYButton';
 import Animated from 'react-native-reanimated';
@@ -129,7 +130,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
       });
     } else if (EmailAddress.length === 0) {
-      toast.current.show('Enter EmailAddress', {
+      toast.current.show('Enter Email Address', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -165,6 +166,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
       setLoader(false);
 
       dispatch(GetProfile(AuthToken));
+      dispatch(clearprofileupdationstatus())
     } else if (UserUpdateProfileStatus === 'Error') {
       toast.current.show(UserUpdateProfileMessage, {
         type: 'normal',
@@ -175,6 +177,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
         zIndex: 2,
       });
       setLoader(false);
+      dispatch(clearprofileupdationstatus())
     }
     else if (UserUpdateProfileStatus === 'Network Request Failed') {
       toast.current.show('Network Request Failed', {
@@ -186,6 +189,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
         zIndex: 2,
       });
       setLoader(false);
+      dispatch(clearprofileupdationstatus())
     }
   }, [UserUpdateProfileStatus, UserUpdateProfileMessage]);
   // function postupdatedprofile() {
@@ -279,7 +283,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
             style={{
               width: '100%',
               height: '100%',
-              borderColor: '#000',
+              borderColor: 'rgba(225, 78, 78, 1)',
               borderWidth: scalableheight.borderwidth,
               borderRadius: fontSize.circle,
             }}
@@ -447,13 +451,15 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                   ...styleSheet.TextInput,
                   ...styleSheet.shadow,
                   paddingLeft: scalableheight.fourteen,
+                  backgroundColor:"#E1E1E1"
                 }}
                 editable={false}
                 keyboardType="numeric"
                 placeholderTextColor="#8c8c8c"
                 //          placeholder={'Enter Phone Number'}
                 onChangeText={text => setPhoneNumber(text)}
-                defaultValue={PhoneNumber}
+                defaultValue={PhoneNumber.substring(3)}
+             
               />
               <Image
                 style={{

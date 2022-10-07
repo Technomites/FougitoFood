@@ -175,21 +175,36 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
           </TouchableOpacity>
         </View>
         <View style={{marginVertical: scalableheight.one, }}>
-          {MyorderList.length == 0 || MyorderListpast.length == 0 ? (
-            <View
-              style={{
-                // justifyContent: 'center',
-                // alignItems: 'center',
-                alignSelf: 'center',
-                marginVertical: scalableheight.fourty,
-              }}>
-              <Text style={{fontSize: fontSize.fifteen, color: '#000'}}>
-                NO DATA FOUND
-              </Text>
-            </View>
-          ) : (
+         
             <View
               style={{width: '100%', paddingHorizontal: scalableheight.two}}>
+
+
+
+{ordertype == 'On Going' && MyorderList.length == 0 ? (
+    <View
+    style={{
+      // justifyContent: 'center',
+      // alignItems: 'center',
+      alignSelf: 'center',
+      marginVertical: scalableheight.fourty,
+    }}>
+    <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
+     No Data Found
+    </Text>
+  </View>) : null}
+{ordertype != 'On Going' && MyorderListpast.length == 0 ? (
+    <View
+    style={{
+      // justifyContent: 'center',
+      // alignItems: 'center',
+      alignSelf: 'center',
+      marginVertical: scalableheight.fourty,
+    }}>
+    <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
+     No Data Found
+    </Text>
+  </View>): null}
               <FlatList
                 refreshControl={
                   <RefreshControl
@@ -197,6 +212,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                     onRefresh={onRefresh}
                   />
                 }
+              
                 data={ordertype == 'On Going' ? MyorderList : MyorderListpast}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
@@ -227,7 +243,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                 }}
               />
             </View>
-          )}
+          
         </View>
       </View>
       <Toast

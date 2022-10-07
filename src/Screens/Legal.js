@@ -17,10 +17,10 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {changelang, seticonfocus} from '../Actions/actions';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import Animated from 'react-native-reanimated';
 import Entypo from 'react-native-vector-icons/Entypo';
 import PlainHeader from '../Shared/Components/PlainHeader';
@@ -57,7 +57,7 @@ const Legal = ({navigation, drawerAnimationStyle}) => {
           <View>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('TermsCondition');
+                // navigation.navigate('TermsCondition');
               }}
               activeOpacity={0.9}
               style={{

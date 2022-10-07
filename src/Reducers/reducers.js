@@ -63,6 +63,7 @@ import {
   internetCHECK,
   OrderID,
   CardOrder,
+  ClearProfile
 } from '../Actions/actions';
 
 const initialState = {
@@ -136,6 +137,15 @@ const initialState = {
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
+
+   
+
+    case ClearProfile:
+      return {
+        ...state,
+        UserUpdateProfileStatus: "",
+      };
+
     case OrderID:
       return {
         ...state,

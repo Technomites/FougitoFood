@@ -15,13 +15,14 @@ import NetInfo from '@react-native-community/netinfo';
 import messaging from '@react-native-firebase/messaging';
 import {useSelector, useDispatch} from 'react-redux';
 import {changelang, seticonfocus} from '../Actions/actions';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import * as Animatable from 'react-native-animatable';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import LottieView from 'lottie-react-native';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 import {storetoken, storetokenrefresh, refreshmytoken, isconnected, storecartdata, storerestrauntid, storecartprice} from '../Actions/actions';
 // import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 const SplashScreen = props => {
@@ -31,7 +32,7 @@ const SplashScreen = props => {
     StatusBar.setHidden(false);
     StatusBar.setBackgroundColor('transparent');
     StatusBar.setBarStyle('light-content');
-    hideNavigationBar();
+    // hideNavigationBar();
   }, []);
 
   async function navigatetogettingstarted() {
@@ -59,12 +60,20 @@ const SplashScreen = props => {
 
   async function gettoken() {
     const cartdatastore = await AsyncStorage.getItem('cartdata');
-    // console.log("my cart data" + JSON.stringify(JSON.parse(cartdatastore)))
+    if (cartdatastore != undefined && cartdatastore != '') {
     dispatch(storecartdata(JSON.parse(cartdatastore)));
+    }
+    
     const currentRestrauntidstore = await AsyncStorage.getItem('currentRestrauntid');
-    dispatch(storerestrauntid(JSON.parse(currentRestrauntidstore)));
+    if (currentRestrauntidstore != undefined && currentRestrauntidstore != '') {
+      dispatch(storerestrauntid(JSON.parse(currentRestrauntidstore)));
+      }
+ 
     const pricestore = await AsyncStorage.getItem('price');
-    dispatch(storecartprice(JSON.parse(pricestore)));
+    if (pricestore != undefined && pricestore != '') {
+      dispatch(storecartprice(JSON.parse(pricestore)));
+      }
+   
     
     
     const value = await AsyncStorage.getItem('AccessToken');
@@ -90,6 +99,10 @@ const SplashScreen = props => {
   }, [refreshtokendata]);
   return (
     <View style={styleSheet.BackgroundImage}>
+        <FocusAwareStatusBar
+        barStyle={'dark-content'}
+        backgroundColor="transparent"
+      />
       {/* 
       <Animatable.View
         animation="slideInDown"
@@ -110,7 +123,8 @@ const SplashScreen = props => {
         source={require('../Resources/images/lootie.json')}
         autoPlay
         loop={false}
-        onAnimationFinish={() => navigatetogettingstarted()}
+        onAnimationFinish={() => 
+          {navigatetogettingstarted()}}
       />
     </View>
   );

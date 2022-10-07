@@ -155,11 +155,21 @@ const renderpopularcategories = ({item}) => (
             />
              <View style={{paddingHorizontal: scalableheight.one,   backgroundColor: '#F6F6F6', width:"100%"}}>
           
-              <Animatable.View
+              {/* <Animatable.View
                 animation="bounceInRight"
                 easing="ease"
                 // iterationCount="infinite"
                 iterationCount={1}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingVertical: scalableheight.two,
+                  justifyContent: 'flex-start',
+                  width: '100%',
+            
+                }}> */}
+                  <View
+                
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -193,7 +203,9 @@ const renderpopularcategories = ({item}) => (
                   }}>
                   POPULAR CATEGORIES
                 </Text>
-              </Animatable.View>
+                </View>
+
+              {/* //</Animatable.View> */}
 
               <FlatList
                 keyExtractor={(item, index) => index.toString()}

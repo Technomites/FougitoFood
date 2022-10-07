@@ -25,10 +25,10 @@ import renderIf from 'render-if';
 import MYButton from '../Shared/Components/MYButton';
 import Animated from 'react-native-reanimated';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // import Icon from 'react-native-vector-icons/Icon';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -75,6 +75,12 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
   }, []);
 
   useEffect(() => {
+ console.log("this is the data " + JSON.stringify(detailsContact))
+  }, [detailsContact]);
+
+  
+
+  useEffect(() => {
     if (detailsContactstatus === 'Success') {
       toast.current.show(detailsContactmessage, {
         type: 'normal',
@@ -116,7 +122,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
 
   const emailsend = () => {
     if (message == '') {
-      toast.current.show('Type your message', {
+      toast.current.show('Message Cannot Be Empty', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -145,7 +151,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
           flex: 12,
           paddingTop: getStatusBarHeight(),
         }}>
-        <PlainHeader title={'Settings'} />
+        <PlainHeader title={'Contact Us'} />
         <View
           style={{
             justifyContent: 'center',
@@ -169,7 +175,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 textAlign: 'justify',
               }}>
               We’re always available and happy to chat with you! Reach out to
-              us"
+              us
             </Text>
           </View>
           <View
@@ -206,7 +212,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                   color: '#29262A',
                   textAlign: 'justify',
                 }}>
-                {detailsContact[0]?.Contact}
+                {detailsContact[0]?.Contact}{" , "}{detailsContact[0]?.Contact2}
               </Text>
             </View>
           </View>
@@ -547,7 +553,7 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                     AuthToken != '' ? emailsend() : setmodalVisible(true);
                   }
                 }}
-                title={AuthToken != '' ? 'SEND' : 'Login'}
+                title={AuthToken != '' ? 'Submit' : 'Login'}
                 color={'#E14E4E'}
                 textcolor={'white'}
               />

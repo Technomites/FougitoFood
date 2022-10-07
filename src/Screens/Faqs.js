@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {changelang, seticonfocus} from '../Actions/actions';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import Animated from 'react-native-reanimated';
@@ -123,10 +123,12 @@ const Faqs = ({navigation, drawerAnimationStyle}) => {
               />
             </View>
           </View>
-          {Faqs.map(item => {
+          {Faqs.map((item, index) => {
             return (
               item.question.includes(search.trim()) || item.answer.includes(search.trim()) ? 
-            <Faqtitle data={item} /> : null )
+            <Faqtitle 
+            key={index.toString()}
+            data={item} /> : null )
           })}
         </ScrollView>
       </View>

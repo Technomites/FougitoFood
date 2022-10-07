@@ -13,10 +13,11 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 import AsyncStorage from '@react-native-community/async-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {fontSize, scalableheight} from '../Utilities/fonts';
@@ -39,7 +40,7 @@ const GettingStarted = props => {
   const [getstarted, SetGetstarted] = useState([
     {
       image: require('../Resources/images/GetstartedS1.png'),
-      caption: '5 Star Restaurants at your finger tips',
+      caption: 'Best restaurants at your finger tips',
       buttontitle: 'NEXT',
       buttontitle2: true,
 
@@ -59,7 +60,7 @@ const GettingStarted = props => {
     },
     {
       image: require('../Resources/images/GetstartedS3.png'),
-      caption: 'Your Favourite Food Delivered to you',
+      caption: 'Your favourite food delivered to you',
       buttontitle: 'PROCEED',
       buttontitle2: false,
     },
@@ -68,62 +69,20 @@ const GettingStarted = props => {
   const dispatch = useDispatch();
   useEffect(() => {
     StatusBar.setHidden(false);
-    //StatusBar.setBackgroundColor('transparent');
-    // StatusBar.setBarStyle('light-content');
   }, []);
 
-//   useEffect(() => {
-//     NetInfo.fetch().then(state => {
-   
-//       if (state.isConnected == true && state.isInternetReachable == true) {
-//        dispatch(isconnected(true))
-//       } else {
-//         dispatch(isconnected(false))
-//       }
-//     });
-//     gettoken();
-//   }, []);
 
-//   async function gettoken() {
-//     const cartdatastore = await AsyncStorage.getItem('cartdata');
-//     // console.log("my cart data" + JSON.stringify(JSON.parse(cartdatastore)))
-//     dispatch(storecartdata(JSON.parse(cartdatastore)));
-//     const currentRestrauntidstore = await AsyncStorage.getItem('currentRestrauntid');
-//     dispatch(storerestrauntid(JSON.parse(currentRestrauntidstore)));
-//     const pricestore = await AsyncStorage.getItem('price');
-//     dispatch(storecartprice(JSON.parse(pricestore)));
-    
-    
-//     const value = await AsyncStorage.getItem('AccessToken');
-//      const refresh = await AsyncStorage.getItem('TokenInfo');
-//     console.log(value);
-//     if (value != undefined && value != '') {
-//       dispatch(storetoken(JSON.parse(value)));
-
-//       if (refresh != undefined && refresh != '') {
-   
-//         dispatch(storetokenrefresh(JSON.parse(refresh)));
-//       }
-//     }
-   
-//   }
-
-//   useEffect(() => {
-//     if(refreshtokendata != null){
-//       dispatch(refreshmytoken(refreshtokendata))
-// // console.log("yoooo1" + JSON.stringify(refreshtokendata))
-//     }
-
-//   }, [refreshtokendata]);
-  
 
   return (
     <ImageBackground
       resizeMode="cover"
       source={getstarted[count]?.image}
       style={styleSheet.BackgroundImage}>
-      <StatusBar backgroundColor="transparent" />
-      <Animatable.View
+      <FocusAwareStatusBar
+        barStyle={'dark-content'}
+        backgroundColor="transparent"
+      />
+      {/* <Animatable.View
         animation={animationstate ? 'bounceInRight' : undefined}
         onAnimationEnd={() => {
           setanimationstate(false);
@@ -133,6 +92,17 @@ const GettingStarted = props => {
         easing="ease"
         // iterationCount="infinite"
         iterationCount={1}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingVertical: scalableheight.two,
+          justifyContent: 'flex-start',
+          width: '100%',
+          position: 'absolute',
+          bottom: 0,
+        }}> */}
+           <View
+       
         style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -161,6 +131,7 @@ const GettingStarted = props => {
               fontFamily: 'Inter-ExtraBold',
               textAlign: 'center',
               width: '80%',
+              paddingBottom:scalableheight.one
             }}>
             Getting Started
           </Text>
@@ -189,6 +160,8 @@ const GettingStarted = props => {
             {getstarted.map((item, index) => {
               return (
                 <Entypo
+                key={index.toString()}
+           
                   style={{margin: -15}}
                   name="dot-single"
                   color={index === count ? '#E14E4E' : 'rgba(245, 80, 80, 0.5)'}
@@ -240,7 +213,7 @@ const GettingStarted = props => {
             )}
           </View>
         </View>
-      </Animatable.View>
+      </View>
     </ImageBackground>
   );
 };

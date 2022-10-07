@@ -83,7 +83,8 @@ export default function Addresstile(props) {
                 }}>
                 {props?.place}
               </Text>
-              {props?.screenname != 'checkout' && (
+           
+              {props?.screenname == 'checkout' && (
                 <TouchableOpacity onPress={props.onPress} activeOpacity={0.9}>
                   <Entypo
                     style={{alignSelf: 'center'}}

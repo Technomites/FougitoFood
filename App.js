@@ -22,6 +22,8 @@ import MainNavigator from './src/Navigation/MainNavigator';
 //import MainNavigator from './src/Navigation/MainNavigator';
 const Stack = createStackNavigator();
 
+console.reportErrorsAsExceptions = false;
+
 LogBox.ignoreAllLogs(true);
 LogBox.ignoreLogs([
   "VirtualizedLists should never be nested",

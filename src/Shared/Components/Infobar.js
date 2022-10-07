@@ -60,7 +60,7 @@ export default function Infobar(props) {
         <Text
           style={{
             fontFamily: 'Inter-Bold',
-            fontSize: fontSize.sixteen,
+            fontSize: fontSize.fifteen,
             color: '#29262A',
           }}>
           {props.Heading}

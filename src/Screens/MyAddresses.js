@@ -94,6 +94,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      dispatch(getalladdresses(AuthToken));
       setscreenname('');
       console.log(route?.params?.screenname + 'name');
       if (route?.params?.screenname != undefined) {
@@ -105,9 +106,9 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
     return unsubscribe;
   }, [navigation, route]);
 
-  useEffect(() => {
-    dispatch(getalladdresses(AuthToken));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getalladdresses(AuthToken));
+  // }, []);
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white', overflow:"hidden"}}>
@@ -122,7 +123,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
           alignSelf: 'center',
           paddingTop: getStatusBarHeight(),
         }}>
-        <PlainHeader title={'My Address'} />
+        <PlainHeader title={'My Addresses'} />
 
         <View
           style={{
@@ -158,6 +159,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
                   disabled={screenname == 'checkout' ? false : true}
                   style={{marginTop: '5%'}}>
                   <Addresstile
+                    disabled={screenname == 'checkout' ? false : true}
                     onPress={() => {
                       navigation.navigate('EditAddress', {
                         // orderId: item.OrderNo,

@@ -17,10 +17,10 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {changelang, seticonfocus} from '../Actions/actions';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import Animated from 'react-native-reanimated';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';

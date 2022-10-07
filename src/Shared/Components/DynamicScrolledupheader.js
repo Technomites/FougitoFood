@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { LayoutAnimation, ImageBackground, Text, View, StyleSheet, Image, FlatList, Animated, TouchableOpacity } from 'react-native';
+import { Platform, LayoutAnimation, ImageBackground, Text, View, StyleSheet, Image, FlatList, Animated, TouchableOpacity } from 'react-native';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import HeaderComponentRestaurant from './HeaderComponentRestaurant';
@@ -88,7 +88,9 @@ const rendertypes = ({item, index}) => (
           color: item.visible ? '#E14E4E' : 'rgba(211,211,211, 0.9)',
           fontSize: fontSize.fifteen,
           paddingVertical: scalableheight.one,
-          borderBottomWidth: item.visible ? 1 : 0,
+          // borderBottomWidth: item.visible ? 1 : 0,
+          // borderWidth:item.visible ? 1 : 0,
+          
           borderColor: '#E14E4E',
         }}>
         {item?.CategoryName}
@@ -147,7 +149,7 @@ const rendertypes = ({item, index}) => (
                   flexDirection: 'row',
                    backgroundColor: 'transparent',
                     //  marginTop: animatedtop ,
-                  position:"absolute", top: scalableheight.tweleve,
+                  position:"absolute", top:Platform.OS == "ios" ? scalableheight.tweleve : getStatusBarHeight() + scalableheight.seven,
                   // backgroundColor: '#F6F6F6',
                   // borderWidth:1, borderColor:"red"
              

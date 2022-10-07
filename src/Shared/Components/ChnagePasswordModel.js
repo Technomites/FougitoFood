@@ -98,17 +98,41 @@ export default function ChnagePasswordModel(props) {
 
   const ChangNewPasswordHandler = () => {
     Keyboard.dismiss();
-    if (oldpassword == '' || confirmpassword == '' || password == '') {
-      toast.current.show('Enter All Fields', {
+   if (oldpassword == "") {
+      toast.current.show('Enter Current Password', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
         offset: 10,
         animationType: 'slide-in',
       });
-      return;
-    } else if (password != confirmpassword) {
-      toast.current.show('Password Not Matched', {
+   
+    }
+    
+    else if (password == "") {
+      toast.current.show('Enter New Password', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+   
+    }
+    
+    else if (confirmpassword == "") {
+      toast.current.show('Enter Confirm Password', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+   
+    }
+    
+    else if (password != confirmpassword) {
+      toast.current.show('Passwords Do Not Match', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -195,9 +219,9 @@ export default function ChnagePasswordModel(props) {
                   borderRadius: fontSize.eleven,
                   backgroundColor: 'white',
                 }}>
-                <View style={{width: '100%', height: '45%'}}>
+                <View style={{width: '100%', height: '40%'}}>
                   <Image
-                    resizeMode="stretch"
+                    resizeMode="cover"
                     style={{
                       width: '100%',
                       height: '100%',
@@ -237,7 +261,7 @@ export default function ChnagePasswordModel(props) {
                 <ScrollView
                       keyboardShouldPersistTaps={"always"}
                   showsVerticalScrollIndicator={false}
-                  style={{width: '100%', height: '55%'}}
+                  style={{width: '100%', height: '60%'}}
                   contentContainerStyle={{
                     ...styleSheet.scrollcontainer,
                     paddingHorizontal: scalableheight.two,
@@ -272,7 +296,7 @@ export default function ChnagePasswordModel(props) {
                             ...styleSheet.Text5,
                             marginTop: scalableheight.two,
                           }}>
-                          Old Password
+                          Current Password
                         </Text>
                         <View style={{width: '100%'}}>
                           <TextInput
@@ -282,7 +306,7 @@ export default function ChnagePasswordModel(props) {
                             }}
                             secureTextEntry={oldpasswordshow}
                             placeholderTextColor="#8c8c8c"
-                            placeholder={'Old Password'}
+                            placeholder={'Enter password here'}
                             onChangeText={text => setoldpassword(text)}
                             defaultValue={oldpassword}
                           />
@@ -314,7 +338,7 @@ export default function ChnagePasswordModel(props) {
                             }}
                             secureTextEntry={newpasswordshow}
                             placeholderTextColor="#8c8c8c"
-                            placeholder={'New Password'}
+                            placeholder={'Enter new password here'}
                             onChangeText={text => setpassword(text)}
                             defaultValue={password}
                           />
@@ -345,7 +369,7 @@ export default function ChnagePasswordModel(props) {
                             }}
                             secureTextEntry={confirmnewpasswordshow}
                             placeholderTextColor="#8c8c8c"
-                            placeholder={'New Confirm Password'}
+                            placeholder={'Enter confirm password here'}
                             onChangeText={text => Setconfirmpassword(text)}
                             defaultValue={confirmpassword}
                           />
@@ -373,7 +397,7 @@ export default function ChnagePasswordModel(props) {
                           </View>
                         ) : (
                           <MYButton
-                            title={'Change Password'}
+                            title={'UPDATE'}
                             onPress={() => {
                               ChangNewPasswordHandler();
                             }}
@@ -481,7 +505,7 @@ const styleSheet = StyleSheet.create({
   },
   inputIconStyle: {
     position: 'absolute',
-    right: scalableheight.two,
+    right: scalableheight.one,
 
     justifyContent: 'center',
     alignSelf: 'center',

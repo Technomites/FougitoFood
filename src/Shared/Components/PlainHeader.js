@@ -54,7 +54,7 @@ export default function PlainHeader(props) {
         <Text
           style={{
             color: 'black',
-            fontSize: fontSize.twenty,
+            fontSize: fontSize.seventeen,
             fontFamily: 'Inter-SemiBold',
           }}>
           {props.title}

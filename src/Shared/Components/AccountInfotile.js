@@ -23,6 +23,7 @@ export default function AccountInfotile(props) {
   // console.log(props?.data);
 
   async function pressablee() {
+    props?.data?.onPress()
     setanimationstate(true)
    
     // setTimeout(async () => {
@@ -36,15 +37,16 @@ export default function AccountInfotile(props) {
   }
   
   return (
-    <Animatable.View
-      animation={animationstate ? 'bounceOutRight' : ""}
-      onAnimationEnd={() => {
-        props?.data?.onPress()
-        setanimationstate(false);
+    // <Animatable.View
+    //   animation={animationstate ? 'bounceOutRight' : ""}
+    //   onAnimationEnd={() => {
+    //     props?.data?.onPress()
+    //     setanimationstate(false);
    
-      }}
-      easing="ease"
-      iterationCount={1}>
+    //   }}
+    //   easing="ease"
+    //   iterationCount={1}>
+    <View>
       <TouchableOpacity 
      activeOpacity={0.9}
       onPress={()=>{
@@ -65,8 +67,8 @@ export default function AccountInfotile(props) {
             ...styles.shadow,
             backgroundColor: '#F5F5F5',
             borderRadius: scalableheight.one,
-            width: scalableheight.six,
-            height: scalableheight.six,
+            width: scalableheight.five,
+            height: scalableheight.five,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -75,43 +77,43 @@ export default function AccountInfotile(props) {
               <Ionicons
                 name={props?.data.icon}
                 color={'#E14E4E'}
-                size={fontSize.twentysix}
+                size={fontSize.twentytwo}
               />
             ) : props?.data.type === 2 ? (
               <Feather
                 name={props?.data.icon}
                 color={'#E14E4E'}
-                size={fontSize.twentysix}
+                size={fontSize.twentytwo}
               />
             ) : props?.data.type === 3 ? (
               <MaterialCommunityIcons
                 name={props?.data.icon}
                 color={'#E14E4E'}
-                size={fontSize.twentysix}
+                size={fontSize.twentytwo}
               />
             ) : props?.data.type === 4 ? (
               <AntDesign
                 name={props?.data.icon}
                 color={'#E14E4E'}
-                size={fontSize.twentysix}
+                size={fontSize.twentytwo}
               />
             ) : props?.data.type === 5 ? (
               <MaterialCommunityIcons
                 name={props?.data.icon}
                 color={'#E14E4E'}
-                size={fontSize.twentysix}
+                size={fontSize.twentytwo}
               />
             ) : props?.data.type === 6 ? (
               <AntDesign
                 name={props?.data.icon}
                 color={'#E14E4E'}
-                size={fontSize.twentysix}
+                size={fontSize.twentytwo}
               />
             ) : props?.data.type === 8 ? (
               <MaterialIcons
                 name={props?.data.icon}
                 color={'#E14E4E'}
-                size={fontSize.twentysix}
+                size={fontSize.twentytwo}
               />
             ) : null}
           </View>
@@ -126,7 +128,7 @@ export default function AccountInfotile(props) {
           <Text
             style={{
               fontFamily: 'Inter-Medium',
-              fontSize: fontSize.fifteen,
+              fontSize: fontSize.fourteen,
             }}>
             {props?.data.title}
           </Text>
@@ -137,7 +139,8 @@ export default function AccountInfotile(props) {
           borderBottomWidth: 1,
           borderColor: 'rgba(112, 112, 112, 0.15)',
         }}></View>
-    </Animatable.View>
+        </View>
+    // </Animatable.View>
   );
 }
 

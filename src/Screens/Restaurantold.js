@@ -31,10 +31,10 @@ import {
   getallrestrauntsbyid,
   clearfavourite
 } from '../Actions/actions';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import Toast from 'react-native-toast-notifications';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from '@react-native-community/geolocation';
@@ -378,31 +378,31 @@ found = 1
     );
   }, [dataSourceCordsHorizontal]);
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        hideNavigationBar();
-        console.log('Keyboard is open');
-        setkeyboardopen(true);
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        hideNavigationBar();
-        setkeyboardopen(false);
-        console.log('Keyboard is closed');
-      },
-    );
+  // useEffect(() => {
+  //   const keyboardDidShowListener = Keyboard.addListener(
+  //     'keyboardDidShow',
+  //     () => {
+  //       // hideNavigationBar();
+  //       console.log('Keyboard is open');
+  //       setkeyboardopen(true);
+  //     },
+  //   );
+  //   const keyboardDidHideListener = Keyboard.addListener(
+  //     'keyboardDidHide',
+  //     () => {
+  //       // hideNavigationBar();
+  //       setkeyboardopen(false);
+  //       console.log('Keyboard is closed');
+  //     },
+  //   );
 
-    return () => {
-      keyboardDidHideListener.remove();
-    };
-  }, []);
+  //   return () => {
+  //     keyboardDidHideListener.remove();
+  //   };
+  // }, []);
 
   useEffect(() => {
-    hideNavigationBar();
+    // hideNavigationBar();
   }, [modalVisible]);
 
   useEffect(() => {

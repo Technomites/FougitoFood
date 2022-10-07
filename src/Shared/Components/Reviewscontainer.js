@@ -77,7 +77,8 @@ const navigation = useNavigation();
           <Image
               resizeMode="contain"
               style={{ height: "100%", width:"60%"}}
-              source={{uri: props.image}}
+              // source={{uri: props.image}}
+              source={  props.image ? {uri: props.image} : null}
             />
             </View>
     

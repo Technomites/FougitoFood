@@ -1,6 +1,6 @@
 import qs from 'qs';
 import AsyncStorage from '@react-native-community/async-storage';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import {Platform} from 'react-native';
 import Coupons from '../Screens/Coupons';
 import {useSelector, useDispatch} from 'react-redux';
@@ -68,13 +68,31 @@ export const contactusemail = 'contactusemail';
 export const DeliveryStatus = 'DeliveryStatus';
 export const internetCHECK = 'internetCHECK';
 export const OrderID = 'OrderID';
-
-const API_URl = 'https://api.fougitodemo.com/api/';
+export const ClearProfile = 'ClearProfile';
+const API_URl = 'https://api.fougito.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
 const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
+
+
+
+ 
+
+export const clearprofileupdationstatus = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: ClearProfile,
+        payload: "",
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
 export const storeorderid = id => {
   try {
@@ -334,6 +352,7 @@ export const getalladdresses = token => {
   try {
     return async dispatch => {
       const result = await fetch(API_URl + 'Customer/' + 0 + '/Address', {
+        
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -679,7 +698,7 @@ export const Verification = (otp, userid) => {
           payloadVerify: 'Network Request Failed',
         });
       });
-      //  console.log(json, 'IF CONDITION OUTER');
+     
       if (json.Status == 'Success') {
         dispatch({
           type: OTP_Verify,
@@ -1091,7 +1110,8 @@ export const ChangedNewPassword = (
         dispatch({
           type: NewpasswordChanged,
           changedPassword: json?.Status,
-          Message: json?.Message,
+          // Message: json?.Message,
+          Message: "Password Updated Successfully",
         });
       } else if (json.Status == 'Error') {
         dispatch({
@@ -1455,6 +1475,7 @@ export const Myorders = AuthToken => {
 
       const result = await fetch(
         API_URl + `Customer/Order/ByRestaurant/0`,
+   
         requestOptions,
       );
       json = await result.json();
@@ -1651,7 +1672,8 @@ export const ProfileUpdate = (Name, EmailAddress, PhoneNumber, AuthToken) => {
         dispatch({
           type: UpdateProfile,
           UpdateProfileStatus: json?.Status,
-          UpdateProfileStatusMessage: json?.Message,
+          // UpdateProfileStatusMessage: json?.Message,
+          UpdateProfileStatusMessage: "Profile Updated Successfully",
         });
         console.log('Success');
       } else if (json?.Status == 'Error') {
@@ -1684,80 +1706,4 @@ export const CartDetails = cartdata => {
     });
   };
 };
-// export const ProfilePictureUpdate = response => {
-//   try {
-//     return async dispatch => {
-//       var myHeaders = new Headers();
-//       myHeaders.append('Authorization', `Bearer ${AuthToken}`);
 
-//       var formdata = new FormData();
-//       formdata.append('Image', fileInput.files[0], '/path/to/file');
-
-//       var requestOptions = {
-//         method: 'PUT',
-//         headers: myHeaders,
-//         body: raw,
-//         redirect: 'follow',
-//       };
-//       const result = await fetch(
-//         API_URl + `Customer/Account/ProfilePicture`,
-//         requestOptions,
-//       );
-//       json = await result.json();
-//       console.log(json, 'Hello ,HELLO');
-
-//       if (json.Status == 'Success') {
-//         dispatch({
-//           type: UpdateProfilePicture,
-//           UpdateProfilePicStatus: json?.Status,
-//           UpdateProfilePicStatusMessage: json?.Message,
-//         });
-//         console.log('Success');
-//       } else if (json?.Status == 'Error') {
-//         dispatch({
-//           type: UpdateProfilePicture,
-//           UpdateProfilePicStatus: json?.Status,
-//           UpdateProfilePicStatusMessage: json?.Message,
-//         });
-//       }
-//     };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// export const getblogshome = (lang) => {
-//   try {
-//     return async dispatch => {
-//       const value = await AsyncStorage.getItem('AccessToken');
-//       const result = await fetch(API_URl + 'v1/newsfeed', {
-//         method: 'POST',
-//         headers: {
-//           Authorization: 'Bearer ' + JSON.parse(value),
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//             "search": "",
-//             "pageSize": 300000,
-//             "pgno": 1,
-//             "sortBy": 2,
-//             "lang": lang,
-//             "startDate": null,
-//             "endDate": null
-//         }),
-//       });
-
-//       const json = await result.json();
-//       console.log('getblogshome' + JSON.stringify(json));
-
-//       if (json.status == 'success') {
-//         dispatch({
-//           type: GetBlogsHome,
-//           payload: json.newsfeeds,
-//         });
-//       }
-//     };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };

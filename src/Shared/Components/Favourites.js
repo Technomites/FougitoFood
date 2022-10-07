@@ -21,7 +21,7 @@ import {fontSize, scalableheight} from '../../Utilities/fonts';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 export default function Favourites(props) {
-  // console.log(props?.image, 'as ff');
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -140,7 +140,9 @@ export default function Favourites(props) {
             // borderWidth: 1,
             alignItems: 'center',
           }}
-          source={{uri: props?.image}}></Image>
+         
+              source={  props?.image ? {uri: props.image} : null}>
+          </Image>
       </View>
     </TouchableOpacity>
   );

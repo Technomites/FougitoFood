@@ -10,7 +10,10 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
+
 import com.fougitofood.newarchitecture.MainApplicationReactNativeHost;
+
+// import com.thebylito.navigationbarcolor.NavigationBarColorPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -32,8 +35,15 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+
+     
+        // your other react native packages
+   
+          //  packages.add(new NavigationBarColorPackage());
+      
           return packages;
         }
+
 
         @Override
         protected String getJSMainModuleName() {

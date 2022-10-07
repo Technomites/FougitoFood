@@ -19,10 +19,10 @@ import {
   Platform,
   Modal,
 } from 'react-native';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import CustomButton from '../Shared/Components/CustomButton';
 import LinearGradient from 'react-native-linear-gradient';
@@ -315,7 +315,7 @@ const CustomDrawerStyle = ({navigation}) => {
                 borderColor: 'black',
               }}
               source={
-                AuthToken != '' && internetconnectionstate == true
+                AuthToken != '' && internetconnectionstate == true && ProfileImage != ""
                   ? {
                       uri: ProfileImage,
                     }
@@ -649,9 +649,10 @@ const CustomDrawerStyle = ({navigation}) => {
           ) : null}
 
           <View style={{}}>
-            {options.map(item => {
+            {options.map((item, index) => {
               return (
                 <TouchableOpacity
+                key={index.toString()}
                   activeOpacity={0.9}
                   onPress={() => item.onPress()}
                   style={{

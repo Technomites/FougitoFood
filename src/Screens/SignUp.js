@@ -10,10 +10,10 @@ import PickerModel from '../Shared/Components/PickerModel';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { ScrollView } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import { fontSize, scalableheight } from "../Utilities/fonts";
 import { useDispatch, useSelector } from 'react-redux';
 import MyInput from '../Shared/Components/MyInput';

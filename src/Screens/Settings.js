@@ -59,42 +59,43 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
       },
       type: 1,
     },
-    {
-      icon: 'sharealt',
-      title: 'Share with Your Friends',
-      onPress: () => {
-        navigation.navigate('Home');
-        //  navigation.dispatch(DrawerActions.closeDrawer());
-      },
-      type: 4,
-    },
+    // {
+    //   icon: 'sharealt',
+    //   title: 'Share with Your Friends',
+    //   onPress: () => {
+    //     navigation.navigate('Home');
+    //     //  navigation.dispatch(DrawerActions.closeDrawer());
+    //   },
+    //   type: 4,
+    // },
     {
       icon: 'information-variant',
       title: 'About Us',
       onPress: () => {
-        navigation.navigate('Aboutus');
-        //   navigation.dispatch(DrawerActions.closeDrawer());
+   //     navigation.navigate('Aboutus');
+     
       },
       type: 5,
-    },
-    {
-      icon: 'question',
-      title: 'Frequently Asked Questions',
-      onPress: () => {
-        navigation.navigate('Faqs');
-        //   navigation.dispatch(DrawerActions.closeDrawer());
-      },
-      type: 6,
     },
     {
       icon: 'briefcase-outline',
       title: 'Legal',
       onPress: () => {
-        navigation.navigate('Legal');
-        //  navigation.dispatch(DrawerActions.closeDrawer());
+       navigation.navigate('Legal');
+    
       },
       type: 1,
     },
+    {
+      icon: 'question',
+      title: 'Frequently Asked Questions',
+      onPress: () => {
+    //    navigation.navigate('Faqs');
+   
+      },
+      type: 6,
+    },
+   
     // {
     //   icon: 'logout',
     //   title: 'Logout',

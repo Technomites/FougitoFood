@@ -20,12 +20,19 @@ import {
   cleancart,
   storerestrauntid,
 } from '../Actions/actions';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import * as Animatable from 'react-native-animatable';
 import Animated from 'react-native-reanimated';
+import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  useIsDrawerOpen,
+} from '@react-navigation/drawer';
+
 import TransparentHeader from '../Shared/Components/TransparentHeader';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
@@ -38,6 +45,7 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
   console.log(route?.params?.longitude, 'longitude');
 
   const [qrvalue, setQrvalue] = useState('');
+  const [visible, setvisible] = useState(false);
   const [camscanner, setCamScanner] = useState(false);
   const [scanpermission, setScanPermission] = useState(true);
   const [animationstate, setanimationstate] = useState(false);
@@ -94,6 +102,10 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
   };
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
+           <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
+        backgroundColor="transparent"
+      />
       <View
         style={{
           alignSelf: 'center',
@@ -105,7 +117,16 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
           <TransparentHeader
             title={'Scan QR Code'}
             refresh={qrvalue}
+            onpressback={() => {
+             
+                // navigation.navigate("Home")
+                navigation.goBack();
+                setvisible(false)
+                setScanPermission(true);
+                setQrvalue('');
+            }}
             onpress={() => {
+              setvisible(false)
               setScanPermission(true);
               setQrvalue('');
             }}
@@ -123,6 +144,7 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
                   AuthToken,
                 ),
               );
+              setvisible(true)
               // console.log(event.nativeEvent.codeStringValue, 'eventtt');
             }}
             showFrame={true} // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
@@ -130,7 +152,7 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
             frameColor="#962E2B" // (default white) optional, color of border of scanner frame
           />
         )}
-        {animationstate && (
+        {/* {animationstate && (
           <Animatable.View
             animation={
               animationstate && qrvalue != ''
@@ -149,7 +171,9 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
               // }
             }}
             easing="ease"
-            iterationCount={1}>
+            iterationCount={1}> */}
+              {qrvalue != '' && visible == true && (
+          <View>
             <View
               style={{
                 width: '100%',
@@ -197,10 +221,10 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
                   setQrvalue('');
                   setScanPermission(true);
                 }}
-                distance={kmaway + ' KM AWAY'}
+                distance={ kmaway + ' KM AWAY'}
               />
             </View>
-          </Animatable.View>
+          </View>
         )}
       </View>
     </Animated.View>

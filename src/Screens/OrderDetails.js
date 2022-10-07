@@ -442,6 +442,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
               {menuitems?.map((item, index) => {
                 return (
                   <View
+                  key={index.toString()}
                     style={{
                       flexDirection: 'row',
                       // backgroundColor: 'red',

@@ -5,10 +5,10 @@ import { FontFamily } from '../constants/fonts';
 import { theme } from '../constants/styles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomButton from '../Shared/Components/CustomButton';
-import changeNavigationBarColor, {
-    hideNavigationBar,
-    showNavigationBar,
-  } from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//     hideNavigationBar,
+//     showNavigationBar,
+//   } from 'react-native-navigation-bar-color';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import { fontSize, scalableheight } from "../Utilities/fonts";

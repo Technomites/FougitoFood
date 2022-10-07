@@ -72,6 +72,7 @@ export default function ItemDetailsModel(props) {
     }
   }, [props.state]);
   function clearandclose() {
+    props.togglemodel()
     toggleanimation();
     setanimationstate(true);
     setnumber('');
@@ -122,29 +123,36 @@ export default function ItemDetailsModel(props) {
   return (
     <>
       {props.state && (
-        <Animatable.View
-          animation={animationstate ? animationtype : null}
-          onAnimationEnd={() => {
-            setanimationstate(false);
-            if (animationtype == 'fadeOutDownBig') {
-              setanimationtype('fadeInUpBig');
+        // <Animatable.View
+        //   animation={animationstate ? animationtype : null}
+        //   onAnimationEnd={() => {
+        //     setanimationstate(false);
+        //     if (animationtype == 'fadeOutDownBig') {
+        //       setanimationtype('fadeInUpBig');
 
-              props.togglemodel();
-            }
-          }}
-          easing="ease"
-          //  iterationCount="infinite"
-          iterationCount={1}
-          style={{
-            zIndex: 3,
-            elevation: 3,
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-          }}>
-          {/* <KeyboardAvoidingView
-            style={{width: '100%', height: '100%'}}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}> */}
+        //       props.togglemodel();
+        //     }
+        //   }}
+        //   easing="ease"
+        //   //  iterationCount="infinite"
+        //   iterationCount={1}
+        //   style={{
+        //     zIndex: 3,
+        //     elevation: 3,
+        //     position: 'absolute',
+        //     width: '100%',
+        //     height: '100%',
+        //   }}>
+        
+        <View
+        style={{
+          zIndex: 3,
+          elevation: 3,
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+        }}>
+       
             <View
               style={{
                 width: '100%',
@@ -265,10 +273,13 @@ justifyContent:"center"
                
               </View>
             </View>
-          {/* </KeyboardAvoidingView> */}
-        </Animatable.View>
+        </View>
+        //</Animatable.View> 
       )}
-      {props.state && animationtype == 'fadeInUpBig' && (
+
+
+{/* //{props.state && animationtype == 'fadeInUpBig' && ( */}
+      {props.state && (
         <View
           style={{
             position: 'absolute',
@@ -280,9 +291,7 @@ justifyContent:"center"
           }}></View>
       )}
 
-      {/* {props.state  &&  (   */}
-
-      {/* // )}  */}
+    
     </>
   );
 }

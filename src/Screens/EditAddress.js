@@ -45,7 +45,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
-  const [placeselected, SetPlaceSelected] = useState('');
+  const [placeselected, SetPlaceSelected] = useState({"icon": "home", "title": "Home"});
   const [modelpopup, SetModelPopUP] = useState(false);
   const [address, setaddress] = useState('');
   const [pinlatitude, SetPinLatitude] = useState(0);
@@ -386,7 +386,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
 
   function addresssave() {
     if (placeselected == '') {
-      toast.current.show('Pleace label your address as Home/Work/Other', {
+      toast.current.show('Label Your Address As Home/Work/Other', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -395,7 +395,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
         zIndex: 2,
       });
     } else if (pinlocation == '') {
-      toast.current.show('Pleace select a location', {
+      toast.current.show('Enter Select A Location', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -404,7 +404,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
         zIndex: 2,
       });
     } else if (street == '') {
-      toast.current.show('Pleace enter your street', {
+      toast.current.show('Enter Building & Street', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -495,6 +495,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
             query={{
               key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
               language: 'en',
+              components: "country:ae",
             }}
           />
 
@@ -537,7 +538,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
             )}
             <MapView
               // provider={PROVIDER_GOOGLE}
-              customMapStyle={customStyle}
+              // customMapStyle={customStyle}
               ref={refMap}
               showsUserLocation
               style={{
@@ -548,14 +549,14 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
               region={{
                 latitude: pinlatitude,
                 longitude: pinLongitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+                latitudeDelta: 0.03,
+                longitudeDelta: 0.03,
               }}
               initialRegion={{
                 latitude: pinlatitude,
                 longitude: pinLongitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+                latitudeDelta: 0.03,
+                longitudeDelta: 0.03,
               }}
               onRegionChange={region => {
                 //  console.log(region)
@@ -612,7 +613,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   color: 'black',
                   opacity: 0.5,
                 }}>
-                Street
+                Building & Street
               </Text>
             </View>
             <View style={{...styleSheet.container, ...styleSheet.shadow}}>
@@ -629,7 +630,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   value={street}
                   onChangeText={text => setstreet(text)}
                   placeholderTextColor={'lightgray'}
-                  placeholder={'Enter Street'}
+                  placeholder={'Enter building & street here'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
                   style={{
@@ -659,7 +660,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   color: 'black',
                   opacity: 0.5,
                 }}>
-                Floor (Optional)
+                Flat No & Floor (Optional)
               </Text>
             </View>
             <View style={{...styleSheet.container, ...styleSheet.shadow}}>
@@ -678,7 +679,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   //value={props.value}
                   // onChangeText={props.onChangeText}
                   placeholderTextColor={'lightgray'}
-                  placeholder={'Enter Floor'}
+                  placeholder={'Enter flat no & floor here '}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
                   style={{
@@ -734,7 +735,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                   //value={props.value}
                   // onChangeText={props.onChangeText}
                   placeholderTextColor={'lightgray'}
-                  placeholder={'Enter Note to Rider'}
+                  placeholder={'Enter note to rider'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
 
@@ -761,10 +762,12 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
 
               marginVertical: fontSize.nine,
             }}>
-            {place.map(item => {
+            {place.map((item, index) => {
               return (
                 <Addressplace
+                key={index.toString()}
                   onPress={() => {
+                    console.log(item)
                     SetPlaceSelected(item);
                   }}
                   data={item}

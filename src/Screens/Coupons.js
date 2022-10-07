@@ -20,10 +20,10 @@ import {
 import Clipboard from '@react-native-community/clipboard';
 import {useSelector, useDispatch} from 'react-redux';
 import {MyCoupons} from '../Actions/actions';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -147,8 +147,8 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
               alignSelf: 'center',
               marginVertical: scalableheight.fourty,
             }}>
-            <Text style={{fontSize: fontSize.fifteen, color: '#000'}}>
-              NO DATA FOUND
+            <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
+             No Data Found
             </Text>
           </View>
         ) : (

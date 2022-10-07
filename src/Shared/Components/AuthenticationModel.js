@@ -110,7 +110,7 @@ export default function AuthenticationModel(props) {
       clearandclose();
       setLoader(false);
     } else if (PayLoadLoginStatus === 'Error') {
-      toast.current.show('Password/PhoneNumber Invalid', {
+      toast.current.show('Invalid Credentials', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -138,7 +138,7 @@ export default function AuthenticationModel(props) {
   const LoginHandler = () => {
     Keyboard.dismiss();
     if (number.length === 0) {
-      toast.current.show('Enter PhoneNumber', {
+      toast.current.show('Enter Phone Number', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -154,7 +154,8 @@ export default function AuthenticationModel(props) {
         animationType: 'slide-in',
       });
     } else {
-      dispatch(Login(number, password));
+      let newnumber = 971 + number
+      dispatch(Login(newnumber, password));
       setLoader(true);
     }
   };
@@ -176,7 +177,7 @@ export default function AuthenticationModel(props) {
       togglescreen(4);
       dispatch(ForgetPasswordNullstate());
     } else if (PasswordMessage === 'Error') {
-      toast.current.show('PhoneNumber Invalid', {
+      toast.current.show('Invalid Phone Number', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -342,23 +343,48 @@ export default function AuthenticationModel(props) {
 
   const signUpHandler = async () => {
     Keyboard.dismiss();
-    if (
-      number == '' ||
-      fullname == '' ||
-      email == '' ||
-      password == '' ||
-      confirmpassword == ''
-    ) {
-      toast.current.show('Enter All Fields', {
+    if (number == ''){
+      toast.current.show('Enter Phone Number', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
         offset: 10,
         animationType: 'slide-in',
       });
-      return;
+    } else if (fullname == ''){
+      toast.current.show('Enter Full Name', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+    }else if (email == ''){
+      toast.current.show('Enter Email Address', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+    }else if (password == ''){
+      toast.current.show('Enter Password', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+    }else if (confirmpassword == ''){
+      toast.current.show('Enter Confirm Password', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
     } else if (number.length == 0) {
-      toast.current.show('Enter PhoneNumber', {
+      toast.current.show('Enter Phone Number', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -375,7 +401,7 @@ export default function AuthenticationModel(props) {
         animationType: 'slide-in',
       });
     } else if (password != confirmpassword) {
-      toast.current.show('Password Not Matched', {
+      toast.current.show('Passwords do not match', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -385,7 +411,8 @@ export default function AuthenticationModel(props) {
 
       return;
     } else {
-      dispatch(Signup(number, fullname, email, password));
+      let newnumber = 971 + number
+      dispatch(Signup(newnumber, fullname, email, password));
       setLoader(true);
     }
   };
@@ -436,7 +463,7 @@ export default function AuthenticationModel(props) {
   const ForgetPasswordHandler = () => {
     Keyboard.dismiss();
     if (number.length === 0) {
-      toast.current.show('Enter PhoneNumber', {
+      toast.current.show('Enter Phone Number', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -444,7 +471,8 @@ export default function AuthenticationModel(props) {
         animationType: 'slide-in',
       });
     } else {
-      dispatch(ForgetPassword(number));
+      let newnumber = 971 + number
+      dispatch(ForgetPassword(newnumber));
       setLoader(true);
     }
   };
@@ -490,6 +518,7 @@ export default function AuthenticationModel(props) {
   }, [props.state]);
 
   function clearandclose() {
+    props.togglemodel()
     toggleanimation();
     setanimationstate(true);
     setnumber('');
@@ -541,9 +570,9 @@ export default function AuthenticationModel(props) {
       setotpvisible(true);
       setchangenewpassword(false);
 
-      setTimeout(async () => {
-        input_1.current.focus();
-      }, 500);
+      // setTimeout(async () => {
+      //   input_1.current.focus();
+      // }, 500);
     } else if (index == 5) {
       setsignupvisible(false);
       setotpvisible(false);
@@ -556,26 +585,37 @@ export default function AuthenticationModel(props) {
   return (
     <>
       {props.state && (
-        <Animatable.View
-          animation={animationstate ? animationtype : null}
-          onAnimationEnd={() => {
-            setanimationstate(false);
-            if (animationtype == 'fadeOutDownBig') {
-              setanimationtype('fadeInUpBig');
+        // <Animatable.View
+        //   animation={animationstate ? animationtype : null}
+        //   onAnimationEnd={() => {
+        //     setanimationstate(false);
+        //     if (animationtype == 'fadeOutDownBig') {
+        //       setanimationtype('fadeInUpBig');
 
-              props.togglemodel();
-            }
-          }}
-          easing="ease"
-          //  iterationCount="infinite"
-          iterationCount={1}
-          style={{
-            zIndex: 3,
-            elevation: 3,
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-          }}>
+        //       props.togglemodel();
+        //     }
+        //   }}
+        //   easing="ease"
+        //   //  iterationCount="infinite"
+        //   iterationCount={1}
+        //   style={{
+        //     zIndex: 3,
+        //     elevation: 3,
+        //     position: 'absolute',
+        //     width: '100%',
+        //     height: '100%',
+        //   }}>
+        <View
+       
+        style={{
+          zIndex: 3,
+          elevation: 3,
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+        }}>
+
+
           <KeyboardAvoidingView
             style={{width: '100%', height: '100%'}}
             behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
@@ -593,9 +633,9 @@ export default function AuthenticationModel(props) {
                   borderRadius: fontSize.eleven,
                   backgroundColor: 'white',
                 }}>
-                <View style={{width: '100%', height: '45%'}}>
+                <View style={{width: '100%', height: signupvisible? "0%":'40%'}}>
                   <Image
-                    resizeMode="stretch"
+                    resizeMode="cover"
                     style={{
                       width: '100%',
                       height: '100%',
@@ -614,32 +654,21 @@ export default function AuthenticationModel(props) {
                     }}
                     source={require('../../Resources/images/logo-black.png')}
                   />
-                  <TouchableOpacity
-                    onPress={() => {
-                      clearandclose();
-                    }}
-                    style={{
-                      position: 'absolute',
-                      top: scalableheight.one,
-                      right: scalableheight.one,
-                    }}>
-                    <Ionicons
-                      name="close-circle"
-                      color={'#F5F5F5'}
-                      size={fontSize.thirtyseven}
-                      style={{}}
-                    />
-                  </TouchableOpacity>
+              
                 </View>
-
+             
                 <ScrollView
                 keyboardShouldPersistTaps={"always"}
                   showsVerticalScrollIndicator={false}
-                  style={{width: '100%', height: '55%'}}
+                  style={{width: '100%', height: signupvisible? "100%": '60%'}}
+                
                   contentContainerStyle={{
                     ...styleSheet.scrollcontainer,
                     paddingHorizontal: scalableheight.two,
                     justifyContent: 'center',
+                    // flexGrow: signupvisible ? 1 : null,
+              
+                
                   }}>
                   {renderIf(loginvisible == true)(
                     <>
@@ -671,17 +700,34 @@ export default function AuthenticationModel(props) {
                           }}>
                           Phone Number
                         </Text>
+                        <View>
                         <TextInput
                           style={{
                             ...styleSheet.TextInput,
                             ...styleSheet.shadow,
+                            paddingLeft:scalableheight.ten
                           }}
+                          
                           placeholderTextColor="#8c8c8c"
-                          placeholder={'Enter Phone Number'}
+                          placeholder={'Enter number here'}
+                          maxLength={9}
                           onChangeText={text => setnumber(text)}
                           defaultValue={number}
                           keyboardType="number-pad"
                         />
+                             <Text style={{ 
+                                position: 'absolute',
+                                left: scalableheight.two,
+                            
+                                justifyContent: 'center',
+                                alignSelf: 'center',
+                       
+                                marginTop: scalableheight.one,
+                                height: scalableheight.seven,
+                                textAlignVertical:"center",
+                                fontSize: fontSize.fifteen,
+                                color: '#8c8c8c',}}>+ 971</Text>
+                   </View>
                         <Text
                           style={{
                             ...styleSheet.Text5,
@@ -697,7 +743,7 @@ export default function AuthenticationModel(props) {
                             }}
                             secureTextEntry={!newpasswordshow}
                             placeholderTextColor="#8c8c8c"
-                            placeholder={'Password'}
+                            placeholder={'Enter password here'}
                             onChangeText={text => setpassword(text)}
                             defaultValue={password}
                           />
@@ -708,7 +754,7 @@ export default function AuthenticationModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ? 'eye' : 'eye-off'}
+                              name={newpasswordshow ? 'eye-off': 'eye' }
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -789,24 +835,7 @@ export default function AuthenticationModel(props) {
                           }}>
                           Sign Up
                         </Text>
-                        <Text
-                          style={{
-                            ...styleSheet.Text5,
-                            marginTop: scalableheight.two,
-                          }}>
-                          Phone Number
-                        </Text>
-                        <TextInput
-                          style={{
-                            ...styleSheet.TextInput,
-                            ...styleSheet.shadow,
-                          }}
-                          placeholderTextColor="#8c8c8c"
-                          placeholder={'Enter Phone Number'}
-                          onChangeText={text => setnumber(text)}
-                          keyboardType={'number-pad'}
-                          defaultValue={number}
-                        />
+                      
                         <Text
                           style={{
                             ...styleSheet.Text5,
@@ -820,7 +849,7 @@ export default function AuthenticationModel(props) {
                             ...styleSheet.shadow,
                           }}
                           placeholderTextColor="#8c8c8c"
-                          placeholder={'Enter Full Name'}
+                          placeholder={'Enter full name'}
                           onChangeText={text => setfullname(text)}
                           defaultValue={fullname}
                         />
@@ -837,10 +866,44 @@ export default function AuthenticationModel(props) {
                             ...styleSheet.shadow,
                           }}
                           placeholderTextColor="#8c8c8c"
-                          placeholder={'Enter Email'}
+                          placeholder={'Enter email address'}
                           onChangeText={text => Setemail(text)}
                           defaultValue={email}
                         />
+                          <Text
+                          style={{
+                            ...styleSheet.Text5,
+                            marginTop: scalableheight.two,
+                          }}>
+                          Phone Number
+                        </Text>
+                        <View>
+                        <TextInput
+                          style={{
+                            ...styleSheet.TextInput,
+                            ...styleSheet.shadow,
+                            paddingLeft:scalableheight.ten
+                          }}
+                          placeholderTextColor="#8c8c8c"
+                          placeholder={'Enter number here'}
+                          maxLength={9}
+                          onChangeText={text => setnumber(text)}
+                          keyboardType={'number-pad'}
+                          defaultValue={number}
+                        />
+                          <Text style={{ 
+                                position: 'absolute',
+                                left: scalableheight.two,
+                            
+                                justifyContent: 'center',
+                                alignSelf: 'center',
+                       
+                                marginTop: scalableheight.one,
+                                height: scalableheight.seven,
+                                textAlignVertical:"center",
+                                fontSize: fontSize.fifteen,
+                                color: '#8c8c8c',}}>+ 971</Text>
+                   </View>
                         <Text
                           style={{
                             ...styleSheet.Text5,
@@ -856,7 +919,7 @@ export default function AuthenticationModel(props) {
                             }}
                             secureTextEntry={!newpasswordshow}
                             placeholderTextColor="#8c8c8c"
-                            placeholder={'Password'}
+                            placeholder={'Enter password here'}
                             onChangeText={text => setpassword(text)}
                             defaultValue={password}
                           />
@@ -867,7 +930,7 @@ export default function AuthenticationModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ? 'eye' : 'eye-off'}
+                              name={newpasswordshow ?  'eye-off' :'eye' }
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -887,7 +950,7 @@ export default function AuthenticationModel(props) {
                             }}
                             secureTextEntry={!newpasswordshow}
                             placeholderTextColor="#8c8c8c"
-                            placeholder={'Confirm Password'}
+                            placeholder={'Confirm password here'}
                             onChangeText={text => Setconfirmpassword(text)}
                             defaultValue={confirmpassword}
                           />
@@ -898,7 +961,7 @@ export default function AuthenticationModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ? 'eye' : 'eye-off'}
+                              name={newpasswordshow ?  'eye-off' : 'eye' }
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -916,7 +979,7 @@ export default function AuthenticationModel(props) {
                           </View>
                         ) : (
                           <MYButton
-                            title={'SIGNUP'}
+                            title={'PROCEED'}
                             onPress={() => {
                               signUpHandler();
                             }}
@@ -943,7 +1006,7 @@ export default function AuthenticationModel(props) {
                           </Text>
                         </TouchableOpacity>
                       </Animatable.View>
-                    </>,
+                    </>
                   )}
                   {renderIf(forgetpasswordvisible == true)(
                     <>
@@ -974,8 +1037,7 @@ export default function AuthenticationModel(props) {
                             textAlign: 'left',
                             marginTop: scalableheight.two,
                           }}>
-                          Enter the phone number associated with your account so
-                          we can send you a Verification code.
+                         Enter the phone number associated with your account. We will send a verification for confirmation.
                         </Text>
                         <Text
                           style={{
@@ -984,17 +1046,33 @@ export default function AuthenticationModel(props) {
                           }}>
                           Phone Number
                         </Text>
+                        <View>
                         <TextInput
                           style={{
                             ...styleSheet.TextInput,
                             ...styleSheet.shadow,
+                            paddingLeft:scalableheight.ten
                           }}
                           placeholderTextColor="#8c8c8c"
-                          placeholder={'Enter Phone Number'}
+                          placeholder={'Enter number here'}
+                          maxLength={9}
                           onChangeText={text => setnumber(text)}
                           defaultValue={number}
                           keyboardType="numeric"
                         />
+                        <Text style={{ 
+                                position: 'absolute',
+                                left: scalableheight.two,
+                            
+                                justifyContent: 'center',
+                                alignSelf: 'center',
+                       
+                                marginTop: scalableheight.one,
+                                height: scalableheight.seven,
+                                textAlignVertical:"center",
+                                fontSize: fontSize.fifteen,
+                                color: '#8c8c8c',}}>+ 971</Text>
+                   </View>
 
                         <View style={{marginTop: scalableheight.two}}></View>
                         {loader == true ? (
@@ -1016,7 +1094,7 @@ export default function AuthenticationModel(props) {
                           />
                         )}
 
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           onPress={() => {
                             togglescreen(1);
                           }}>
@@ -1027,6 +1105,23 @@ export default function AuthenticationModel(props) {
                               marginTop: scalableheight.one,
                             }}>
                             Login with a different account?
+                          </Text>
+                        </TouchableOpacity> */}
+                        <TouchableOpacity
+                          onPress={() => {
+                            togglescreen(1);
+                          }}>
+                          <Text
+                            style={{
+                              ...styleSheet.Text6,
+                              textAlign: 'center',
+                              marginTop: scalableheight.two,
+                            }}>
+                           Login with a different account?
+                          </Text>
+                          <Text
+                            style={{...styleSheet.Text4, textAlign: 'center'}}>
+                           LOGIN
                           </Text>
                         </TouchableOpacity>
                       </Animatable.View>
@@ -1068,7 +1163,7 @@ export default function AuthenticationModel(props) {
                               fontSize: fontSize.fourteen,
                               color: '#E14E4E',
                             }}>
-                            {'+' + number}
+                            {'+971 ' + number}
                           </Text>
                         </Text>
                         <Text
@@ -1258,6 +1353,23 @@ export default function AuthenticationModel(props) {
                             ) : null}
                           </>
                         )}
+                            <TouchableOpacity
+                          onPress={() => {
+                            togglescreen(1);
+                          }}>
+                          <Text
+                            style={{
+                              ...styleSheet.Text6,
+                              textAlign: 'center',
+                              marginTop: scalableheight.two,
+                            }}>
+                            Already have an account?
+                          </Text>
+                          <Text
+                            style={{...styleSheet.Text4, textAlign: 'center'}}>
+                            LOGIN
+                          </Text>
+                        </TouchableOpacity>
                       </Animatable.View>
                     </>,
                   )}
@@ -1371,12 +1483,33 @@ export default function AuthenticationModel(props) {
                     </>,
                   )}
                 </ScrollView>
+                <TouchableOpacity
+                    onPress={() => {
+                      clearandclose();
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: scalableheight.one,
+                      right: scalableheight.one,
+                    }}>
+                    <Ionicons
+                      name="close-circle"
+                      color={signupvisible ?  '#E14E4E':'#F5F5F5'}
+                      size={fontSize.thirtyseven}
+                      style={{}}
+                    />
+                  </TouchableOpacity>
               </View>
             </View>
           </KeyboardAvoidingView>
-        </Animatable.View>
+          </View>
+        // </Animatable.View>
       )}
-      {props.state && animationtype == 'fadeInUpBig' && (
+
+
+
+{/* {props.state && animationtype == 'fadeInUpBig' && ( */}
+      {props.state && (
         <View
           style={{
             position: 'absolute',
@@ -1391,9 +1524,7 @@ export default function AuthenticationModel(props) {
         ref={toast}
         style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
       />
-      {/* {props.state  &&  (   */}
-
-      {/* // )}  */}
+     
     </>
   );
 }
@@ -1415,14 +1546,10 @@ const styleSheet = StyleSheet.create({
     fontSize: fontSize.fourteen,
     color: 'black',
   },
+
   Text4: {
     fontFamily: 'Inter-SemiBold',
-    fontSize: fontSize.fourteen,
-    color: '#E14E4E',
-  },
-  Text4: {
-    fontFamily: 'Inter-SemiBold',
-    fontSize: fontSize.fifteen,
+    fontSize: fontSize.thirteen,
     color: '#E14E4E',
   },
   Text5: {
@@ -1470,7 +1597,7 @@ const styleSheet = StyleSheet.create({
   },
   inputIconStyle: {
     position: 'absolute',
-    right: scalableheight.two,
+    right: scalableheight.pointfive,
 
     justifyContent: 'center',
     alignSelf: 'center',

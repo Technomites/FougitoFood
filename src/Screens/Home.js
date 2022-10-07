@@ -25,9 +25,11 @@ import {
   Linking,
   PermissionsAndroid,
   ActivityIndicatorBase,
+  LayoutAnimation
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-notifications';
+
 import renderIf from 'render-if';
 // import Modal from "react-native-modal";
 import {
@@ -45,10 +47,10 @@ import {
   isconnected,
   getalladdresses
 } from '../Actions/actions';
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 // import {BottomSheetModalProvider, BottomSheet} from '@gorhom/bottom-sheet';
@@ -89,14 +91,61 @@ import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
+import LocationEnabler from 'react-native-location-enabler';
+
+
+
+
+// // Adds a listener to be invoked when location settings checked using
+// // [checkSettings] or changed using [requestResolutionSettings]
+
+
+
+
+// // Define configuration
+// const config = {
+//   priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
+//   alwaysShow: true, // default false
+//   needBle: false, // default false
+// };
+
+// // Check if location is enabled or not
+// checkSettings(config);
+
+// // If location is disabled, prompt the user to turn on device location
+// requestResolutionSettings(config);
+
+
+const {
+  PRIORITIES: { HIGH_ACCURACY },
+  useLocationSettings,
+} = LocationEnabler;
+
 
 const Home = ({props, navigation, drawerAnimationStyle}) => {
+  const [enabled, requestResolution] = useLocationSettings(
+    {
+      priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
+      alwaysShow: true, // default false
+      needBle: true, // default false
+    },
+    false /* optional: default undefined */
+  );
+  
+  // console.log(`Location are ${enabled ? 'enabled' : 'disabled'}`);
+  
+  // ...
+ 
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
+  // const [lat, setlat] = useState(25.2048);
+  // const [long, setlong] = useState(55.2708);
+  // const [inlat, setinlat] = useState(25.2048);
+  // const [inlong, setinlong] = useState(55.2708);
   const [lat, setlat] = useState(0);
   const [long, setlong] = useState(0);
-  const [inlat, setinlat] = useState();
-  const [inlong, setinlong] = useState();
+  const [inlat, setinlat] = useState(0);
+  const [inlong, setinlong] = useState(0);
   const [pinlocation, setpinlocation] = useState('');
   const [specialinstructions, setspecialinstructions] = useState('');
   const [refreshing, setRefreshing] = useState(false);
@@ -104,10 +153,11 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const [modalVisible, setmodalVisible] = useState(false);
   const [loader, setloader] = useState(false);
   const [search, setsearch] = useState('');
-  const [showmap, setshowmap] = useState(false);
+  const [showmap, setshowmap] = useState(true);
   const [count, setcount] = useState(0);
   const [showbottomsheet, setshowbottomsheet] = useState(false);
   const [showpinmap, setshowpinmap] = useState(false);
+  const [locationenabled, setlocationenabled] = useState(false);
   const [center, setCenter] = useState();
   const [serving, setserving] = useState([
     {
@@ -156,6 +206,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const refRBSheet = useRef();
   const toast = useRef();
 
+
   const [flavours, setflavours] = useState([
     {
       selected: false,
@@ -180,26 +231,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
-  const [pin, setpin] = useState([
-    {
-      lat: 24.8491,
-      long: 67.0281,
-      expanded: false,
-      location: 'Gymkhana',
-    },
-    {
-      lat: 24.8475,
-      long: 67.0254,
-      expanded: false,
-      location: 'PC',
-    },
-    {
-      lat: 24.8475,
-      long: 67.033,
-      expanded: false,
-      location: 'frere hall',
-    },
-  ]);
+
+
 
   const customStyle = [
     {
@@ -537,6 +570,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      requestResolution()
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
       NetInfo.fetch().then(state => {
@@ -550,40 +584,56 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     return unsubscribe;
   }, [navigation]);
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        hideNavigationBar();
-        console.log('Keyboard is open');
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        hideNavigationBar();
-        console.log('Keyboard is closed');
-      },
-    );
+  // useEffect(() => {
+  //   const keyboardDidShowListener = Keyboard.addListener(
+  //     'keyboardDidShow',
+  //     () => {
+  //       // hideNavigationBar();
+  //       console.log('Keyboard is open');
+  //     },
+  //   );
+  //   const keyboardDidHideListener = Keyboard.addListener(
+  //     'keyboardDidHide',
+  //     () => {
+  //       // hideNavigationBar();
+  //       console.log('Keyboard is closed');
+  //     },
+  //   );
 
-    return () => {
-      keyboardDidHideListener.remove();
-    };
-  }, []);
+  //   return () => {
+  //     keyboardDidHideListener.remove();
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    if (!enabled) {
+      requestResolution();
+    }
+  }, [])
+
+  useEffect(() => {
+    if (enabled) {
+     
+      getnewlocation()
+    }
+  }, [enabled])
+
 
   useEffect(() => {
     StatusBar.setHidden(false);
     listeners();
+ 
   }, []);
 
   useEffect(() => {
-    if (internetconnectionstate == true) {
+    console.log(AuthToken + "-----------------------")
+    if (internetconnectionstate == true && AuthToken != "") {
       dispatch(GetProfile(AuthToken));
       dispatch(getalladdresses(AuthToken));
     }
   }, [AuthToken, internetconnectionstate]);
 
- 
+
   useEffect(() => {
     if (internetconnectionstate == true) {
       Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
@@ -592,10 +642,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         setlong(info?.coords?.longitude);
         setinlat(info?.coords?.latitude);
         setinlong(info?.coords?.longitude);
-        // console.log('hello' + info?.coords?.latitude);
-        // console.log('hello' + info?.coords?.longitude);
       });
-      console.log('hello');
       getLocation();
     }
   }, [internetconnectionstate]);
@@ -606,7 +653,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
   useEffect(() => {
     if (internetconnectionstate == true) {
-      if (lat != null && long != null) {
+      if (lat != null && long != null && lat != 0 && long != 0) {
 
         setloader(true);
         dispatch(getallrestraunts(lat, long));
@@ -624,6 +671,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   }, [lat, long]);
 
   function onRefresh() {
+ 
     NetInfo.fetch().then(state => {
       if (state.isConnected == true && state.isInternetReachable == true) {
         dispatch(GetProfile(AuthToken));
@@ -683,14 +731,14 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         />
       </View>
     ) : null;
-  //  onPress={()=>{activaterestaurant(index, 24.8475, 67.0330 )}}
+ 
   const renderItem = ({item, index}) =>
     item?.NameAsPerTradeLicense.includes(search.trim()) ? (
-      <Animatable.View
-        animation="zoomInLeft"
-        easing="ease"
-        iterationCount={1}
-        style={{}}>
+      // <Animatable.View
+      //   animation="zoomInLeft"
+      //   easing="ease"
+      //   iterationCount={1}
+      //   style={{}}>
         <Favourites
           image={item?.Logo}
           title={item?.NameAsPerTradeLicense}
@@ -712,9 +760,12 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
           }}
           distance={item?.Distance + ' AWAY'}
         />
-      </Animatable.View>
+      //</Animatable.View> 
     ) : null;
-  function activaterestaurant(key, lat, long) {
+  
+  
+  
+    function activaterestaurant(key, lat, long) {
     setinlat(lat);
     setinlong(long);
     console.log('selected');
@@ -746,14 +797,22 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         console.log(addressComponent);
         setpinlocation(addressComponent);
       })
-      .catch(error => console.warn(error));
+      .catch(error =>{
+    
+        requestResolution()
+        console.warn(error)});
   }
+
+
+  
   const getLocation = async () => {
     const hasLocationPermission = await hasLocationPermissions();
     if (!hasLocationPermission) {
+      console.log("you will never have  have permission")
       return;
     }
   };
+
   const hasLocationPermissions = async () => {
     if (Platform.OS === 'ios') {
       const hasPermission = await hasLocationPermissionIOS();
@@ -777,20 +836,28 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     );
 
     if (status === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("you  have permission")
       return true;
     }
 
     if (status === PermissionsAndroid.RESULTS.DENIED) {
+      console.log("you dont have permission")
+
+   
       // ToastAndroid.show(
       //   'Location permission denied by user.',
       //   ToastAndroid.LONG,
       // );
     } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+      console.log("you will never have  have permission")
+ 
+
       // ToastAndroid.show(
       //   'Location permission revoked by user.',
       //   ToastAndroid.LONG,
       // );
     }
+ 
     return false;
   };
   const hasLocationPermissionIOS = async () => {
@@ -822,11 +889,14 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     return false;
   };
 
+
+
+
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, overflow: 'hidden'}}>
+      style={{flex: 1, ...drawerAnimationStyle, overflow: 'hidden',}}>
       <FocusAwareStatusBar
-        barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
+        barStyle={showbottomsheet ? 'dark-content' : 'light-content'}
         backgroundColor="transparent"
       />
       {/* <StatusBar barStyle="light-content" /> */}
@@ -864,7 +934,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               />
             </View>
           </ImageBackground>
-          {showmap && (
+          {showmap &&  (
             <>
               <View
                 style={{
@@ -878,10 +948,10 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                   bottom: scalableheight.twentythree,
                   zIndex: 1,
                 }}>
-                {lat != null && long != null ? (
+                {lat != null && long != null && inlat != null && inlong != null? (
                   <MapView
                     // provider={PROVIDER_GOOGLE}
-                    customMapStyle={customStyle}
+                    // customMapStyle={customStyle}
                     // userInterfaceStyle={"dark"}
                     ref={refMap}
                     style={{
@@ -893,8 +963,10 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                     region={{
                       latitude: inlat,
                       longitude: inlong,
-                      longitudeDelta: 0.08,
-                      latitudeDelta: 0.08,
+                      // latitude: lat,
+                      // longitude: long,
+                      longitudeDelta: 0.01,
+                      latitudeDelta: 0.01,
                     }}
                     initialRegion={{
                       latitude: lat,
@@ -906,6 +978,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                     {allrestraunts.map((item, key) => {
                       return (
                         <Marker
+                        key={key.toString()}
                           position={center}
                           coordinate={{
                             latitude: item?.Latitude,
@@ -922,7 +995,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
                           //   }}
                           //  pinColor = {"red"} // any color
-                          key={key}
+                       
                           title={'Restaurant'}
                           description={item?.NameAsPerTradeLicense}
                           onPress={() =>
@@ -1015,15 +1088,16 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                 }}>
                 <TouchableOpacity
                   onPress={() => {
+                    // getnewlocation();
                     refMap.current.animateToRegion({
                       latitude: inlat,
                       longitude: inlong,
-                      longitudeDelta: 0.08,
-                      latitudeDelta: 0.08,
+                      longitudeDelta: 0.01,
+                      latitudeDelta: 0.01,
                     });
                   }}>
-                  <MaterialIcons
-                    name="my-location"
+                  <Ionicons
+                    name="compass-outline"
                     color={'#F55050'}
                     size={fontSize.twentyeight}
                   />
@@ -1047,6 +1121,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                 }}>
                 <Infobar
                   onPress={() => {
+               
                     setshowbottomsheet(true);
                   }}
                   Heading={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].place : 'Current Location'}
@@ -1066,41 +1141,46 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                 allrestraunts?.find(data =>
                   data?.NameAsPerTradeLicense.includes(search.trim()),
                 ) != undefined ? (
-                  <Animatable.View
-                    animation="bounceInRight"
-                    easing="ease"
-                    iterationCount={1}
-                    style={{
-                      paddingTop: scalableheight.one,
-                      paddingBottom: scalableheight.pointfive,
+                  // <Animatable.View
+                  //   animation="bounceInRight"
+                  //   easing="ease"
+                  //   iterationCount={1}
+                  //   style={{
+                  //     paddingTop: scalableheight.one,
+                  //     paddingBottom: scalableheight.pointfive,
 
-                      justifyContent: 'center',
-                    }}>
+                  //     justifyContent: 'center',
+                  //   }}>
                     <Text
                       style={{
                         fontFamily: 'Inter-Bold',
                         fontSize: fontSize.sixteen,
                         color: '#29262A',
+                        paddingBottom:scalableheight.one
                       }}>
                       RESTAURANTS NEARBY
                     </Text>
-                  </Animatable.View>
+             //     </Animatable.View>
                 ) : (
                   <View
                     style={{
-                      width: Dimensions.get('window').width / 1.05,
+                      width: Dimensions.get('window').width / 1,
                       height: scalableheight.twenty,
                       justifyContent: 'center',
                       alignItems: 'center',
+                    
+                      // borderWidth:1, borderColor:"red"
                     }}>
                     <Text
                       style={{
                         fontFamily: 'Inter-Bold',
-                        fontSize: fontSize.sixteen,
+                        fontSize: fontSize.fifteen,
                         color: '#29262A',
                         opacity: 0.4,
+                        marginTop:scalableheight.two
                       }}>
-                      No Restraunts NearBy
+                      {/* No Restaurants NearBy */}
+                      No Restaurants
                     </Text>
                   </View>
                 )}
@@ -1203,19 +1283,22 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               ) : (
                 <View
                   style={{
-                    width: Dimensions.get('window').width / 1.05,
-                    height: Dimensions.get('window').height / 1.5,
+                    width: Dimensions.get('window').width / 1,
+                    height: Dimensions.get('window').height / 1.2,
                     justifyContent: 'center',
                     alignItems: 'center',
+                
                   }}>
                   <Text
                     style={{
                       fontFamily: 'Inter-Bold',
-                      fontSize: fontSize.sixteen,
+                      fontSize: fontSize.fifteen,
                       color: '#29262A',
                       opacity: 0.4,
+                    
                     }}>
-                    No Restraunts NearBy
+                    {/* No Restraunts NearBy */}
+                    No Restauraunts
                   </Text>
                 </View>
               ))
@@ -1226,7 +1309,9 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
           <TouchableOpacity
             activeOpacity={0.6}
             onPress={() => {
-              setshowmap(!showmap);
+            
+           
+                setshowmap(!showmap);
             }}
             style={{
               alignItems: 'center',

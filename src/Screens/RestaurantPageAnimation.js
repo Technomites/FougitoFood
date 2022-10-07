@@ -9,10 +9,10 @@ import renderIf from 'render-if';
 import Starters from '../Shared/Components/Starters';
 import ScreenWrapper from '../Shared/Components/ScreenWrapper';
 
-import changeNavigationBarColor, {
-  hideNavigationBar,
-  showNavigationBar,
-} from 'react-native-navigation-bar-color';
+// import changeNavigationBarColor, {
+//   hideNavigationBar,
+//   showNavigationBar,
+// } from 'react-native-navigation-bar-color';
 // import  {Animated as DrawerAnimated} from 'react-native-reanimated';
 // import Animated,{interpolate} from 'react-native-reanimated';
 
@@ -161,31 +161,31 @@ const RestaurantpageAnimation = ({navigation, drawerAnimationStyle}) => {
         setisEnabled(!isEnabled)
       };
 
-      useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener(
-          'keyboardDidShow',
-          () => {
-            hideNavigationBar();
-            console.log('Keyboard is open');
-          },
-        );
-        const keyboardDidHideListener = Keyboard.addListener(
-          'keyboardDidHide',
-          () => {
-            hideNavigationBar();
-            console.log('Keyboard is closed');
-          },
-        );
+      // useEffect(() => {
+      //   const keyboardDidShowListener = Keyboard.addListener(
+      //     'keyboardDidShow',
+      //     () => {
+      //       // hideNavigationBar();
+      //       console.log('Keyboard is open');
+      //     },
+      //   );
+      //   const keyboardDidHideListener = Keyboard.addListener(
+      //     'keyboardDidHide',
+      //     () => {
+      //       // hideNavigationBar();
+      //       console.log('Keyboard is closed');
+      //     },
+      //   );
     
-        return () => {
-          keyboardDidHideListener.remove();
-        };
-      }, []);
+      //   return () => {
+      //     keyboardDidHideListener.remove();
+      //   };
+      // }, []);
 
 
       useEffect(() => {
    
-        hideNavigationBar();
+        // hideNavigationBar();
        
    
   }, [modalVisible]);

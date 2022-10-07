@@ -40,7 +40,7 @@ export default function Categoriescard(props) {
           justifyContent: 'center',
           marginRight: scalableheight.one,
         }}
-        source={ {uri: props.image}}>
+        source={  props.image ? {uri: props.image} : null}>
         
         <ImageBackground
       borderRadius={scalableheight.two}
