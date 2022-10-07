@@ -16,6 +16,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
@@ -33,17 +35,18 @@ export default function Couponscomponent(props) {
         ...styleSheet.shadow,
         ...styleSheet.MainContainer,
         width: '100%',
-        height: Dimensions.get('window').height / 5,
+        height: Dimensions.get('window').height / 8,
         borderRadius: fontSize.borderradiusmedium,
         padding: scalableheight.pointfive,
       }}>
-      <View style={{height: '65%', width: '100%', flexDirection: 'row'}}>
+      <View style={{height: '100%', width: '100%', flexDirection: 'row'}}>
         <View
           style={{
             height: '100%',
-            width: '25%',
+            width: '20%',
             alignItems: 'center',
             justifyContent: 'center',
+            // borderWidth:1, borderColor:"red"
           }}>
           <View
             style={{
@@ -52,17 +55,20 @@ export default function Couponscomponent(props) {
               backgroundColor: '#F9F9F9',
               alignItems: 'center',
               justifyContent: 'center',
-              borderRadius: fontSize.borderradiuslarge,
+              borderRadius: fontSize.borderradiusmedium,
             }}>
             <FontAwesome5
               name="tags"
-              size={fontSize.thirtyfive}
+              size={fontSize.twenty}
               color={'#F55050'}
             />
           </View>
         </View>
-        <View style={{height: '100%', width: '75%', justifyContent: 'center'}}>
+        <View style={{height: '100%', width: '50%', justifyContent: 'center', 
+        // borderWidth:1, borderColor:"blue"
+        }}>
           <Text
+              numberOfLines={1}
             style={{
               fontFamily: 'Inter-Medium',
               fontSize: fontSize.eleven,
@@ -71,6 +77,7 @@ export default function Couponscomponent(props) {
             {props.sale}
           </Text>
           <Text
+          numberOfLines={1}
             style={{
               fontFamily: 'Inter-Bold',
               fontSize: fontSize.sixteen,
@@ -78,29 +85,46 @@ export default function Couponscomponent(props) {
             }}>
             {props.title}
           </Text>
-          {/* <Text
+          <Text
             style={{
               fontFamily: 'Inter-Medium',
               fontSize: fontSize.twelve,
               color: '#636363',
             }}>
-            {'Min Order: '} {props.minorder}
-          </Text> */}
+          {props.Name}
+          </Text>
         </View>
-        <Text
+        <View
           style={{
-            position: 'absolute',
-            right: scalableheight.one,
-            top: scalableheight.one,
+            height: '100%',
+            width: '30%',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            paddingHorizontal:scalableheight.one
+            // borderWidth:1, borderColor:"red"
+          }}>
+         <Text
+         numberOfLines={1}
+          style={{
+            // position: 'absolute',
+            // right: scalableheight.one,
+            // top: scalableheight.one,
             fontFamily: 'Inter-Bold',
             fontSize: fontSize.twelve,
             color: '#F55050',
           }}>
-          {props.daysleft}
+          {props.daysleft == 0 ? "Expired" : props.daysleft + ' days left'}
         </Text>
+        <FontAwesome
+              name="clipboard"
+              size={fontSize.fifteen}
+              color={'#F55050'}
+            />
+        </View>
+       
       </View>
-
-      <View style={{height: '35%', width: '100%'}}>
+{/* 
+      <View style={{height: '0%', width: '100%'}}>
         <View
           style={{
             borderTopWidth: 1,
@@ -130,7 +154,7 @@ export default function Couponscomponent(props) {
             {props.tc}
           </Text>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 }

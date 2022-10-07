@@ -105,7 +105,7 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
 
 
   function copied() {
-    toast.current.show('Copied To Clipboard', {
+    toast.current.show('Copied', {
       type: 'normal',
       placement: 'bottom',
       duration: 4000,
@@ -178,10 +178,11 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
                     paddingHorizontal: scalableheight.two,
                   }}>
                   <Couponscomponent
-                    sale={item.DiscountAmount + ' %'}
-                    title={item.Name}
+                    sale={item.Value + '% OFF'}
+                    title={item.CouponCode}
+                    Name={item.Name}
                     // minorder={'AED 100'}
-                    daysleft={item.DaysLeft + ' days left'}
+                    daysleft={item.DaysLeft}
                     discountprice={item.dicountAmount}
                     tc={item.TermsAndConditions}
                   />

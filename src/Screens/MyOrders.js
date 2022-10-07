@@ -67,7 +67,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
       OrderStatus: 'Delivered',
     },
   ]);
-  const [ordertype, Setordertype] = useState('On Going');
+  const [ordertype, Setordertype] = useState('Active Orders');
   const toast = useRef();
   useEffect(() => {
     dispatch(Myorders(AuthToken));
@@ -124,13 +124,13 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => {
-              Setordertype('On Going');
+              Setordertype('Active Orders');
             }}
             style={{
               height: scalableheight.five,
               width: scalableheight.twenty,
               backgroundColor:
-                ordertype == 'On Going' ? 'rgba(245, 80, 80, 0.3)' : '#F9F9F9',
+                ordertype == 'Active Orders' ? 'rgba(245, 80, 80, 0.3)' : '#F9F9F9',
               borderRadius: fontSize.borderradiusmedium,
               alignItems: 'center',
               justifyContent: 'center',
@@ -138,11 +138,11 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
             <Text
               style={{
                 color:
-                  ordertype == 'On Going' ? '#F55050' : 'rgba(17, 17, 17, 0.2)',
+                  ordertype == 'Active Orders' ? '#F55050' : 'rgba(17, 17, 17, 0.2)',
                 fontFamily: 'Inter-SemiBold',
                 fontSize: fontSize.fifteen,
               }}>
-              On Going
+              Active Orders
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -181,7 +181,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
 
 
 
-{ordertype == 'On Going' && MyorderList.length == 0 ? (
+{ordertype == 'Active Orders' && MyorderList.length == 0 ? (
     <View
     style={{
       // justifyContent: 'center',
@@ -193,7 +193,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
      No Data Found
     </Text>
   </View>) : null}
-{ordertype != 'On Going' && MyorderListpast.length == 0 ? (
+{ordertype != 'Active Orders' && MyorderListpast.length == 0 ? (
     <View
     style={{
       // justifyContent: 'center',
@@ -213,7 +213,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                   />
                 }
               
-                data={ordertype == 'On Going' ? MyorderList : MyorderListpast}
+                data={ordertype == 'Active Orders' ? MyorderList : MyorderListpast}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   flexGrow: 1,

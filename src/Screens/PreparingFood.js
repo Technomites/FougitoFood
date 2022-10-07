@@ -101,7 +101,7 @@ const PreparingFood = ({navigation, route}, props) => {
           paddingTop: getStatusBarHeight(),
         }}>
         <Navigation
-          title={'Order Status'}
+          title={'Order Details'}
           //onPress={navigation.navigate('Home')}
         />
         <View style={{justifyContent: 'center', marginHorizontal: 20}}>
