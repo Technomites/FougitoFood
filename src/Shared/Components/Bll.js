@@ -26,8 +26,20 @@ export default function Bll(props) {
 
   return (
     <View style={styleSheet.Container}>
-      <Text style={styleSheet.Text3}>{props.label}</Text>
-      <Text style={styleSheet.Text3}>AED {props.price}</Text>
+      <Text
+        style={{
+          ...styleSheet.Text3,
+          color: props.label == 'Total Amount' ? '#E14E4E' : null,
+        }}>
+        {props.label}
+      </Text>
+      <Text
+        style={{
+          ...styleSheet.Text3,
+          color: props.label == 'Total Amount' ? '#E14E4E' : null,
+        }}>
+        AED {props.price}
+      </Text>
     </View>
   );
 }

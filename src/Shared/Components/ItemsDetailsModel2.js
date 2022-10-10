@@ -179,13 +179,21 @@ export default function ItemsDetailsModel2(props) {
                   }}>
                   <View
                     style={{
-                      height: scalableheight.four,
-                      width: scalableheight.four,
+                      height: scalableheight.five,
+                      width: scalableheight.five,
                       backgroundColor: '#F9F9F9',
                       borderRadius: fontSize.borderradiusmedium,
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter-bold',
+                        fontSize: scalableheight.onepointfive,
+                        color: '#F55050',
+                      }}>
+                      QTY
+                    </Text>
                     <Text
                       style={{
                         fontFamily: 'Inter-Bold',
@@ -196,7 +204,7 @@ export default function ItemsDetailsModel2(props) {
                     </Text>
                   </View>
 
-                  <Image
+                  {/* <Image
                     resizeMode="cover"
                     style={{
                       width: scalableheight.six,
@@ -205,10 +213,10 @@ export default function ItemsDetailsModel2(props) {
                     }}
                     // source={{uri: props?.data?.image}}
                     source={{uri: props?.data?.MenuItems?.Item?.Image}}
-                  />
+                  /> */}
                   <Text
                     style={{
-                      fontFamily: 'Inter-Bold',
+                      fontFamily: 'Inter',
                       fontSize: fontSize.fourteen,
                       color: '#111111',
                       width: scalableheight.seventeen,
@@ -218,8 +226,8 @@ export default function ItemsDetailsModel2(props) {
                   <Text
                     style={{
                       fontFamily: 'Inter-Medium',
-                      fontSize: fontSize.fourteen,
-                      color: '#111111',
+                      fontSize: fontSize.twelve,
+                      color: '#F55050',
                     }}>
                     {'AED '}
                     {props?.data?.Price.toFixed(2)}
@@ -287,30 +295,30 @@ export default function ItemsDetailsModel2(props) {
                         }}>
                         Addons
                       </Text>
-                      {/* {item?.MenuItemOptionValues.map(inneritem => {
-                        return <View></View>;
-                      })} */}
-                      <Text
-                        style={{
-                          fontFamily: 'Inter-Medium',
-                          fontSize: fontSize.twelve,
-                          color: '#F55050',
-                          paddingBottom: scalableheight.two,
-                          //  marginLeft:scalableheight.one
-                        }}>
-                        <Text
-                          style={{
-                            color: '#000',
-                            alignSelf: 'center',
-                            // position: 'relative',
-                            marginRight: scalableheight.one,
-                          }}>
-                          {'\u2B24'}
-                        </Text>
-                        {' ' +
-                          props?.data?.OrderDetailOptionValues[0]
-                            ?.MenuItemOptionValue}
-                      </Text>
+                      {props?.data?.OrderDetailOptionValues.map(inneritem => {
+                        return (
+                          <Text
+                            style={{
+                              fontFamily: 'Inter-Medium',
+                              fontSize: fontSize.twelve,
+                              color: '#F55050',
+                              // paddingBottom: scalableheight.two,
+                              //  marginLeft:scalableheight.one
+                            }}>
+                            <Text
+                              style={{
+                                color: 'grey',
+                                alignSelf: 'center',
+                                // position: 'relative',
+                                marginRight: scalableheight.one,
+                                fontSize: scalableheight.one,
+                              }}>
+                              {'\u2B24'}
+                            </Text>
+                            {' ' + inneritem?.MenuItemOptionValue}
+                          </Text>
+                        );
+                      })}
                     </>
                   )}
 

@@ -34,7 +34,6 @@ import ItemsDetailsModel2 from '../Shared/Components/ItemsDetailsModel2';
 import Ratingbar from '../Shared/Components/Ratingbar';
 
 const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
-
   const {AuthToken, orderdetails, orderResult} = useSelector(
     state => state.userReducer,
   );
@@ -742,7 +741,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 }
                 contentContainerStyle={{
                   flexGrow: 1,
-                  paddingBottom: scalableheight.three,
+                  paddingBottom: scalableheight.one,
                 }}
                 data={orderResult[0]?.OrderDetails}
                 keyExtractor={(item, index) => index.toString()}
@@ -774,9 +773,11 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
             </View>
 
             <View
-              style={{
-                marginTop: scalableheight.two,
-              }}>
+              style={
+                {
+                  // marginTop: scalableheight.two,
+                }
+              }>
               <Text
                 style={{
                   color: '#29262A',
@@ -802,6 +803,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                     <View
                       style={{
                         width: '10%',
+                        alignSelf: 'flex-start',
                       }}>
                       <View>
                         <FontAwesome
@@ -850,6 +852,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                     <View
                       style={{
                         width: '10%',
+                        alignSelf: 'flex-start',
                       }}>
                       <View>
                         <Entypo
@@ -898,6 +901,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                     <View
                       style={{
                         width: '10%',
+                        alignSelf: 'flex-start',
                       }}>
                       <View>
                         <FontAwesome5
@@ -948,6 +952,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                     <View
                       style={{
                         width: '10%',
+                        alignSelf: 'flex-start',
                       }}>
                       <View>
                         <FontAwesome5
@@ -979,9 +984,10 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                           fontSize: fontSize.eleven,
                           color: '#636363',
                         }}>
-                        {orderResult[0]?.Street != ''
+                        {orderResult[0]?.Street != '' &&
+                        orderResult[0]?.Street != null
                           ? orderResult[0]?.Street
-                          : 'No Details'}
+                          : '-'}
                       </Text>
                     </View>
                   </View>
@@ -997,6 +1003,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       <View
                         style={{
                           width: '10%',
+                          alignSelf: 'flex-start',
                         }}>
                         <View>
                           <MaterialCommunityIcons
@@ -1046,6 +1053,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       <View
                         style={{
                           width: '10%',
+                          alignSelf: 'flex-start',
                         }}>
                         <View>
                           <Icon
@@ -1121,6 +1129,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         <View
                           style={{
                             width: '10%',
+                            alignSelf: 'flex-start',
                           }}>
                           <View>
                             <FontAwesome
@@ -1170,6 +1179,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         <View
                           style={{
                             width: '10%',
+                            alignSelf: 'flex-start',
                           }}>
                           <View>
                             <Entypo
@@ -1263,7 +1273,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                   fontFamily: 'Inter-Bold',
                   fontSize: fontSize.fifteen,
                 }}>
-                Payment Method
+                Payment Details
               </Text>
               <View style={{marginTop: scalableheight.one}}></View>
               <View
@@ -1301,7 +1311,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       style={{
                         paddingHorizontal: scalableheight.two,
                         justifyContent: 'flex-start',
-                        width: '75%',
+                        width: '70%',
                       }}>
                       <Text
                         style={{
@@ -1309,7 +1319,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                           fontSize: fontSize.thirteen,
                           color: '#29262A',
                         }}>
-                        {orderResult[0]?.PaymentMethod}
+                        {'Payment Method'}
                         {/* {'Credit/Debit Card'} */}
                       </Text>
                       <Text
@@ -1319,15 +1329,15 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                           color: '#636363',
                         }}>
                         {orderResult[0]?.PaymentMethod == 'Card'
-                          ? 'Pay Online'
-                          : 'Cash On Delivery'}
+                          ? 'Card'
+                          : 'Cash'}
                       </Text>
                     </View>
                     <View
                       style={{
                         // paddingHorizontal: scalableheight.five,
                         justifyContent: 'flex-end',
-                        width: '15%',
+                        width: '20%',
                       }}>
                       <Text
                         style={{
@@ -1336,45 +1346,50 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                           color: '#E14E4E',
                           textAlign: 'right',
                         }}>
-                        {orderResult[0]?.PaymentMethod == 'Card' ? 'Paid' : ''}
+                        {orderResult[0]?.Status == 'Canceled'
+                          ? 'Un Paid'
+                          : orderResult[0]?.PaymentMethod == 'Card'
+                          ? 'Paid'
+                          : ''}
                       </Text>
                     </View>
                   </View>
                 </View>
               </View>
             </View>
-            {orderResult[0]?.DeliveryType != 'TakeAway' ? (
-              <View>
-                <Text
-                  style={{
-                    color: '#29262A',
-                    fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.fifteen,
-                    marginBottom: scalableheight.onepointfive,
-                  }}>
-                  My Review
-                </Text>
-                {/* <View style={{marginTop: scalableheight.one}}></View> */}
-                <View
-                  style={{
-                    ...styles.MainContainer,
-                    // paddingVertical: scalableheight.two,
-                  }}>
+            {orderResult[0]?.Status != 'Canceled' ? (
+              orderResult[0]?.DeliveryType != 'TakeAway' &&  orderResult[0]?.RestaurantRatings.length > 0 ? (
+                <View>
+                  <Text
+                    style={{
+                      color: '#29262A',
+                      fontFamily: 'Inter-Bold',
+                      fontSize: fontSize.fifteen,
+                      marginBottom: scalableheight.onepointfive,
+                    }}>
+                    My Review
+                  </Text>
+                  {/* <View style={{marginTop: scalableheight.one}}></View> */}
                   <View
                     style={{
-                      width: '50%',
-                      //  height: scalableheight.ten,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
+                      ...styles.MainContainer,
+                      // paddingVertical: scalableheight.two,
                     }}>
-                    {MaxRating.map((item, key) => {
-                      return (
-                        <TouchableOpacity
-                          activeOpacity={0.7}
-                          key={item}
-                          onPress={() => setDefaultRating(item)}>
-                          {/* <Image
+                    <View
+                      style={{
+                        width: '50%',
+                        //  height: scalableheight.ten,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                      }}>
+                      {MaxRating.map((item, key) => {
+                        return (
+                          <TouchableOpacity
+                            activeOpacity={0.7}
+                            key={item}
+                            onPress={() => setDefaultRating(item)}>
+                            {/* <Image
                 resizeMode={'contain'}
                   style={{height: 35, width: 35}}
                   source={
@@ -1383,72 +1398,72 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       : starimageempty
                   }
                 /> */}
-                          <FontAwesome
-                            style={{marginRight: scalableheight.pointeight}}
-                            name="star"
-                            size={fontSize.twenty}
-                            color={
-                              item <= DefaultRating ? '#E6C24D' : '#F5F5F5'
-                            }
-                          />
-                        </TouchableOpacity>
-                      );
-                    })}
-                  </View>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.thirteen,
-                      color: '#29262A',
-                      marginTop: scalableheight.one,
-                    }}>
-                    {'Review'}
-                  </Text>
-                  {
+                            <FontAwesome
+                              style={{marginRight: scalableheight.pointeight}}
+                              name="star"
+                              size={fontSize.twenty}
+                              color={
+                                item <= DefaultRating ? '#E6C24D' : '#F5F5F5'
+                              }
+                            />
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </View>
                     <Text
                       style={{
-                        fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.eleven,
-                        color: '#636363',
-                        textAlign: 'justify',
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: fontSize.thirteen,
+                        color: '#29262A',
+                        marginTop: scalableheight.one,
                       }}>
-                      {orderResult[0]?.RestaurantRatings[0]?.Review}
+                      {'Review'}
                     </Text>
-                  }
+                    {
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-Medium',
+                          fontSize: fontSize.eleven,
+                          color: '#636363',
+                          textAlign: 'justify',
+                        }}>
+                        {orderResult[0]?.RestaurantRatings[0]?.Review}
+                      </Text>
+                    }
+                  </View>
                 </View>
-              </View>
-            ) : (
-              <View>
-                <Text
-                  style={{
-                    color: '#29262A',
-                    fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.fifteen,
-                    marginBottom: scalableheight.onepointfive,
-                  }}>
-                  My Review
-                </Text>
-                {/* <View style={{marginTop: scalableheight.one}}></View> */}
-                <View
-                  style={{
-                    ...styles.MainContainer,
-                    // paddingVertical: scalableheight.two,
-                  }}>
+              ) : (
+                <View>
+                  <Text
+                    style={{
+                      color: '#29262A',
+                      fontFamily: 'Inter-Bold',
+                      fontSize: fontSize.fifteen,
+                      marginBottom: scalableheight.onepointfive,
+                    }}>
+                    My Review
+                  </Text>
+                  {/* <View style={{marginTop: scalableheight.one}}></View> */}
                   <View
                     style={{
-                      width: '50%',
-                      //  height: scalableheight.ten,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
+                      ...styles.MainContainer,
+                      // paddingVertical: scalableheight.two,
                     }}>
-                    {MaxRating.map((item, key) => {
-                      return (
-                        <TouchableOpacity
-                          activeOpacity={0.7}
-                          key={item}
-                          onPress={() => setDefaultRating(item)}>
-                          {/* <Image
+                    <View
+                      style={{
+                        width: '50%',
+                        //  height: scalableheight.ten,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                      }}>
+                      {MaxRating.map((item, key) => {
+                        return (
+                          <TouchableOpacity
+                            activeOpacity={0.7}
+                            key={item}
+                            onPress={() => setDefaultRating(item)}>
+                            {/* <Image
               resizeMode={'contain'}
                 style={{height: 35, width: 35}}
                 source={
@@ -1457,71 +1472,75 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                     : starimageempty
                 }
               /> */}
-                          <FontAwesome
-                            style={{marginRight: scalableheight.pointeight}}
-                            name="star"
-                            size={fontSize.twenty}
-                            color={
-                              item <= DefaultRating ? '#E6C24D' : '#F5F5F5'
-                            }
-                          />
-                        </TouchableOpacity>
-                      );
-                    })}
-                  </View>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.thirteen,
-                      color: '#29262A',
-                      marginTop: scalableheight.one,
-                    }}>
-                    {'Review'}
-                  </Text>
-                  <View
-                    style={{
-                      marginVertical: scalableheight.one,
-                      backgroundColor: '#F9F9F9',
-                      height: scalableheight.ten,
-                      borderRadius: scalableheight.one,
-                      paddingHorizontal: scalableheight.one,
-                      width: '100%',
+                            <FontAwesome
+                              style={{marginRight: scalableheight.pointeight}}
+                              name="star"
+                              size={fontSize.twenty}
+                              color={
+                                item <= DefaultRating ? '#E6C24D' : '#F5F5F5'
+                              }
+                            />
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </View>
+                    {/* <Text
+                      style={{
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: fontSize.thirteen,
+                        color: '#29262A',
+                        marginTop: scalableheight.one,
+                      }}>
+                      {'Review'}
+                    </Text> */}
+                    <View
+                      style={{
+                        marginVertical: scalableheight.one,
+                        backgroundColor: '#F9F9F9',
+                        height: scalableheight.ten,
+                        borderRadius: scalableheight.one,
+                        paddingHorizontal: scalableheight.one,
+                        width: '100%',
 
-                      shadowColor: '#000',
-                      shadowOffset: {
-                        width: 0,
-                        height: 2,
-                      },
-                      shadowOpacity: 0.23,
-                      shadowRadius: 2.62,
+                        shadowColor: '#000',
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.23,
+                        shadowRadius: 2.62,
 
-                      elevation: 1,
-                      // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
-                    }}>
-                    <TextInput
-                      multiline
-                      value={reviews}
-                      placeholderStyle={{
-                        fontSize: fontSize.twenty,
-                      }}
-                      placeholderTextColor="lightgray"
-                      placeholder="Type here"
-                      onChangeText={text => {
-                        setReviews(text);
-                      }}
+                        elevation: 1,
+                        // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+                      }}>
+                      <TextInput
+                        multiline
+                        value={reviews}
+                        placeholderStyle={{
+                          fontSize: fontSize.twenty,
+                        }}
+                        placeholderTextColor="lightgray"
+                        placeholder="Type here"
+                        onChangeText={text => {
+                          setReviews(text);
+                        }}
+                      />
+                    </View>
+                    <MYButton
+                      title={'Submit'}
+                      color="#F55050"
+                      textcolor="white"
                     />
                   </View>
-                  <MYButton
-                    title={'Submit'}
-                    color="#F55050"
-                    textcolor="white"
-                  />
                 </View>
-              </View>
-            )}
+              )
+            ) : null}
             <View>
               <View style={{height: scalableheight.three}} />
-              <Bll label={'Sub Total'} price={'209.00 No binding'} />
+              <Bll
+                label={'Sub Total'}
+                price={orderResult[0]?.Amount.toFixed(2)}
+              />
               <Bll
                 label={'Delivery Charges'}
                 price={orderResult[0]?.DeliveryCharges.toFixed(2)}
@@ -1538,11 +1557,13 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                   marginVertical: scalableheight.one,
                 }}></View>
               <Bll
-                label={'Total'}
+                label={'Total Amount'}
                 price={orderResult[0]?.TotalAmount.toFixed(2)}
               />
               <View style={{height: scalableheight.two}} />
-              <MYButton title={'Cancel'} color="black" textcolor="white" />
+              {orderResult[0]?.Status == 'Pending' ? (
+                <MYButton title={'Cancel'} color="black" textcolor="white" />
+              ) : null}
               <View style={{height: scalableheight.ten}} />
             </View>
           </View>

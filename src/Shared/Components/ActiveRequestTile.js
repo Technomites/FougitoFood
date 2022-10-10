@@ -135,9 +135,11 @@ export default function ActiveRequestTile(props) {
                 fontSize: fontSize.twelve,
                 color: '#707070',
                 alignItems: 'center',
-                marginLeft: scalableheight.two,
+               
+                // backgroundColor:'red'
+                // marginLeft: scalableheight.two,
               }}>
-              {'AED ' + props.details?.OrderAmount}
+              {'AED ' + props.details?.OrderAmount.toFixed(2)}
             </Text>
           </View>
 

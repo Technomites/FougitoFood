@@ -75,6 +75,14 @@ export default function ItemDetailsStatus(props) {
           <Text
             style={{
               fontFamily: 'Inter-Bold',
+              fontSize: fontSize.one,
+              color: '#E14E4E',
+            }}>
+            {'QTY'}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'Inter-Bold',
               fontSize: fontSize.fourteen,
               color: '#111111',
             }}>
