@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, } from 'react';
-import {Dimensions, LogBox,LayoutAnimation, Animated, Modal, FlatList, TextInput, KeyboardAvoidingView, StatusBar, ScrollView, View, TouchableOpacity, StyleSheet, Image, Text, SafeAreaView, Keyboard, ImageBackground} from 'react-native';
+import {Dimensions,ActivityIndicator, LogBox,LayoutAnimation, Animated, Modal, FlatList, TextInput, KeyboardAvoidingView, StatusBar, ScrollView, View, TouchableOpacity, StyleSheet, Image, Text, SafeAreaView, Keyboard, ImageBackground} from 'react-native';
 // import Animated from 'react-native-reanimated';
 import HeaderComponentRestaurant from '../Shared/Components/HeaderComponentRestaurant';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -79,8 +79,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   const [modaldataoptions, setmodaldataoptions] = useState([]);
   const [modaldataoptionsindex, setmodaldataoptionsindex] = useState();
   const [search, setsearch] = useState('');
-  const [isEnabled, setisEnabled] = useState(false);
+  const [isEnabled, setisEnabled] = useState(true);
   const [inlat, setinlat] = useState();
+  const [screenloader, setscreenloader] = useState(true);
   const [inlong, setinlong] = useState();
   const [currentitemprice, setcurrentitemprice] = useState(0);
   const scrollviewhorizontalref = useRef();
@@ -224,6 +225,19 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
      console.log("all cart data length" + cartdata.length + "data " + JSON.stringify(cartdata))
     }, [cartdata]);
   
+    useEffect(() => {
+      if(restrauntmenu.length > 0){
+        setscreenloader(false)
+    
+        
+      }
+     
+  
+    }, [restrauntmenu]);
+
+
+    
+    
     function toggleanimation() {
       if (animationtype == 'fadeInUpBig') {
         setanimationtype('fadeOutDownBig');
@@ -629,7 +643,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     drawer={drawerAnimationStyle}
     style={{flex: 1, }}>
           <FocusAwareStatusBar
-        barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
+        barStyle={useIsDrawerOpen() ? 'light-content' : screenloader == true ? 'dark-content' :'light-content'}
         backgroundColor="transparent"
       />
           {/* {modalVisible && animationtype == 'fadeInUpBig' && ( */}
@@ -645,6 +659,26 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
           }}></View>
       )}
 
+          
+  
+
+<Modal
+        transparent
+        style={{
+          width: '100%',
+          height: '100%',
+          // zIndex: 1,
+          // elevation: 1,
+          // position: 'absolute',
+        }}
+        statusBarTranslucent
+        animationType="slide"
+        visible={screenloader}
+        onRequestClose={() => setscreenloader(false)}>
+          <View style={{height:"100%", width:"100%", justifyContent:"center", alignItems:"center", backgroundColor:'rgba(0,0,0,0.8)', }}>
+          <ActivityIndicator size="small" color={'red'} />
+          </View>
+        </Modal>
 <Modal
         transparent
         style={{
@@ -1052,11 +1086,7 @@ update={updateservingstatemultiple}
                   toggleSwitch={toggleSwitch}
                 />
           </View> */}
-       
    
-
-
-
   
     
   <AnimatedScrollView
@@ -1068,7 +1098,7 @@ update={updateservingstatemultiple}
   scrollEventThrottle={1}
   snapToAlignment="start"
   decelerationRate={"fast"}
-  snapToInterval={scalableheight.fourtynine}
+  snapToInterval={scalableheight.fourtythree}
   onScroll={
     
     Animated.event(
@@ -1327,8 +1357,11 @@ const styleSheet = StyleSheet.create({
   heading: {
     fontFamily: 'Inter-Bold',
     color: 'black',
-    fontSize: fontSize.twenty,
-    paddingVertical: scalableheight.one,
+    fontSize: fontSize.sixteen,
+    paddingTop: scalableheight.one,
+    paddingBottom: scalableheight.two,
+    marginLeft:scalableheight.one,
+    // borderWidth:1, borderColor:"red"
   },
 });
 export default Restaurantpage;

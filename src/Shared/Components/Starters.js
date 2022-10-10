@@ -37,7 +37,7 @@ const navigation = useNavigation();
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: scalableheight.one,
-        borderRadius: fontSize.eleven, backgroundColor:"white",
+        borderRadius: fontSize.borderradius, backgroundColor:"white",
         flexDirection:"row"
  
        
@@ -59,28 +59,29 @@ const navigation = useNavigation();
             fontSize: fontSize.thirteen,
             color:"#636363",
         
-          }}>{props.description}</Text>
+          }}>{props.description.trim()}</Text>
         
         {props.price > 0 ?      <Text style={{
             
             fontFamily: 'Inter-Medium',
-            fontSize: fontSize.fourteen,
+            fontSize: fontSize.twelve,
             color:"#111111",
+            marginTop:scalableheight.pointfive
         
-          }}>{"AED "}{props.price}</Text> : null}
+          }}>{"AED "}{props.price.toFixed(2)}</Text> : null}
 </View>
 <View style={{height:"100%", width: "25%", alignItems:"flex-end", justifyContent:"center", paddingRight: scalableheight.one}}>
 <Image
     resizeMode= "cover"
     style={{
-      width: scalableheight.tweleve,
-      height: scalableheight.tweleve,
-      borderRadius: fontSize.eleven
+      width: scalableheight.ten,
+      height: scalableheight.ten,
+      borderRadius: fontSize.borderradius
       // 
     }}
     // source={{uri: props.image}}></Image>
        source={props.image != "" && props.image != "NULL" && props.image != null ? {uri: props.image}:  require('../../Resources/images/Broken_Image.png')}></Image>
-      <View style={{width:scalableheight.three, height:scalableheight.three, backgroundColor:"red", position:"absolute", bottom: scalableheight.pointeightfive ,right: scalableheight.one, borderBottomRightRadius: fontSize.eleven, alignItems:"center", justifyContent:"center"}}>
+      <View style={{width:scalableheight.three, height:scalableheight.three, backgroundColor:"red", position:"absolute", bottom: scalableheight.two ,right: scalableheight.one, borderBottomRightRadius: fontSize.borderradius, alignItems:"center", justifyContent:"center"}}>
 
       <Entypo 
                 name="plus"

@@ -29,7 +29,7 @@ const navigation = useNavigation();
         ...styleSheet.shadow,
         width: '100%',
         alignSelf: 'center',
-        height: scalableheight.thirteen,
+        height: scalableheight.sixteen,
        flexDirection:"row",
         alignItems: 'center',
         justifyContent: 'center',
@@ -40,7 +40,7 @@ const navigation = useNavigation();
         borderBottomLeftRadius: fontSize.twenty,
         borderBottomRightRadius: fontSize.twenty,
         zIndex:1}}>
-          <View style= {{height:"100%", width: "50%",}}>
+          <View style= {{height:"100%", width: "70%",}}>
       <View style={{flexDirection:"row", paddingVertical: scalableheight.one, alignItems:"center",}}>
         {props?.token != "" &&
    <TouchableOpacity 
@@ -64,19 +64,21 @@ const navigation = useNavigation();
                     fontSize: fontSize.twelve,}}>{props.rating}</Text>
           </View>
           <Text style={{marginLeft: scalableheight.one, color:"#29262A", fontFamily: 'Inter-Regular',
-                    fontSize: fontSize.twelve,}}>{props.reviews}{ " reviews"}</Text>
+                    fontSize: fontSize.twelve,}}>{props.reviews}{ " Reviews"}</Text>
           </View>
     <Text
     numberOfLines={1}
     style={{ color:"#303030", fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.twentytwo,}}>{props.title}</Text>
-    <Text style={{ color:"#303030", fontFamily: 'Inter-Medium',
-                    fontSize: fontSize.twelve, opacity: 0.4}}>{props.description}</Text>
+                    fontSize: fontSize.eightteen,}}>{props.title}</Text>
+    <Text 
+    numberOfLines={3}
+    style={{ color:"#303030", fontFamily: 'Inter-Medium',
+                    fontSize: fontSize.twelve, opacity: 0.4}}>{props.Address}</Text>
           </View>
-          <View style= {{height:"100%", width: "50%",  alignItems:"flex-end",justifyContent:"center", }}>
+          <View style= {{height:"100%", width: "30%",  alignItems:"flex-end",justifyContent:"center", }}>
           <Image
               resizeMode="contain"
-              style={{ height: "100%", width:"60%"}}
+              style={{ height: "100%", width:"100%",}}
               // source={{uri: props.image}}
               source={  props.image ? {uri: props.image} : null}
             />

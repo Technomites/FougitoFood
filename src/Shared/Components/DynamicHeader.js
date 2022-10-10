@@ -41,7 +41,7 @@ const DynamicHeader = ( props) => {
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
-  const Max_Header_Height = scalableheight.sixtyone  + getStatusBarHeight();
+  const Max_Header_Height = scalableheight.sixtyfour  + getStatusBarHeight();
   //const Max_Header_Height = scalableheight.ninety  + getStatusBarHeight();
   // LayoutAnimation.easeInEaseOut();
 const Min_Header_Height = 0;
@@ -81,7 +81,7 @@ const renderpopularcategories = ({item}) => (
       styles.header,
       {
         // height: animatedHeaderHeight,
-        height: scalableheight.sixtyone  + getStatusBarHeight(),
+        height: scalableheight.sixtyfour  + getStatusBarHeight(),
         backgroundColor: animateHeaderBackgroundColor,
         elevation: 3000, zIndex:3000
      // transform: [{translateY: animatedHeaderHeight}]
@@ -143,7 +143,9 @@ const renderpopularcategories = ({item}) => (
               rating={restrauntdetails?.AvgRating}
               reviews={restrauntdetails?.RatingCount}
               title={restrauntdetails?.BranchName}
-              description={'Its the food you love'}
+              Address={restrauntdetails?.Address}
+              
+              description={'Its the food you love, delivered'}
               onPress={() => {
                 // console.log(JSON.stringify(restrauntdetails.RestaurantBranchId))
                 // console.log( restrauntdetails?.Isfavourite)
@@ -199,7 +201,7 @@ const renderpopularcategories = ({item}) => (
                     marginLeft: scalableheight.one,
                     fontFamily: 'Inter-Bold',
                     color: 'black',
-                    fontSize: fontSize.twenty,
+                    fontSize: fontSize.sixteen,
                   }}>
                   POPULAR CATEGORIES
                 </Text>

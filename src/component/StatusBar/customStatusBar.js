@@ -7,7 +7,7 @@ const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 function FocusAwareStatusBar(props) {
   const isFocused = useIsFocused();
 
-  return isFocused ? <StatusBar barStyle={props?.barStyle} translucent/> : null;
+  return isFocused ? <StatusBar barStyle={props?.barStyle} backgroundColor= {props.backgroundColor} translucent/> : null;
 }
 
 export default FocusAwareStatusBar;

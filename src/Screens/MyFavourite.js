@@ -72,8 +72,8 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
     <Favourites
       image={item.Logo}
       title={item.NameAsPerTradeLicense}
-      reviews={`${item.AvgRating} (${item.RatingCount} reviews)`}
-      time={`${item.OpeningTime} AM - ${item.ClosingTime}PM`}
+      reviews={`${item.AvgRating} (${item.RatingCount} Reviews)`}
+      time={`${item.OpeningTime} AM - ${item.ClosingTime} PM`}
       onPress={() => {
         dispatch(storerestrauntbasicdata(item));
         dispatch(storedistance(item?.Distance));
@@ -90,7 +90,7 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
 
 
       }}
-      distance={`${item.Distance}KM AWAY`}
+      distance={`${item.Distance} away`}
     />
   );
 
@@ -112,7 +112,7 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
         }}>
         <PlainHeader title={'My Favourites'} />
     
-        <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
+        <View style={{width: '100%', paddingHorizontal: scalableheight.two,}}>
           <FlatList
             data={favouriterestuarants}
             renderItem={renderItem}

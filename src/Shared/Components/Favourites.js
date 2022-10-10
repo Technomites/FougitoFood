@@ -36,6 +36,7 @@ export default function Favourites(props) {
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: scalableheight.one,
+        marginTop:scalableheight.one,
         borderRadius: fontSize.eleven,
         backgroundColor: 'white',
         flexDirection: 'row',

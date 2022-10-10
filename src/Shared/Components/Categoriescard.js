@@ -33,7 +33,7 @@ export default function Categoriescard(props) {
         width: scalableheight.thirtytwo,
       }}>
       <ImageBackground
-        borderRadius={scalableheight.two}
+        borderRadius={scalableheight.one}
         resizeMode="cover"
         style={{
           alignItems: 'center',
@@ -43,7 +43,7 @@ export default function Categoriescard(props) {
         source={  props.image ? {uri: props.image} : null}>
         
         <ImageBackground
-      borderRadius={scalableheight.two}
+      borderRadius={scalableheight.one}
           resizeMode="cover"
           style={{
             height: '100%',
@@ -70,7 +70,7 @@ export default function Categoriescard(props) {
                 fontFamily: 'Inter-medium',
                 fontSize: fontSize.twelve,
                 color: 'white',
-                opacity: 0.6,
+                opacity: 0.8,
               }}>
               {'Avg Price AED '} {props.price.toFixed(2)}
             </Text>

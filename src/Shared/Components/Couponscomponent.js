@@ -113,7 +113,7 @@ export default function Couponscomponent(props) {
             fontSize: fontSize.twelve,
             color: '#F55050',
           }}>
-          {props.daysleft == 0 ? "Expired" : props.daysleft + ' days left'}
+          {props.daysleft <= 0 ? "Expired" : props.daysleft + ' days left'}
         </Text>
         <FontAwesome
               name="clipboard"

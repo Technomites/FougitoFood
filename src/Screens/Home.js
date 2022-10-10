@@ -702,13 +702,13 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     item?.NameAsPerTradeLicense.includes(search.trim()) ? (
       <View
         style={{
-          width: Dimensions.get('window').width / 1.2,
+          width: Dimensions.get('window').width / 1.05,
           marginRight: scalableheight.two,
         }}>
         <Favourites
           image={item?.Logo}
           title={item?.NameAsPerTradeLicense}
-          reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
+          reviews={item?.AvgRating + ' (' + item?.RatingCount + ' Reviews)'}
           time={item?.OpeningTime + ' - ' + item?.ClosingTime}
           onPress={() => {
             dispatch(storerestrauntbasicdata(item));
@@ -727,7 +727,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             });
             // navigation.navigate('Restaurantpage');
           }}
-          distance={item?.Distance + ' AWAY'}
+          distance={item?.Distance + ' away'}
         />
       </View>
     ) : null;
@@ -1133,7 +1133,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                 style={{
                   paddingHorizontal: scalableheight.one,
                   position: 'absolute',
-                  bottom: scalableheight.two,
+                  bottom: scalableheight.one,
                   zIndex: 200,
                   elevation: 200,
                 }}>
@@ -1156,7 +1156,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                         fontFamily: 'Inter-Bold',
                         fontSize: fontSize.sixteen,
                         color: '#29262A',
-                        paddingBottom:scalableheight.one
+                        // paddingBottom:scalableheight.one
                       }}>
                       RESTAURANTS NEARBY
                     </Text>
