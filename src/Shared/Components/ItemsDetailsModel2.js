@@ -29,6 +29,7 @@ import PaymentOptions from '../../Shared/Components/PaymentOptions';
 import Animated from 'react-native-reanimated';
 import CountDown from 'react-native-countdown-component';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Bll from '../../Shared/Components/Bll';
 export default function ItemsDetailsModel2(props) {
   const [number, setnumber] = useState('');
   const [fullname, setfullname] = useState('');
@@ -221,13 +222,13 @@ export default function ItemsDetailsModel2(props) {
                       color: '#111111',
                     }}>
                     {'AED '}
-                    {props?.data?.Price}
+                    {props?.data?.Price.toFixed(2)}
                   </Text>
                 </View>
 
-                {props?.data?.MenuItemOptions?.map(item => {
+                {/* {props?.data?.OrderDetailOptionValues?.map(item => {
                   return (
-                    item.MenuItemOptionValues?.find(
+                    item.OrderDetailOptionValues?.find(
                       data => data?.selected === true,
                     ) != undefined && (
                       <View style={{}}>
@@ -273,32 +274,135 @@ export default function ItemsDetailsModel2(props) {
                       </View>
                     )
                   );
-                })}
+                })} */}
+                {props?.data?.OrderDetailOptionValues != '' &&
+                  props?.data?.OrderDetailOptionValues != null && (
+                    <>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-Bold',
+                          fontSize: fontSize.twelve,
+                          color: '#111111',
+                          marginTop: scalableheight.two,
+                        }}>
+                        Addons
+                      </Text>
+                      {/* {item?.MenuItemOptionValues.map(inneritem => {
+                        return <View></View>;
+                      })} */}
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-Medium',
+                          fontSize: fontSize.twelve,
+                          color: '#F55050',
+                          paddingBottom: scalableheight.two,
+                          //  marginLeft:scalableheight.one
+                        }}>
+                        <Text
+                          style={{
+                            color: '#000',
+                            alignSelf: 'center',
+                            // position: 'relative',
+                            marginRight: scalableheight.one,
+                          }}>
+                          {'\u2B24'}
+                        </Text>
+                        {' ' +
+                          props?.data?.OrderDetailOptionValues[0]
+                            ?.MenuItemOptionValue}
+                      </Text>
+                    </>
+                  )}
 
-                {props?.data?.CustomerNote != '' && props?.data?.CustomerNote != null && (
-                  <>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Bold',
-                        fontSize: fontSize.twelve,
-                        color: '#111111',
-                        marginTop: scalableheight.two,
-                      }}>
-                      Special Instructions
-                    </Text>
+                {props?.data?.CustomerNote != '' &&
+                  props?.data?.CustomerNote != null && (
+                    <>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-Bold',
+                          fontSize: fontSize.twelve,
+                          color: '#111111',
+                          marginTop: scalableheight.two,
+                        }}>
+                        Special Instructions
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-Medium',
+                          fontSize: fontSize.twelve,
+                          color: '#111111',
+                          paddingBottom: scalableheight.two,
+                          fontStyle: 'italic',
+                        }}>
+                        {'" ' + props?.data?.CustomerNote + ' "'}
+                      </Text>
+                    </>
+                  )}
+              </ScrollView>
+              {/* <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginVertical: scalableheight.two,
+                  }}>
+                  <View style={{width: '50%', justifyContent: 'flex-start'}}>
                     <Text
                       style={{
                         fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.twelve,
-                        color: '#111111',
-                        paddingBottom: scalableheight.two,
+                        fontSize: fontSize.eleven,
+                        color: '#636363',
                       }}>
-                      {props?.data?.CustomerNote}
+                      Addons
                     </Text>
-                  </>
-                )}
-              </ScrollView>
-
+                  </View>
+                  <View style={{width: '50%', justifyContent: 'flex-start'}}>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter-Medium',
+                        fontSize: fontSize.eleven,
+                        color: '#636363',
+                      }}>
+                      Flavour
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter-Medium',
+                      fontSize: fontSize.eleven,
+                      color: '#636363',
+                      fontStyle: 'italic',
+                    }}>
+                    {'" ' + props?.data?.CustomerNote + ' "'}
+                  </Text>
+                </View>
+              </View> */}
+              <View
+                style={{
+                  borderTopColor: 'rgba(211,211,211, 0.5)',
+                  borderTopWidth: scalableheight.borderTopWidth,
+                  marginVertical: scalableheight.one,
+                }}></View>
+              {/* <Bll label={'Item Price'} price={props?.data?.Price.toFixed(2)} />
+              <Bll
+                label={'Discount Percentage'}
+                price={props?.data?.MenuItems.DiscountPercentage.toFixed(2)}
+              />
+              <Bll
+                label={'Discount Amount'}
+                price={props?.data?.MenuItems.DiscountAmount.toFixed(2)}
+              /> */}
+              {/* <View
+                style={{
+                  borderTopColor: 'rgba(211,211,211, 0.5)',
+                  borderTopWidth: scalableheight.borderTopWidth,
+                  marginVertical: scalableheight.one,
+                }}></View> */}
+              {/* <Bll
+                label={'Final Price'}
+                price={props?.data?.TotalPrice.toFixed(2)}
+              /> */}
               <TouchableOpacity
                 onPress={() => {
                   clearandclose();

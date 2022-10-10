@@ -141,7 +141,7 @@ export default function ItemDetailsStatus(props) {
             color: '#111111',
           }}>
           {'AED '}
-          {props.price}
+          {props.price.toFixed(2)}
         </Text>
       </View>
     </View>
