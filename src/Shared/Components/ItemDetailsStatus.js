@@ -82,7 +82,7 @@ export default function ItemDetailsStatus(props) {
           </Text>
         </View>
       </View>
-      <View style={{}}>
+      {/* <View style={{}}>
         <Image
           resizeMode="stretch"
           style={{
@@ -92,7 +92,7 @@ export default function ItemDetailsStatus(props) {
           }}
           source={{uri: props.image}}
         />
-      </View>
+      </View> */}
       <TouchableOpacity
         activeOpacity={1}
         onPress={props.onPress}
@@ -100,7 +100,7 @@ export default function ItemDetailsStatus(props) {
         style={{
           overflow: 'hidden',
           height: '100%',
-          width: '40%',
+          width: '50%',
           justifyContent: 'center',
           padding: scalableheight.one,
           flexDirection: 'row',

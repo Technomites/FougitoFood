@@ -29,7 +29,7 @@ import PaymentOptions from '../../Shared/Components/PaymentOptions';
 import Animated from 'react-native-reanimated';
 import CountDown from 'react-native-countdown-component';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-export default function ItemDetailsModel(props) {
+export default function ItemsDetailsModel2(props) {
   const [number, setnumber] = useState('');
   const [fullname, setfullname] = useState('');
   const [password, setpassword] = useState('');
@@ -191,19 +191,19 @@ export default function ItemDetailsModel(props) {
                         fontSize: fontSize.fourteen,
                         color: '#111111',
                       }}>
-                      {props?.data?.Qty}
+                      {props?.data?.MenuItems?.Quantity}
                     </Text>
                   </View>
 
                   <Image
-                    resizeMode="stretch"
+                    resizeMode="cover"
                     style={{
                       width: scalableheight.six,
                       height: scalableheight.six,
                       borderRadius: fontSize.eleven,
                     }}
                     // source={{uri: props?.data?.image}}
-                    source={require('../../Resources/images/foods.png')}
+                    source={{uri: props?.data?.MenuItems?.Item?.Image}}
                   />
                   <Text
                     style={{
@@ -212,7 +212,7 @@ export default function ItemDetailsModel(props) {
                       color: '#111111',
                       width: scalableheight.seventeen,
                     }}>
-                    {props?.data?.Name}
+                    {props?.data?.MenuItems?.Name}
                   </Text>
                   <Text
                     style={{
@@ -221,7 +221,7 @@ export default function ItemDetailsModel(props) {
                       color: '#111111',
                     }}>
                     {'AED '}
-                    {props?.data?.completeitemorderprice}
+                    {props?.data?.Price}
                   </Text>
                 </View>
 
@@ -275,7 +275,7 @@ export default function ItemDetailsModel(props) {
                   );
                 })}
 
-                {props?.data?.SpecialInstructios != '' && (
+                {props?.data?.CustomerNote != '' && props?.data?.CustomerNote != null && (
                   <>
                     <Text
                       style={{
@@ -293,7 +293,7 @@ export default function ItemDetailsModel(props) {
                         color: '#111111',
                         paddingBottom: scalableheight.two,
                       }}>
-                      {props?.data?.SpecialInstructios}
+                      {props?.data?.CustomerNote}
                     </Text>
                   </>
                 )}

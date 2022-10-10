@@ -8,6 +8,7 @@ import {
   Animated,
   FlatList,
   ScrollView,
+  Linking,
   StatusBar,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -26,6 +27,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 import ItemDetailsModel from '../Shared/Components/ItemDetailsModel';
+import ItemsDetailsModel2 from '../Shared/Components/ItemsDetailsModel2';
+
 import Ratingbar from '../Shared/Components/Ratingbar';
 
 const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
@@ -34,6 +37,8 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   );
   const [itemmodalVisible, setitemmodalVisible] = useState(false);
   const [itemmodaldata, setitemmodaldata] = useState([]);
+  const [MaxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
+  const [DefaultRating, setDefaultRating] = useState(0);
   const [indexstate, setindexstate] = useState(0);
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
@@ -217,6 +222,13 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
     StatusBar.setHidden(false);
   }, []);
 
+  useEffect(() => {
+    if( orderResult[0]?.RestaurantRatings[0]?.Rating > -1){
+      setDefaultRating(orderResult[0]?.RestaurantRatings[0]?.Rating)
+    }
+ 
+  }, [orderResult]);
+ 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('this is the placement order id ' + orderdetails);
@@ -302,9 +314,9 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
           width: '100%',
           alignSelf: 'center',
           marginTop: getStatusBarHeight(),
-          // padding:scalableheight.one
+           padding:scalableheight.one
         }}>
-        <PlainHeader title={'My Orders'} />
+        <PlainHeader title={'Order Details'} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{paddingBottom: scalableheight.fifteen}}>
@@ -426,6 +438,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         color: '#F55050',
                         fontFamily: 'Inter-SemiBold',
                         fontSize: fontSize.twelve,
+                     
                       }}>
                       Order No.
                     </Text>
@@ -434,6 +447,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         color: '#29262A',
                         fontFamily: 'Inter-Medium',
                         fontSize: fontSize.thirteen,
+                        paddingBottom:scalableheight.pointeightfive
                       }}>
                       {orderResult[0]?.OrderNo}
                     </Text>
@@ -450,6 +464,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         color: '#29262A',
                         fontFamily: 'Inter-Medium',
                         fontSize: fontSize.thirteen,
+                        paddingBottom:scalableheight.pointeightfive
                       }}>
                       {orderResult[0]?.Status}
                     </Text>
@@ -469,7 +484,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       }}>
                       {orderResult[0]?.EstimatedDeliveryMinutes + ' Minutes'}
                     </Text> */}
-                    {orderResult[0]?.EstimatedDeliveryMinutes > 0 && (
+                    {/* {orderResult[0]?.EstimatedDeliveryMinutes > 0 && (
                       <>
                         <Text
                           style={{
@@ -505,7 +520,24 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                           </Text>
                         </View>
                       </>
-                    )}
+                    )} */}
+                       <Text
+                      style={{
+                        color: '#F55050',
+                        fontFamily: 'Inter-SemiBold',
+                        fontSize: fontSize.twelve,
+                      }}>
+                      ETA
+                    </Text>
+                    <Text
+                      style={{
+                        color: '#29262A',
+                        fontFamily: 'Inter-Medium',
+                        fontSize: fontSize.thirteen,
+                      }}>
+                    {orderResult[0]?.EstimatedDeliveryMinutes < 0 ? 0 : orderResult[0]?.EstimatedDeliveryMinutes} Minutes
+                    </Text>
+                     
                   </View>
                 </View>
               )}
@@ -526,22 +558,24 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                   }}
                   // showsUserLocation
                   region={{
-                    latitude: orderResult[0]?.Latitude,
-                    longitude: orderResult[0]?.Longitude,
-                    latitudeDelta: 0.03,
-                    longitudeDelta: 0.03,
+                    latitude: orderResult[0]?.Latitude != undefined ? orderResult[0]?.Latitude : 0,
+                    longitude: orderResult[0]?.Longitude != undefined ? orderResult[0]?.Longitude : 0,
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
                   }}
                   initialRegion={{
-                    latitude: orderResult[0]?.Latitude,
-                    longitude: orderResult[0]?.Longitude,
-                    latitudeDelta: 0.03,
-                    longitudeDelta: 0.03,
+                    latitude: orderResult[0]?.Latitude != undefined ? orderResult[0]?.Latitude : 0,
+                    longitude: orderResult[0]?.Longitude != undefined ? orderResult[0]?.Longitude : 0,
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
                   }}>
                   <Marker
                     // position={center}
                     coordinate={{
-                      latitude: orderResult[0]?.Latitude,
-                      longitude: orderResult[0]?.Longitude,
+                      latitude: orderResult[0]?.Latitude != undefined ? orderResult[0]?.Latitude : 0,
+                      longitude: orderResult[0]?.Longitude != undefined ? orderResult[0]?.Longitude : 0,
+                  
+                  
                     }}
                     // draggable
                     // onDragEnd={e => {
@@ -675,33 +709,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 Items
               </Text>
 
-              {/* <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => {
-                  if (togglelist == false) {
-                    settogglelist(true);
-                  } else if (togglelist == true) {
-                    settogglelist(false);
-                  }
-                }}
-                style={{
-                  height: scalableheight.four,
-                  width: scalableheight.four,
-                  backgroundColor: 'rgba(211,211,211, 0.3)',
-                  borderRadius: fontSize.borderradiusmedium,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <MaterialIcons
-                  name={
-                    togglelist == true
-                      ? 'keyboard-arrow-up'
-                      : 'keyboard-arrow-down'
-                  }
-                  color={'#F55050'}
-                  size={fontSize.thirtythree}
-                />
-              </TouchableOpacity> */}
+           
             </View>
             <View style={{width: '100%'}}>
               <FlatList
@@ -733,6 +741,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         price={data.item.TotalPrice}
                         image={data.item.MenuItems.Image}
                         onPress={() => {
+
                           setitemmodaldata(data?.item);
                           setitemmodalVisible(true);
                           // console.log(data?.item);
@@ -744,43 +753,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 }}
               />
             </View>
-            {/* {togglelist == true ? (
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps={'always'}
-                style={{
-                  // width: '50%',
-
-                  paddingHorizontal: scalableheight.one,
-                  // marginTop: scalableheight.two,
-                }}
-                contentContainerStyle={{
-                  flexGrow: 1,
-                  paddingBottom: scalableheight.three,
-                }}
-                data={orderResult[0]?.OrderDetails}
-                renderItem={(data, index) => {
-                  return (
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        marginVertical: scalableheight.pointfive,
-                      }}>
-                      <ItemDetailsStatus
-                        qty={data.item.Quantity}
-                        title={data.item.MenuItems.Name}
-                        price={data.item.TotalPrice}
-                        image={data.item.MenuItems.Image}
-                        onPress={() => {
-                          setitemmodaldata(data?.item);
-                          setitemmodalVisible(true);
-                        }}
-                      />
-                    </View>
-                  );
-                }}
-              />
-            ) : null} */}
+      
             <View
               style={{
                 marginTop: scalableheight.two,
@@ -950,7 +923,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       flexDirection: 'row',
                       justifyContent: 'flex-start',
                       alignItems: 'center',
-                      // marginBottom: scalableheight.two,
+                       marginBottom: scalableheight.two,
                       alignSelf: 'center',
                     }}>
                     <View
@@ -1000,6 +973,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         justifyContent: 'flex-start',
                         alignItems: 'center',
                         alignSelf: 'center',
+                        marginBottom: scalableheight.two,
                       }}>
                       <View
                         style={{
@@ -1105,7 +1079,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                   fontFamily: 'Inter-Bold',
                   fontSize: fontSize.fifteen,
                 }}>
-                Rider Info Not binded
+                Rider Info
               </Text>
               <View style={{marginTop: scalableheight.one}}></View>
               <View style={{...styles.shadow, ...styles.MainContainer}}>
@@ -1159,7 +1133,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                             fontSize: fontSize.eleven,
                             color: '#636363',
                           }}>
-                          Rider Jenny
+                        {orderResult[0]?.DeliveryStaff?.FirstName}{" "}{orderResult[0]?.DeliveryStaff?.LastName}
                         </Text>
                       </View>
                     </View>
@@ -1207,7 +1181,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                             fontSize: fontSize.eleven,
                             color: '#636363',
                           }}>
-                          Rider Phone
+                        {orderResult[0]?.DeliveryStaff?.PhoneNumber}
                         </Text>
                       </View>
                     </View>
@@ -1220,7 +1194,8 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                     <TouchableOpacity
                       activeOpacity={0.9}
                       onPress={() => {
-                        navigation.navigate('ContactUs');
+                        Linking.openURL(`tel:${orderResult[0]?.DeliveryStaff?.PhoneNumber}`);
+                        // navigation.navigate('ContactUs');
                       }}
                       style={{
                         backgroundColor: '#E14E4E',
@@ -1283,21 +1258,27 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       justifyContent: 'flex-start',
                       alignItems: 'center',
                     }}>
-                    <View style={{width: '5%'}}>
-                      <Image
-                        style={{
-                          height: scalableheight.five,
-                          width: scalableheight.five,
-                        }}
-                        resizeMode={'contain'}
-                        source={require('../Resources/images/Paymenticon.png')}
-                      />
+                    <View style={{width: '10%',  alignItems:"center"}}>
+                    {orderResult[0]?.PaymentMethod == 'Card' ?
+                    <FontAwesome5 
+                    name="credit-card"
+                    color={"#F55050"}
+                    size={fontSize.twentyfive}
+                  />:
+                  <Ionicons 
+                  name="wallet-sharp"
+                  color={"#F55050"}
+                  size={fontSize.twentyfive}
+                />
+                   
+          }
                     </View>
                     <View
                       style={{
-                        paddingHorizontal: scalableheight.five,
+                        paddingHorizontal: scalableheight.two,
                         justifyContent: 'flex-start',
-                        width: '80%',
+                        width: '75%',
+                     
                       }}>
                       <Text
                         style={{
@@ -1324,6 +1305,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         // paddingHorizontal: scalableheight.five,
                         justifyContent: 'flex-end',
                         width: '15%',
+                    
                       }}>
                       <Text
                         style={{
@@ -1334,14 +1316,14 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         }}>
                         {orderResult[0]?.PaymentMethod == 'Card'
                           ? 'Paid'
-                          : null}
+                          : ""}
                       </Text>
                     </View>
                   </View>
                 </View>
               </View>
             </View>
-
+{orderResult[0]?.Status == 'Delivered' &&
             <View>
               <Text
                 style={{
@@ -1350,7 +1332,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                   fontSize: fontSize.fifteen,
                   marginBottom: scalableheight.onepointfive,
                 }}>
-                My Review Not binded
+                My Review
               </Text>
               {/* <View style={{marginTop: scalableheight.one}}></View> */}
               <View
@@ -1358,14 +1340,46 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                   ...styles.MainContainer,
                   // paddingVertical: scalableheight.two,
                 }}>
-                <Ratingbar />
-
+               
+  <View
+      style={{
+        width: '50%',
+        //  height: scalableheight.ten,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+      }}>
+      {MaxRating.map((item, key) => {
+        return (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            key={item}
+            onPress={() => setDefaultRating(item)}>
+            {/* <Image
+                resizeMode={'contain'}
+                  style={{height: 35, width: 35}}
+                  source={
+                    item <= DefaultRating
+                      ? starimagefilled
+                      : starimageempty
+                  }
+                /> */}
+            <FontAwesome
+              style={{marginRight: scalableheight.pointeight}}
+              name="star"
+              size={fontSize.twenty}
+              color={item <= DefaultRating ? '#E6C24D' : '#F5F5F5'}
+            />
+          </TouchableOpacity>
+        );
+      })}
+    </View>
                 <Text
                   style={{
                     fontFamily: 'Inter-SemiBold',
                     fontSize: fontSize.thirteen,
                     color: '#29262A',
-                    marginVertical: scalableheight.one,
+                    marginTop: scalableheight.one,
                   }}>
                   {'Review'}
                 </Text>
@@ -1376,13 +1390,11 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                     color: '#636363',
                     textAlign: 'justify',
                   }}>
-                  {
-                    'Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book'
-                  }
+                 {orderResult[0]?.RestaurantRatings[0]?.Review}
                 </Text>
               </View>
             </View>
-
+}
             <View>
               <View style={{height: scalableheight.three}} />
               <Bll label={'Sub Total'} price={'209.00 No binding'} />
@@ -1416,7 +1428,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
           </View>
         </ScrollView>
       </View>
-      <ItemDetailsModel
+      <ItemsDetailsModel2
         state={itemmodalVisible}
         data={itemmodaldata}
         togglemodel={() => {
