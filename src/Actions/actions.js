@@ -114,14 +114,13 @@ export const clearprofileupdationstatus = () => {
     return async dispatch => {
       dispatch({
         type: ClearProfile,
-        payload: "",
+        payload: '',
       });
     };
   } catch (error) {
     console.log(error);
   }
 };
-
 
 export const storeorderid = id => {
   try {
@@ -381,7 +380,6 @@ export const getalladdresses = token => {
   try {
     return async dispatch => {
       const result = await fetch(API_URl + 'Customer/' + 0 + '/Address', {
-        
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -527,27 +525,23 @@ export const createorder = (AuthToken, data) => {
           },
           body: JSON.stringify(data),
         },
-      )
-        .catch(error => {
-          dispatch({
-            type: CreateOrder,
-            payload:
-              'We are unable to place your order at the moment. Please try again later.',
-            payloadorderresult: 0,
-          });
-        })
-       
-      const json = await result
-        .json()
-        .catch(error => {
-          dispatch({
-            type: CreateOrder,
-            payload:
-              'We are unable to place your order at the moment. Please try again later.',
-            payloadorderresult: 0,
-          });
-        })
-       
+      ).catch(error => {
+        dispatch({
+          type: CreateOrder,
+          payload:
+            'We are unable to place your order at the moment. Please try again later.',
+          payloadorderresult: 0,
+        });
+      });
+
+      const json = await result.json().catch(error => {
+        dispatch({
+          type: CreateOrder,
+          payload:
+            'We are unable to place your order at the moment. Please try again later.',
+          payloadorderresult: 0,
+        });
+      });
 
       console.log('postserviceratings' + JSON.stringify(json));
 
@@ -558,7 +552,7 @@ export const createorder = (AuthToken, data) => {
             payload: 'success',
             payloadorderresult: json.Result.Id,
           });
-        } else  {
+        } else {
           dispatch({
             type: CardOrder,
             payload: 'success',
@@ -572,7 +566,6 @@ export const createorder = (AuthToken, data) => {
             'We are unable to place your order at the moment. Please try again later.',
           payloadorderresult: 0,
         });
-      
       }
     };
   } catch (error) {
@@ -727,7 +720,7 @@ export const Verification = (otp, userid) => {
           payloadVerify: 'Network Request Failed',
         });
       });
-     
+
       if (json.Status == 'Success') {
         dispatch({
           type: OTP_Verify,
@@ -1140,7 +1133,7 @@ export const ChangedNewPassword = (
           type: NewpasswordChanged,
           changedPassword: json?.Status,
           // Message: json?.Message,
-          Message: "Password Updated Successfully",
+          Message: 'Password Updated Successfully',
         });
       } else if (json.Status == 'Error') {
         dispatch({
@@ -1504,7 +1497,7 @@ export const Myorders = AuthToken => {
 
       const result = await fetch(
         API_URl + `Customer/Order/ByRestaurant/0`,
-   
+
         requestOptions,
       );
       json = await result.json();
@@ -1702,7 +1695,7 @@ export const ProfileUpdate = (Name, EmailAddress, PhoneNumber, AuthToken) => {
           type: UpdateProfile,
           UpdateProfileStatus: json?.Status,
           // UpdateProfileStatusMessage: json?.Message,
-          UpdateProfileStatusMessage: "Profile Updated Successfully",
+          UpdateProfileStatusMessage: 'Profile Updated Successfully',
         });
         console.log('Success');
       } else if (json?.Status == 'Error') {
@@ -1735,4 +1728,3 @@ export const CartDetails = cartdata => {
     });
   };
 };
-

@@ -16,10 +16,10 @@ import {
   PermissionsAndroid,
   Keyboard,
   Linking,
-  Modal
+  Modal,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import { WebView } from 'react-native-webview';
+import {WebView} from 'react-native-webview';
 import renderIf from 'render-if';
 import {
   filteredcatdata,
@@ -32,7 +32,7 @@ import {
   CartDetails,
   updatepriceafterdiscount,
   clearcardorderplacementstatus,
-  storeorderid
+  storeorderid,
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -69,7 +69,6 @@ import Geocoder from 'react-native-geocoding';
 import Geolocation from '@react-native-community/geolocation';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 const Checkout = ({navigation, drawerAnimationStyle}) => {
-
   const dispatch = useDispatch();
   const [modalVisible, setmodalVisible] = useState(false);
   const [itemmodalVisible, setitemmodalVisible] = useState(false);
@@ -404,8 +403,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           // dispatch(cleancart());
           console.log('PAYMENT GATEWAY');
           console.log(orderdetailslink);
-          setmodalVisiblepayment(true)
-         
+          setmodalVisiblepayment(true);
         }
       } else {
         toast.current.show(orderplacementstatus, {
@@ -780,7 +778,6 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   };
   //////////////////////////////////////
 
- 
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
@@ -789,103 +786,104 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         backgroundColor="transparent"
       />
 
-<Modal
+      <Modal
         transparent
         style={{
           width: '100%',
           height: '100%',
-       
-     
-     
         }}
         statusBarTranslucent
         visible={modalVisiblepayment}
         onRequestClose={() => setmodalVisiblepayment(false)}>
-          <View style={{
+        <View
+          style={{
             paddingTop: getStatusBarHeight(),
             width: '100%',
             height: '100%',
-           
           }}>
-{orderdetailslink != "" &&
-<>
- <TouchableOpacity
- onPress={() => {
-   // navigation.navigate("Home")
- setmodalVisiblepayment(false)
- }}
- style={{
-   height: scalableheight.seven,
-   width: scalableheight.five,
-   justifyContent: 'center',
-   alignItems: 'center',
-   position:"absolute",
-   top:scalableheight.six,
-   left: scalableheight.one,
-   zIndex:10
- }}>
- {/* <View style={styleSheet.backButtonMain}> */}
- <AntDesign
-   style={{alignSelf: 'center'}}
-   name="arrowleft"
-   color={'black'}
-   size={fontSize.twentyfour}
- />
- {/* </View> */}
-</TouchableOpacity>
-<WebView
-style={{
-  width: '100%',
-  height: '100%',
-
-}}
-source={{ uri: orderdetailslink}} 
-onMessage={(event) => {
-
-  let newdata= JSON.parse(event.nativeEvent.data)
-  console.log(newdata.data);
-  if(event.nativeEvent.data == "Exit"){
-    setmodalVisiblepayment(false)
-    toast.current.show('There was an network failure while processing your payment. Please tru again later', {
-      type: 'normal',
-      placement: 'bottom',
-      duration: 4000,
-      offset: 10,
-      animationType: 'slide-in',
-      zIndex: 2,
-    });
-  }else if(newdata.data.Result.paymentStatus == "Failed"){
-    setmodalVisiblepayment(false)
-    toast.current.show('There was an network failure while processing your payment. Please tru again later', {
-      type: 'normal',
-      placement: 'bottom',
-      duration: 4000,
-      offset: 10,
-      animationType: 'slide-in',
-      zIndex: 2,
-    });
-  }else if(newdata.data.Result.paymentStatus == "Paid"){
-    dispatch(storeorderid(newdata.data.Result.orderId))
-    orderdetails
-    toast.current.show('Order Placed', {
-      type: 'normal',
-      placement: 'bottom',
-      duration: 4000,
-      offset: 10,
-      animationType: 'slide-in',
-      zIndex: 2,
-    });
-    dispatch(CartDetails(cartdata));
-    dispatch(cleancart());
-    console.log('PreparingFood');
-    navigation.replace('PreparingFood');
-  }
-  }}
-/>
-</>
-}
-</View>
-        </Modal>
+          {orderdetailslink != '' && (
+            <>
+              <TouchableOpacity
+                onPress={() => {
+                  // navigation.navigate("Home")
+                  setmodalVisiblepayment(false);
+                }}
+                style={{
+                  height: scalableheight.seven,
+                  width: scalableheight.five,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  position: 'absolute',
+                  top: scalableheight.six,
+                  left: scalableheight.one,
+                  zIndex: 10,
+                }}>
+                {/* <View style={styleSheet.backButtonMain}> */}
+                <AntDesign
+                  style={{alignSelf: 'center'}}
+                  name="arrowleft"
+                  color={'black'}
+                  size={fontSize.twentyfour}
+                />
+                {/* </View> */}
+              </TouchableOpacity>
+              <WebView
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
+                source={{uri: orderdetailslink}}
+                onMessage={event => {
+                  let newdata = JSON.parse(event.nativeEvent.data);
+                  console.log(newdata.data);
+                  if (event.nativeEvent.data == 'Exit') {
+                    setmodalVisiblepayment(false);
+                    toast.current.show(
+                      'There was an network failure while processing your payment. Please tru again later',
+                      {
+                        type: 'normal',
+                        placement: 'bottom',
+                        duration: 4000,
+                        offset: 10,
+                        animationType: 'slide-in',
+                        zIndex: 2,
+                      },
+                    );
+                  } else if (newdata.data.Result.paymentStatus == 'Failed') {
+                    setmodalVisiblepayment(false);
+                    toast.current.show(
+                      'There was an network failure while processing your payment. Please tru again later',
+                      {
+                        type: 'normal',
+                        placement: 'bottom',
+                        duration: 4000,
+                        offset: 10,
+                        animationType: 'slide-in',
+                        zIndex: 2,
+                      },
+                    );
+                  } else if (newdata.data.Result.paymentStatus == 'Paid') {
+                    dispatch(storeorderid(newdata.data.Result.orderId));
+                    orderdetails;
+                    toast.current.show('Order Placed', {
+                      type: 'normal',
+                      placement: 'bottom',
+                      duration: 4000,
+                      offset: 10,
+                      animationType: 'slide-in',
+                      zIndex: 2,
+                    });
+                    dispatch(CartDetails(cartdata));
+                    dispatch(cleancart());
+                    console.log('PreparingFood');
+                    navigation.replace('PreparingFood');
+                  }
+                }}
+              />
+            </>
+          )}
+        </View>
+      </Modal>
 
       <View
         style={{
@@ -901,7 +899,7 @@ onMessage={(event) => {
 
         <ScrollView
           showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps={"always"}
+          keyboardShouldPersistTaps={'always'}
           style={{
             width: '100%',
             paddingHorizontal: scalableheight.one,
@@ -1040,7 +1038,7 @@ onMessage={(event) => {
                 query={{
                   key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
                   language: 'en',
-                  components: "country:ae",
+                  components: 'country:ae',
                 }}
               />
 

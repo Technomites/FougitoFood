@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   Image,
+  Dimensions,
 } from 'react-native';
 
 import {fontSize, scalableheight} from '../../Utilities/fonts';
@@ -20,19 +21,27 @@ export default function ActiveRequestTile(props) {
       style={{
         ...style.shadow,
         ...style.MainContainer,
+        width: '99%',
+        height: Dimensions.get('window').height / 6.5,
+        borderRadius: fontSize.borderradiusmedium,
       }}>
       <View
         style={{
           ...style.topViewContainer,
         }}>
-        <View style={{}}>
+        <View
+          style={{
+            borderWidth: 0.5,
+            borderColor: 'rgba(0, 0, 0, 0.3)',
+            borderRadius: scalableheight.onepointfive,
+          }}>
           <Image
             source={{uri: props?.details?.RestaurantLogo}}
             style={{
-              height: scalableheight.ten,
+              height: scalableheight.nine,
               width: scalableheight.ten,
               resizeMode: 'contain',
-              borderRadius: fontSize.eight,
+              // borderRadius: fontSize.eight,
             }}
           />
         </View>
@@ -45,7 +54,7 @@ export default function ActiveRequestTile(props) {
             <Text
               style={{
                 fontFamily: 'Inter-SemiBold',
-                fontSize: fontSize.sixteen,
+                fontSize: fontSize.twelve,
                 color: '#E14E4E',
               }}>
               {/* <SubHeading
@@ -56,7 +65,7 @@ export default function ActiveRequestTile(props) {
             }}
             text={'ORDER# ' + props.details?.OrderNo}
           /> */}
-              {'ORDER# ' + props?.details?.OrderNo}
+              {props?.details?.OrderNo}
               {/* ORDER# 0000 */}
             </Text>
           </View>
@@ -64,7 +73,7 @@ export default function ActiveRequestTile(props) {
             <Text
               style={{
                 fontFamily: 'Inter-SemiBold',
-                fontSize: fontSize.sixteen,
+                fontSize: fontSize.fourteen,
                 color: '#000',
               }}>
               {/* <SubHeading
@@ -88,24 +97,29 @@ export default function ActiveRequestTile(props) {
               {/* {moment(props.details?.timmings).format(
               'dddd, MMMM Do YYYY, h:mm:ss a',
             )} */}
-              {props.details?.Date}
+              {props.details?.OrderType}
             </Text>
           </View>
         </View>
       </View>
 
-      <View
+      {/* <View
         style={{
-          borderBottomColor: '#707070',
+          borderBottomColor: 'rgba(0, 0, 0, 0.2)',
           borderBottomWidth: scalableheight.borderTopWidth,
-          margin: scalableheight.two,
+          marginVertical: scalableheight.onepointfive,
           width: '90%',
           alignSelf: 'center',
           opacity: 0.4,
-        }}></View>
+        }}></View> */}
       <View
         style={{flexDirection: 'row', marginHorizontal: scalableheight.two}}>
-        <View style={{flex: 1, justifyContent: 'center'}}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginVertical: scalableheight.one,
+          }}>
           {/* <SubHeading
           style={{
             fontFamily: 'Inter-SemiBold',
@@ -118,8 +132,10 @@ export default function ActiveRequestTile(props) {
             <Text
               style={{
                 fontFamily: 'Inter-SemiBold',
-                fontSize: fontSize.fourteen,
+                fontSize: fontSize.twelve,
                 color: '#707070',
+                alignItems: 'center',
+                marginLeft: scalableheight.two,
               }}>
               {'AED ' + props.details?.OrderAmount}
             </Text>
@@ -152,11 +168,13 @@ export default function ActiveRequestTile(props) {
             flex: 1,
             alignItems: 'flex-end',
             justifyContent: 'flex-end',
+
+            alignSelf: 'center',
           }}>
           <Text
             style={{
               fontFamily: 'Inter-SemiBold',
-              fontSize: fontSize.sixteen,
+              fontSize: fontSize.twelve,
               color: '#E14E4E',
             }}>
             {props?.details.Status}
@@ -185,6 +203,7 @@ const style = StyleSheet.create({
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 2,
+
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
 

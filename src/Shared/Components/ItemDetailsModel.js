@@ -72,7 +72,7 @@ export default function ItemDetailsModel(props) {
     }
   }, [props.state]);
   function clearandclose() {
-    props.togglemodel()
+    props.togglemodel();
     toggleanimation();
     setanimationstate(true);
     setnumber('');
@@ -143,142 +143,198 @@ export default function ItemDetailsModel(props) {
         //     width: '100%',
         //     height: '100%',
         //   }}>
-        
+
         <View
-        style={{
-          zIndex: 3,
-          elevation: 3,
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-        }}>
-       
+          style={{
+            zIndex: 3,
+            elevation: 3,
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+          }}>
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             <View
               style={{
-                width: '100%',
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <View
-                style={{
-                  width: '90%',
+                width: '90%',
                 //   height: '40%',
                 maxHeight: '40%',
-                  borderRadius: fontSize.eleven,
-                  backgroundColor: 'white',
-                  paddingVertical: scalableheight.two,
-                  paddingHorizontal: scalableheight.two,
-                }}>
-            <ScrollView 
-            showsVerticalScrollIndicator={false}
-            style={{ }}>
-                  <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
-                  <View style={{height: scalableheight.four, width: scalableheight.four,     backgroundColor:'#F9F9F9', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
-<Text style={{
-            
-            fontFamily: 'Inter-Bold',
-            fontSize: fontSize.fourteen,
-            color:"#111111",
-        
-          }}>{props?.data?.Qty}</Text>
-</View>
-                 
+                borderRadius: fontSize.eleven,
+                backgroundColor: 'white',
+                paddingVertical: scalableheight.two,
+                paddingHorizontal: scalableheight.two,
+              }}>
+              <ScrollView showsVerticalScrollIndicator={false} style={{}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={{
+                      height: scalableheight.four,
+                      width: scalableheight.four,
+                      backgroundColor: '#F9F9F9',
+                      borderRadius: fontSize.borderradiusmedium,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter-Bold',
+                        fontSize: fontSize.fourteen,
+                        color: '#111111',
+                      }}>
+                      {props?.data?.Qty}
+                    </Text>
+                  </View>
+
                   <Image
                     resizeMode="stretch"
                     style={{
                       width: scalableheight.six,
                       height: scalableheight.six,
-                      borderRadius: fontSize.eleven
+                      borderRadius: fontSize.eleven,
                     }}
+                    // source={{uri: props?.data?.image}}
                     source={require('../../Resources/images/foods.png')}
                   />
-                  <Text style={{fontFamily: 'Inter-Bold',
-                fontSize: fontSize.fourteen,
-                color:"#111111", width:scalableheight.seventeen}}>{props?.data?.Name}</Text>
-                  <Text style={{ 
-            fontFamily: 'Inter-Medium',
-            fontSize: fontSize.fourteen,
-            color:"#111111",}}>{"AED "}{props?.data?.completeitemorderprice}</Text>
-                  </View>
-
-            
-                  {props?.data?.MenuItemOptions.map(item => {
-            return (
-              item.MenuItemOptionValues?.find(data => data?.selected === true) != undefined &&
-         
-              <View style={{}}>
-               <Text style={{fontFamily: 'Inter-Bold',
-                fontSize: fontSize.twelve,
-                color:"#111111", marginTop: scalableheight.two }}>{item?.Title}</Text>
-               {item?.MenuItemOptionValues.map(inneritem => {
-            return (
-              
-                inneritem?.selected == true ? 
-               <View style={{flexDirection:"row", justifyContent: "space-between", alignItems:"center"}}>
-                <Text style={{ 
-            fontFamily: 'Inter-Medium',
-            fontSize: fontSize.twelve,
-            color:"#111111",}} >{inneritem?.Value.trim()}</Text>
-            {inneritem?.Price > 0 ?
-                <Text style={{ 
-            fontFamily: 'Inter-Medium',
-            fontSize: fontSize.twelve,
-            color:"#111111",}}>{"AED "}{inneritem?.Price}</Text> : null}
-                </View>
-                :
-                null
-            )})}
-               
-              </View>
-            );
-          })} 
-        
-        {props?.data?.SpecialInstructios != "" &&
-        <>
-                  <Text style={{fontFamily: 'Inter-Bold',
-                fontSize: fontSize.twelve,
-                color:"#111111", marginTop: scalableheight.two }}>Special Instructions</Text>
-                  <Text style={{ 
-            fontFamily: 'Inter-Medium',
-            fontSize: fontSize.twelve,
-            color:"#111111", paddingBottom: scalableheight.two}}>{props?.data?.SpecialInstructios}</Text>
-             </>
-                  }
-            </ScrollView>
-          
-                      <TouchableOpacity
-                    onPress={() => {
-                      clearandclose();
-                    }}
+                  <Text
                     style={{
-                        width: "100%",
-                        // height: "10%",
-alignItems:"center",
-justifyContent:"center"
-                    //   position: 'absolute',
-                    //   top: scalableheight.one,
-                    //   right: scalableheight.one,
+                      fontFamily: 'Inter-Bold',
+                      fontSize: fontSize.fourteen,
+                      color: '#111111',
+                      width: scalableheight.seventeen,
                     }}>
-                        <Text style={{fontFamily: 'Inter-Bold',
-                fontSize: fontSize.twelve,
-                color:"grey",paddingVertical: scalableheight.one}}>CLOSE</Text>
-                    {/* <Ionicons
+                    {props?.data?.Name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter-Medium',
+                      fontSize: fontSize.fourteen,
+                      color: '#111111',
+                    }}>
+                    {'AED '}
+                    {props?.data?.completeitemorderprice}
+                  </Text>
+                </View>
+
+                {props?.data?.MenuItemOptions.map(item => {
+                  return (
+                    item.MenuItemOptionValues?.find(
+                      data => data?.selected === true,
+                    ) != undefined && (
+                      <View style={{}}>
+                        <Text
+                          style={{
+                            fontFamily: 'Inter-Bold',
+                            fontSize: fontSize.twelve,
+                            color: '#111111',
+                            marginTop: scalableheight.two,
+                          }}>
+                          {item?.Title}
+                        </Text>
+                        {item?.MenuItemOptionValues.map(inneritem => {
+                          return inneritem?.selected == true ? (
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'Inter-Medium',
+                                  fontSize: fontSize.twelve,
+                                  color: '#111111',
+                                }}>
+                                {inneritem?.Value.trim()}
+                              </Text>
+                              {inneritem?.Price > 0 ? (
+                                <Text
+                                  style={{
+                                    fontFamily: 'Inter-Medium',
+                                    fontSize: fontSize.twelve,
+                                    color: '#111111',
+                                  }}>
+                                  {'AED '}
+                                  {inneritem?.Price}
+                                </Text>
+                              ) : null}
+                            </View>
+                          ) : null;
+                        })}
+                      </View>
+                    )
+                  );
+                })}
+
+                {props?.data?.SpecialInstructios != '' && (
+                  <>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter-Bold',
+                        fontSize: fontSize.twelve,
+                        color: '#111111',
+                        marginTop: scalableheight.two,
+                      }}>
+                      Special Instructions
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter-Medium',
+                        fontSize: fontSize.twelve,
+                        color: '#111111',
+                        paddingBottom: scalableheight.two,
+                      }}>
+                      {props?.data?.SpecialInstructios}
+                    </Text>
+                  </>
+                )}
+              </ScrollView>
+
+              <TouchableOpacity
+                onPress={() => {
+                  clearandclose();
+                }}
+                style={{
+                  width: '100%',
+                  // height: "10%",
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  //   position: 'absolute',
+                  //   top: scalableheight.one,
+                  //   right: scalableheight.one,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Inter-Bold',
+                    fontSize: fontSize.twelve,
+                    color: 'grey',
+                    paddingVertical: scalableheight.one,
+                  }}>
+                  CLOSE
+                </Text>
+                {/* <Ionicons
                       name="close-circle"
                       color={"#E14E4E"}
                       size={fontSize.thirtyseven}
                       style={{}}
                     /> */}
-                  </TouchableOpacity>
-               
-              </View>
+              </TouchableOpacity>
             </View>
+          </View>
         </View>
-        //</Animatable.View> 
+        //</Animatable.View>
       )}
 
-
-{/* //{props.state && animationtype == 'fadeInUpBig' && ( */}
+      {/* //{props.state && animationtype == 'fadeInUpBig' && ( */}
       {props.state && (
         <View
           style={{
@@ -290,8 +346,6 @@ justifyContent:"center"
             elevation: 2,
           }}></View>
       )}
-
-    
     </>
   );
 }

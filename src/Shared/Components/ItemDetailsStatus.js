@@ -51,7 +51,6 @@ export default function ItemDetailsStatus(props) {
         width: '99%',
         alignItems: 'center',
         justifyContent: 'space-between',
-
         borderRadius: fontSize.eleven,
         backgroundColor: 'white',
         flexDirection: 'row',
@@ -84,20 +83,20 @@ export default function ItemDetailsStatus(props) {
         </View>
       </View>
       <View style={{}}>
-          <Image
-            resizeMode="stretch"
-            style={{
-              width: scalableheight.six,
-              height: scalableheight.six,
-              borderRadius: fontSize.eleven,
-            }}
-            source={{uri: props.image}}
-          />
-        </View>
+        <Image
+          resizeMode="stretch"
+          style={{
+            width: scalableheight.six,
+            height: scalableheight.six,
+            borderRadius: fontSize.eleven,
+          }}
+          source={{uri: props.image}}
+        />
+      </View>
       <TouchableOpacity
-        // activeOpacity={1}
-        // onPress={props.onPress}
-        disabled={true}
+        activeOpacity={1}
+        onPress={props.onPress}
+        // disabled={true}
         style={{
           overflow: 'hidden',
           height: '100%',
@@ -108,7 +107,6 @@ export default function ItemDetailsStatus(props) {
           alignItems: 'center',
           justifyContent: 'flex-start',
         }}>
-     
         <View style={{marginLeft: scalableheight.one, width: '70%'}}>
           <Text
             numberOfLines={1}
@@ -118,6 +116,14 @@ export default function ItemDetailsStatus(props) {
               color: '#111111',
             }}>
             {props.title}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'Inter-Medium',
+              fontSize: fontSize.ten,
+              color: '#E14E4E',
+            }}>
+            View Details
           </Text>
         </View>
       </TouchableOpacity>
