@@ -240,8 +240,8 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
     Geolocation.getCurrentPosition(info => {
       SetPinLatitude(info?.coords?.latitude);
       SetPinLongitude(info?.coords?.longitude);
-      console.log(info?.coords?.latitude);
-      console.log(info?.coords?.longitude);
+      // console.log(info?.coords?.latitude);
+      // console.log(info?.coords?.longitude);
     });
 
     getLocation();
@@ -294,7 +294,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
       Geocoder.from(pinlatitude, pinLongitude)
         .then(json => {
           var addressComponent = json.results[0].formatted_address;
-          console.log(addressComponent);
+          // console.log(addressComponent);
           setpinlocation(addressComponent);
         })
         .catch(error => console.warn(error));
@@ -305,7 +305,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
     Geocoder.from(pinlatitude, pinLongitude)
       .then(json => {
         var addressComponent = json.results[0].formatted_address;
-        console.log(addressComponent);
+        // console.log(addressComponent);
         setpinlocation(addressComponent);
       })
       .catch(error => console.warn(error));
@@ -767,7 +767,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                 <Addressplace
                 key={index.toString()}
                   onPress={() => {
-                    console.log(item)
+                    // console.log(item)
                     SetPlaceSelected(item);
                   }}
                   data={item}

@@ -63,7 +63,8 @@ import {
   internetCHECK,
   OrderID,
   CardOrder,
-  ClearProfile
+  ClearProfile,
+  DELETEDADDRESS
 } from '../Actions/actions';
 
 const initialState = {
@@ -133,12 +134,19 @@ const initialState = {
   orderdetails: 0,
   internetconnectionstate: true,
   orderdetailslink: '',
+  addressdeletionstatus: '',
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
 
-   
+    
+
+    case DELETEDADDRESS:
+      return {
+        ...state,
+        addressdeletionstatus: action.payload,
+      };
 
     case ClearProfile:
       return {

@@ -69,6 +69,7 @@ export const DeliveryStatus = 'DeliveryStatus';
 export const internetCHECK = 'internetCHECK';
 export const OrderID = 'OrderID';
 export const ClearProfile = 'ClearProfile';
+export const DELETEDADDRESS = 'DELETEDADDRESS';
 const API_URl = 'https://api.fougito.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
@@ -78,6 +79,34 @@ const header1 = {
 
 
 
+
+export const deleteaddress = (id, token) => {
+  try {
+    console.log('deleteaddress');
+    return async dispatch => {
+      const result = await fetch(API_URl + 'Customer/Address/' + id, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+     
+      });
+
+      const json = await result.json();
+      console.log('DELETE' + JSON.stringify(json));
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: DELETEDADDRESS,
+          payload: json.Message,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
  
 
 export const clearprofileupdationstatus = () => {
