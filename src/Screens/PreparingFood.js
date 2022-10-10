@@ -115,38 +115,38 @@ const PreparingFood = ({navigation, route}, props) => {
                 }}>
                 {orderResult[0]?.EstimatedDeliveryMinutes > 0 && (
                   <>
-                  <Text
-                    style={{
-                      fontSize: fontSize.fourteen,
-                      fontFamily: 'Inter-Bold',
-                      color: '#29262A',
-                    }}>
-                    Estimated Delivery Time
-                  </Text>
-            
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.sixteen,
-                      color: '#E14E4E',
-                    }}>
-                    {orderResult[0]?.Status + ' '}
-                  </Text>
-                
                     <Text
                       style={{
-                        color: '#000',
-                        fontSize: fontSize.twelve,
+                        fontSize: fontSize.fourteen,
                         fontFamily: 'Inter-Bold',
-                        textAlign: 'center',
+                        color: '#29262A',
                       }}>
-                      {orderResult[0]?.EstimatedDeliveryMinutes} Min
+                      Estimated Delivery Time
                     </Text>
-                 
-                </View>
-                </>
-    )}
+
+                    <View
+                      style={{justifyContent: 'center', alignItems: 'center'}}>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-SemiBold',
+                          fontSize: fontSize.sixteen,
+                          color: '#E14E4E',
+                        }}>
+                        {orderResult[0]?.Status + ' '}
+                      </Text>
+
+                      <Text
+                        style={{
+                          color: '#000',
+                          fontSize: fontSize.twelve,
+                          fontFamily: 'Inter-Bold',
+                          textAlign: 'center',
+                        }}>
+                        {orderResult[0]?.EstimatedDeliveryMinutes} Min
+                      </Text>
+                    </View>
+                  </>
+                )}
                 {orderResult[0]?.Status == 'Pending' && (
                   <Image
                     style={{
@@ -629,7 +629,7 @@ const PreparingFood = ({navigation, route}, props) => {
         {togglelist == true ? (
           <FlatList
             showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps={"always"}
+            keyboardShouldPersistTaps={'always'}
             style={{
               // width: '50%',
 

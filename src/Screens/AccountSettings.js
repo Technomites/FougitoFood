@@ -239,7 +239,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
   };
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'rgba(246, 246, 246, 1)'}}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"

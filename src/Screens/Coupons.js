@@ -93,16 +93,11 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
   ]);
   const toast = useRef();
   const dispatch = useDispatch();
-  const {AuthToken, UserCoupons} = useSelector(
-    state => state.userReducer,
-  );
+  const {AuthToken, UserCoupons} = useSelector(state => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     dispatch(MyCoupons(AuthToken));
-   
   }, [AuthToken]);
-
-
 
   function copied() {
     toast.current.show('Copied', {
@@ -123,82 +118,79 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
       />
       <View
         style={{
-     flex:1,
-   
+          flex: 1,
 
           alignSelf: 'center',
           marginTop: getStatusBarHeight(),
-    
         }}>
-          <View style={{
-              height: "99%",
-              width:"100%",
-              overflow:"hidden",
+        <View
+          style={{
+            height: '99%',
+            width: '100%',
+            overflow: 'hidden',
           }}>
-        {/* <StatusBar
+          {/* <StatusBar
           barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         /> */}
-        <PlainHeader title={'My Coupons'} />
-        {UserCoupons.length == 0 ? (
-          <View
-            style={{
-              // justifyContent: 'center',
-              // alignItems: 'center',
-              alignSelf: 'center',
-              marginVertical: scalableheight.fourty,
-            }}>
-            <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
-             No Data Found
-            </Text>
-          </View>
-        ) : (
-          <FlatList
-            // refreshControl={
-            //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            // }
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              alignSelf: 'center',
-              width: '100%',
-              paddingBottom: scalableheight.two,
-            }}
-            data={UserCoupons}
-            renderItem={({item}) => {
-              return (
-                <TouchableOpacity
-                onPress={() => {
-                  
-                  Clipboard.setString(item.CouponCode)
-                  copied()
-
-                  }}
-                  style={{
-                    alignItems: 'center',
-                    paddingHorizontal: scalableheight.two,
-                  }}>
-                  <Couponscomponent
-                    sale={item.Value + '% OFF'}
-                    title={item.CouponCode}
-                    Name={item.Name}
-                    // minorder={'AED 100'}
-                    daysleft={item.DaysLeft}
-                    discountprice={item.dicountAmount}
-                    tc={item.TermsAndConditions}
-                  />
-                </TouchableOpacity>
-              );
-            }}
-            // onEndReached={() => LoadVRTourPagination()}
-            // onEndReachedThreshold={0.1}
-          />
-        )}
+          <PlainHeader title={'My Coupons'} />
+          {UserCoupons.length == 0 ? (
+            <View
+              style={{
+                // justifyContent: 'center',
+                // alignItems: 'center',
+                alignSelf: 'center',
+                marginVertical: scalableheight.fourty,
+              }}>
+              <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
+                No Data Found
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              // refreshControl={
+              //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              // }
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                alignSelf: 'center',
+                width: '100%',
+                paddingBottom: scalableheight.two,
+              }}
+              data={UserCoupons}
+              renderItem={({item}) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      Clipboard.setString(item.CouponCode);
+                      copied();
+                    }}
+                    style={{
+                      alignItems: 'center',
+                      paddingHorizontal: scalableheight.two,
+                    }}>
+                    <Couponscomponent
+                      sale={item.Value + '% OFF'}
+                      title={item.CouponCode}
+                      Name={item.Name}
+                      // minorder={'AED 100'}
+                      daysleft={item.DaysLeft}
+                      discountprice={item.dicountAmount}
+                      tc={item.TermsAndConditions}
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+              // onEndReached={() => LoadVRTourPagination()}
+              // onEndReachedThreshold={0.1}
+            />
+          )}
+        </View>
       </View>
-</View>
       <Toast
-          ref={toast}
-          style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
-        />
+        ref={toast}
+        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
+      />
     </Animated.View>
   );
 };

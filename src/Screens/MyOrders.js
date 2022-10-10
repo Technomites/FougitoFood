@@ -109,10 +109,10 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
           width: '100%',
           alignSelf: 'center',
           paddingTop: getStatusBarHeight(),
-            overflow: "hidden",
-      
+          overflow: 'hidden',
         }}>
         <PlainHeader title={'My Orders'} />
+
         <View
           style={{
             flexDirection: 'row',
@@ -130,7 +130,9 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
               height: scalableheight.five,
               width: scalableheight.twenty,
               backgroundColor:
-                ordertype == 'Active Orders' ? 'rgba(245, 80, 80, 0.3)' : '#F9F9F9',
+                ordertype == 'Active Orders'
+                  ? 'rgba(245, 80, 80, 0.3)'
+                  : '#F9F9F9',
               borderRadius: fontSize.borderradiusmedium,
               alignItems: 'center',
               justifyContent: 'center',
@@ -138,9 +140,11 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
             <Text
               style={{
                 color:
-                  ordertype == 'Active Orders' ? '#F55050' : 'rgba(17, 17, 17, 0.2)',
+                  ordertype == 'Active Orders'
+                    ? '#F55050'
+                    : 'rgba(17, 17, 17, 0.2)',
                 fontFamily: 'Inter-SemiBold',
-                fontSize: fontSize.fifteen,
+                fontSize: fontSize.fourteen,
               }}>
               Active Orders
             </Text>
@@ -168,82 +172,74 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                     ? '#F55050'
                     : 'rgba(17, 17, 17, 0.2)',
                 fontFamily: 'Inter-SemiBold',
-                fontSize: fontSize.fifteen,
+                fontSize: fontSize.fourteen,
               }}>
               Past Orders
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{marginVertical: scalableheight.one, }}>
-         
-            <View
-              style={{width: '100%', paddingHorizontal: scalableheight.two}}>
-
-
-
-{ordertype == 'Active Orders' && MyorderList.length == 0 ? (
-    <View
-    style={{
-      // justifyContent: 'center',
-      // alignItems: 'center',
-      alignSelf: 'center',
-      marginVertical: scalableheight.fourty,
-    }}>
-    <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
-     No Data Found
-    </Text>
-  </View>) : null}
-{ordertype != 'Active Orders' && MyorderListpast.length == 0 ? (
-    <View
-    style={{
-      // justifyContent: 'center',
-      // alignItems: 'center',
-      alignSelf: 'center',
-      marginVertical: scalableheight.fourty,
-    }}>
-    <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
-     No Data Found
-    </Text>
-  </View>): null}
-              <FlatList
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                  />
-                }
-              
-                data={ordertype == 'Active Orders' ? MyorderList : MyorderListpast}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  flexGrow: 1,
-                  paddingBottom: scalableheight.fourteen,
-               
-                }}
+        <View style={{marginVertical: scalableheight.one}}>
+          <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
+            {ordertype == 'Active Orders' && MyorderList.length == 0 ? (
+              <View
                 style={{
-               
-                }}
-                renderItem={({item, i}) => {
-                  return (
-                    <ActiveRequestTile
-                      onPress={() => {
-                        // navigation.navigate('PreparingFood');
-                        // dispatch(OrderStatus(AuthToken, item.Id));
-                        dispatch(storeorderid(item.Id));
-                        navigation.navigate('PreparingFood');
+                  // justifyContent: 'center',
+                  // alignItems: 'center',
+                  alignSelf: 'center',
+                  marginVertical: scalableheight.fourty,
+                }}>
+                <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
+                  No Data Found
+                </Text>
+              </View>
+            ) : null}
+            {ordertype != 'Active Orders' && MyorderListpast.length == 0 ? (
+              <View
+                style={{
+                  // justifyContent: 'center',
+                  // alignItems: 'center',
+                  alignSelf: 'center',
+                  marginVertical: scalableheight.fourty,
+                }}>
+                <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
+                  No Data Found
+                </Text>
+              </View>
+            ) : null}
+            <FlatList
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              data={
+                ordertype == 'Active Orders' ? MyorderList : MyorderListpast
+              }
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                flexGrow: 1,
+                paddingBottom: scalableheight.fourteen,
+              }}
+              style={{}}
+              renderItem={({item, i}) => {
+                return (
+                  <ActiveRequestTile
+                    onPress={() => {
+                      // navigation.navigate('PreparingFood');
+                      // dispatch(OrderStatus(AuthToken, item.Id));
+                      dispatch(storeorderid(item.Id));
+                      // navigation.navigate('PreparingFood');
+                      navigation.navigate('OrderDetails')
 
-                        // dispatch(OrderStatus(AuthToken, item.Id));
-                      }}
-                      // onModelPopUp={changestatus}
-                      details={item}
-                      // restaurantLogo={item?.Ongoing.RestaurantLogo}
-                      // orderNo={item,}
-                    />
-                  );
-                }}
-              />
-            </View>
-          
+                      // dispatch(OrderStatus(AuthToken, item.Id));
+                    }}
+                    // onModelPopUp={changestatus}
+                    details={item}
+                    // restaurantLogo={item?.Ongoing.RestaurantLogo}
+                    // orderNo={item,}
+                  />
+                );
+              }}
+            />
+          </View>
         </View>
       </View>
       <Toast
