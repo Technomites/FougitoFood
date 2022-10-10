@@ -70,7 +70,7 @@ const navigation = useNavigation();
                 fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fourteen,
                 color:"white", marginRight: scalableheight.one
-              }}>Switch to Pickup</Text>
+              }}>{props.isEnabled ? "Delivery" : "Pickup"} </Text>
        <ToggleSwitch
   style={{}}
               isOn={props.isEnabled}

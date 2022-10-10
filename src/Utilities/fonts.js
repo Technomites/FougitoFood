@@ -59,6 +59,7 @@ const scalableheight = {
   sixtyone: height(61),
   sixtytwo: height(62),
   sixtythree: height(63),
+  sixtyfour: height(64),
   sixtyfive: height(65),
   sixtysix: height(66),
   sixtyseven: height(67),

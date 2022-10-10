@@ -43,7 +43,7 @@ export default function TransparentHeader(props) {
           <AntDesign
             style={{alignSelf: 'center'}}
             name="arrowleft"
-            color={'white'}
+            color={'black'}
             size={fontSize.twentyfour}
           />
           {/* </View> */}
@@ -51,7 +51,7 @@ export default function TransparentHeader(props) {
 
         <Text
           style={{
-            color: 'white',
+            color: 'black',
             fontSize: fontSize.twenty,
             fontFamily: 'Inter-SemiBold',
           }}>
@@ -70,7 +70,7 @@ export default function TransparentHeader(props) {
               <Fontisto
                 style={{alignSelf: 'center'}}
                 name="spinner-refresh"
-                color={'white'}
+                color={'black'}
                 size={fontSize.twentyfour}
               />
             </TouchableOpacity>
@@ -89,7 +89,7 @@ const styleSheet = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
     paddingHorizontal: scalableheight.one,
     elevation: 100000,
     zIndex: 1000000,

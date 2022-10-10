@@ -574,7 +574,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           AuthToken != '' ? Selectedcurrentaddress[0].note : notetorider,
         street:
           AuthToken != '' ? Selectedcurrentaddress[0].Street : buildingdetails,
-        type: pickuporder ? 'Pickup' : 'Delivery',
+        type: pickuporder ?  'Delivery' : 'Pickup' ,
         orderItems: order,
       };
 

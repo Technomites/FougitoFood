@@ -16,6 +16,7 @@ import {getalladdresses, storecurrentaddress} from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Favourites from '../Shared/Components/Favourites';
 import Addresstile from '../Shared/Components/Addresstile';
 import MYButton from '../Shared/Components/MYButton';
@@ -135,7 +136,13 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
           dispatch(deleteaddress(alladdresses[index].Id, AuthToken))
          
         }}>
-        <Text style={styleSheet.btnText}>Delete</Text>
+        {/* <Text style={styleSheet.btnText}>Delete</Text> */}
+        <MaterialCommunityIcons
+                            style={{alignSelf: 'center'}}
+                            name={'delete'}
+                            color={'white'}
+                            size={fontSize.thirty}
+                          />
       </TouchableOpacity>
     </View>
   );
@@ -264,7 +271,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
             disableRightSwipe={true}
             rightOpenValue={-scalableheight.tweleve}
             previewRowKey={'0'}
-            previewOpenValue={-40}
+            previewOpenValue={-80}
             // previewOpenDelay={3000}
             onRowDidOpen={onItemOpen}
           />

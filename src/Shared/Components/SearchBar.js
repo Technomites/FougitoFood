@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   Text,
   View,
@@ -10,11 +10,13 @@ import {
   StatusBar,
   Platform,
   Dimensions,
-  TextInput
+  TextInput,
+  Keyboard
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -24,7 +26,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default function SearchBar(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
-
+const searchref = useRef()
 
   return (
     <View
@@ -33,7 +35,7 @@ const navigation = useNavigation();
       width: '100%',
       height: Dimensions.get('window').height / 15,
       justifyContent: 'center',
-      borderRadius: fontSize.ten,
+      borderRadius: fontSize.borderradius,
       marginTop: '3%',
       alignSelf: 'center',
       marginBottom:"2%"
@@ -41,6 +43,7 @@ const navigation = useNavigation();
     }}>
 
     <TextInput
+    ref={searchref}
     value={props.search}
       onChangeText={text => props.onchange(text)}
       placeholder={"Search here"}
@@ -51,7 +54,7 @@ const navigation = useNavigation();
 fontSize:fontSize.fifteen,
         backgroundColor:"white",
         alignSelf: 'center',
-        borderRadius: fontSize.ten,
+        borderRadius: fontSize.borderradius,
         paddingHorizontal: scalableheight.seven,
         alignItems:"center",
         justifyContent:"center"
@@ -65,8 +68,27 @@ fontSize:fontSize.fifteen,
         size={fontSize.twenty}
         style={{position: 'absolute', left: '5%', alignSelf: 'center'}}
       />
+  
+  {/* {searchref.current.Value != "" && */}
+  <TouchableOpacity
+  onPress={() => {
+    searchref.current.clear()
+    props.onchange("")
+    Keyboard.dismiss()
+  }
+  }
+    style={{position: 'absolute', right: '1%', alignSelf: 'center',   height: '98%', width: "10%" , alignItems:"center", justifyContent:"center"}}
+  >
+  <Entypo
+        name="circle-with-cross"
+        color={'grey'}
+        size={fontSize.twenty}
       
+      />  
 
+  </TouchableOpacity>
+{/* } */}
+  
 
       
         
