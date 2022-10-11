@@ -64,7 +64,9 @@ import {
   OrderID,
   CardOrder,
   ClearProfile,
-  DELETEDADDRESS
+  DELETEDADDRESS,
+  review_restaurant,
+  review_restaurant2
 } from '../Actions/actions';
 
 const initialState = {
@@ -135,13 +137,11 @@ const initialState = {
   internetconnectionstate: true,
   orderdetailslink: '',
   addressdeletionstatus: '',
+  review_restaurant:''
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
-
-    
-
     case DELETEDADDRESS:
       return {
         ...state,
@@ -151,7 +151,7 @@ function userReducer(state = initialState, action) {
     case ClearProfile:
       return {
         ...state,
-        UserUpdateProfileStatus: "",
+        UserUpdateProfileStatus: '',
       };
 
     case OrderID:
@@ -352,7 +352,16 @@ function userReducer(state = initialState, action) {
         ...state,
         restrauntdistance: action.payload,
       };
-
+    case review_restaurant:
+      return {
+        ...state,
+        ReviewStatus: action.payload,
+      };
+      case review_restaurant2:
+      return {
+        ...state,
+        ReviewStatus: action.payload,
+      };
     case Login_User:
       return {
         ...state,

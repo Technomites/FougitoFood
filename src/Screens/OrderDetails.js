@@ -11,9 +11,17 @@ import {
   Linking,
   StatusBar,
   TextInput,
+  Keyboard,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {OrderStatus} from '../Actions/actions';
+import {
+  OrderStatus,
+  RestaurantReview,
+  RestaurantReviewNull,
+  storeorderid,
+} from '../Actions/actions';
 import ItemDetailsStatus from '../Shared/Components/ItemDetailsStatus';
 import PlainHeader from '../Shared/Components/PlainHeader';
 import {fontSize, scalableheight} from '../Utilities/fonts';
@@ -30,13 +38,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 import ItemDetailsModel from '../Shared/Components/ItemDetailsModel';
 import ItemsDetailsModel2 from '../Shared/Components/ItemsDetailsModel2';
-
+import Toast from 'react-native-toast-notifications';
 import Ratingbar from '../Shared/Components/Ratingbar';
 
 const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
-  const {AuthToken, orderdetails, orderResult} = useSelector(
-    state => state.userReducer,
-  );
+  const {AuthToken, orderdetails, orderResult, ReviewStatus, orderstatus} =
+    useSelector(state => state.userReducer);
+  const [screenloader, setscreenloader] = useState(true);
   const [reviews, setReviews] = useState('');
   const [itemmodalVisible, setitemmodalVisible] = useState(false);
   const [itemmodaldata, setitemmodaldata] = useState([]);
@@ -45,180 +53,10 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   const [indexstate, setindexstate] = useState(0);
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
-  const [togglelist, settogglelist] = useState(true);
-  const customStyle = [
-    {
-      elementType: 'geometry',
-      stylers: [
-        {
-          color: '#d8d8d8',
-        },
-      ],
-    },
+  const [loader, setLoader] = useState(false);
 
-    {
-      elementType: 'labels.text.fill',
-      stylers: [
-        {
-          color: '#ffb606',
-        },
-      ],
-    },
-    //   {
-    //     elementType: 'labels.text.stroke',
-    //     stylers: [
-    //       {
-    //         color: '#242f3e',
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     featureType: 'administrative.locality',
-    //     elementType: 'labels.text.fill',
-    //     stylers: [
-    //       {
-    //         color: '#fffff',
-    //       },
-    //     ],
-    //   },
-
-    {
-      featureType: 'poi.business',
-      stylers: [{visibility: 'off'}],
-    },
-    {
-      featureType: 'transit',
-      elementType: 'labels.icon',
-      stylers: [{visibility: 'off'}],
-    },
-    {
-      featureType: 'poi',
-      elementType: 'labels.text.fill',
-      stylers: [
-        {
-          color: '#d59563',
-        },
-      ],
-    },
-    {
-      featureType: 'poi.park',
-      elementType: 'geometry',
-      stylers: [
-        {
-          color: '#d8d8d8',
-        },
-      ],
-    },
-    {
-      featureType: 'poi.park',
-      elementType: 'labels.text.fill',
-      stylers: [
-        {
-          color: '#d8d8d8',
-        },
-      ],
-    },
-    {
-      featureType: 'road',
-      elementType: 'geometry',
-      stylers: [
-        {
-          color: '#ffffff',
-        },
-      ],
-    },
-    {
-      featureType: 'road',
-      elementType: 'geometry.stroke',
-      stylers: [
-        {
-          color: '#ffffff',
-        },
-      ],
-    },
-    {
-      featureType: 'road',
-      elementType: 'labels.text.fill',
-      stylers: [
-        {
-          color: '#9ca5b3',
-        },
-      ],
-    },
-    {
-      featureType: 'road.highway',
-      elementType: 'geometry',
-      stylers: [
-        {
-          color: '#ffffff',
-        },
-      ],
-    },
-    {
-      featureType: 'road.highway',
-      elementType: 'geometry.stroke',
-      stylers: [
-        {
-          color: '#ffffff',
-        },
-      ],
-    },
-    {
-      featureType: 'road.highway',
-      elementType: 'labels.text.fill',
-      stylers: [
-        {
-          color: '#ffffff',
-        },
-      ],
-    },
-    {
-      featureType: 'transit',
-      elementType: 'geometry',
-      stylers: [
-        {
-          color: '#ffffff',
-        },
-      ],
-    },
-    {
-      featureType: 'transit.station',
-      elementType: 'labels.text.fill',
-      stylers: [
-        {
-          color: '#ffffff',
-        },
-      ],
-    },
-    {
-      featureType: 'water',
-      elementType: 'geometry',
-      stylers: [
-        {
-          color: '#b6b4b4',
-        },
-      ],
-    },
-    {
-      featureType: 'water',
-      elementType: 'labels.text.fill',
-      stylers: [
-        {
-          color: '#ffffff',
-        },
-      ],
-    },
-    {
-      featureType: 'water',
-      elementType: 'labels.text.stroke',
-      stylers: [
-        {
-          color: '#ffffff',
-        },
-      ],
-    },
-  ];
   const refMap = useRef(null);
+  const toast = useRef();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -231,13 +69,109 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
     }
   }, [orderResult]);
 
+  useEffect(() => {
+    if (orderResult.length > 0) {
+      console.log('hahah');
+      // alert(screenloader);
+      // console.log(screenloader);
+      //setLoader(false);
+      setscreenloader(false);
+    }
+  }, [orderResult]);
+
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('this is the placement order id ' + orderdetails);
       if (orderdetails != 0) dispatch(OrderStatus(AuthToken, orderdetails));
+      // if (orderstatus == 'Success') {
+      //   setscreenloader(false);
+      // }
     });
+
     return unsubscribe;
   }, [navigation, orderdetails]);
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setscreenloader(true);
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  const Review = () => {
+    Keyboard.dismiss();
+    if (DefaultRating == 0) {
+      toast.current.show('Rate The Restaurant', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+    } else if (reviews == '') {
+      toast.current.show('Enter Review', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+    } else {
+      dispatch(
+        RestaurantReview(
+          AuthToken,
+          orderResult[0]?.Id,
+          DefaultRating,
+          orderResult[0]?.RestaurantId,
+          reviews,
+        ),
+      );
+      setDefaultRating(0), setReviews(''), setLoader(true);
+    }
+  };
+
+  useEffect(() => {
+    console.log(ReviewStatus, 'AuthTokenAuthToken');
+    if (ReviewStatus === 'Success') {
+      toast.current.show('Review Submitted', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+      dispatch(RestaurantReviewNull());
+      setDefaultRating(0);
+      setReviews('');
+      setLoader(false);
+      if (orderdetails != 0) dispatch(OrderStatus(AuthToken, orderdetails));
+    } else if (ReviewStatus === 'Error') {
+      toast.current.show('Something went wrong', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      console.log('LOGIN ERROROROOROROORO');
+      dispatch(RestaurantReviewNull());
+      setLoader(false);
+    } else if (ReviewStatus === 'Network request failed') {
+      toast.current.show('Network request failed', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+        zIndex: 2,
+      });
+      console.log('LOGIN ERROROROOROROORO');
+      dispatch(RestaurantReviewNull());
+      setLoader(false);
+    }
+  }, [ReviewStatus, AuthToken]);
+
   //console.log(route?.params.completedetails[0].OrderStatus,'Order Details')
   // const [menuitems, SetMenuItems] = useState([
   //   {
@@ -310,6 +244,30 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
         barStyle={'dark-content'}
         backgroundColor="transparent"
       />
+      <Modal
+        transparent
+        style={{
+          width: '100%',
+          height: '100%',
+          // zIndex: 1,
+          // elevation: 1,
+          // position: 'absolute',
+        }}
+        statusBarTranslucent
+        animationType="slide"
+        visible={screenloader}
+        onRequestClose={() => setscreenloader(false)}>
+        <View
+          style={{
+            height: '100%',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.8)',
+          }}>
+          <ActivityIndicator size="small" color={'red'} />
+        </View>
+      </Modal>
       <View
         style={{
           //height: '100%',
@@ -347,7 +305,8 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       style={{
                         justifyContent: 'center',
                         alignItems: 'center',
-                        marginTop: scalableheight.five,
+                        // marginTop: scalableheight.five,
+                        // backgroundColor:'yellow'
                       }}>
                       {orderResult[0]?.Status == 'Pending' && (
                         <Image
@@ -414,7 +373,8 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                           style={{
                             height: scalableheight.fifteen,
                             width: scalableheight.fifteen,
-                            marginTop: -scalableheight.three,
+
+                            alignSelf: 'center',
                           }}
                           resizeMode={'contain'}
                           source={require('../Resources/images/Delivered.gif')}
@@ -447,7 +407,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       style={{
                         color: '#29262A',
                         fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.thirteen,
+                        fontSize: fontSize.twelve,
                         paddingBottom: scalableheight.pointeightfive,
                       }}>
                       {orderResult[0]?.DeliveryType}
@@ -464,10 +424,24 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       style={{
                         color: '#29262A',
                         fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.thirteen,
+                        fontSize: fontSize.twelve,
                         paddingBottom: scalableheight.pointeightfive,
                       }}>
-                      {orderResult[0]?.Status}
+                      {orderResult[0]?.Status == 'Confirmed'
+                        ? 'Order Confirmed'
+                        : orderResult[0]?.Status == 'Preparing'
+                        ? 'Preparing..'
+                        : orderResult[0]?.Status == 'FoodReady'
+                        ? 'Your food is ready'
+                        : orderResult[0]?.Status == 'OnTheWay'
+                        ? 'Yummy! Food on the way'
+                        : orderResult[0]?.Status == 'Delivered'
+                        ? 'Food is delivered, Enjoy your meal!'
+                        : orderResult[0]?.Status == 'Pending'
+                        ? 'Pending'
+                        : orderResult[0]?.Status == 'Canceled'
+                        ? 'Order Canceled'
+                        : ''}
                     </Text>
                     {/* <Text
                       style={{
@@ -534,7 +508,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       style={{
                         color: '#29262A',
                         fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.thirteen,
+                        fontSize: fontSize.twelve,
                       }}>
                       {orderResult[0]?.EstimatedDeliveryMinutes < 0
                         ? 0
@@ -784,7 +758,9 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                   fontFamily: 'Inter-Bold',
                   fontSize: fontSize.fifteen,
                 }}>
-                Delivery Info
+                {orderResult[0]?.DeliveryType != 'TakeAway'
+                  ? 'Delivery Info'
+                  : 'PickUp Info'}
               </Text>
               <View style={{marginTop: scalableheight.one}}></View>
               <View style={{...styles.shadow, ...styles.MainContainer}}>
@@ -926,128 +902,33 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                             fontSize: fontSize.thirteen,
                             color: '#29262A',
                           }}>
-                          Delivery Address
+                          {orderResult[0]?.DeliveryType != 'TakeAway'
+                            ? 'Delivery Address'
+                            : 'PickUp Address'}
                         </Text>
                       </View>
                       <Text
-                        numberOfLines={2}
-                        ellipsizeMode="tail"
+                        // numberOfLines={2}
+                        // ellipsizeMode="tail"
                         style={{
                           fontFamily: 'Inter-Medium',
                           fontSize: fontSize.eleven,
                           color: '#636363',
                         }}>
-                        {orderResult[0]?.Address}
+                        {orderResult[0]?.DeliveryType != 'TakeAway'
+                          ? orderResult[0]?.Address 
+                          : orderResult[0]?.RestaurantBranch?.Address }
                       </Text>
                     </View>
                   </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      marginBottom: scalableheight.two,
-                      alignSelf: 'center',
-                    }}>
-                    <View
-                      style={{
-                        width: '10%',
-                        alignSelf: 'flex-start',
-                      }}>
-                      <View>
-                        <FontAwesome5
-                          style={{alignSelf: 'center'}}
-                          name={'building'}
-                          color={'#F55050'}
-                          size={fontSize.twenty}
-                        />
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        paddingLeft: scalableheight.one,
-                        width: '90%',
-                      }}>
-                      <View>
-                        <Text
-                          style={{
-                            fontFamily: 'Inter-SemiBold',
-                            fontSize: fontSize.thirteen,
-                            color: '#29262A',
-                          }}>
-                          Building And Street
-                        </Text>
-                      </View>
-                      <Text
-                        style={{
-                          fontFamily: 'Inter-Medium',
-                          fontSize: fontSize.eleven,
-                          color: '#636363',
-                        }}>
-                        {orderResult[0]?.Street != '' &&
-                        orderResult[0]?.Street != null
-                          ? orderResult[0]?.Street
-                          : '-'}
-                      </Text>
-                    </View>
-                  </View>
-                  {orderResult[0]?.Floor == null ? null : (
+
+                  {orderResult[0]?.DeliveryType != 'TakeAway' ? (
                     <View
                       style={{
                         flexDirection: 'row',
                         justifyContent: 'flex-start',
                         alignItems: 'center',
-                        alignSelf: 'center',
                         marginBottom: scalableheight.two,
-                      }}>
-                      <View
-                        style={{
-                          width: '10%',
-                          alignSelf: 'flex-start',
-                        }}>
-                        <View>
-                          <MaterialCommunityIcons
-                            style={{alignSelf: 'center'}}
-                            name={'office-building'}
-                            color={'#F55050'}
-                            size={fontSize.twenty}
-                          />
-                        </View>
-                      </View>
-                      <View
-                        style={{
-                          paddingLeft: scalableheight.one,
-                          width: '90%',
-                        }}>
-                        <View>
-                          <Text
-                            style={{
-                              fontFamily: 'Inter-SemiBold',
-                              fontSize: fontSize.thirteen,
-                              color: '#29262A',
-                            }}>
-                            Flat No. & Floor
-                          </Text>
-                        </View>
-                        <Text
-                          style={{
-                            fontFamily: 'Inter-Medium',
-                            fontSize: fontSize.eleven,
-                            color: '#636363',
-                          }}>
-                          {orderResult[0]?.Floor != ''
-                            ? orderResult[0]?.Floor
-                            : 'No Details'}
-                        </Text>
-                      </View>
-                    </View>
-                  )}
-                  {orderResult[0]?.NoteToRider == null ? null : (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
                         alignSelf: 'center',
                       }}>
                       <View
@@ -1056,9 +937,9 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                           alignSelf: 'flex-start',
                         }}>
                         <View>
-                          <Icon
+                          <FontAwesome5
                             style={{alignSelf: 'center'}}
-                            name={'chatbubble-sharp'}
+                            name={'building'}
                             color={'#F55050'}
                             size={fontSize.twenty}
                           />
@@ -1076,7 +957,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                               fontSize: fontSize.thirteen,
                               color: '#29262A',
                             }}>
-                            Note to rider
+                            Building And Street
                           </Text>
                         </View>
                         <Text
@@ -1085,184 +966,295 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                             fontSize: fontSize.eleven,
                             color: '#636363',
                           }}>
-                          {orderResult[0]?.NoteToRider != ''
-                            ? orderResult[0]?.NoteToRider
-                            : 'No Note'}
+                          {orderResult[0]?.Street != '' &&
+                          orderResult[0]?.Street != null
+                            ? orderResult[0]?.Street
+                            : '-'}
                         </Text>
                       </View>
                     </View>
-                  )}
+                  ) : null}
+
+                  {orderResult[0]?.DeliveryType != 'TakeAway' ? (
+                    orderResult[0]?.Floor == null ? null : (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          alignSelf: 'center',
+                          marginBottom: scalableheight.two,
+                        }}>
+                        <View
+                          style={{
+                            width: '10%',
+                            alignSelf: 'flex-start',
+                          }}>
+                          <View>
+                            <MaterialCommunityIcons
+                              style={{alignSelf: 'center'}}
+                              name={'office-building'}
+                              color={'#F55050'}
+                              size={fontSize.twenty}
+                            />
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            paddingLeft: scalableheight.one,
+                            width: '90%',
+                          }}>
+                          <View>
+                            <Text
+                              style={{
+                                fontFamily: 'Inter-SemiBold',
+                                fontSize: fontSize.thirteen,
+                                color: '#29262A',
+                              }}>
+                              Flat No. & Floor
+                            </Text>
+                          </View>
+                          <Text
+                            style={{
+                              fontFamily: 'Inter-Medium',
+                              fontSize: fontSize.eleven,
+                              color: '#636363',
+                            }}>
+                            {orderResult[0]?.Floor != ''
+                              ? orderResult[0]?.Floor
+                              : 'No Details'}
+                          </Text>
+                        </View>
+                      </View>
+                    )
+                  ) : null}
+
+                  {orderResult[0]?.DeliveryType != 'TakeAway' ? (
+                    orderResult[0]?.NoteToRider == null ? null : (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          alignSelf: 'center',
+                        }}>
+                        <View
+                          style={{
+                            width: '10%',
+                            alignSelf: 'flex-start',
+                          }}>
+                          <View>
+                            <Icon
+                              style={{alignSelf: 'center'}}
+                              name={'chatbubble-sharp'}
+                              color={'#F55050'}
+                              size={fontSize.twenty}
+                            />
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            paddingLeft: scalableheight.one,
+                            width: '90%',
+                          }}>
+                          <View>
+                            <Text
+                              style={{
+                                fontFamily: 'Inter-SemiBold',
+                                fontSize: fontSize.thirteen,
+                                color: '#29262A',
+                              }}>
+                              Note to rider
+                            </Text>
+                          </View>
+                          <Text
+                            style={{
+                              fontFamily: 'Inter-Medium',
+                              fontSize: fontSize.eleven,
+                              color: '#636363',
+                            }}>
+                            {orderResult[0]?.NoteToRider != ''
+                              ? orderResult[0]?.NoteToRider
+                              : 'No Note'}
+                          </Text>
+                        </View>
+                      </View>
+                    )
+                  ) : null}
                 </View>
               </View>
             </View>
-            {orderResult[0]?.Status != 'Canceled' ||
-            (orderResult[0]?.DeliveryType != 'TakeAway' &&
-              orderResult[0]?.Status == 'Delivered') ? (
-              <View
-                style={{
-                  marginTop: scalableheight.two,
-                }}>
-                <Text
+            {orderResult[0]?.DeliveryType != 'TakeAway' ? (
+              orderResult[0]?.Status != 'Canceled' ||
+              (orderResult[0]?.DeliveryType != 'TakeAway' &&
+                orderResult[0]?.Status == 'Delivered') ? (
+                <View
                   style={{
-                    color: '#29262A',
-                    fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.fifteen,
+                    marginTop: scalableheight.two,
                   }}>
-                  Rider Info
-                </Text>
-                <View style={{marginTop: scalableheight.one}}></View>
-                <View style={{...styles.shadow, ...styles.MainContainer}}>
-                  <View
+                  <Text
                     style={{
-                      flexDirection: 'row',
-                      width: '100%',
+                      color: '#29262A',
+                      fontFamily: 'Inter-Bold',
+                      fontSize: fontSize.fifteen,
                     }}>
-                    <View style={{width: '78%'}}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'flex-start',
-                          alignItems: 'center',
-                          marginBottom: scalableheight.two,
-                          alignSelf: 'center',
-                        }}>
-                        <View
-                          style={{
-                            width: '10%',
-                            alignSelf: 'flex-start',
-                          }}>
-                          <View>
-                            <FontAwesome
-                              style={{
-                                alignSelf: 'center',
-                              }}
-                              name="user"
-                              size={fontSize.twenty}
-                              color="#F55050"
-                            />
-                          </View>
-                        </View>
-                        <View
-                          style={{
-                            paddingLeft: scalableheight.one,
-                            width: '90%',
-                          }}>
-                          <View>
-                            <Text
-                              style={{
-                                fontFamily: 'Inter-SemiBold',
-                                fontSize: fontSize.thirteen,
-                                color: '#29262A',
-                              }}>
-                              Name
-                            </Text>
-                          </View>
-                          <Text
-                            style={{
-                              fontFamily: 'Inter-Medium',
-                              fontSize: fontSize.eleven,
-                              color: '#636363',
-                            }}>
-                            {orderResult[0]?.DeliveryStaff?.FirstName}{' '}
-                            {orderResult[0]?.DeliveryStaff?.LastName}
-                          </Text>
-                        </View>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'flex-start',
-                          alignItems: 'center',
-                          marginBottom: scalableheight.two,
-                          alignSelf: 'center',
-                        }}>
-                        <View
-                          style={{
-                            width: '10%',
-                            alignSelf: 'flex-start',
-                          }}>
-                          <View>
-                            <Entypo
-                              style={{
-                                alignSelf: 'center',
-                              }}
-                              name="phone"
-                              size={fontSize.twenty}
-                              color="#F55050"
-                            />
-                          </View>
-                        </View>
-                        <View
-                          style={{
-                            paddingLeft: scalableheight.one,
-                            width: '90%',
-                          }}>
-                          <View>
-                            <Text
-                              style={{
-                                fontFamily: 'Inter-SemiBold',
-                                fontSize: fontSize.thirteen,
-                                color: '#29262A',
-                              }}>
-                              Phone Number
-                            </Text>
-                          </View>
-                          <Text
-                            style={{
-                              fontFamily: 'Inter-Medium',
-                              fontSize: fontSize.eleven,
-                              color: '#636363',
-                            }}>
-                            {orderResult[0]?.DeliveryStaff?.PhoneNumber}
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
+                    Rider Info
+                  </Text>
+                  <View style={{marginTop: scalableheight.one}}></View>
+                  <View style={{...styles.shadow, ...styles.MainContainer}}>
                     <View
                       style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        flexDirection: 'row',
+                        width: '100%',
                       }}>
-                      <TouchableOpacity
-                        activeOpacity={0.9}
-                        onPress={() => {
-                          Linking.openURL(
-                            `tel:${orderResult[0]?.DeliveryStaff?.PhoneNumber}`,
-                          );
-                          // navigation.navigate('ContactUs');
-                        }}
+                      <View style={{width: '78%'}}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            marginBottom: scalableheight.two,
+                            alignSelf: 'center',
+                          }}>
+                          <View
+                            style={{
+                              width: '10%',
+                              alignSelf: 'flex-start',
+                            }}>
+                            <View>
+                              <FontAwesome
+                                style={{
+                                  alignSelf: 'center',
+                                }}
+                                name="user"
+                                size={fontSize.twenty}
+                                color="#F55050"
+                              />
+                            </View>
+                          </View>
+                          <View
+                            style={{
+                              paddingLeft: scalableheight.one,
+                              width: '90%',
+                            }}>
+                            <View>
+                              <Text
+                                style={{
+                                  fontFamily: 'Inter-SemiBold',
+                                  fontSize: fontSize.thirteen,
+                                  color: '#29262A',
+                                }}>
+                                Name
+                              </Text>
+                            </View>
+                            <Text
+                              style={{
+                                fontFamily: 'Inter-Medium',
+                                fontSize: fontSize.eleven,
+                                color: '#636363',
+                              }}>
+                              {orderResult[0]?.DeliveryStaff?.FirstName}{' '}
+                              {orderResult[0]?.DeliveryStaff?.LastName}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            marginBottom: scalableheight.two,
+                            alignSelf: 'center',
+                          }}>
+                          <View
+                            style={{
+                              width: '10%',
+                              alignSelf: 'flex-start',
+                            }}>
+                            <View>
+                              <Entypo
+                                style={{
+                                  alignSelf: 'center',
+                                }}
+                                name="phone"
+                                size={fontSize.twenty}
+                                color="#F55050"
+                              />
+                            </View>
+                          </View>
+                          <View
+                            style={{
+                              paddingLeft: scalableheight.one,
+                              width: '90%',
+                            }}>
+                            <View>
+                              <Text
+                                style={{
+                                  fontFamily: 'Inter-SemiBold',
+                                  fontSize: fontSize.thirteen,
+                                  color: '#29262A',
+                                }}>
+                                Phone Number
+                              </Text>
+                            </View>
+                            <Text
+                              style={{
+                                fontFamily: 'Inter-Medium',
+                                fontSize: fontSize.eleven,
+                                color: '#636363',
+                              }}>
+                              {orderResult[0]?.DeliveryStaff?.PhoneNumber}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      <View
                         style={{
-                          backgroundColor: '#E14E4E',
                           justifyContent: 'center',
                           alignItems: 'center',
-                          height: scalableheight.five,
-                          width: scalableheight.ten,
-                          borderRadius: fontSize.borderradiusmedium,
-                          // paddingHorizontal: scalableheight.pointfive,
-                          //  flexDirection: 'row',
                         }}>
-                        <Text
+                        <TouchableOpacity
+                          activeOpacity={0.9}
+                          onPress={() => {
+                            Linking.openURL(
+                              `tel:${orderResult[0]?.DeliveryStaff?.PhoneNumber}`,
+                            );
+                            // navigation.navigate('ContactUs');
+                          }}
                           style={{
-                            fontSize: fontSize.twelve,
-                            color: 'white',
-                            fontFamily: 'Inter-SemiBold',
-                            textAlign: 'center',
+                            backgroundColor: '#E14E4E',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: scalableheight.five,
+                            width: scalableheight.ten,
+                            borderRadius: fontSize.borderradiusmedium,
+                            // paddingHorizontal: scalableheight.pointfive,
+                            //  flexDirection: 'row',
                           }}>
-                          CALL
-                        </Text>
-                        {/* <Text style={{width: '25%'}}>
-                        <Entypo
-                          name="phone"
-                          size={scalableheight.three}
-                          color={'white'}
-                        />
-                      </Text> */}
-                      </TouchableOpacity>
+                          <Text
+                            style={{
+                              fontSize: fontSize.twelve,
+                              color: 'white',
+                              fontFamily: 'Inter-SemiBold',
+                              textAlign: 'center',
+                            }}>
+                            CALL
+                          </Text>
+                          {/* <Text style={{width: '25%'}}>
+                          <Entypo
+                            name="phone"
+                            size={scalableheight.three}
+                            color={'white'}
+                          />
+                        </Text> */}
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
+              ) : null
             ) : null}
+
             <View
               style={{
                 marginVertical: scalableheight.two,
@@ -1358,7 +1350,8 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
               </View>
             </View>
             {orderResult[0]?.Status != 'Canceled' ? (
-              orderResult[0]?.DeliveryType != 'TakeAway' &&  orderResult[0]?.RestaurantRatings.length > 0 ? (
+              orderResult[0]?.DeliveryType != 'TakeAway' &&
+              orderResult[0]?.RestaurantRatings.length > 0 ? (
                 <View>
                   <Text
                     style={{
@@ -1526,11 +1519,24 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         }}
                       />
                     </View>
-                    <MYButton
-                      title={'Submit'}
-                      color="#F55050"
-                      textcolor="white"
-                    />
+                    {loader == true ? (
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <ActivityIndicator size={'large'} color="#E14E4E" />
+                      </View>
+                    ) : (
+                      <MYButton
+                        title={'SUBMIT'}
+                        onPress={() => {
+                          Review();
+                        }}
+                        color="#E14E4E"
+                        textcolor="white"
+                      />
+                    )}
                   </View>
                 </View>
               )
@@ -1576,6 +1582,10 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
           setitemmodalVisible(false);
         }}
       />
+      <Toast
+        ref={toast}
+        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
+      />
     </Animated.View>
   );
 };
@@ -1586,7 +1596,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignSelf: 'center',
-    borderRadius: fontSize.eleven,
+    borderRadius: fontSize.eight,
     padding: scalableheight.two,
     shadowColor: '#470000',
     shadowOffset: {width: 0, height: 1},

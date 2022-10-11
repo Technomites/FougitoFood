@@ -200,7 +200,7 @@ export default function ItemsDetailsModel2(props) {
                         fontSize: fontSize.fourteen,
                         color: '#111111',
                       }}>
-                      {props?.data?.MenuItems?.Quantity}
+                      {props?.data?.Quantity}
                     </Text>
                   </View>
 
