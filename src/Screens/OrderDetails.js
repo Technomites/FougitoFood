@@ -890,7 +890,17 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         />
                       </View>
                     </View>
-                    <View
+                    <TouchableOpacity
+                      activeOpacity={0.9}
+                      onPress={() => {
+                        orderResult[0]?.DeliveryType != 'TakeAway'
+                          ? Linking.openURL(
+                              `http://www.google.com/maps/place/${orderResult[0]?.Latitude},${orderResult[0]?.Longitude}`,
+                            )
+                          : Linking.openURL(
+                              `http://www.google.com/maps/place/${orderResult[0]?.RestaurantBranch?.Latitude},${orderResult[0]?.RestaurantBranch?.Longitude}`,
+                            );
+                      }}
                       style={{
                         paddingLeft: scalableheight.one,
                         width: '90%',
@@ -916,10 +926,19 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                           color: '#636363',
                         }}>
                         {orderResult[0]?.DeliveryType != 'TakeAway'
-                          ? orderResult[0]?.Address 
-                          : orderResult[0]?.RestaurantBranch?.Address }
+                          ? orderResult[0]?.Address + ' '
+                          : orderResult[0]?.RestaurantBranch?.Address + ' '}
+                        <Text
+                          style={{
+                            color: '#F55050',
+                            fontFamily: 'Inter-SemiBold',
+                            fontSize: fontSize.nine,
+                            justifyContent: 'flex-end',
+                          }}>
+                          ( View Location)
+                        </Text>
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                   </View>
 
                   {orderResult[0]?.DeliveryType != 'TakeAway' ? (
