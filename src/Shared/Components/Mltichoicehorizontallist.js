@@ -79,7 +79,7 @@ const navigation = useNavigation();
                
         
                 <Text  style={{fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.thirteen,
+                        fontSize: fontSize.fifteen,
                         color:"black",marginLeft: scalableheight.one, marginRight: scalableheight.one}}>{item.Value}</Text>
                          {/* <Text  style={{fontFamily: 'Inter-Bold',
                         fontSize: fontSize.thirteen,

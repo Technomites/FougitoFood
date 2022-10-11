@@ -13,6 +13,7 @@ import {
   RefreshControl,
   TextInput,
   Dimensions,
+
   FlatList,
   TouchableWithoutFeedback,
   Platform,
@@ -205,6 +206,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const ref = useRef();
   const refRBSheet = useRef();
   const toast = useRef();
+
 
 
   const [flavours, setflavours] = useState([
@@ -622,7 +624,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   useEffect(() => {
     StatusBar.setHidden(false);
     listeners();
- 
+   
   }, []);
 
   useEffect(() => {
@@ -888,13 +890,13 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     }
     return false;
   };
-
+ 
 
 
 
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, overflow: 'hidden',}}>
+      style={{flex: 1, ...drawerAnimationStyle, overflow: 'hidden', backgroundColor:"white"}}>
       <FocusAwareStatusBar
         barStyle={showbottomsheet ? 'dark-content' : 'light-content'}
         backgroundColor="transparent"

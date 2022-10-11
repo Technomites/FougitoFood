@@ -207,7 +207,7 @@ style={{
             fontSize: fontSize.twelve,
             color:"#111111",
         
-          }}>{"AED "}{props.price}</Text>
+          }}>{"AED "}{props.price.toFixed(2)}</Text>
 </View>
    
             

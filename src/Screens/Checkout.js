@@ -694,6 +694,14 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     }
   }, [pinlatitude, pinLongitude]);
 
+
+  useEffect(() => {
+  if(cartdata.length == 0){
+    navigation.goBack()
+  }
+  }, [cartdata]);
+ 
+
   function getnewlocation() {
     Geocoder.from(pinlatitude, pinLongitude)
       .then(json => {

@@ -10,6 +10,7 @@ import {
   Alert,
   Platform,
   StyleSheet,
+  
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
@@ -40,6 +41,7 @@ import Favourites from '../Shared/Components/Favourites';
 
 import {CameraScreen} from 'react-native-camera-kit';
 
+
 const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
   console.log(route?.params?.latitude, 'latitude');
   console.log(route?.params?.longitude, 'longitude');
@@ -56,12 +58,41 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
     state => state.userReducer,
   );
   const dispatch = useDispatch();
+
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Cool Photo App Camera Permission",
+          message:
+            "Cool Photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        setCamScanner(true);
+        console.log("You can use the camera");
+      } else {
+        console.log("Camera permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+ 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+     
       setCamScanner(false);
-      setTimeout(async () => {
-        setCamScanner(true);
-      }, 500);
+      requestCameraPermission()
+   
+      // setTimeout(async () => {
+      //   setCamScanner(true);
+      // }, 500);
     });
 
     return unsubscribe;
@@ -134,7 +165,7 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
             }}
           />
         </View>
-        {camscanner && (
+        {camscanner &&(
           <CameraScreen
             scanBarcode={scanpermission}
             onReadCode={event => {

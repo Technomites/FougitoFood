@@ -309,6 +309,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   }, [restrauntmenu]);
 
   function toggleanimation() {
+    setmodalVisible(false)
     if (animationtype == 'fadeInUpBig') {
       setanimationtype('fadeOutDownBig');
     } else {
@@ -323,6 +324,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }
   }, [modalVisible]);
 
+  function clearandclose() {
+     
+    toggleanimation();
+    setanimationstate(true);
+    scrollviewref.current.scrollTo({ y: dataSourceCords[1] , animated: true, });
+   
+    Keyboard.dismiss();
+  }
   function additemtocart() {
     let errorcaused = false;
     let arr = retaurantmenucategorydataoption;
@@ -828,19 +837,7 @@ dispatch(storedistance(inneritem?.Distance));
             </View>
           </View>
         </Modal>
-<Modal
-        transparent
-        style={{
-          width: '100%',
-          height: '100%',
-          // zIndex: 1,
-          // elevation: 1,
-          // position: 'absolute',
-        }}
-        statusBarTranslucent
-        animationType="slide"
-        visible={modalVisible}
-        onRequestClose={() => setmodalVisible(false)}>
+
         {modalVisible && (
           // <Animatable.View
 
@@ -957,6 +954,7 @@ dispatch(storedistance(inneritem?.Distance));
                             : null,
                       }}>
                       <View>
+                        <View style={{alignItems: "center", justifyContent:"space-between", flexDirection:"row", marginBottom:scalableheight.one}}>
                         <Text
                           style={{
                             fontFamily: 'Inter-Bold',
@@ -967,11 +965,23 @@ dispatch(storedistance(inneritem?.Distance));
                         </Text>
                         <Text
                           style={{
+                            fontFamily: 'Inter-Bold',
+                            fontSize: fontSize.thirteen,
+                         
+                            color: '#E14E4E',
+                          }}>
+                         { "AED "} { retaurantmenucategorydataoption?.Price.toFixed(2)}
+                        </Text>
+                        </View>
+                        
+                        <Text
+                          style={{
                             fontFamily: 'Inter-Medium',
                             fontSize: fontSize.fourteen,
                             color: 'black',
+                            textAlign:"justify"
                           }}>
-                          {retaurantmenucategorydataoption?.Description}
+                          {retaurantmenucategorydataoption?.Description.trim()}
                         </Text>
                         <View style={{height: scalableheight.one}} />
                       </View>
@@ -993,7 +1003,14 @@ dispatch(storedistance(inneritem?.Distance));
                                 </View>
                               ) : (
                                 <View key={key.toString()}>
-                                  <Mltichoicehorizontallist
+                                  {/* <Mltichoicehorizontallist
+                                    title={item?.Title}
+                                    IsRequired={item?.IsRequired}
+                                    data={item?.MenuItemOptionValues}
+                                    index={key}
+                                    update={updateservingstate}
+                                  /> */}
+                                       <MultiChoiceDropDown
                                     title={item?.Title}
                                     IsRequired={item?.IsRequired}
                                     data={item?.MenuItemOptionValues}
@@ -1008,6 +1025,8 @@ dispatch(storedistance(inneritem?.Distance));
                               <View key={key.toString()}>
                                 <MultiChoiceDropDownWithMultipleSelection
                                   title={item?.Title}
+                                  MaxLimit={item?.MaxLimit}
+                                  
                                   IsRequired={item?.IsRequired}
                                   data={item?.MenuItemOptionValues}
                                   index={key}
@@ -1079,7 +1098,7 @@ dispatch(storedistance(inneritem?.Distance));
                           <AntDesign
                             name="minuscircle"
                             color={'#E14E4E'}
-                            size={fontSize.twentyseven}
+                            size={fontSize.thirty}
                             style={{}}
                           />
                         </TouchableOpacity>
@@ -1092,7 +1111,13 @@ dispatch(storedistance(inneritem?.Distance));
                             justifyContent: 'center',
                             borderRadius: fontSize.eight,
                           }}>
-                          <Text>{count}</Text>
+                          <Text style={{
+  fontFamily: 'Inter-SemiBold',
+  fontSize: fontSize.thirteen,
+  color: 'black',
+
+
+                          }}>{count}</Text>
                         </View>
 
                         <TouchableOpacity
@@ -1102,7 +1127,7 @@ dispatch(storedistance(inneritem?.Distance));
                           <AntDesign
                             name="pluscircle"
                             color={'#E14E4E'}
-                            size={fontSize.twentyseven}
+                            size={fontSize.thirty}
                             style={{}}
                           />
                         </TouchableOpacity>
@@ -1123,7 +1148,7 @@ dispatch(storedistance(inneritem?.Distance));
           </View>
           //  </Animatable.View>
         )}
-      </Modal>
+     
       {cartvisible && (
         // <Animatable.View
         //   animation={'fadeInUpBig'}
@@ -1178,6 +1203,7 @@ dispatch(storedistance(inneritem?.Distance));
                     {cartdata?.length}
                   </Text>
                 </View>
+                <View>
                 <Text
                   style={{
                     marginLeft: scalableheight.one,
@@ -1187,16 +1213,19 @@ dispatch(storedistance(inneritem?.Distance));
                   }}>
                   Items in Cart
                 </Text>
-              </View>
-              <Text
+                <Text
                 style={{
                   color: 'white',
                   fontFamily: 'Inter-Medium',
                   fontSize: fontSize.twelve,
                   opacity: 0.6,
+                  marginLeft: scalableheight.one,
                 }}>
-                AED {price}
+                AED {price.toFixed(2)}
               </Text>
+              </View>
+              </View>
+             
             </View>
             <View style={{height: '100%', justifyContent: 'center'}}>
               <Text

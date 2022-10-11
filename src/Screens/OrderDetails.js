@@ -93,6 +93,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      setDefaultRating(0)
       setscreenloader(true);
     });
     return unsubscribe;

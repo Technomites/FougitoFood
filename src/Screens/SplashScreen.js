@@ -58,6 +58,7 @@ const SplashScreen = props => {
     gettoken();
   }, []);
 
+  
   async function gettoken() {
     const cartdatastore = await AsyncStorage.getItem('cartdata');
     if (cartdatastore != undefined && cartdatastore != '') {

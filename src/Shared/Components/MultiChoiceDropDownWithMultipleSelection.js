@@ -37,18 +37,29 @@ const navigation = useNavigation();
       
      
       alignSelf: 'center',
-     
+      marginTop:scalableheight.one
     }}>
+      <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
     <Text  style={{fontFamily: 'Inter-Bold',
                 fontSize: fontSize.fourteen,
-                color:"black",}}>{props?.title} <Text style={{color:"#E14E4E"}}>{props?.IsRequired == true ? " " : " (Optional)"}</Text></Text>
-
+                color:"black",}}>{props?.title} </Text>
+                <View style={{paddingVertical: scalableheight.pointfive, paddingHorizontal: scalableheight.one, backgroundColor: props?.IsRequired == true  ? "#E14E4E" : "grey", borderRadius: fontSize.borderradius }}>
+                <Text style={{fontFamily: 'Inter-Bold',
+                fontSize: fontSize.fourteen,
+                color:"black",color: props?.IsRequired == true  ? "white" : "white"}}>{props?.IsRequired == true ? "Required" : "Optional"}</Text>
+                </View>
+                </View>
+                <Text  style={{fontFamily: 'Inter-Bold',
+                fontSize: fontSize.twelve,
+                opacity:0.4,
+                color:"black",}}>{props?.MaxLimit > 0 ? "Max " : null}{props?.MaxLimit > 0 ? props?.MaxLimit : null} </Text>
+                
 {props?.data?.map((item, index) => {
         return (
             <TouchableOpacity 
             // activeOpacity={1}
             onPress={() => {props.update(index, props.index)}}
-            style={{flexDirection:"row", marginTop:scalableheight.pointfive, alignItems:"center"}}>
+            style={{flexDirection:"row", marginTop:scalableheight.two, alignItems:"center"}}>
               {renderIf(item?.selected == true)(
                 <MaterialIcons
                 name="check-box"
@@ -69,11 +80,11 @@ const navigation = useNavigation();
            
     
             <Text  style={{fontFamily: 'Inter-Medium',
-                    fontSize: fontSize.thirteen,
+                    fontSize: fontSize.fifteen,
                     color:"black",marginLeft: scalableheight.one}}>{item?.Value}</Text>
                      <Text  style={{fontFamily: 'Inter-Bold',
                     fontSize: fontSize.thirteen,
-                    color:"black",position:"absolute", right:0}}>AED {item?.Price}</Text>
+                    color:"black",position:"absolute", right:0}}>AED {item?.Price.toFixed(2)}</Text>
          
 
        
