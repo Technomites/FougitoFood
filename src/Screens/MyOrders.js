@@ -227,7 +227,8 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                       // dispatch(OrderStatus(AuthToken, item.Id));
                       dispatch(storeorderid(item.Id));
                       // navigation.navigate('PreparingFood');
-                      navigation.navigate('OrderDetails')
+                      navigation.navigate('OrderDetails');
+                      // alert(item.Id);
 
                       // dispatch(OrderStatus(AuthToken, item.Id));
                     }}

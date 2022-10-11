@@ -117,7 +117,7 @@ const CustomDrawerStyle = ({navigation}) => {
     LoginCustomer,
     ProfileName,
     ProfileImage,
-    internetconnectionstate
+    internetconnectionstate,
   } = useSelector(state => state.userReducer);
 
   let options = [
@@ -202,8 +202,7 @@ const CustomDrawerStyle = ({navigation}) => {
       });
       // setLoader(false);
       console.log(UserLogout, 'abcc');
-    }
-    else if (userLogoutStatus === 'Network Request Failed') {
+    } else if (userLogoutStatus === 'Network Request Failed') {
       toast.current.show('Network Request Failed', {
         type: 'normal',
         placement: 'bottom',
@@ -212,8 +211,8 @@ const CustomDrawerStyle = ({navigation}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-      
-       setLoader(false);
+
+      setLoader(false);
       console.log(UserLogout, 'abcc');
     }
   }, [userLogoutStatus, UserLogout]);
@@ -231,12 +230,12 @@ const CustomDrawerStyle = ({navigation}) => {
           offset: 10,
           animationType: 'slide-in',
           zIndex: 10,
-          elevation:10
+          elevation: 10,
         });
         setanimationtype('fadeOutDownBig');
         console.log('no internet');
         setnointernet(true);
-        
+
         // setLoader(false);
       } else {
         // setModalVisible(false);
@@ -315,18 +314,20 @@ const CustomDrawerStyle = ({navigation}) => {
                 borderColor: 'black',
               }}
               source={
-                AuthToken != '' && internetconnectionstate == true && ProfileImage != ""
+                AuthToken != '' &&
+                internetconnectionstate == true &&
+                ProfileImage != ''
                   ? {
                       uri: ProfileImage,
                     }
                   : require('../Resources/images/logoguest.png')
               }
             />
-            <View style={{alignItems: 'center', marginTop: scalableheight.one}}>
+            <View style={{marginTop: scalableheight.one}}>
               {AuthToken != '' && internetconnectionstate == true ? (
                 <TouchableOpacity
                   activeOpacity={0.9}
-                  style={{alignItems: 'center'}}
+                  style={{justifyContent: 'center', alignItems: 'center'}}
                   onPress={() => navigation.navigate('AccountSettings')}>
                   <Text
                     style={{
@@ -349,31 +350,32 @@ const CustomDrawerStyle = ({navigation}) => {
                   </View>
                 </TouchableOpacity>
               ) : (
-                internetconnectionstate == true &&
-                <TouchableOpacity
-                  style={{alignItems: 'center'}}
-                  activeOpacity={0.9}
-                  onPress={() => setmodalVisible(true)}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: fontSize.eightteen,
-                      fontFamily: 'Inter-SemiBold',
-                    }}>
-                    {'Guest User'}
-                  </Text>
-                  <View>
+                internetconnectionstate == true && (
+                  <TouchableOpacity
+                    style={{alignItems: 'center'}}
+                    activeOpacity={0.9}
+                    onPress={() => setmodalVisible(true)}>
                     <Text
                       style={{
                         color: 'white',
-                        fontSize: fontSize.twelve,
-                        fontFamily: 'Inter-Medium',
-                        opacity: 0.8,
+                        fontSize: fontSize.eightteen,
+                        fontFamily: 'Inter-SemiBold',
                       }}>
-                      Login/Signup
+                      {'Guest User'}
                     </Text>
-                  </View>
-                </TouchableOpacity>
+                    <View>
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: fontSize.twelve,
+                          fontFamily: 'Inter-Medium',
+                          opacity: 0.8,
+                        }}>
+                        Login/Signup
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                )
               )}
             </View>
           </View>
@@ -475,7 +477,7 @@ const CustomDrawerStyle = ({navigation}) => {
           {/* {renderIf(ProfileInfo != '')(
             <> */}
 
-          {AuthToken != ''  && internetconnectionstate == true ? (
+          {AuthToken != '' && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
@@ -518,7 +520,7 @@ const CustomDrawerStyle = ({navigation}) => {
             </TouchableOpacity>
           ) : null}
 
-          {AuthToken != ''  && internetconnectionstate == true ? (
+          {AuthToken != '' && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
@@ -560,7 +562,7 @@ const CustomDrawerStyle = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           ) : null}
-          {AuthToken != ''  && internetconnectionstate == true? (
+          {AuthToken != '' && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
@@ -603,7 +605,7 @@ const CustomDrawerStyle = ({navigation}) => {
             </TouchableOpacity>
           ) : null}
 
-          {AuthToken != ''  && internetconnectionstate == true ? (
+          {AuthToken != '' && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
@@ -652,7 +654,7 @@ const CustomDrawerStyle = ({navigation}) => {
             {options.map((item, index) => {
               return (
                 <TouchableOpacity
-                key={index.toString()}
+                  key={index.toString()}
                   activeOpacity={0.9}
                   onPress={() => item.onPress()}
                   style={{
@@ -720,7 +722,7 @@ const CustomDrawerStyle = ({navigation}) => {
             })}
           </View>
 
-          {renderIf(AuthToken != '' && internetconnectionstate == true )(
+          {renderIf(AuthToken != '' && internetconnectionstate == true)(
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {

@@ -278,7 +278,6 @@ export const markfavourite = (id, type, token) => {
         dispatch({
           type: MarkFAVOURITE,
           payload: json.Status,
-        
         });
       }
     };

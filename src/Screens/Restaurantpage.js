@@ -1,5 +1,25 @@
-import React, {useState, useEffect, useRef, } from 'react';
-import {Dimensions,ActivityIndicator, LogBox,LayoutAnimation, Animated, Modal, FlatList, TextInput, KeyboardAvoidingView, StatusBar, ScrollView, View, TouchableOpacity, StyleSheet, Image, Text, SafeAreaView, Keyboard, ImageBackground} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {
+  Dimensions,
+  ActivityIndicator,
+  LogBox,
+  LayoutAnimation,
+  Animated,
+  Modal,
+  FlatList,
+  TextInput,
+  KeyboardAvoidingView,
+  StatusBar,
+  ScrollView,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Text,
+  SafeAreaView,
+  Keyboard,
+  ImageBackground,
+} from 'react-native';
 // import Animated from 'react-native-reanimated';
 import HeaderComponentRestaurant from '../Shared/Components/HeaderComponentRestaurant';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -62,12 +82,11 @@ import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-
 const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   const [dataSourceCords, setDataSourceCords] = useState([]);
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(false);
-  const [selecteditemimage, setselecteditemimage] = useState("");
+  const [selecteditemimage, setselecteditemimage] = useState('');
   const [dataSourceCordsHorizontal, setdataSourceCordsHorizontal] = useState(
     [],
   );
@@ -96,7 +115,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   const scrollviewref = useRef();
   const drinksref = useRef();
   const toast = useRef();
-  
+
   const {
     restrauntdetails,
     popularcategories,
@@ -253,102 +272,121 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }, [restrauntmenu]);
 
 
-    
-    
-    function toggleanimation() {
-      if (animationtype == 'fadeInUpBig') {
-        setanimationtype('fadeOutDownBig');
-      } else {
-        setanimationtype('fadeInUpBig');
-      }
+  useEffect(() => {
+    if (addedtofavourite == 'Success') {
+      dispatch(
+        getallrestrauntsbyid(restrauntdetails?.RestaurantBranchId, AuthToken),
+      );
+      dispatch(clearfavourite());
     }
-  
-    useEffect(() => {
-      // hideNavigationBar();
-      if (modalVisible == true) {
-        setanimationstate(true);
+  }, [addedtofavourite]);
+
+  useEffect(() => {
+    if (restrauntdetails?.RestaurantBranchId != undefined) {
+      dispatch(getpopularcategoriesbyid(restrauntdetails?.RestaurantBranchId));
+      dispatch(getrestrauntmenubyid(restrauntdetails?.RestaurantBranchId));
+    }
+  }, [restrauntdetails]);
+
+  useEffect(() => {
+    if (cartdata.length > 0) {
+      setcartvisible(true);
+    } else {
+      setcartvisible(false);
+    }
+    console.log(
+      'all cart data length' +
+        cartdata.length +
+        'data ' +
+        JSON.stringify(cartdata),
+    );
+  }, [cartdata]);
+
+  useEffect(() => {
+    if (restrauntmenu.length > 0) {
+      setscreenloader(false);
+    }
+  }, [restrauntmenu]);
+
+  function toggleanimation() {
+    if (animationtype == 'fadeInUpBig') {
+      setanimationtype('fadeOutDownBig');
+    } else {
+      setanimationtype('fadeInUpBig');
+    }
+  }
+
+  useEffect(() => {
+    // hideNavigationBar();
+    if (modalVisible == true) {
+      setanimationstate(true);
+    }
+  }, [modalVisible]);
+
+  function additemtocart() {
+    let errorcaused = false;
+    let arr = retaurantmenucategorydataoption;
+
+    for (const key in arr.MenuItemOptions) {
+      // console.log("yo yo" + JSON.stringify(arr.MenuItemOptions[key]))
+      let found = 0;
+
+      for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
+        if (
+          arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true
+        ) {
+          // console.log("yo yo" + JSON.stringify(arr.MenuItemOptions[key].MenuItemOptionValues))
+          found = 1;
+        }
       }
-    }, [modalVisible]);
-  
-    function additemtocart(){
-   
-      let errorcaused = false
-      let arr = retaurantmenucategorydataoption;
-     
-      for (const key in arr.MenuItemOptions) {
-        // console.log("yo yo" + JSON.stringify(arr.MenuItemOptions[key]))
-    let found = 0
-  
-          for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
-          
-          if(arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true){
-            // console.log("yo yo" + JSON.stringify(arr.MenuItemOptions[key].MenuItemOptionValues))
-  found = 1
-            }
-          }
-        if(found == 0 &&  arr.MenuItemOptions[key].IsRequired == true){
-          errorcaused = true
-          toast.current.show(arr.MenuItemOptions[key].Title + " is a required field", {
+      if (found == 0 && arr.MenuItemOptions[key].IsRequired == true) {
+        errorcaused = true;
+        toast.current.show(
+          arr.MenuItemOptions[key].Title + ' is a required field',
+          {
             type: 'normal',
             placement: 'bottom',
             duration: 4000,
             offset: 10,
             animationType: 'slide-in',
-          });
-        }
-  
+          },
+        );
       }
-  
-      if(errorcaused == true){
-  
-      }else{
-        let a = []
-        arr["SpecialInstructios"] = specialinstructions
-        arr["Qty"] = count
-    
-        a.push(
-          arr
-        )
-  
-  
-      let addedprice = arr.Price
-      for(const priceindex in arr.MenuItemOptions){
-        for(const i in arr.MenuItemOptions[priceindex].MenuItemOptionValues){
-          if(arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].selected == true){
-            addedprice = addedprice + arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].Price
+    }
+
+    if (errorcaused == true) {
+    } else {
+      let a = [];
+      arr['SpecialInstructios'] = specialinstructions;
+      arr['Qty'] = count;
+
+      a.push(arr);
+
+      let addedprice = arr.Price;
+      for (const priceindex in arr.MenuItemOptions) {
+        for (const i in arr.MenuItemOptions[priceindex].MenuItemOptionValues) {
+          if (
+            arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].selected ==
+            true
+          ) {
+            addedprice =
+              addedprice +
+              arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].Price;
           }
         }
-      } 
-      arr["priceperitem"] = addedprice
-      addedprice = addedprice * count
-      arr["completeitemorderprice"] = addedprice
-      addedprice = price + addedprice
-      dispatch(storecartprice(addedprice))
-      dispatch(storecartdata(a))
-      console.log("this is the price" + JSON.stringify(addedprice))
-      console.log("this is the data going into the cart" + JSON.stringify(arr))
-     clearandclose();
-      setcartvisible(true);
       }
+      arr['priceperitem'] = addedprice;
+      addedprice = addedprice * count;
+      arr['completeitemorderprice'] = addedprice;
+      addedprice = price + addedprice;
+      dispatch(storecartprice(addedprice));
+      dispatch(storecartdata(a));
+      console.log('this is the price' + JSON.stringify(addedprice));
+      console.log('this is the data going into the cart' + JSON.stringify(arr));
+      clearandclose();
+      setcartvisible(true);
     }
-    
-    function clearandclose() {
-     
-      toggleanimation();
-      setanimationstate(true);
-      scrollviewref.current.scrollTo({ y: 0 , animated: true, });
-     
-      Keyboard.dismiss();
-      setmodalVisible(false)
-    }
-  
-    function updatecoordinates(lat, long) {
-      setlat(lat);
-      setlong(long);
-      setinlat(lat);
-      setinlong(long);
-      getLocation();
-    }
+  }
 
     useEffect(() => {
       StatusBar.setHidden(false);
@@ -392,264 +430,269 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       }
     }, [lat, long]);
   
-    function getnewlocation() {
-      Geocoder.from(lat, long)
-        .then(json => {
-          var addressComponent = json.results[0].formatted_address;
-          console.log(addressComponent);
-          setpinlocation(addressComponent);
-        })
-        .catch(error => console.warn(error));
-    }
-   const getLocation = async () => {
+
+
+  function getnewlocation() {
+    Geocoder.from(lat, long)
+      .then(json => {
+        var addressComponent = json.results[0].formatted_address;
+        console.log(addressComponent);
+        setpinlocation(addressComponent);
+      })
+      .catch(error => console.warn(error));
+  }
+  const getLocation = async () => {
     const hasLocationPermission = await hasLocationPermissions();
     if (!hasLocationPermission) {
       return;
     }
   };
-    const hasLocationPermissions = async () => {
-      if (Platform.OS === 'ios') {
-        const hasPermission = await hasLocationPermissionIOS();
-        return hasPermission;
-      }
-  
-      if (Platform.OS === 'android' && Platform.Version < 23) {
-        return true;
-      }
-  
-      const hasPermission = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      );
-  
-      if (hasPermission) {
-        return true;
-      }
-  
-      const status = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      );
-  
-      if (status === PermissionsAndroid.RESULTS.GRANTED) {
-        return true;
-      }
-  
-      if (status === PermissionsAndroid.RESULTS.DENIED) {
-        // ToastAndroid.show(
-        //   'Location permission denied by user.',
-        //   ToastAndroid.LONG,
-        // );
-      } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-        // ToastAndroid.show(
-        //   'Location permission revoked by user.',
-        //   ToastAndroid.LONG,
-        // );
-      }
-      return false;
-    };
-    const hasLocationPermissionIOS = async () => {
-      const openSetting = () => {
-        Linking.openSettings().catch(() => {
-          ToastMessage('success', 'Success', 'Unable to open settings');
-        });
-      };
-      const status = await Geolocation.requestAuthorization('whenInUse');
-  
-      if (status === 'granted') {
-        return true;
-      }
-  
-      if (status === 'denied') {
-        ToastMessage('error', 'Error', 'Location permission denied');
-      }
-  
-      if (status === 'disabled') {
-        Alert.alert(
-          `Turn on Location Services to allow Bakery App to determine your location.`,
-          '',
-          [
-            {text: 'Go to Settings', onPress: openSetting},
-            {text: "Don't Use Location", onPress: () => {}},
-          ],
-        );
-      }
-      return false;
-    };
-  
-    const renderpopularcategories = ({item}) => (
-      <Categoriescard
-        image={item?.Image}
-        type={item?.CategoryName}
-        price={item?.AvgPrice}
-      />
+  const hasLocationPermissions = async () => {
+    if (Platform.OS === 'ios') {
+      const hasPermission = await hasLocationPermissionIOS();
+      return hasPermission;
+    }
+
+    if (Platform.OS === 'android' && Platform.Version < 23) {
+      return true;
+    }
+
+    const hasPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     );
-  
-    const rendertypes = ({item, index}) => (
-      <TouchableOpacity
-        onPress={() => {
-          console.log(  dataSourceCords[index]);
-  
-       scrollviewref.current.scrollTo({ y: dataSourceCords[index + 1] , animated: true, });
-     
-          let data = [...restrauntmenu];
-          for (const index in data) {
-            data[index].visible = false;
-          }
-          data[index].visible = true;
-        dispatch(updatedmenuselection(data))
+
+    if (hasPermission) {
+      return true;
+    }
+
+    const status = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (status === PermissionsAndroid.RESULTS.GRANTED) {
+      return true;
+    }
+
+    if (status === PermissionsAndroid.RESULTS.DENIED) {
+      // ToastAndroid.show(
+      //   'Location permission denied by user.',
+      //   ToastAndroid.LONG,
+      // );
+    } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+      // ToastAndroid.show(
+      //   'Location permission revoked by user.',
+      //   ToastAndroid.LONG,
+      // );
+    }
+    return false;
+  };
+  const hasLocationPermissionIOS = async () => {
+    const openSetting = () => {
+      Linking.openSettings().catch(() => {
+        ToastMessage('success', 'Success', 'Unable to open settings');
+      });
+    };
+    const status = await Geolocation.requestAuthorization('whenInUse');
+
+    if (status === 'granted') {
+      return true;
+    }
+
+    if (status === 'denied') {
+      ToastMessage('error', 'Error', 'Location permission denied');
+    }
+
+    if (status === 'disabled') {
+      Alert.alert(
+        `Turn on Location Services to allow Bakery App to determine your location.`,
+        '',
+        [
+          {text: 'Go to Settings', onPress: openSetting},
+          {text: "Don't Use Location", onPress: () => {}},
+        ],
+      );
+    }
+    return false;
+  };
+
+  const renderpopularcategories = ({item}) => (
+    <Categoriescard
+      image={item?.Image}
+      type={item?.CategoryName}
+      price={item?.AvgPrice}
+    />
+  );
+
+  const rendertypes = ({item, index}) => (
+    <TouchableOpacity
+      onPress={() => {
+        console.log(dataSourceCords[index]);
+
+        scrollviewref.current.scrollTo({
+          y: dataSourceCords[index + 1],
+          animated: true,
+        });
+
+        let data = [...restrauntmenu];
+        for (const index in data) {
+          data[index].visible = false;
+        }
+        data[index].visible = true;
+        dispatch(updatedmenuselection(data));
+      }}
+      style={{
+        backgroundColor: 'transparent',
+        paddingHorizontal: scalableheight.three,
+        alignItems: 'center',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <Text
+        onLayout={event => {
+          const layout = event.nativeEvent.layout;
+          dataSourceCordsHorizontal[index] = layout.x; // we store this offset values in an array
         }}
         style={{
-          backgroundColor: 'transparent',
-          paddingHorizontal: scalableheight.three,
-          alignItems: 'center',
-          height: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          
+          fontFamily: 'Inter-SemiBold',
+          color: item.visible ? '#E14E4E' : 'rgba(211,211,211, 0.9)',
+          fontSize: fontSize.fifteen,
+          paddingVertical: scalableheight.one,
+          borderBottomWidth: item.visible ? 1 : 0,
+          borderColor: '#E14E4E',
         }}>
-        <Text
-          onLayout={event => {
-            const layout = event.nativeEvent.layout;
-            dataSourceCordsHorizontal[index] = layout.x; // we store this offset values in an array
-          }}
-          style={{
-            fontFamily: 'Inter-SemiBold',
-            color: item.visible ? '#E14E4E' : 'rgba(211,211,211, 0.9)',
-            fontSize: fontSize.fifteen,
-            paddingVertical: scalableheight.one,
-            borderBottomWidth: item.visible ? 1 : 0,
-            borderColor: '#E14E4E',
-          }}>
-          {item?.CategoryName}
-        </Text>
-      </TouchableOpacity>
-    );
-  
-    function updateservingstate(index, arrindex) {
-      console.log(arrindex)
-  // let selectedprice = currentitemprice
-      let arr = retaurantmenucategorydataoption;
-     
-      for (const key in arr.MenuItemOptions) {
-  
-        if(key == arrindex){
-          for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
-            if (item == index) {
-              console.log("hello")
-                      if (arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true) {
-                        
-                        arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = false;
-                        // selectedprice = selectedprice - arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
-                     
-                      } else {
-                        arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = true;
-                        // selectedprice= selectedprice + arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
-                      
-                      }
-                    } else {
-                      console.log("bye")
-                      arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = false;
-                    }
-          }
-        }
-  
-      }
-      // setmodaldataoptions(arr);
-      // setcurrentitemprice(selectedprice)
-      dispatch(savemenucategoryoptiondetailsdata(arr))
-      console.log('modaldataoptions' + JSON.stringify(arr));
-      // console.log('arr' + JSON.stringify(arr.MenuItemOptions.MenuItemOptionValues));
-    }
-  
+        {item?.CategoryName}
+      </Text>
+    </TouchableOpacity>
+  );
 
+  function updateservingstate(index, arrindex) {
+    console.log(arrindex);
+    // let selectedprice = currentitemprice
+    let arr = retaurantmenucategorydataoption;
 
-    function updateservingstatemultiple(index, arrindex) {
-      console.log(arrindex)
-  
-      let arr = retaurantmenucategorydataoption;
-     
-      for (const key in arr.MenuItemOptions) {
-  
-        if(key == arrindex){
-          for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
-         
-         
-           
-            if (item == index) {
-             
-                      if (arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true) {
-                        
-                        arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = false;
-                      } else{
-                        let count = 0
-                        for (const countindex in arr.MenuItemOptions[key].MenuItemOptionValues){
-                       
-            if(arr.MenuItemOptions[key].MenuItemOptionValues[countindex].selected == true){
-              count = count + 1
-            }  
-                        }
-
-                        if(count < arr.MenuItemOptions[key].MaxLimit || arr.MenuItemOptions[key].MaxLimit == 0){
-                          arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = true;
-                        }
-         
-           
-                      }
-                    } else {
-                      // console.log("bye")
-                      // arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = false;
-                    }
-          }
-        }
-  
-      }
-      // setmodaldataoptions(arr);
-      dispatch(savemenucategoryoptiondetailsdata(arr))
-      console.log('modaldataoptions' + JSON.stringify(arr));
-      // console.log('arr' + JSON.stringify(arr.MenuItemOptions.MenuItemOptionValues));
-    }
-
-
-
-    
-    function updateflavourstate(index) {
-      let arr = [...flavours];
-      for (const key in arr) {
-        if (key == index) {
-          if (arr[key].selected == true) {
-            arr[key].selected = false;
+    for (const key in arr.MenuItemOptions) {
+      if (key == arrindex) {
+        for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
+          if (item == index) {
+            console.log('hello');
+            if (
+              arr.MenuItemOptions[key].MenuItemOptionValues[item].selected ==
+              true
+            ) {
+              arr.MenuItemOptions[key].MenuItemOptionValues[
+                item
+              ].selected = false;
+              // selectedprice = selectedprice - arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
+            } else {
+              arr.MenuItemOptions[key].MenuItemOptionValues[
+                item
+              ].selected = true;
+              // selectedprice= selectedprice + arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
+            }
           } else {
-            arr[key].selected = true;
+            console.log('bye');
+            arr.MenuItemOptions[key].MenuItemOptionValues[
+              item
+            ].selected = false;
           }
-        } else {
-          arr[key].selected = false;
         }
       }
-      setflavours(arr);
-      console.log('arr' + JSON.stringify(arr));
     }
-  
-    const toggleSwitch = async () => {
-      if(isEnabled == true){
-        setSelectBranchVisible(true)
+    // setmodaldataoptions(arr);
+    // setcurrentitemprice(selectedprice)
+    dispatch(savemenucategoryoptiondetailsdata(arr));
+    console.log('modaldataoptions' + JSON.stringify(arr));
+    // console.log('arr' + JSON.stringify(arr.MenuItemOptions.MenuItemOptionValues));
+  }
+
+  function updateservingstatemultiple(index, arrindex) {
+    console.log(arrindex);
+
+    let arr = retaurantmenucategorydataoption;
+
+    for (const key in arr.MenuItemOptions) {
+      if (key == arrindex) {
+        for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
+          if (item == index) {
+            if (
+              arr.MenuItemOptions[key].MenuItemOptionValues[item].selected ==
+              true
+            ) {
+              arr.MenuItemOptions[key].MenuItemOptionValues[
+                item
+              ].selected = false;
+            } else {
+              let count = 0;
+              for (const countindex in arr.MenuItemOptions[key]
+                .MenuItemOptionValues) {
+                if (
+                  arr.MenuItemOptions[key].MenuItemOptionValues[countindex]
+                    .selected == true
+                ) {
+                  count = count + 1;
+                }
+              }
+
+              if (
+                count < arr.MenuItemOptions[key].MaxLimit ||
+                arr.MenuItemOptions[key].MaxLimit == 0
+              ) {
+                arr.MenuItemOptions[key].MenuItemOptionValues[
+                  item
+                ].selected = true;
+              }
+            }
+          } else {
+            // console.log("bye")
+            // arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = false;
+          }
+        }
       }
-      setisEnabled(!isEnabled);
+    }
+    // setmodaldataoptions(arr);
+    dispatch(savemenucategoryoptiondetailsdata(arr));
+    console.log('modaldataoptions' + JSON.stringify(arr));
+    // console.log('arr' + JSON.stringify(arr.MenuItemOptions.MenuItemOptionValues));
+  }
 
-    };
+  function updateflavourstate(index) {
+    let arr = [...flavours];
+    for (const key in arr) {
+      if (key == index) {
+        if (arr[key].selected == true) {
+          arr[key].selected = false;
+        } else {
+          arr[key].selected = true;
+        }
+      } else {
+        arr[key].selected = false;
+      }
+    }
 
+  }
 
- 
+  const toggleSwitch = async () => {
+    if(isEnabled == true){
+      setSelectBranchVisible(true)
+    }
+    setisEnabled(!isEnabled);
+
+  };
   return (
-    
-   
-    <ScreenWrapper
-    drawer={drawerAnimationStyle}
-    style={{flex: 1, }}>
-          <FocusAwareStatusBar
-        barStyle={useIsDrawerOpen() ? 'light-content' : screenloader == true ? 'dark-content' :'light-content'}
+    <ScreenWrapper drawer={drawerAnimationStyle} style={{flex: 1}}>
+      <FocusAwareStatusBar
+        barStyle={
+          useIsDrawerOpen()
+            ? 'light-content'
+            : screenloader == true
+            ? 'dark-content'
+            : 'light-content'
+        }
         backgroundColor="transparent"
       />
-          {/* {modalVisible && animationtype == 'fadeInUpBig' && ( */}
-    {modalVisible &&  (
+      {/* {modalVisible && animationtype == 'fadeInUpBig' && ( */}
+      {modalVisible && (
         <View
           style={{
             position: 'absolute',
@@ -661,10 +704,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
           }}></View>
       )}
 
-          
-  
-
-<Modal
+      <Modal
         transparent
         style={{
           width: '100%',
@@ -677,7 +717,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
         animationType="slide"
         visible={screenloader}
         onRequestClose={() => setscreenloader(false)}>
-          <View style={{height:"100%", width:"100%", justifyContent:"center", alignItems:"center", backgroundColor:'rgba(0,0,0,0.8)', }}>
+        <View
+          style={{
+            height: '100%',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.8)',
+          }}>
           <ActivityIndicator size="small" color={'red'} />
           </View>
         </Modal>
@@ -794,58 +841,54 @@ dispatch(storedistance(inneritem?.Distance));
         animationType="slide"
         visible={modalVisible}
         onRequestClose={() => setmodalVisible(false)}>
-{modalVisible && (
-        // <Animatable.View
-        
-        //   animation={animationstate ? animationtype : null}
-        //   onAnimationEnd={() => {
-        //     setanimationstate(false);
+        {modalVisible && (
+          // <Animatable.View
 
-        //     if (animationtype == 'fadeOutDownBig') {
+          //   animation={animationstate ? animationtype : null}
+          //   onAnimationEnd={() => {
+          //     setanimationstate(false);
 
-        //       setmodalVisible(false);
-        //       setanimationtype('fadeInUpBig');
+          //     if (animationtype == 'fadeOutDownBig') {
 
-        //     }
-        //   }}
-        //   easing="ease"
-        //   //  iterationCount="infinite"
-        //   iterationCount={1}
-        //   style={{elevation: 4000, zIndex: 4000}}
-        //   >
-        <View
-        
-      
-        style={{elevation: 4000, zIndex: 4000}}
-        >
-          <KeyboardAvoidingView
-            style={{width: '100%', height: '100%'}}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
-            <View
-              style={{
-                width: '100%',
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+          //       setmodalVisible(false);
+          //       setanimationtype('fadeInUpBig');
+
+          //     }
+          //   }}
+          //   easing="ease"
+          //   //  iterationCount="infinite"
+          //   iterationCount={1}
+          //   style={{elevation: 4000, zIndex: 4000}}
+          //   >
+          <View style={{elevation: 4000, zIndex: 4000}}>
+            <KeyboardAvoidingView
+              style={{width: '100%', height: '100%'}}
+              behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
               <View
                 style={{
-                  width: '95%',
-                  height: '90%',
-                  borderRadius: fontSize.eleven,
-                  backgroundColor: 'white',
-                  overflow:"hidden"
+                  width: '100%',
+                  height: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}>
-                <View style={{width: '100%', height: '30%'}}>
-                  <Image
-                    resizeMode="stretch"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                    }}
-                    source={{uri: selecteditemimage}}
-                  />
-                 
+                <View
+                  style={{
+                    width: '95%',
+                    height: '90%',
+                    borderRadius: fontSize.eleven,
+                    backgroundColor: 'white',
+                    overflow: 'hidden',
+                  }}>
+                  <View style={{width: '100%', height: '30%'}}>
+                    <Image
+                      resizeMode="stretch"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                      }}
+                      source={{uri: selecteditemimage}}
+                    />
+
                     {/* <View
                       style={{
                         flexDirection: 'row',
@@ -877,218 +920,209 @@ dispatch(storedistance(inneritem?.Distance));
                             </Text>
                     
                     </View> */}
-           
-                  <TouchableOpacity
-                    onPress={() => {
-                
-                      clearandclose();
-                    }}
+
+                    <TouchableOpacity
+                      onPress={() => {
+                        clearandclose();
+                      }}
+                      style={{
+                        position: 'absolute',
+                        top: scalableheight.one,
+                        right: scalableheight.one,
+                      }}>
+                      <Ionicons
+                        name="close-circle"
+                        color={'#E14E4E'}
+                        // '#F5F5F5'
+                        size={fontSize.thirtyseven}
+                        style={{}}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      width: '100%',
+                      height: '53%',
+                      padding: scalableheight.two,
+                    }}>
+                    <ScrollView
+                      showsVerticalScrollIndicator={false}
+                      nestedScrollEnabled={true}
+                      contentContainerStyle={{
+                        flexGrow: 1,
+                        justifyContent:
+                          retaurantmenucategorydataoption.MenuItemOptions
+                            .length > 0
+                            ? 'space-evenly'
+                            : null,
+                      }}>
+                      <View>
+                        <Text
+                          style={{
+                            fontFamily: 'Inter-Bold',
+                            fontSize: fontSize.sixteen,
+                            color: 'black',
+                          }}>
+                          {retaurantmenucategorydataoption?.Name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: 'Inter-Medium',
+                            fontSize: fontSize.fourteen,
+                            color: 'black',
+                          }}>
+                          {retaurantmenucategorydataoption?.Description}
+                        </Text>
+                        <View style={{height: scalableheight.one}} />
+                      </View>
+                      {retaurantmenucategorydataoption?.MenuItemOptions
+                        ?.length > 0 &&
+                        retaurantmenucategorydataoption.MenuItemOptions?.map(
+                          (item, key) => {
+                            return item?.IsRadioButton == true ? (
+                              item?.MenuItemOptionValues[0].Price != 0.0 ? (
+                                <View key={key.toString()}>
+                                  <MultiChoiceDropDown
+                                    title={item?.Title}
+                                    IsRequired={item?.IsRequired}
+                                    data={item?.MenuItemOptionValues}
+                                    index={key}
+                                    update={updateservingstate}
+                                  />
+                                  <View style={{height: scalableheight.one}} />
+                                </View>
+                              ) : (
+                                <View key={key.toString()}>
+                                  <Mltichoicehorizontallist
+                                    title={item?.Title}
+                                    IsRequired={item?.IsRequired}
+                                    data={item?.MenuItemOptionValues}
+                                    index={key}
+                                    update={updateservingstate}
+                                  />
+                                  <View style={{height: scalableheight.one}} />
+                                </View>
+                              )
+                            ) : (
+                              /////////////// multiple selection data
+                              <View key={key.toString()}>
+                                <MultiChoiceDropDownWithMultipleSelection
+                                  title={item?.Title}
+                                  IsRequired={item?.IsRequired}
+                                  data={item?.MenuItemOptionValues}
+                                  index={key}
+                                  update={updateservingstatemultiple}
+                                />
+                                <View style={{height: scalableheight.one}} />
+                              </View>
+                            );
+                          },
+                        )}
+
+                      <View>
+                        <View style={{height: scalableheight.one}} />
+                        <Text
+                          style={{
+                            fontFamily: 'Inter-SemiBold',
+                            fontSize: fontSize.thirteen,
+                            color: 'black',
+                            opacity: 0.4,
+                          }}>
+                          Special Instructions
+                        </Text>
+                        <View style={{height: scalableheight.one}} />
+                        <TextInput
+                          multiline
+                          value={specialinstructions}
+                          onChangeText={text => setspecialinstructions(text)}
+                          placeholder={'Type here'}
+                          style={{
+                            ...styleSheet.shadow,
+                            width: '98%',
+                            height: scalableheight.fifteen,
+                            fontSize: fontSize.fifteen,
+                            backgroundColor: '#F9F9F9',
+                            alignSelf: 'center',
+                            borderRadius: fontSize.borderradiusmedium,
+                            paddingHorizontal: '5%',
+
+                            textAlignVertical: 'top',
+                          }}
+                        />
+                      </View>
+                      {keyboardopen ? (
+                        <View style={{height: scalableheight.two}} />
+                      ) : null}
+                    </ScrollView>
+                  </View>
+                  <View
                     style={{
                       position: 'absolute',
-                      top: scalableheight.one,
-                      right: scalableheight.one,
+                      bottom: scalableheight.two,
+                      width: '100%',
+                      paddingHorizontal: scalableheight.two,
                     }}>
-                    <Ionicons
-                      name="close-circle"
-                      color={'#E14E4E'}
-                      // '#F5F5F5'
-                      size={fontSize.thirtyseven}
-                      style={{}}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    width: '100%',
-                    height: '53%',
-                    padding: scalableheight.two,
-                    
-                  }}>
-                  <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    nestedScrollEnabled={true}
-                    contentContainerStyle={{
-                      flexGrow: 1,
-                      justifyContent: retaurantmenucategorydataoption.MenuItemOptions.length > 0 ?'space-evenly' : null,
-                    }}>
-                      <View>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Bold',
-                        fontSize: fontSize.sixteen,
-                        color: 'black',
-                      }}>
-                   {retaurantmenucategorydataoption?.Name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.fourteen,
-                        color: 'black',
-                      }}>
-                       {retaurantmenucategorydataoption?.Description}
-                    </Text>
-                    <View style={{height: scalableheight.one}} />
-                    </View>
-                    {retaurantmenucategorydataoption?.MenuItemOptions?.length > 0 &&
-                  
-                  retaurantmenucategorydataoption.MenuItemOptions?.map((item, key) => {
-                      return (
-                      item?.IsRadioButton == true ?
-                   
-                        item?.MenuItemOptionValues[0].Price != 0.00 ? 
-                        <View
-                        key={key.toString()} 
-                        >
-                          
-                        <MultiChoiceDropDown
-                      
-                        title={item?.Title}
-                        IsRequired = {item?.IsRequired}
-                        data={item?.MenuItemOptionValues}
-                        index={key}
-                        update={updateservingstate}
-                      />
-                         <View style={{height: scalableheight.one}} />
-                      </View>
-                        : 
-                        <View
-                        key={key.toString()} 
-                        >
-                        <Mltichoicehorizontallist
-                        
-                        title={item?.Title}
-                        IsRequired = {item?.IsRequired}
-                        data={item?.MenuItemOptionValues}
-                        index={key}
-                        update={updateservingstate}
-                      />
-                         <View style={{height: scalableheight.one}} />
-                      </View>
-             : 
-/////////////// multiple selection data
-<View
-key={key.toString()} 
->
-               
-<MultiChoiceDropDownWithMultipleSelection
-title={item?.Title}
-IsRequired = {item?.IsRequired}
-data={item?.MenuItemOptionValues}
-index={key}
-update={updateservingstatemultiple}
-/>
- <View style={{height: scalableheight.one}} />
-</View>
-                      )})
-                 
-}
-
-                   
-<View>
-                    <View style={{height: scalableheight.one}} />
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.thirteen,
-                        color: 'black',
-                        opacity: 0.4,
-                      }}>
-                      Special Instructions
-                    </Text>
-                    <View style={{height: scalableheight.one}} />
-                    <TextInput
-                      multiline
-                      value={specialinstructions}
-                      onChangeText={text => setspecialinstructions(text)}
-                      placeholder={'Type here'}
-                      style={{
-                        ...styleSheet.shadow,
-                        width: '98%',
-                        height: scalableheight.fifteen,
-                        fontSize: fontSize.fifteen,
-                        backgroundColor: '#F9F9F9',
-                        alignSelf: 'center',
-                        borderRadius: fontSize.borderradiusmedium,
-                        paddingHorizontal: '5%',
-            
-                        textAlignVertical: 'top',
-                      }}
-                    />
-</View>
-                    {keyboardopen ? (
-                      <View style={{height: scalableheight.two}} />
-                    ) : null}
-                  </ScrollView>
-                </View>
-                <View
-                  style={{
-                    position: 'absolute',
-                    bottom: scalableheight.two,
-                    width: '100%',
-                    paddingHorizontal: scalableheight.two,
-                  }}>
-                  {keyboardopen != true ? (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        width: '50%',
-                        justifyContent: 'space-evenly',
-                        alignSelf: 'center',
-                        marginBottom: scalableheight.two,
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          count > 1 ? setcount(count - 1) : null;
-                        }}>
-                        <AntDesign
-                          name="minuscircle"
-                          color={'#E14E4E'}
-                          size={fontSize.twentyseven}
-                          style={{}}
-                        />
-                      </TouchableOpacity>
+                    {keyboardopen != true ? (
                       <View
                         style={{
-                          backgroundColor: '#F5F5F5',
-                          width: scalableheight.six,
-                          height: scalableheight.four,
+                          flexDirection: 'row',
                           alignItems: 'center',
-                          justifyContent: 'center',
-                          borderRadius: fontSize.eight,
+                          width: '50%',
+                          justifyContent: 'space-evenly',
+                          alignSelf: 'center',
+                          marginBottom: scalableheight.two,
                         }}>
-                        <Text>{count}</Text>
-                      </View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            count > 1 ? setcount(count - 1) : null;
+                          }}>
+                          <AntDesign
+                            name="minuscircle"
+                            color={'#E14E4E'}
+                            size={fontSize.twentyseven}
+                            style={{}}
+                          />
+                        </TouchableOpacity>
+                        <View
+                          style={{
+                            backgroundColor: '#F5F5F5',
+                            width: scalableheight.six,
+                            height: scalableheight.four,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: fontSize.eight,
+                          }}>
+                          <Text>{count}</Text>
+                        </View>
 
-                      <TouchableOpacity
-                        onPress={() => {
-                          setcount(count + 1);
-                        }}>
-                        <AntDesign
-                          name="pluscircle"
-                          color={'#E14E4E'}
-                          size={fontSize.twentyseven}
-                          style={{}}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  ) : null}
-                  <MYButton
-                    color={'#E14E4E'}
-                    title={'Add To Cart'}
-                    textcolor={'white'}
-                    onPress={() => {
-                   additemtocart()
-                    }}
-                  />
+                        <TouchableOpacity
+                          onPress={() => {
+                            setcount(count + 1);
+                          }}>
+                          <AntDesign
+                            name="pluscircle"
+                            color={'#E14E4E'}
+                            size={fontSize.twentyseven}
+                            style={{}}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    ) : null}
+                    <MYButton
+                      color={'#E14E4E'}
+                      title={'Add To Cart'}
+                      textcolor={'white'}
+                      onPress={() => {
+                        additemtocart();
+                      }}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-          </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
           </View>
-      //  </Animatable.View>
-      )}
+          //  </Animatable.View>
+        )}
       </Modal>
       {cartvisible && (
         // <Animatable.View
@@ -1108,18 +1142,17 @@ update={updateservingstatemultiple}
         //     paddingHorizontal: scalableheight.two,
         //   }}>
         <View
-       
-        style={{
-          bottom: scalableheight.two,
-          position: 'absolute',
-          width: '90%',
-          backgroundColor: '#E14E4E',
-          zIndex: 2,
-          alignSelf: 'center',
-          borderRadius: fontSize.eleven,
-          paddingVertical: scalableheight.one,
-          paddingHorizontal: scalableheight.two,
-        }}>
+          style={{
+            bottom: scalableheight.two,
+            position: 'absolute',
+            width: '90%',
+            backgroundColor: '#E14E4E',
+            zIndex: 2,
+            alignSelf: 'center',
+            borderRadius: fontSize.eleven,
+            paddingVertical: scalableheight.one,
+            paddingHorizontal: scalableheight.two,
+          }}>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Checkout');
@@ -1176,11 +1209,11 @@ update={updateservingstatemultiple}
               </Text>
             </View>
           </TouchableOpacity>
-          </View>
-       // </Animatable.View>
+        </View>
+        // </Animatable.View>
       )}
-     
-         {/* <View style={{position:"absolute",backgroundColor: "transparent", paddingTop: getStatusBarHeight(), elevation: 3000, zIndex:3000}}>
+
+      {/* <View style={{position:"absolute",backgroundColor: "transparent", paddingTop: getStatusBarHeight(), elevation: 3000, zIndex:3000}}>
      
          <HeaderComponentRestaurant
                   // newNotificationCount={newNotificationCount}
@@ -1188,177 +1221,163 @@ update={updateservingstatemultiple}
                   toggleSwitch={toggleSwitch}
                 />
           </View> */}
-   
+
+      <AnimatedScrollView
+        bounces={false}
+        useNativeDriver={true}
+        keyExtractor={(item, index) => index.toString()}
+        ref={scrollviewref}
+        scrollEventThrottle={1}
+        snapToAlignment="start"
+        decelerationRate={'fast'}
+        snapToInterval={scalableheight.fourtythree}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollOffsetY}}}],
+          {
+            listener: event => {
+              //  LayoutAnimation.easeInEaseOut();
+              let y = event.nativeEvent.contentOffset.y;
+
+              let closest = dataSourceCords[1];
+              for (let item of dataSourceCords) {
+                if (
+                  Math.abs(item - y) <
+                  Math.abs(closest - y) - scalableheight.fourtynine
+                ) {
+                  closest = item;
+                }
+              }
+              for (const index in dataSourceCords) {
+                if (dataSourceCords[index] == closest) {
+                  if (restrauntmenu[index - 1]?.visible != true) {
+                    let data = [...restrauntmenu];
+                    for (const index in data) {
+                      data[index].visible = false;
+                    }
+                    data[index - 1].visible = true;
+
+                    dispatch(updatedmenuselection(data));
+                    scrollviewhorizontalref.current?.scrollToIndex({
+                      index: index - 1,
+                      animated: true,
+                    });
+                    // scrollviewhorizontalref.current?.scrollToIndex({
+                    //   index: inreview,
+                    //   animated: true,
+                    // })
+                    //  scrollviewhorizontalref.current.scrollTo({ y: dataSourceCordsHorizontal[0], animated: true });
+                  }
+                }
+              }
+            },
+          },
+          {useNativeDriver: true},
+        )}
+        showsVerticalScrollIndicator={false}
+        style={{
+          backgroundColor: '#F6F6F6',
+          // paddingHorizontal: scalableheight.one,
+          //  marginTop: animatedtop
+        }}>
+        <>
+          <DynamicHeader
+            pinlocation={pinlocation}
+            showlocation={() => {
+              setshowbottomsheet(true);
+            }}
+            search={val => {
+              setsearch(val);
+            }}
+            animHeaderValue={scrollOffsetY}
+            isEnabled={isEnabled}
+            toggleSwitch={toggleSwitch}
+
+        
+            openbranchlist={()=>{
+              setSelectBranchVisible(true)
+            }}
+            pickupstate ={isEnabled}
+          />
+
   
-    
-  <AnimatedScrollView
-  bounces={false}
-      useNativeDriver = {true}
-    keyExtractor={(item, index) => index.toString()}
-  ref={scrollviewref}
-  
-  scrollEventThrottle={1}
-  snapToAlignment="start"
-  decelerationRate={"fast"}
-  snapToInterval={scalableheight.fourtythree}
-  onScroll={
-    
-    Animated.event(
-      
-  [{ nativeEvent: { contentOffset: { y: scrollOffsetY},
- 
- }}],
- {listener: (event) =>    {
-  //  LayoutAnimation.easeInEaseOut();
-   let y = event.nativeEvent.contentOffset.y 
-   
-   
-
-let closest = dataSourceCords[1];
-for(let item of dataSourceCords){
-if(Math.abs(item - y)<Math.abs(closest - y)-scalableheight.fourtynine){
-closest = item;
-}
-}
-for(const index in dataSourceCords){
-if(dataSourceCords[index] == closest){
-if (restrauntmenu[index - 1]?.visible != true) {
-  let data = [...restrauntmenu];
-  for (const index in data) {
-    data[index].visible = false;
-  }
-  data[index - 1].visible = true;
 
 
+          <View style={{paddingHorizontal: scalableheight.one}}>
+            {restrauntmenu.map((item, key) => {
+              return (
+                <View
+                  key={key.toString()}
+                  onLayout={event => {
+                    const layout = event.nativeEvent.layout;
+                    dataSourceCords[key + 1] = layout.y; // we store this offset values in an array
+                  }}>
+                  {/* <> */}
+                  {search == '' && (
+                    <Text style={styleSheet.heading}>
+                      {item?.CategoryName}{' '}
+                    </Text>
+                  )}
+                  {item?.Items?.map((item, key) => {
+                    return item?.Name.toLowerCase().includes(
+                      search.trim().toLowerCase(),
+                    ) ? (
+                      <View
+                        key={key.toString()}
+                        style={{width: '100%', alignItems: 'center'}}>
+                        <Starters
+                          image={item?.Image}
+                          title={item?.Name}
+                          description={item?.Description}
+                          price={item?.Price}
+                          onPress={() => {
+                            setselecteditemimage(item?.Image);
+                            setmodaldataoptions(item);
+                            setmodaldataoptionsindex(key);
+                            dispatch(savemenucategoryoptiondetailsdata(item));
+                            setspecialinstructions('');
+                            setcount(1);
 
-  dispatch(updatedmenuselection(data))
-  scrollviewhorizontalref.current?.scrollToIndex({
-    index: index - 1 ,
-    animated: true,
-  });
-  // scrollviewhorizontalref.current?.scrollToIndex({
-  //   index: inreview,
-  //   animated: true,
-  // })
-  //  scrollviewhorizontalref.current.scrollTo({ y: dataSourceCordsHorizontal[0], animated: true });
-}
+                            setmodalVisible(true);
+                          }}
+                        />
+                      </View>
+                    ) : null;
+                  })}
+                  {/* </> */}
+                </View>
+              );
+            })}
+          </View>
+        </>
+      </AnimatedScrollView>
 
-}
-}
-   }},
-  {useNativeDriver: true},
+      <DynamicScrolledupheader
+        scrollviewhorizontalref={scrollviewhorizontalref}
+        //    pinlocation ={pinlocation}
+        // showlocation={() => {
+        //   setshowbottomsheet(true)
+        //  }}
+        scrolltocategory={index => {
+          console.log(dataSourceCords[index]);
 
-)}
- 
-  showsVerticalScrollIndicator={false}
-  style={{
-    backgroundColor: '#F6F6F6',
-    // paddingHorizontal: scalableheight.one,
-    //  marginTop: animatedtop
-  }}>
-   <>
- 
+          scrollviewref.current.scrollTo({
+            y: dataSourceCords[index + 1] + scalableheight.fourtynine,
+            animated: true,
+          });
 
- 
-   <DynamicHeader 
-         pinlocation ={pinlocation}
-      showlocation={() => {
-        setshowbottomsheet(true)
-       }}
-       search ={(val) => {
-      setsearch(val)
-       }}
-   animHeaderValue={scrollOffsetY} 
-
-                  isEnabled={isEnabled}
-                  toggleSwitch={toggleSwitch}
-                  openbranchlist={()=>{
-                    setSelectBranchVisible(true)
-                  }}
-                  pickupstate ={isEnabled}
-  />
-
-
-<View style={{ paddingHorizontal: scalableheight.one,}}>
-   {restrauntmenu.map((item, key) => {
-    return (
-     <View
-     key={key.toString()}
-     onLayout={event => {
-      const layout = event.nativeEvent.layout;
-      dataSourceCords[key + 1] = layout.y; // we store this offset values in an array
-    }}
-     >
-    {/* <> */}
-     {search == "" &&
-      <Text
-     
- 
-    style={styleSheet.heading}>
-    {item?.CategoryName}{' '}
-  </Text>
-   }
-  {item?.Items?.map((item, key) => {
-    return (
-      item?.Name.toLowerCase().includes(search.trim().toLowerCase()) ? 
-      <View
-       key={key.toString()}
-      style={{width: '100%', alignItems: 'center'}}>
-        <Starters
-          image={item?.Image}
-          title={item?.Name}
-          description={
-           item?.Description
+          let data = [...restrauntmenu];
+          for (const index in data) {
+            data[index].visible = false;
           }
-          price={item?.Price}
-          onPress={() => {
-            setselecteditemimage(item?.Image)
-            setmodaldataoptions(item)
-            setmodaldataoptionsindex(key)
-            dispatch(savemenucategoryoptiondetailsdata(item))
-            setspecialinstructions("")
-            setcount(1)
-           
-            setmodalVisible(true);
-          }}
-        />
-      </View> : null
-    );
-  })}
-   {/* </> */}
-   </View>
-    );
-  })}
-</View>
- 
-</>
-
-</AnimatedScrollView> 
- 
-<DynamicScrolledupheader 
-scrollviewhorizontalref ={scrollviewhorizontalref}
-      //    pinlocation ={pinlocation}
-      // showlocation={() => {
-      //   setshowbottomsheet(true)
-      //  }}
-      scrolltocategory ={(index) => {
-        console.log(  dataSourceCords[index]);
-
-         scrollviewref.current.scrollTo({ y: dataSourceCords[index + 1] + scalableheight.fourtynine, animated: true, });
-      
-           let data = [...restrauntmenu];
-           for (const index in data) {
-             data[index].visible = false;
-           }
-           data[index].visible = true;
-         dispatch(updatedmenuselection(data))
-       }}
-   animHeaderValue={scrollOffsetY} 
-   dataSourceCordsHorizontal= {dataSourceCordsHorizontal}
-   isEnabled={isEnabled}
-   toggleSwitch={toggleSwitch}
-  />
-{/* <View style={{backgroundColor:"#201F1F", position:"absolute", top: 0, width:"100%", height: scalableheight.tweleve + getStatusBarHeight() , zIndex: -2, elevation:-2, paddingTop: getStatusBarHeight() + scalableheight.ten}}>
+          data[index].visible = true;
+          dispatch(updatedmenuselection(data));
+        }}
+        animHeaderValue={scrollOffsetY}
+        dataSourceCordsHorizontal={dataSourceCordsHorizontal}
+        isEnabled={isEnabled}
+        toggleSwitch={toggleSwitch}
+      />
+      {/* <View style={{backgroundColor:"#201F1F", position:"absolute", top: 0, width:"100%", height: scalableheight.tweleve + getStatusBarHeight() , zIndex: -2, elevation:-2, paddingTop: getStatusBarHeight() + scalableheight.ten}}>
 <AnimatedFlatList
               key={"1"}
                 keyExtractor={(item, index) => index.toString()}
@@ -1387,11 +1406,7 @@ scrollviewhorizontalref ={scrollviewhorizontalref}
               /> 
 </View> */}
 
-
-
-
-
-<Custombottomsheet
+      <Custombottomsheet
         state={showbottomsheet}
         locationpin={pinlocation}
         onPressnewCoordinates={(a, b) => {
@@ -1406,16 +1421,11 @@ scrollviewhorizontalref ={scrollviewhorizontalref}
         latitude={lat}
         longitude={long}
       />
-       <Toast
+      <Toast
         ref={toast}
         style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
       />
-
-
-
-   
-    </ScreenWrapper> 
-
+    </ScreenWrapper>
   );
 };
 
@@ -1466,7 +1476,7 @@ const styleSheet = StyleSheet.create({
     fontSize: fontSize.sixteen,
     paddingTop: scalableheight.one,
     paddingBottom: scalableheight.two,
-    marginLeft:scalableheight.one,
+    marginLeft: scalableheight.one,
     // borderWidth:1, borderColor:"red"
   },
 });
