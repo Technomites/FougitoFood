@@ -5,6 +5,7 @@ import HeaderComponentRestaurant from '../Shared/Components/HeaderComponentResta
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import DynamicHeader from '../Shared/Components/DynamicHeader';
 import DynamicScrolledupheader from '../Shared/Components/DynamicScrolledupheader';
+import BranchListed from '../Shared/Components/BranchListed';
 
 import MultiChoiceDropDownWithMultipleSelection from '../Shared/Components/MultiChoiceDropDownWithMultipleSelection';
 
@@ -48,7 +49,13 @@ import {
   pickupstate,
   markfavourite,
   getallrestrauntsbyid,
-  clearfavourite
+  clearfavourite,
+  getallrestaurantbranches,
+  cleancart,
+  storerestrauntid,
+  storerestrauntbasicdata,
+  storedistance,
+  clearmenu
 } from '../Actions/actions';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 
@@ -71,6 +78,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   const [specialinstructions, setspecialinstructions] = useState('');
   const [cartvisible, setcartvisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
+  const [SelectBranchVisible, setSelectBranchVisible] = useState(false);
   const [count, setcount] = useState(1);
   const [lat, setlat] = useState(route?.params?.latitude);
   const [long, setlong] = useState(route?.params?.longitude);
@@ -98,7 +106,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     price,
     AuthToken,
     addedtofavourite,
-    Selectedcurrentaddress
+    Selectedcurrentaddress,
+    branchlist,
+    currentRestrauntid
  
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
@@ -195,7 +205,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
 
     useEffect(() => {
       if(addedtofavourite == "Success"){
-  
+       
+        toast.current.show(restrauntdetails?.Isfavourite ? "Removed From Whishlist" : "Added To Whishlist", {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+        });
         dispatch(getallrestrauntsbyid(restrauntdetails?.RestaurantBranchId, AuthToken));
     dispatch(clearfavourite())
         
@@ -208,7 +225,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       if(restrauntdetails?.RestaurantBranchId != undefined){
         dispatch(getpopularcategoriesbyid(restrauntdetails?.RestaurantBranchId))
         dispatch(getrestrauntmenubyid(restrauntdetails?.RestaurantBranchId))
-    
+        dispatch(getallrestaurantbranches(restrauntdetails?.RestaurantId))
         
       }
      
@@ -336,11 +353,13 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     useEffect(() => {
       StatusBar.setHidden(false);
       LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+    
     }, []);
 
   
     React.useEffect(() => {
       const unsubscribe = navigation.addListener('focus', () => {
+     
         scrollviewref.current.scrollTo({ y: 0 , animated: true, });
       });
       return unsubscribe;
@@ -353,28 +372,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       );
     }, [dataSourceCordsHorizontal]);
   
-    // useEffect(() => {
-    //   const keyboardDidShowListener = Keyboard.addListener(
-    //     'keyboardDidShow',
-    //     () => {
-    //       // hideNavigationBar();
-    //       console.log('Keyboard is open');
-    //       setkeyboardopen(true);
-    //     },
-    //   );
-    //   const keyboardDidHideListener = Keyboard.addListener(
-    //     'keyboardDidHide',
-    //     () => {
-    //       // hideNavigationBar();
-    //       setkeyboardopen(false);
-    //       console.log('Keyboard is closed');
-    //     },
-    //   );
-  
-    //   return () => {
-    //     keyboardDidHideListener.remove();
-    //   };
-    // }, []);
+ 
   
 
   
@@ -631,7 +629,11 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }
   
     const toggleSwitch = async () => {
+      if(isEnabled == true){
+        setSelectBranchVisible(true)
+      }
       setisEnabled(!isEnabled);
+
     };
 
 
@@ -677,6 +679,106 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
         onRequestClose={() => setscreenloader(false)}>
           <View style={{height:"100%", width:"100%", justifyContent:"center", alignItems:"center", backgroundColor:'rgba(0,0,0,0.8)', }}>
           <ActivityIndicator size="small" color={'red'} />
+          </View>
+        </Modal>
+
+
+        <Modal
+        transparent
+        style={{
+          width: '100%',
+          height: '100%',
+          // zIndex: 1,
+          // elevation: 1,
+          // position: 'absolute',
+        }}
+        statusBarTranslucent
+        animationType="fade"
+        visible={SelectBranchVisible}
+        onRequestClose={() => setSelectBranchVisible(false)}>
+          <View style={{height:"100%", width:"100%", justifyContent:"center", alignItems:"center", backgroundColor:'rgba(0,0,0,0.8)', }}>
+          <View
+              style={{
+                width: '90%',
+                //   height: '40%',
+                maxHeight: '40%',
+                borderRadius: fontSize.eleven,
+                backgroundColor: 'white',
+                paddingVertical: scalableheight.one,
+                paddingHorizontal: scalableheight.two,
+              
+              }}>
+          <View style={{width:"100%", height: scalableheight.five,  alignItems:"center", justifyContent:"space-between", flexDirection:"row" }}> 
+          <Text style={{
+
+fontFamily: 'Inter-Medium',
+fontSize: fontSize.sixteen,
+color: '#111111',
+          }}>Select Branch</Text>
+          <TouchableOpacity
+                    onPress={() => {
+                      setSelectBranchVisible(false)
+                    
+                    }}
+                    style={{
+                      // position: 'absolute',
+                      // top: scalableheight.one,
+                      // right: scalableheight.one,
+                    }}>
+                    <Ionicons
+                      name="close-circle"
+                      color={'#E14E4E'}
+                      // '#F5F5F5'
+                      size={fontSize.thirty}
+                      style={{}}
+                    />
+                  </TouchableOpacity>
+          </View>
+        {/* //  branchlist */}
+        <ScrollView showsVerticalScrollIndicator={false} style={{}}>
+               
+            
+                   
+                        {branchlist.map(inneritem => {
+                          return  (
+                        <BranchListed
+                        image={inneritem.Restaurant?.Logo}
+                        title={inneritem?.NameAsPerTradeLicense}
+                        Address={inneritem?.Address}
+                 
+
+
+                      
+                        onPress={() => {
+
+
+if (currentRestrauntid != inneritem?.Id) {
+  dispatch(clearmenu())  
+  setscreenloader(true)
+
+
+  dispatch(storerestrauntbasicdata(inneritem));
+dispatch(storedistance(inneritem?.Distance));
+  dispatch(storecartprice(0));
+  dispatch(cleancart());
+  dispatch(storerestrauntid(inneritem?.Id));
+  dispatch(getallrestrauntsbyid(inneritem?.Id, AuthToken));
+ dispatch(getpopularcategoriesbyid(inneritem?.Id))
+  dispatch(getrestrauntmenubyid(inneritem?.Id))
+}
+
+                        setSelectBranchVisible(false)
+                        }}
+                    
+                      />
+                          ) 
+                        })}
+                 
+              
+
+               
+              </ScrollView>
+            </View>
           </View>
         </Modal>
 <Modal
@@ -1170,6 +1272,10 @@ if (restrauntmenu[index - 1]?.visible != true) {
 
                   isEnabled={isEnabled}
                   toggleSwitch={toggleSwitch}
+                  openbranchlist={()=>{
+                    setSelectBranchVisible(true)
+                  }}
+                  pickupstate ={isEnabled}
   />
 
 

@@ -113,6 +113,8 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
         <PlainHeader title={'My Favourites'} />
     
         <View style={{width: '100%', paddingHorizontal: scalableheight.two,}}>
+         {favouriterestuarants.length > 0 ?
+         
           <FlatList
             data={favouriterestuarants}
             renderItem={renderItem}
@@ -122,6 +124,18 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
             contentContainerStyle={{paddingBottom: 54}}
             keyExtractor={(item, index) => index.toString()}
           />
+          :
+          <View
+          style={{
+            // justifyContent: 'center',
+            // alignItems: 'center',
+            alignSelf: 'center',
+            marginVertical: scalableheight.fourty,
+          }}>
+          <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
+            No Data Found
+          </Text>
+        </View>}
         </View>
       </View>
     </Animated.View>

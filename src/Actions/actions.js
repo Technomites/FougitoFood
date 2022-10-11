@@ -70,6 +70,8 @@ export const internetCHECK = 'internetCHECK';
 export const OrderID = 'OrderID';
 export const ClearProfile = 'ClearProfile';
 export const DELETEDADDRESS = 'DELETEDADDRESS';
+export const GETALLBRANCHLIST = 'GETALLBRANCHLIST';
+export const CLEARMENU = 'CLEARMENU';
 const API_URl = 'https://api.fougito.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
@@ -78,6 +80,45 @@ const header1 = {
 };
 
 
+export const clearmenu = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: CLEARMENU,
+        payload: [],
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getallrestaurantbranches = (id) => {
+  try {
+    return async dispatch => {
+      const result = await fetch(API_URl + 'Customer/Restaurant/' + id + '/GetActiveBranches', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const json = await result.json();
+
+
+      console.log('getallrestaurantbranches ' +id +" " + JSON.stringify(json));
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: GETALLBRANCHLIST,
+          payload: json.Result,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 export const deleteaddress = (id, token) => {
@@ -237,6 +278,7 @@ export const markfavourite = (id, type, token) => {
         dispatch({
           type: MarkFAVOURITE,
           payload: json.Status,
+        
         });
       }
     };

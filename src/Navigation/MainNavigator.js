@@ -334,7 +334,7 @@ const CustomDrawerStyle = ({navigation}) => {
                       fontSize: fontSize.eightteen,
                       fontFamily: 'Inter-SemiBold',
                     }}>
-                    {ProfileName}
+                    {ProfileName.trim()}
                   </Text>
                   <View>
                     <Text
