@@ -27,7 +27,7 @@ import PlainHeader from '../Shared/Components/PlainHeader';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import MYButton from '../Shared/Components/MYButton';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import Bll from '../Shared/Components/Bll';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -39,7 +39,7 @@ import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 import ItemDetailsModel from '../Shared/Components/ItemDetailsModel';
 import ItemsDetailsModel2 from '../Shared/Components/ItemsDetailsModel2';
 import Toast from 'react-native-toast-notifications';
-import Ratingbar from '../Shared/Components/Ratingbar';
+import MapViewDirections from 'react-native-maps-directions';
 
 const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   const {AuthToken, orderdetails, orderResult, ReviewStatus, orderstatus} =
@@ -54,7 +54,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
   const [loader, setLoader] = useState(false);
-
+  const GOOGLE_MAPS_APIKEY = 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso';
   const refMap = useRef(null);
   const toast = useRef();
 
@@ -62,7 +62,173 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   useEffect(() => {
     StatusBar.setHidden(false);
   }, []);
-
+  var blueOceanStyles = [
+    {
+      featureType: 'administrative',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#a7a7a7',
+        },
+      ],
+    },
+    {
+      featureType: 'administrative',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          visibility: 'on',
+        },
+        {
+          color: '#737373',
+        },
+      ],
+    },
+    {
+      featureType: 'landscape',
+      elementType: 'geometry.fill',
+      stylers: [
+        {
+          visibility: 'on',
+        },
+        {
+          color: '#efefef',
+        },
+      ],
+    },
+    {
+      featureType: 'poi',
+      elementType: 'geometry.fill',
+      stylers: [
+        {
+          visibility: 'on',
+        },
+        {
+          color: '#dadada',
+        },
+      ],
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels',
+      stylers: [
+        {
+          visibility: 'off',
+        },
+      ],
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.icon',
+      stylers: [
+        {
+          visibility: 'off',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#696969',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.icon',
+      stylers: [
+        {
+          visibility: 'off',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.fill',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          visibility: 'on',
+        },
+        {
+          color: '#b3b3b3',
+        },
+      ],
+    },
+    {
+      featureType: 'road.arterial',
+      elementType: 'geometry.fill',
+      stylers: [
+        {
+          color: '#ffffff',
+        },
+      ],
+    },
+    {
+      featureType: 'road.arterial',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#d6d6d6',
+        },
+      ],
+    },
+    {
+      featureType: 'road.local',
+      elementType: 'geometry.fill',
+      stylers: [
+        {
+          visibility: 'on',
+        },
+        {
+          color: '#ffffff',
+        },
+        {
+          weight: 1.8,
+        },
+      ],
+    },
+    {
+      featureType: 'road.local',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#d7d7d7',
+        },
+      ],
+    },
+    {
+      featureType: 'transit',
+      elementType: 'all',
+      stylers: [
+        {
+          color: '#808080',
+        },
+        {
+          visibility: 'off',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry.fill',
+      stylers: [
+        {
+          color: '#d3d3d3',
+        },
+      ],
+    },
+  ];
   useEffect(() => {
     if (orderResult[0]?.RestaurantRatings[0]?.Rating > -1) {
       setDefaultRating(orderResult[0]?.RestaurantRatings[0]?.Rating);
@@ -528,7 +694,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 }}>
                 <MapView
                   // provider={PROVIDER_GOOGLE}
-                  // customMapStyle={customStyle}
+                  customMapStyle={blueOceanStyles}
                   ref={refMap}
                   style={{
                     width: '100%',
@@ -544,8 +710,8 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       orderResult[0]?.Longitude != undefined
                         ? orderResult[0]?.Longitude
                         : 0,
-                    latitudeDelta: 0.01,
-                    longitudeDelta: 0.01,
+                    latitudeDelta: 0.19,
+                    longitudeDelta: 0.19,
                   }}
                   initialRegion={{
                     latitude:
@@ -556,8 +722,8 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                       orderResult[0]?.Longitude != undefined
                         ? orderResult[0]?.Longitude
                         : 0,
-                    latitudeDelta: 0.01,
-                    longitudeDelta: 0.01,
+                    latitudeDelta: 0.19,
+                    longitudeDelta: 0.19,
                   }}>
                   <Marker
                     // position={center}
@@ -570,24 +736,74 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                         orderResult[0]?.Longitude != undefined
                           ? orderResult[0]?.Longitude
                           : 0,
-                    }}
-                    // draggable
-                    // onDragEnd={e => {
-                    //   console.log(
-                    //     'longitude',
-                    //     e?.nativeEvent?.coordinate?.longitude,
-                    //   );
-                    //   console.log(
-                    //     'latitude',
-                    //     e?.nativeEvent?.coordinate?.latitude,
-                    //   );
-                    //   setlat(e?.nativeEvent?.coordinate?.latitude);
-                    //   setlong(e?.nativeEvent?.coordinate?.longitude);
-                    // }}
-                    pinColor={'red'} // any color
-                    title={'Location'}
-                    // description={pinlocation}
-                  />
+                    }}>
+                    <Image
+                      resizeMode="contain"
+                      style={{
+                        width: scalableheight.three,
+                        height: scalableheight.three,
+                      }}
+                      source={require('../Resources/images/Userlocationicon.png')}
+                    />
+                  </Marker>
+                  {orderResult[0]?.DeliveryType != 'TakeAway' ? (
+                    <Marker
+                      // position={center}
+                      coordinate={{
+                        latitude:
+                          orderResult[0]?.RestaurantBranch?.Latitude !=
+                          undefined
+                            ? orderResult[0]?.RestaurantBranch?.Latitude
+                            : 0,
+                        longitude:
+                          orderResult[0]?.RestaurantBranch?.Longitude !=
+                          undefined
+                            ? orderResult[0]?.RestaurantBranch?.Longitude
+                            : 0,
+                      }}>
+                      <Image
+                        resizeMode="contain"
+                        style={{
+                          width: scalableheight.three,
+                          height: scalableheight.three,
+                        }}
+                        source={require('../Resources/images/RestaurantLocationicon.png')}
+                      />
+                    </Marker>
+                  ) : null}
+
+                  {orderResult[0]?.DeliveryType != 'TakeAway' ? (
+                    <MapViewDirections
+                      origin={{
+                        latitude: orderResult[0]?.Latitude,
+                        longitude: orderResult[0]?.Longitude,
+                      }}
+                      destination={{
+                        latitude: orderResult[0]?.RestaurantBranch?.Latitude,
+                        longitude: orderResult[0]?.RestaurantBranch?.Longitude,
+                      }}
+                      apikey={GOOGLE_MAPS_APIKEY}
+                      mode="DRIVING"
+                      strokeWidth={3}
+                      strokeColor="#000"
+                    />
+                  ) : null}
+
+                  {/* <Polyline
+                    coordinates={[
+                      {
+                        latitude: orderResult[0]?.Latitude,
+                        longitude: orderResult[0]?.Longitude,
+                      },
+                      {
+                        latitude: orderResult[0]?.RestaurantBranch?.Latitude,
+                        longitude: orderResult[0]?.RestaurantBranch?.Longitude,
+                      },
+                    ]}
+                    strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
+                    strokeColors={['#7F0000']}
+                    strokeWidth={3}
+                  /> */}
                 </MapView>
               </View>
             </View>
@@ -936,7 +1152,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                             fontSize: fontSize.nine,
                             justifyContent: 'flex-end',
                           }}>
-                          ( View Location)
+                          - View Location
                         </Text>
                       </Text>
                     </TouchableOpacity>
