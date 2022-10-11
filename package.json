@@ -51,6 +51,7 @@
     "react-native-linear-gradient": "^2.5.6",
     "react-native-location-enabler": "^4.1.1",
     "react-native-maps": "^0.31.0",
+    "react-native-maps-directions": "^1.9.0",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^13.1.2",
     "react-native-pager-view": "^5.4.15",
