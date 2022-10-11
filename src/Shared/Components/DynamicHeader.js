@@ -41,7 +41,7 @@ const DynamicHeader = ( props) => {
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
-  const Max_Header_Height = scalableheight.sixtyfour  + getStatusBarHeight();
+  const Max_Header_Height = props.pickupstate == false ? scalableheight.sixtyfive + getStatusBarHeight() : scalableheight.sixtyfour + getStatusBarHeight();
   //const Max_Header_Height = scalableheight.ninety  + getStatusBarHeight();
   // LayoutAnimation.easeInEaseOut();
 const Min_Header_Height = 0;
@@ -81,7 +81,7 @@ const renderpopularcategories = ({item}) => (
       styles.header,
       {
         // height: animatedHeaderHeight,
-        height: scalableheight.sixtyfour  + getStatusBarHeight(),
+        height: props.pickupstate == false ? scalableheight.sixtyfive + getStatusBarHeight() : scalableheight.sixtyfour + getStatusBarHeight(),
         backgroundColor: animateHeaderBackgroundColor,
         elevation: 3000, zIndex:3000
      // transform: [{translateY: animatedHeaderHeight}]
@@ -144,7 +144,8 @@ const renderpopularcategories = ({item}) => (
               reviews={restrauntdetails?.RatingCount}
               title={restrauntdetails?.BranchName}
               Address={restrauntdetails?.Address}
-              
+              openbranchlist={props.openbranchlist}
+              pickupstate ={props.pickupstate}
               description={'Its the food you love, delivered'}
               onPress={() => {
                 // console.log(JSON.stringify(restrauntdetails.RestaurantBranchId))

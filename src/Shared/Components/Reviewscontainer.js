@@ -29,7 +29,7 @@ const navigation = useNavigation();
         ...styleSheet.shadow,
         width: '100%',
         alignSelf: 'center',
-        height: scalableheight.sixteen,
+        height: props.pickupstate == false ? scalableheight.seventeen : scalableheight.sixteen,
        flexDirection:"row",
         alignItems: 'center',
         justifyContent: 'center',
@@ -74,6 +74,19 @@ const navigation = useNavigation();
     numberOfLines={3}
     style={{ color:"#303030", fontFamily: 'Inter-Medium',
                     fontSize: fontSize.twelve, opacity: 0.4}}>{props.Address}</Text>
+
+{props.pickupstate == false &&
+<TouchableOpacity 
+onPress={props.openbranchlist}
+>
+
+
+<Text
+    numberOfLines={1}
+    style={{ color:"#E14E4E", fontFamily: 'Inter-Bold',
+                    fontSize: fontSize.twelve,}}>Change Branch</Text>
+                    </TouchableOpacity>
+  }
           </View>
           <View style= {{height:"100%", width: "30%",  alignItems:"flex-end",justifyContent:"center", }}>
           <Image

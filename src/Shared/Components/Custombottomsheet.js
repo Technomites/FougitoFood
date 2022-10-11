@@ -825,6 +825,22 @@ top: getStatusBarHeight() + scalableheight.six,
                   // disabled
                   onPress={() => {
                     if (showmap == true) {
+                      let currentaddress = [
+                        {
+                          Latitude: pinlatitude,
+                          Longitude: pinLongitude,
+                          icon: "Others",
+                          place: "Others",
+                          address: selectedaddress,
+                          note: "",
+                          Street: "",
+                          Floor: "",
+                        },
+                      ];
+                  
+                      dispatch(storecurrentaddress(currentaddress));
+                    
+
                       setshowmap(false);
                       props.onPressnewCoordinates(pinlatitude, pinLongitude);
                       clearandclose();

@@ -25,6 +25,7 @@ import HeaderComponentRestaurant from '../Shared/Components/HeaderComponentResta
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import DynamicHeader from '../Shared/Components/DynamicHeader';
 import DynamicScrolledupheader from '../Shared/Components/DynamicScrolledupheader';
+import BranchListed from '../Shared/Components/BranchListed';
 
 import MultiChoiceDropDownWithMultipleSelection from '../Shared/Components/MultiChoiceDropDownWithMultipleSelection';
 
@@ -69,6 +70,12 @@ import {
   markfavourite,
   getallrestrauntsbyid,
   clearfavourite,
+  getallrestaurantbranches,
+  cleancart,
+  storerestrauntid,
+  storerestrauntbasicdata,
+  storedistance,
+  clearmenu
 } from '../Actions/actions';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 
@@ -90,6 +97,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   const [specialinstructions, setspecialinstructions] = useState('');
   const [cartvisible, setcartvisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
+  const [SelectBranchVisible, setSelectBranchVisible] = useState(false);
   const [count, setcount] = useState(1);
   const [lat, setlat] = useState(route?.params?.latitude);
   const [long, setlong] = useState(route?.params?.longitude);
@@ -118,96 +126,151 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     AuthToken,
     addedtofavourite,
     Selectedcurrentaddress,
+    branchlist,
+    currentRestrauntid
+ 
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
-  const scrollOffsetY = useRef(new Animated.Value(0)).current;
-  const animatedtop = scrollOffsetY.interpolate({
-    inputRange: [0, getStatusBarHeight() + scalableheight.tweleve],
-    outputRange: [0, getStatusBarHeight() + scalableheight.tweleve],
-    extrapolate: 'clamp',
-    useNativeDriver: true,
-  });
-  const [serving, setserving] = useState([
-    {
-      selected: false,
-      serving: 'Single Plate',
-      price: 'AED 159.00',
-    },
-    {
-      selected: false,
-      serving: 'Double Plate',
-      price: 'AED 129.00',
-    },
-    {
-      selected: false,
-      serving: 'Triple Plate',
-      price: 'AED 59.00',
-    },
-  ]);
+    const scrollOffsetY = useRef(new Animated.Value(0)).current;
+    const animatedtop =  scrollOffsetY.interpolate({
+      inputRange: [0, getStatusBarHeight() + scalableheight.tweleve],
+      outputRange: [0 , getStatusBarHeight() + scalableheight.tweleve],
+      extrapolate: 'clamp',
+      useNativeDriver: true 
+    })
+    const [serving, setserving] = useState([
+      {
+        selected: false,
+        serving: 'Single Plate',
+        price: 'AED 159.00',
+      },
+      {
+        selected: false,
+        serving: 'Double Plate',
+        price: 'AED 129.00',
+      },
+      {
+        selected: false,
+        serving: 'Triple Plate',
+        price: 'AED 59.00',
+      },
+    ]);
+  
+    const [flavours, setflavours] = useState([
+      {
+        selected: false,
+        serving: 'Hummus',
+      },
+      {
+        selected: false,
+        serving: 'Chicken Munchurian',
+      },
+      {
+        selected: false,
+        serving: 'Pasta',
+      },
+    ]);
+    const [types, settypes] = useState([
+      {
+        title: 'Starters',
+        visible: true,
+      },
+      {
+        title: 'Main Food',
+        visible: false,
+      },
+      {
+        title: 'Desert',
+        visible: false,
+      },
+      {
+        title: 'Drinks',
+        visible: false,
+      },
+    ]);
+    const [dished, setdisdhed] = useState([
+      {
+        selected: false,
+        serving: 'Hummus',
+      },
+      {
+        selected: false,
+        serving: 'Chicken Munchurian',
+      },
+      {
+        selected: false,
+        serving: 'Pasta',
+      },
+      {
+        selected: false,
+        serving: 'Hummus',
+      },
+      {
+        selected: false,
+        serving: 'Chicken Munchurian',
+      },
+      {
+        selected: false,
+        serving: 'Pasta',
+      },
+      {
+        selected: false,
+        serving: 'Hummus',
+      },
+    ]);
+   
+   
 
-  const [flavours, setflavours] = useState([
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-    {
-      selected: false,
-      serving: 'Chicken Munchurian',
-    },
-    {
-      selected: false,
-      serving: 'Pasta',
-    },
-  ]);
-  const [types, settypes] = useState([
-    {
-      title: 'Starters',
-      visible: true,
-    },
-    {
-      title: 'Main Food',
-      visible: false,
-    },
-    {
-      title: 'Desert',
-      visible: false,
-    },
-    {
-      title: 'Drinks',
-      visible: false,
-    },
-  ]);
-  const [dished, setdisdhed] = useState([
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-    {
-      selected: false,
-      serving: 'Chicken Munchurian',
-    },
-    {
-      selected: false,
-      serving: 'Pasta',
-    },
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-    {
-      selected: false,
-      serving: 'Chicken Munchurian',
-    },
-    {
-      selected: false,
-      serving: 'Pasta',
-    },
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-  ]);
+    useEffect(() => {
+      if(addedtofavourite == "Success"){
+       
+        toast.current.show(restrauntdetails?.Isfavourite ? "Removed From Whishlist" : "Added To Whishlist", {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+        });
+        dispatch(getallrestrauntsbyid(restrauntdetails?.RestaurantBranchId, AuthToken));
+    dispatch(clearfavourite())
+        
+      }
+     
+  
+    }, [addedtofavourite]);
+  
+    useEffect(() => {
+      if(restrauntdetails?.RestaurantBranchId != undefined){
+        dispatch(getpopularcategoriesbyid(restrauntdetails?.RestaurantBranchId))
+        dispatch(getrestrauntmenubyid(restrauntdetails?.RestaurantBranchId))
+        dispatch(getallrestaurantbranches(restrauntdetails?.RestaurantId))
+        
+      }
+     
+  
+    }, [restrauntdetails]);
+  
+    useEffect(() => {
+      if(cartdata.length > 0){
+        setcartvisible(true)
+      }else{
+        setcartvisible(false)
+     
+      }
+     console.log("all cart data length" + cartdata.length + "data " + JSON.stringify(cartdata))
+    }, [cartdata]);
+  
+    useEffect(() => {
+      if(restrauntmenu.length > 0){
+        setscreenloader(false)
+    
+        
+      }
+     
+  
+    }, [restrauntmenu]);
+
 
   useEffect(() => {
     if (addedtofavourite == 'Success') {
@@ -325,79 +388,49 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }
   }
 
-  function clearandclose() {
-    toggleanimation();
-    setanimationstate(true);
-    scrollviewref.current.scrollTo({y: 0, animated: true});
+    useEffect(() => {
+      StatusBar.setHidden(false);
+      LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+    
+    }, []);
 
-    Keyboard.dismiss();
-    setmodalVisible(false);
-  }
+  
+    React.useEffect(() => {
+      const unsubscribe = navigation.addListener('focus', () => {
+     
+        scrollviewref.current.scrollTo({ y: 0 , animated: true, });
+      });
+      return unsubscribe;
+    }, [navigation]);
+    
+  
+    useEffect(() => {
+      console.log(
+        'dataSourceCordsHorizontal' + JSON.stringify(dataSourceCordsHorizontal),
+      );
+    }, [dataSourceCordsHorizontal]);
+  
+ 
+  
 
-  function updatecoordinates(lat, long) {
-    setlat(lat);
-    setlong(long);
-    setinlat(lat);
-    setinlong(long);
-    getLocation();
-  }
+  
+    useEffect(() => {
+     dispatch(pickupstate(isEnabled))
+    }, [isEnabled]);
+    
+    useEffect(() => {
+      if (lat != null && long != null) {
+        Geocoder.from(lat, long)
+          .then(json => {
+            var addressComponent = json.results[0].formatted_address;
+            console.log(addressComponent);
+            setpinlocation(addressComponent);
+          })
+          .catch(error => console.warn(error));
+      }
+    }, [lat, long]);
+  
 
-  useEffect(() => {
-    StatusBar.setHidden(false);
-    LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
-  }, []);
-
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      scrollviewref.current.scrollTo({y: 0, animated: true});
-    });
-    return unsubscribe;
-  }, [navigation]);
-
-  useEffect(() => {
-    console.log(
-      'dataSourceCordsHorizontal' + JSON.stringify(dataSourceCordsHorizontal),
-    );
-  }, [dataSourceCordsHorizontal]);
-
-  // useEffect(() => {
-  //   const keyboardDidShowListener = Keyboard.addListener(
-  //     'keyboardDidShow',
-  //     () => {
-  //       // hideNavigationBar();
-  //       console.log('Keyboard is open');
-  //       setkeyboardopen(true);
-  //     },
-  //   );
-  //   const keyboardDidHideListener = Keyboard.addListener(
-  //     'keyboardDidHide',
-  //     () => {
-  //       // hideNavigationBar();
-  //       setkeyboardopen(false);
-  //       console.log('Keyboard is closed');
-  //     },
-  //   );
-
-  //   return () => {
-  //     keyboardDidHideListener.remove();
-  //   };
-  // }, []);
-
-  useEffect(() => {
-    dispatch(pickupstate(isEnabled));
-  }, [isEnabled]);
-
-  useEffect(() => {
-    if (lat != null && long != null) {
-      Geocoder.from(lat, long)
-        .then(json => {
-          var addressComponent = json.results[0].formatted_address;
-          console.log(addressComponent);
-          setpinlocation(addressComponent);
-        })
-        .catch(error => console.warn(error));
-    }
-  }, [lat, long]);
 
   function getnewlocation() {
     Geocoder.from(lat, long)
@@ -636,14 +669,16 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
         arr[key].selected = false;
       }
     }
-    setflavours(arr);
-    console.log('arr' + JSON.stringify(arr));
+
   }
 
   const toggleSwitch = async () => {
+    if(isEnabled == true){
+      setSelectBranchVisible(true)
+    }
     setisEnabled(!isEnabled);
-  };
 
+  };
   return (
     <ScreenWrapper drawer={drawerAnimationStyle} style={{flex: 1}}>
       <FocusAwareStatusBar
@@ -691,9 +726,109 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
             backgroundColor: 'rgba(0,0,0,0.8)',
           }}>
           <ActivityIndicator size="small" color={'red'} />
-        </View>
-      </Modal>
-      <Modal
+          </View>
+        </Modal>
+
+
+        <Modal
+        transparent
+        style={{
+          width: '100%',
+          height: '100%',
+          // zIndex: 1,
+          // elevation: 1,
+          // position: 'absolute',
+        }}
+        statusBarTranslucent
+        animationType="fade"
+        visible={SelectBranchVisible}
+        onRequestClose={() => setSelectBranchVisible(false)}>
+          <View style={{height:"100%", width:"100%", justifyContent:"center", alignItems:"center", backgroundColor:'rgba(0,0,0,0.8)', }}>
+          <View
+              style={{
+                width: '90%',
+                //   height: '40%',
+                maxHeight: '40%',
+                borderRadius: fontSize.eleven,
+                backgroundColor: 'white',
+                paddingVertical: scalableheight.one,
+                paddingHorizontal: scalableheight.two,
+              
+              }}>
+          <View style={{width:"100%", height: scalableheight.five,  alignItems:"center", justifyContent:"space-between", flexDirection:"row" }}> 
+          <Text style={{
+
+fontFamily: 'Inter-Medium',
+fontSize: fontSize.sixteen,
+color: '#111111',
+          }}>Select Branch</Text>
+          <TouchableOpacity
+                    onPress={() => {
+                      setSelectBranchVisible(false)
+                    
+                    }}
+                    style={{
+                      // position: 'absolute',
+                      // top: scalableheight.one,
+                      // right: scalableheight.one,
+                    }}>
+                    <Ionicons
+                      name="close-circle"
+                      color={'#E14E4E'}
+                      // '#F5F5F5'
+                      size={fontSize.thirty}
+                      style={{}}
+                    />
+                  </TouchableOpacity>
+          </View>
+        {/* //  branchlist */}
+        <ScrollView showsVerticalScrollIndicator={false} style={{}}>
+               
+            
+                   
+                        {branchlist.map(inneritem => {
+                          return  (
+                        <BranchListed
+                        image={inneritem.Restaurant?.Logo}
+                        title={inneritem?.NameAsPerTradeLicense}
+                        Address={inneritem?.Address}
+                 
+
+
+                      
+                        onPress={() => {
+
+
+if (currentRestrauntid != inneritem?.Id) {
+  dispatch(clearmenu())  
+  setscreenloader(true)
+
+
+  dispatch(storerestrauntbasicdata(inneritem));
+dispatch(storedistance(inneritem?.Distance));
+  dispatch(storecartprice(0));
+  dispatch(cleancart());
+  dispatch(storerestrauntid(inneritem?.Id));
+  dispatch(getallrestrauntsbyid(inneritem?.Id, AuthToken));
+ dispatch(getpopularcategoriesbyid(inneritem?.Id))
+  dispatch(getrestrauntmenubyid(inneritem?.Id))
+}
+
+                        setSelectBranchVisible(false)
+                        }}
+                    
+                      />
+                          ) 
+                        })}
+                 
+              
+
+               
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+<Modal
         transparent
         style={{
           width: '100%',
@@ -1156,7 +1291,16 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
             animHeaderValue={scrollOffsetY}
             isEnabled={isEnabled}
             toggleSwitch={toggleSwitch}
+
+        
+            openbranchlist={()=>{
+              setSelectBranchVisible(true)
+            }}
+            pickupstate ={isEnabled}
           />
+
+  
+
 
           <View style={{paddingHorizontal: scalableheight.one}}>
             {restrauntmenu.map((item, key) => {

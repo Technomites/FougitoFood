@@ -65,6 +65,8 @@ import {
   CardOrder,
   ClearProfile,
   DELETEDADDRESS,
+  GETALLBRANCHLIST,
+  CLEARMENU,
   review_restaurant,
   review_restaurant2
 } from '../Actions/actions';
@@ -137,11 +139,29 @@ const initialState = {
   internetconnectionstate: true,
   orderdetailslink: '',
   addressdeletionstatus: '',
+  branchlist: [],
   review_restaurant:''
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
+    
+ 
+
+    case CLEARMENU:
+      return {
+        ...state,
+        restrauntmenu: action.payload,
+      };
+
+
+    case GETALLBRANCHLIST:
+      return {
+        ...state,
+        branchlist: action.payload,
+      };
+
+
     case DELETEDADDRESS:
       return {
         ...state,

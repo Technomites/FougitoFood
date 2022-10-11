@@ -20,8 +20,6 @@ export const Store_RestrauntId = 'Store_RestrauntId';
 export const CleanCartData = 'CleanCartData';
 export const CARTDataDelete = 'CARTDataDelete';
 export const Login_User = 'Login_User';
-export const review_restaurant = 'review_restaurant';
-export const review_restaurant2 = 'review_restaurant2';
 export const SignUP_User = ' SignUP_User';
 export const Login_User2 = 'Login_User2';
 export const SignUP_User2 = ' SignUP_User2';
@@ -72,6 +70,8 @@ export const internetCHECK = 'internetCHECK';
 export const OrderID = 'OrderID';
 export const ClearProfile = 'ClearProfile';
 export const DELETEDADDRESS = 'DELETEDADDRESS';
+export const GETALLBRANCHLIST = 'GETALLBRANCHLIST';
+export const CLEARMENU = 'CLEARMENU';
 const API_URl = 'https://api.fougito.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
@@ -79,79 +79,47 @@ const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
 
-export const RestaurantReview = (
-  token,
-  OrderID,
-  rating,
-  Restaurantid,
-  reviews,
-) => {
-  console.log(token, '', OrderID, '', rating, '', Restaurantid, '', reviews);
+
+export const clearmenu = () => {
   try {
     return async dispatch => {
-      var myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/json');
-      myHeaders.append('Authorization', `Bearer ${token}`);
+      dispatch({
+        type: CLEARMENU,
+        payload: [],
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-      var raw = JSON.stringify({
-        OrderId: OrderID,
-        rating: rating,
-        restaurantId: Restaurantid,
-        review: reviews,
+export const getallrestaurantbranches = (id) => {
+  try {
+    return async dispatch => {
+      const result = await fetch(API_URl + 'Customer/Restaurant/' + id + '/GetActiveBranches', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow',
-      };
-      const result = await fetch(
-        API_URl + 'Customer/Restaurant/Rating',
-        requestOptions,
-      ).catch(error => {
-        dispatch({
-          type: review_restaurant,
-          payload: json?.Status,
-        });
-      });
-      json = await result.json().catch(error => {
-        dispatch({
-          type: review_restaurant,
-          payload: json?.Status,
-        });
-      });
-      console.log(
-        json,
-        'review_restaurant review_restaurant review_restaurant',
-      );
+      const json = await result.json();
+
+
+      console.log('getallrestaurantbranches ' +id +" " + JSON.stringify(json));
+
       if (json.Status == 'Success') {
-        console.log(' type: Login_User,');
         dispatch({
-          type: review_restaurant,
-          payload: json?.Status,
-        });
-      } else {
-        console.log(json?.Message, 'EROORRR');
-        dispatch({
-          type: review_restaurant,
-          payload: json?.Status,
+          type: GETALLBRANCHLIST,
+          payload: json.Result,
         });
       }
     };
   } catch (error) {
-    console.log('ahaha');
+    console.log(error);
   }
 };
 
-export const RestaurantReviewNull = () => {
-  return async dispatch => {
-    dispatch({
-      type: review_restaurant2,
-      payload: '',
-    });
-  };
-};
 
 export const deleteaddress = (id, token) => {
   try {
@@ -163,6 +131,7 @@ export const deleteaddress = (id, token) => {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
+     
       });
 
       const json = await result.json();
@@ -179,6 +148,7 @@ export const deleteaddress = (id, token) => {
     console.log(error);
   }
 };
+ 
 
 export const clearprofileupdationstatus = () => {
   try {
