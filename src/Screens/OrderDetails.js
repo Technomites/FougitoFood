@@ -1320,6 +1320,8 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 </View>
               </View>
             </View>
+            {orderResult[0]?.Status != 'Pending' && (
+              <>
             {orderResult[0]?.DeliveryType != 'TakeAway' ? (
               orderResult[0]?.Status != 'Canceled' ||
               (orderResult[0]?.DeliveryType != 'TakeAway' &&
@@ -1777,15 +1779,16 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 </View>
               )
             ) : null}
+            </>)}
             <View>
               <View style={{height: scalableheight.three}} />
               <Bll
                 label={'Sub Total'}
-                price={orderResult[0]?.Amount.toFixed(2)}
+                price={orderResult[0]?.Amount}
               />
               <Bll
                 label={'Delivery Charges'}
-                price={orderResult[0]?.DeliveryCharges.toFixed(2)}
+                price={orderResult[0]?.DeliveryCharges}
               />
 
               <View style={{height: scalableheight.one}} />
@@ -1800,7 +1803,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 }}></View>
               <Bll
                 label={'Total Amount'}
-                price={orderResult[0]?.TotalAmount.toFixed(2)}
+                price={orderResult[0]?.TotalAmount}
               />
               <View style={{height: scalableheight.two}} />
               {orderResult[0]?.Status == 'Pending' ? (

@@ -19,7 +19,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { fontSize, scalableheight } from '../../Utilities/fonts'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import FastImage from 'react-native-fast-image'
 export default function Starters(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
@@ -61,17 +61,36 @@ const navigation = useNavigation();
         
           }}>{props.description.trim()}</Text>
         
-        {props.price > 0 ?      <Text style={{
+    
+            <Text style={{
             
             fontFamily: 'Inter-Medium',
             fontSize: fontSize.twelve,
             color:"#111111",
             marginTop:scalableheight.pointfive
         
-          }}>{"AED "}{props.price.toFixed(2)}</Text> : null}
+          }}>{"AED "}{props?.price?.toFixed(2)}</Text> 
 </View>
 <View style={{height:"100%", width: "25%", alignItems:"flex-end", justifyContent:"center", paddingRight: scalableheight.one}}>
-<Image
+
+{props.image != "" && props.image != "NULL" && props.image != null ? 
+<FastImage
+        style={{
+          width: scalableheight.ten,
+          height: scalableheight.ten,
+          borderRadius: fontSize.borderradius
+       
+        }}
+        source={{
+            uri: props.image,
+            // headers: { Authorization: 'someAuthToken' },
+            priority: FastImage.priority.high,
+        }}
+        resizeMode={FastImage.resizeMode.cover}
+    />
+
+    :
+    <Image
     resizeMode= "cover"
     style={{
       width: scalableheight.ten,
@@ -80,8 +99,12 @@ const navigation = useNavigation();
       // 
     }}
     // source={{uri: props.image}}></Image>
-       source={props.image != "" && props.image != "NULL" && props.image != null ? {uri: props.image}:  require('../../Resources/images/Broken_Image.png')}></Image>
-      <View style={{width:scalableheight.three, height:scalableheight.three, backgroundColor:"red", position:"absolute", bottom: scalableheight.two ,right: scalableheight.one, borderBottomRightRadius: fontSize.borderradius, alignItems:"center", justifyContent:"center"}}>
+       source={require('../../Resources/images/Broken_Image.png')}></Image>
+    
+    
+    }
+
+      <View style={{width:scalableheight.three, height:scalableheight.three, backgroundColor:"#E14E4E", position:"absolute", bottom: scalableheight.onepointeightfive ,right: scalableheight.one, borderBottomRightRadius: fontSize.borderradius, alignItems:"center", justifyContent:"center"}}>
 
       <Entypo 
                 name="plus"
@@ -138,7 +161,7 @@ shadow: {
   shadowColor: '#470000',
   shadowOffset: {width: 0, height: 1},
   shadowOpacity: 0.2,
-  elevation: 2,
+  elevation: 0.5,
   borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
 
   },

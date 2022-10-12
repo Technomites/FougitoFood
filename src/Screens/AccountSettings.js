@@ -39,7 +39,7 @@ import NetInfo from '@react-native-community/netinfo';
 import NumberInput from '../Shared/Components/NumberInput';
 import ImagePicker from 'react-native-image-crop-picker';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
-import PlainHeader from '../Shared/Components/PlainHeader';
+import PlainHeader3 from '../Shared/Components/PlainHeader3';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {
@@ -252,7 +252,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
           flex: 12,
           paddingTop: getStatusBarHeight(),
         }}>
-        <PlainHeader title={'Account Settings'} />
+        <PlainHeader3 title={'Account Settings'} />
         
         {imageloader == true ? (
             <View

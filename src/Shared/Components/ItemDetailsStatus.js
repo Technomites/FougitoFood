@@ -75,7 +75,7 @@ export default function ItemDetailsStatus(props) {
           <Text
             style={{
               fontFamily: 'Inter-Bold',
-              fontSize: fontSize.one,
+              fontSize: fontSize.eleven,
               color: '#E14E4E',
             }}>
             {'QTY'}
@@ -149,7 +149,7 @@ export default function ItemDetailsStatus(props) {
             color: '#111111',
           }}>
           {'AED '}
-          {props.price.toFixed(2)}
+          {props?.price?.toFixed(2)}
         </Text>
       </View>
     </View>

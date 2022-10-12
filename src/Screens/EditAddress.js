@@ -16,6 +16,7 @@ import {
   getalladdresses,
   savemyaddress,
   clearaddressresponse,
+  storecurrentaddress
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Geocoder from 'react-native-geocoding';
@@ -41,7 +42,7 @@ import {Item} from 'react-native-paper/lib/typescript/components/List/List';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 import SavedAddresses from '../Shared/Components/SavedAddresses';
 
-const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
+const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
   const dispatch = useDispatch();
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
@@ -56,6 +57,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
   const [floor, setfloor] = useState('');
   const [note, setnote] = useState('');
   const [loader, setloader] = useState(false);
+  const [screenname, setscreenname] = useState(false);
   const toast = useRef();
 
   const customStyle = [
@@ -235,6 +237,20 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
     addresscreationresponse,
   } = useSelector(state => state.userReducer);
 
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+     
+      setscreenname('');
+      console.log(route?.params?.screenname + 'name');
+      if (route?.params?.screenname != undefined) {
+        setscreenname(route?.params?.screenname);
+      }
+    });
+
+    //  Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation, route]);
+
   useEffect(() => {
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
     Geolocation.getCurrentPosition(info => {
@@ -260,6 +276,23 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
           zIndex: 2,
         });
         dispatch(getalladdresses(AuthToken));
+        if( screenname == 'checkout'){
+          let currentaddress = [
+            {
+              Latitude: pinlatitude,
+              Longitude: pinLongitude,
+              icon: placeselected.title,
+              place: placeselected.title,
+              address: pinlocation,
+              note: note,
+              Street: street,
+              Floor: floor,
+            },
+          
+          ];
+          console.log(currentaddress);
+          dispatch(storecurrentaddress(currentaddress));
+        }
         navigation.goBack();
       } else if (addresscreationresponse == 'Network Request Failed') {
         toast.current.show('Network Request Failed', {
@@ -561,8 +594,8 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
               onRegionChange={region => {
                 //  console.log(region)
                 if (
-                  region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
-                  region.longitude.toFixed(6) === pinLongitude.toFixed(6)
+                  region?.latitude?.toFixed(6) === pinlatitude?.toFixed(6) &&
+                  region?.longitude?.toFixed(6) === pinLongitude?.toFixed(6)
                 ) {
                   return;
                 } else {
@@ -573,8 +606,8 @@ const EditAddress = ({props, navigation, drawerAnimationStyle}) => {
                 // console.log(region)
 
                 if (
-                  region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
-                  region.longitude.toFixed(6) === pinLongitude.toFixed(6)
+                  region?.latitude?.toFixed(6) === pinlatitude?.toFixed(6) &&
+                  region?.longitude?.toFixed(6) === pinLongitude?.toFixed(6)
                 ) {
                   return;
                 } else {

@@ -178,13 +178,22 @@ export default function ItemDetailsModel(props) {
                   }}>
                   <View
                     style={{
-                      height: scalableheight.four,
-                      width: scalableheight.four,
+                      height: scalableheight.five,
+                      width: scalableheight.five,
+                      //padding: scalableheight.one,
                       backgroundColor: '#F9F9F9',
                       borderRadius: fontSize.borderradiusmedium,
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
+                       <Text
+                      style={{
+                        fontFamily: 'Inter-Bold',
+                        fontSize: fontSize.twelve,
+                        color: '#E14E4E',
+                      }}>
+                      QTY
+                    </Text>
                     <Text
                       style={{
                         fontFamily: 'Inter-Bold',
@@ -221,7 +230,7 @@ export default function ItemDetailsModel(props) {
                       color: '#111111',
                     }}>
                     {'AED '}
-                    {props?.data?.completeitemorderprice}
+                    {props?.data?.completeitemorderprice?.toFixed(2)}
                   </Text>
                 </View>
 
@@ -264,7 +273,7 @@ export default function ItemDetailsModel(props) {
                                     color: '#111111',
                                   }}>
                                   {'AED '}
-                                  {inneritem?.Price}
+                                  {inneritem?.Price?.toFixed(2)}
                                 </Text>
                               ) : null}
                             </View>

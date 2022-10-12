@@ -16,6 +16,9 @@ const scalableheight = {
   one: height(1),
 
   onepointfive: height(1.5),
+  onepointsevenfive: height(1.75),
+  onepointeight: height(1.8),
+  onepointeightfive: height(1.85),
   two: height(2),
   three: height(3),
   fourpointfive: height(4.5),
@@ -51,6 +54,8 @@ const scalableheight = {
   thirtyseven: height(37),
   fourty: height(40),
   fourtyfive: height(45),
+  fourtysix: height(46),
+  fourtyseven: height(47),
   fourtyeight: height(48),
   fourtynine: height(49),
   fifty: height(50),

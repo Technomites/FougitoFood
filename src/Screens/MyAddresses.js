@@ -269,9 +269,9 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
             renderHiddenItem={renderHiddenItem}
             // leftOpenValue={0}
             disableRightSwipe={true}
-            rightOpenValue={-scalableheight.tweleve}
+            rightOpenValue={-scalableheight.seven}
             previewRowKey={'0'}
-            previewOpenValue={-80}
+            previewOpenValue={-50}
             // previewOpenDelay={3000}
             onRowDidOpen={onItemOpen}
           />
@@ -414,7 +414,7 @@ const styleSheet = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '98%',
-    paddingRight: scalableheight.four,
+    paddingRight: scalableheight.two,
     marginBottom: scalableheight.one,
     borderRadius: fontSize.eleven,
     backgroundColor: 'white',

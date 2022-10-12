@@ -17,6 +17,7 @@ import {
   Keyboard,
   Linking,
   Modal,
+  Dimensions
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {WebView} from 'react-native-webview';
@@ -33,6 +34,7 @@ import {
   updatepriceafterdiscount,
   clearcardorderplacementstatus,
   storeorderid,
+  storecurrentaddress
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -138,6 +140,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     orderdetails,
     cardorderplacementstatus,
     orderdetailslink,
+    alladdresses
   } = useSelector(state => state.userReducer);
   const refMap = useRef(null);
   const toast = useRef();
@@ -301,18 +304,18 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   const [payment, setpayment] = useState([
     {
       type: 'Credit/Debit Card',
-      payment: 'Pay Online',
-      selected: false,
+      payment: 'Pay online using your card',
+      selected: true,
       icon: 1,
       name: 'Card',
     },
-    {
-      type: 'COD',
-      payment: 'Cash On Delivery',
-      selected: false,
-      icon: 2,
-      name: 'Cash',
-    },
+    // {
+    //   type: 'COD',
+    //   payment: 'Cash On Delivery',
+    //   selected: false,
+    //   icon: 2,
+    //   name: 'Cash',
+    // },
   ]);
 
   // let currentprice = price + restrauntdetails?.VAT +  restrauntdetails?.DeliveryCharges
@@ -430,7 +433,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (buildingdetails == '' && AuthToken == '') {
+    } else if (buildingdetails == '' ) {
       toast.current.show('Please Building & Street details', {
         type: 'normal',
         placement: 'bottom',
@@ -439,7 +442,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         animationType: 'slide-in',
         zIndex: 2,
       });
-    } else if (plotnodetails == '' && AuthToken == '') {
+    } else if (plotnodetails == '') {
       toast.current.show('Please Flat no & Floor details', {
         type: 'normal',
         placement: 'bottom',
@@ -564,16 +567,19 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           AuthToken != '' ? ProfileName : firstname + ' ' + lastname,
         customerContact: AuthToken != '' ? ProfileContact : phonenumber,
         customerEmail: AuthToken != '' ? ProfileEmail : email, //"mailto:customer@fougito.com"
-        floor:
-          AuthToken != '' ? Selectedcurrentaddress[0].Floor : plotnodetails,
+        // floor:
+        //   AuthToken != '' ? Selectedcurrentaddress[0].Floor : plotnodetails,
+        floor: plotnodetails,
         latitude:
           AuthToken != '' ? Selectedcurrentaddress[0].Latitude : pinlatitude,
         longitude:
           AuthToken != '' ? Selectedcurrentaddress[0].Longitude : pinLongitude,
-        noteToRider:
-          AuthToken != '' ? Selectedcurrentaddress[0].note : notetorider,
-        street:
-          AuthToken != '' ? Selectedcurrentaddress[0].Street : buildingdetails,
+        // noteToRider:
+        //   AuthToken != '' ? Selectedcurrentaddress[0].note : notetorider,
+        noteToRider: notetorider,
+        // street:
+        //   AuthToken != '' ? Selectedcurrentaddress[0].Street : buildingdetails,
+        street: buildingdetails,
         type: pickuporder ?  'Delivery' : 'Pickup' ,
         orderItems: order,
       };
@@ -601,6 +607,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     setpayment(data);
   }
   const renderpayment = ({item, index}) => (
+    <View style={{width:Dimensions.get('window').width /1.08, }}>
     <PaymentOptions
       option={item.icon}
       index={index}
@@ -611,10 +618,26 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         selectpaymentmethod(index);
       }}
     />
+    </View>
+  );
+
+  const renderaddresses = ({item, index}) => (
+    <Addresstile
+                    icon={item.icon}
+                    place={item.place}
+                    address={item.address}
+                    note={item.note}
+                    onPress={() => {
+                      navigation.navigate('EditAddress', {
+                        screenname: 'checkout',
+                      });
+                    }}
+                    screenname={'checkout'}
+                  />
   );
 
   const renderHiddenItem = ({item, index}) => (
-    <View style={styleSheet.rowBack}>
+    <View style={{...styleSheet.rowBack}}>
       <TouchableOpacity
         style={[styleSheet.actionButton, styleSheet.deleteBtn]}
         onPress={() => {
@@ -627,7 +650,13 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
 
           console.log(data);
         }}>
-        <Text style={styleSheet.btnText}>Delete</Text>
+            <MaterialCommunityIcons
+                            style={{alignSelf: 'center'}}
+                            name={'delete'}
+                            color={'white'}
+                            size={fontSize.twentyfive}
+                          />
+        {/* <Text style={styleSheet.btnText}>Delete</Text> */}
       </TouchableOpacity>
     </View>
   );
@@ -681,6 +710,19 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
 
     getLocation();
   }, []);
+
+  useEffect(() => {
+   if(Selectedcurrentaddress.length > 0){
+    console.log("Selectedcurrentaddress" + JSON.stringify(Selectedcurrentaddress));
+    setplotnodetails(Selectedcurrentaddress[0].Floor )
+    setnotetorider(Selectedcurrentaddress[0].note)
+    setbuildingdetails(Selectedcurrentaddress[0].Street)
+   }
+
+  
+ 
+  }, [Selectedcurrentaddress]);
+  
 
   useEffect(() => {
     if (pinlatitude != null && pinLongitude != null) {
@@ -904,17 +946,18 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           paddingTop: getStatusBarHeight(),
         }}>
         <PlainHeader title={'Cart'} />
-
+    
         <ScrollView
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps={'always'}
           style={{
             width: '100%',
-            paddingHorizontal: scalableheight.one,
+       
             marginTop: scalableheight.two,
             marginBottom: scalableheight.one,
+        
           }}
-          contentContainerStyle={{flexGrow: 1, paddingBottom: 5}}>
+          contentContainerStyle={{flexGrow: 1, paddingBottom: 5,      paddingHorizontal: scalableheight.two,}}>
           <View
             style={{flexDirection: 'row', marginBottom: scalableheight.one}}>
             <Text
@@ -935,7 +978,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                 width: '30%',
                 paddingHorizontal: scalableheight.two,
               }}>
-              Price
+              PRICE
             </Text>
           </View>
           <SwipeListView
@@ -947,7 +990,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
               return (
                 // <SwipeRow >
                 // {/* {swipeAction} */}
-                <View style={{alignItems: 'center'}}>
+                <View style={{alignItems: 'center', width:"100%" }}>
                   <ItemDetails
                     qty={data?.item?.Qty}
                     title={data?.item?.Name}
@@ -965,7 +1008,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
             renderHiddenItem={renderHiddenItem}
             // leftOpenValue={0}
             disableRightSwipe={true}
-            rightOpenValue={-scalableheight.tweleve}
+            rightOpenValue={-scalableheight.seven}
             previewRowKey={'0'}
             previewOpenValue={-40}
             // previewOpenDelay={3000}
@@ -988,17 +1031,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           {AuthToken == '' && (
             <>
               <View style={{height: scalableheight.two}} />
-              <Text style={styleSheet.Text1}>Payment Method</Text>
-              <View style={{height: scalableheight.one}} />
-              <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={payment}
-                renderItem={renderpayment}
-                // onEndReached={() => LoadFeaturedProjectPagination()}
-                // onEndReachedThreshold={0.1}
-              />
+           
 
               <View style={{height: scalableheight.two}} />
               <Text style={styleSheet.Text1}>Delivery Details</Text>
@@ -1112,8 +1145,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   onRegionChange={region => {
                     //  console.log(region)
                     if (
-                      region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
-                      region.longitude.toFixed(6) === pinLongitude.toFixed(6)
+                      region?.latitude?.toFixed(6) === pinlatitude?.toFixed(6) &&
+                      region?.longitude?.toFixed(6) === pinLongitude?.toFixed(6)
                     ) {
                       return;
                     } else {
@@ -1124,8 +1157,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                     // console.log(region)
 
                     if (
-                      region.latitude.toFixed(6) === pinlatitude.toFixed(6) &&
-                      region.longitude.toFixed(6) === pinLongitude.toFixed(6)
+                      region?.latitude?.toFixed(6) === pinlatitude?.toFixed(6) &&
+                      region?.longitude?.toFixed(6) === pinLongitude?.toFixed(6)
                     ) {
                       return;
                     } else {
@@ -1226,6 +1259,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   textAlignVertical: 'top',
                 }}
               />
+
               <View style={{height: scalableheight.two}} />
               <Text style={styleSheet.Text1}>Personal Details</Text>
               <View style={{height: scalableheight.one}} />
@@ -1243,7 +1277,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   placeholder={'First Name'}
                   style={{
                     ...styleSheet.shadow,
-                    width: '48.5%',
+                    width: '100%',
                     height: scalableheight.six,
                     fontSize: fontSize.fifteen,
                     backgroundColor: '#F9F9F9',
@@ -1253,13 +1287,24 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                     marginHorizontal: '0.4%',
                   }}
                 />
+              
+              </View>
+
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: scalableheight.two,
+                }}>
+              
                 <TextInput
                   value={lastname}
                   onChangeText={text => setlastname(text)}
                   placeholder={'Last Name'}
                   style={{
                     ...styleSheet.shadow,
-                    width: '48.5%',
+                    width: '100%',
                     height: scalableheight.six,
                     fontSize: fontSize.fifteen,
                     backgroundColor: '#F9F9F9',
@@ -1284,7 +1329,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   placeholder={'Email Address'}
                   style={{
                     ...styleSheet.shadow,
-                    width: '48.5%',
+                    width: '100%',
                     height: scalableheight.six,
                     fontSize: fontSize.fifteen,
                     backgroundColor: '#F9F9F9',
@@ -1294,6 +1339,16 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                     marginHorizontal: '0.4%',
                   }}
                 />
+             
+              </View>
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: scalableheight.two,
+                }}>
+              
                 <TextInput
                   value={phonenumber}
                   onChangeText={text => setphonenumber(text)}
@@ -1301,7 +1356,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   placeholder={'Phone Number'}
                   style={{
                     ...styleSheet.shadow,
-                    width: '48.5%',
+                    width: '100%',
                     height: scalableheight.six,
                     fontSize: fontSize.fifteen,
                     backgroundColor: '#F9F9F9',
@@ -1312,6 +1367,17 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   }}
                 />
               </View>
+              <Text style={styleSheet.Text1}>Payment Method</Text>
+              <View style={{height: scalableheight.one}} />
+              <FlatList
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={payment}
+                renderItem={renderpayment}
+                // onEndReached={() => LoadFeaturedProjectPagination()}
+                // onEndReachedThreshold={0.1}
+              />
               <View style={{height: scalableheight.three}} />
               <Bll label={'Sub Total'} price={price} />
               <Bll
@@ -1323,7 +1389,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                 }
               />
 
-              <View style={styleSheet.Container}>
+              {/* <View style={styleSheet.Container}>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={styleSheet.Text3}>Vat Amount </Text>
                   <Text
@@ -1337,7 +1403,16 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                     restrauntdetails?.VAT) /
                     100}
                 </Text>
-              </View>
+              </View> */}
+              <Bll
+                label={'VAT Amount'+ ` (${restrauntdetails?.VAT}%)`}
+                price={
+                  
+                  (((restrauntdetails?.DeliveryCharges + price) *
+                  restrauntdetails?.VAT) /
+                  100)
+                }
+              />
 
               {discount > 0 && (
                 <View style={styleSheet.Container}>
@@ -1445,48 +1520,162 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
             </>
           )}
 
-          {/* <View style={{height: scalableheight.ten}} /> */}
-        </ScrollView>
-        <View
-          style={{
-            paddingHorizontal: scalableheight.one,
-            // position: 'absolute',
-            bottom: scalableheight.two,
-            width: '100%',
-          }}>
-          {AuthToken != '' && (
+{AuthToken != '' && (
             <>
-              <View style={{height: scalableheight.two}} />
-              <Text style={styleSheet.Text1}>Payment Method</Text>
-              <View style={{height: scalableheight.one}} />
-              <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={payment}
-                renderItem={renderpayment}
-                // onEndReached={() => LoadFeaturedProjectPagination()}
-                // onEndReachedThreshold={0.1}
-              />
-
               <View style={{height: scalableheight.two}} />
               {Selectedcurrentaddress?.length > 0 ? (
                 <>
+<View style ={{flexDirection:"row", justifyContent:"space-between", alignItems:"center", }}>
                   <Text style={styleSheet.Text1}>Delivery Address</Text>
-                  <View style={{height: scalableheight.one}} />
+                
+                <TouchableOpacity onPress={() => {
 
-                  <Addresstile
+                }} activeOpacity={0.9}>
+                  <Entypo
+                    style={{alignSelf: 'center'}}
+                    name="circle-with-plus"
+                
+                    color={'#F55050'}
+                    // color={'rgba(41, 38, 42, 0.5)'}
+                    size={fontSize.twentyfour}
+                  />
+                </TouchableOpacity>
+            </View>
+                  <View style={{height: scalableheight.one}} />
+                  <View
+          style={{
+            width: '100%',
+           
+        
+          }}>
+                  <FlatList
+                keyExtractor={(item, index) => index.toString()}
+          
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={alladdresses}
+                renderItem={({item, i}) => {
+                  return (
+                    <TouchableOpacity
+              
+                      activeOpacity={0.8}
+                      onPress={() => {
+                        let currentaddress = [
+                          {
+                            Latitude: item.Latitude,
+                            Longitude: item.Longitude,
+                            icon: item.Type,
+                            place: item.Type,
+                            address: item.Address,
+                            note: item.NoteToRider,
+                            Street: item.Street,
+                            Floor: item.Floor,
+                          },
+                        ];
+                        console.log("currentaddress" + JSON.stringify(currentaddress));
+                        dispatch(storecurrentaddress(currentaddress));
+                        // navigation.goBack();
+                      }}
+                    
+                      style={{ width: scalableheight.thirtyfive, marginRight: scalableheight.one, marginBottom:scalableheight.one, }}>
+                      <Addresstile
+                     
+                        onPress={() => {
+                          // navigation.navigate('EditAddress', {
+                          //   // orderId: item.OrderNo,
+                          //   // completedetails: Order,
+                          // });
+                        }}
+                        //   // onModelPopUp={changestatus}
+                        icon={item.Type}
+                        Latitude ={item.Latitude}
+                            Longitude = { item.Longitude}
+                        place={item.Type}
+                        address={item.Address}
+                        note={item.NoteToRider}
+                        screenname={"ckeckout"}
+                        itemfull = {item}
+                      />
+                    </TouchableOpacity>
+                  );
+                }}
+                // renderItem={renderaddresses}
+                // onEndReached={() => LoadFeaturedProjectPagination()}
+                // onEndReachedThreshold={0.1}
+              />
+              </View>
+                  {/* <Addresstile
                     icon={Selectedcurrentaddress[0].icon}
                     place={Selectedcurrentaddress[0].place}
                     address={Selectedcurrentaddress[0].address}
                     note={Selectedcurrentaddress[0].note}
                     onPress={() => {
-                      navigation.navigate('MyAddresses', {
+                      navigation.navigate('EditAddress', {
                         screenname: 'checkout',
                       });
                     }}
-                    screenname={''}
-                  />
+                    screenname={'checkout'}
+                  /> */}
+
+<View
+                style={{
+                  width: '99%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: scalableheight.two,
+                  marginTop:scalableheight.two,
+                  alignSelf:"center"
+                }}>
+                <TextInput
+                  value={buildingdetails}
+                  onChangeText={text => setbuildingdetails(text)}
+                  placeholder={'Building and Street'}
+                  style={{
+                    ...styleSheet.shadow,
+                    width: '48.5%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                  }}
+                />
+                <TextInput
+                  value={plotnodetails}
+                  onChangeText={text => setplotnodetails(text)}
+                  placeholder={'Flat no & Floor'}
+                  style={{
+                    ...styleSheet.shadow,
+                    width: '48.5%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: '#F9F9F9',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                  }}
+                />
+              </View>
+              <TextInput
+                multiline
+                value={notetorider}
+                onChangeText={text => setnotetorider(text)}
+                placeholder={'Note to Rider'}
+                style={{
+                  ...styleSheet.shadow,
+                  width: '99%',
+                  height: scalableheight.fifteen,
+                  fontSize: fontSize.fifteen,
+                  backgroundColor: '#F9F9F9',
+                  alignSelf: 'center',
+                  borderRadius: fontSize.borderradiusmedium,
+                  paddingHorizontal: '5%',
+                  textAlignVertical: 'top',
+                }}
+              />
                 </>
               ) : (
                 <TouchableOpacity
@@ -1508,9 +1697,23 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   <View style={{height: scalableheight.one}} />
                 </TouchableOpacity>
               )}
+           
+
+              <View style={{height: scalableheight.two}} />
+              <Text style={styleSheet.Text1}>Payment Method</Text>
+              <View style={{height: scalableheight.one}} />
+              <FlatList
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={payment}
+                renderItem={renderpayment}
+                // onEndReached={() => LoadFeaturedProjectPagination()}
+                // onEndReachedThreshold={0.1}
+              />
             </>
           )}
-          {AuthToken != '' && (
+             {AuthToken != '' && (
             <>
               <View style={{height: scalableheight.three}} />
               <Bll label={'Sub Total'} price={price} />
@@ -1522,8 +1725,16 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                     : restrauntdetails?.DeliveryCharges * restrauntdistance
                 }
               />
-
-              <View style={styleSheet.Container}>
+    <Bll
+                label={'VAT Amount'+ ` (${restrauntdetails?.VAT}%)`}
+                price={
+                  
+                  (((restrauntdetails?.DeliveryCharges + price) *
+                  restrauntdetails?.VAT) /
+                  100)
+                }
+              />
+              {/* <View style={styleSheet.Container}>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={styleSheet.Text3}>Vat Amount </Text>
                   <Text
@@ -1533,11 +1744,11 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                 </View>
                 <Text style={styleSheet.Text3}>
                   AED{' '}
-                  {((restrauntdetails?.DeliveryCharges + price) *
+                  {(((restrauntdetails?.DeliveryCharges + price) *
                     restrauntdetails?.VAT) /
-                    100}
+                    100).toFixed(2)}
                 </Text>
-              </View>
+              </View> */}
 
               {discount > 0 && (
                 <View style={styleSheet.Container}>
@@ -1546,7 +1757,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   </View>
                   <Text style={{...styleSheet.Text3, color: '#E14E4E'}}>
                     AED{' -'}
-                    {discount}
+                    {discount?.toFixed(2)}
                   </Text>
                 </View>
               )}
@@ -1630,20 +1841,32 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   marginVertical: scalableheight.one,
                 }}></View>
               <Bll
-                label={'Total'}
+                label={'Total Amount'}
                 price={
                   price +
                   (restrauntdetails?.RestaurantDeliveryType == 'Fixed'
                     ? restrauntdetails?.DeliveryCharges
-                    : restrauntdetails?.DeliveryCharges * restrauntdistance) +
-                  ((restrauntdetails?.DeliveryCharges + price) *
+                    : (restrauntdetails?.DeliveryCharges * restrauntdistance)) +
+                  (((restrauntdetails?.DeliveryCharges + price) *
                     restrauntdetails?.VAT) /
-                    100
+                    100)
                 }
               />
               <View style={{height: scalableheight.two}} />
             </>
           )}
+        </ScrollView>
+        <View
+          style={{
+            paddingHorizontal: scalableheight.two,
+            paddingVertical:scalableheight.one,
+            // position: 'absolute',
+            // bottom: scalableheight.two,
+            width: '100%',
+           
+          }}>
+      
+       
           {AuthToken == '' &&
             (loader1 == true ? (
               <View
@@ -1740,6 +1963,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
             </View>
           )}
         </View>
+  
       </View>
 
       <AuthenticationModel
@@ -1772,7 +1996,7 @@ const styleSheet = StyleSheet.create({
   },
   Text2: {
     fontFamily: 'Inter-SemiBold',
-    fontSize: fontSize.ten,
+    fontSize: fontSize.eleven,
     color: '#29262A',
     opacity: 0.4,
   },
@@ -1936,13 +2160,16 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'flex-end',
     position: 'absolute',
     top: 0,
-    width: '98%',
-    paddingRight: scalableheight.four,
+   
+    width: '90%',
+    paddingRight: scalableheight.two,
     marginBottom: scalableheight.one,
+    marginRight: scalableheight.two,
     borderRadius: fontSize.eleven,
     backgroundColor: 'white',
     flexDirection: 'row',
     marginTop: scalableheight.borderwidth,
+   
   },
   closeBtn: {
     backgroundColor: 'blue',

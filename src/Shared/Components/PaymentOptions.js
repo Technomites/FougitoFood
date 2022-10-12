@@ -33,7 +33,8 @@ const navigation = useNavigation();
       style={{
         ...styleSheet.shadow,
         height: scalableheight.nine,
-        width: scalableheight.fourty,
+        // width: scalableheight.fourty,
+        width: "99%",
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: scalableheight.one,
@@ -42,7 +43,7 @@ const navigation = useNavigation();
         flexDirection:"row",
         marginTop: scalableheight.one,
         marginLeft: scalableheight.borderwidth,
-        marginRight: scalableheight.two,
+        // marginRight: scalableheight.two,
       
        
       }}>
@@ -51,13 +52,13 @@ const navigation = useNavigation();
 {props.option == 1 ? 
 <FontAwesome5 
             name="credit-card"
-            color={"#F55050"}
+            color={"#E14E4E"}
             size={fontSize.twenty}
           />
           : 
           <Ionicons 
             name="wallet-sharp"
-            color={"#F55050"}
+            color={"#E14E4E"}
             size={fontSize.twenty}
           />}
 </View>
@@ -85,7 +86,7 @@ const navigation = useNavigation();
 
 <Ionicons 
             name="ios-radio-button-on"
-            color={"#F55050"}
+            color={"#E14E4E"}
             size={fontSize.twenty}
           />
           :

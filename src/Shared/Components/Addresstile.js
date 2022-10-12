@@ -11,8 +11,14 @@ import {
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useSelector, useDispatch} from 'react-redux';
 export default function Addresstile(props) {
+  const {
+   
+    Selectedcurrentaddress,
+   
+  } = useSelector(state => state.userReducer);
   return (
     <View style={{...styles.shadow, ...styles.MainContainer}}>
       <View
@@ -39,21 +45,21 @@ export default function Addresstile(props) {
                 <FontAwesome5
                   style={{alignSelf: 'center'}}
                   name={'home'}
-                  color={'#F55050'}
+                  color={props?.Latitude == Selectedcurrentaddress[0].Latitude  && props?.Longitude == Selectedcurrentaddress[0].Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
                   size={fontSize.twenty}
                 />
               ) : props?.icon == 'Work' ? (
                 <FontAwesome5
                   style={{alignSelf: 'center'}}
                   name={'briefcase'}
-                  color={'#F55050'}
+                  color={props?.Latitude == Selectedcurrentaddress[0].Latitude  && props?.Longitude == Selectedcurrentaddress[0].Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
                   size={fontSize.twenty}
                 />
               ) : (
                 <FontAwesome5
                   style={{alignSelf: 'center'}}
                   name={'building'}
-                  color={'#F55050'}
+                  color={props?.Latitude == Selectedcurrentaddress[0].Latitude  && props?.Longitude == Selectedcurrentaddress[0].Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
                   size={fontSize.twenty}
                 />
               )}
@@ -83,19 +89,22 @@ export default function Addresstile(props) {
                 }}>
                 {props?.place}
               </Text>
-           
-              {props?.screenname == 'checkout' && (
-                <TouchableOpacity onPress={props.onPress} activeOpacity={0.9}>
-                  <Entypo
+         
+              {props?.Latitude == Selectedcurrentaddress[0].Latitude  && props?.Longitude == Selectedcurrentaddress[0].Longitude && (
+                // <TouchableOpacity onPress={props.onPress} activeOpacity={0.9}>
+                  <AntDesign
                     style={{alignSelf: 'center'}}
-                    name="edit"
-                    color={'rgba(41, 38, 42, 0.5)'}
+                    name="checkcircle"
+                
+                    color={'#F55050'}
+                    // color={'rgba(41, 38, 42, 0.5)'}
                     size={fontSize.fifteen}
                   />
-                </TouchableOpacity>
+                // </TouchableOpacity>
               )}
             </View>
             <Text
+            numberOfLines={2}
               style={{
                 fontFamily: 'Inter-Medium',
                 fontSize: fontSize.thirteen,

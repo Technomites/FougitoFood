@@ -746,8 +746,8 @@ top: getStatusBarHeight() + scalableheight.six,
                   onRegionChange={region => {
                     //  console.log(region)
                     if (
-                      region.latitude.toFixed(5) === pinlatitude.toFixed(5) &&
-                      region.longitude.toFixed(5) === pinLongitude.toFixed(5)
+                      region?.latitude?.toFixed(5) === pinlatitude?.toFixed(5) &&
+                      region?.longitude?.toFixed(5) === pinLongitude?.toFixed(5)
                     ) {
                       return;
                     } else {
@@ -758,8 +758,8 @@ top: getStatusBarHeight() + scalableheight.six,
                     // console.log(region)
 
                     if (
-                      region.latitude.toFixed(5) === pinlatitude.toFixed(5) &&
-                      region.longitude.toFixed(5) === pinLongitude.toFixed(5)
+                      region?.latitude?.toFixed(5) === pinlatitude?.toFixed(5) &&
+                      region?.longitude?.toFixed(5) === pinLongitude?.toFixed(5)
                     ) {
                       return;
                     } else {

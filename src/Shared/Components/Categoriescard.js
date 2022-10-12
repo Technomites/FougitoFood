@@ -19,6 +19,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FastImage from 'react-native-fast-image'
 
 export default function Categoriescard(props) {
   const dispatch = useDispatch();
@@ -31,8 +32,12 @@ export default function Categoriescard(props) {
       style={{
         height: scalableheight.tweleve,
         width: scalableheight.thirtytwo,
+        marginRight: scalableheight.one,
+        borderRadius: scalableheight.one,
+        overflow:"hidden"
       }}>
-      <ImageBackground
+           
+      {/* <ImageBackground
         borderRadius={scalableheight.one}
         resizeMode="cover"
         style={{
@@ -40,7 +45,7 @@ export default function Categoriescard(props) {
           justifyContent: 'center',
           marginRight: scalableheight.one,
         }}
-        source={  props.image ? {uri: props.image} : null}>
+        source={  props.image ? {uri: props.image} : null}> */}
         
         <ImageBackground
       borderRadius={scalableheight.one}
@@ -49,11 +54,13 @@ export default function Categoriescard(props) {
             height: '100%',
             width: '100%',
             justifyContent: 'center',
+            zIndex:5, elevation:5
 
             // justifyContent: 'flex-end',
             // alignItems: 'center',
           }}
           source={require('../../Resources/images/Rectangle.png')}>
+         
           <View style={{position: 'absolute', bottom: scalableheight.two}}>
             <Text
               style={{
@@ -72,11 +79,28 @@ export default function Categoriescard(props) {
                 color: 'white',
                 opacity: 0.8,
               }}>
-              {'Avg Price AED '} {props.price.toFixed(2)}
+              {'Avg Price AED '} {props?.price?.toFixed(2)}
             </Text>
           </View>
         </ImageBackground>
-      </ImageBackground>
+        <FastImage
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: scalableheight.one,
+       
+          height: "100%", width:"100%",
+          position:"absolute"
+       
+        }}
+        source={{
+            uri: props.image ?  props.image : null,
+            // headers: { Authorization: 'someAuthToken' },
+            priority: FastImage.priority.normal,
+        }}
+        resizeMode={FastImage.resizeMode.cover}
+    />
+      {/* // </ImageBackground>  */}
     </TouchableOpacity>
   );
 }

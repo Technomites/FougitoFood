@@ -204,7 +204,7 @@ const renderpopularcategories = ({item}) => (
                     color: 'black',
                     fontSize: fontSize.sixteen,
                   }}>
-                  POPULAR CATEGORIES
+                  CATEGORIES
                 </Text>
                 </View>
 

@@ -34,6 +34,7 @@ export default function ActiveRequestTile(props) {
             borderWidth: 0.5,
             borderColor: 'rgba(0, 0, 0, 0.3)',
             borderRadius: scalableheight.onepointfive,
+         
           }}>
           <Image
             source={{uri: props?.details?.RestaurantLogo}}
@@ -113,12 +114,13 @@ export default function ActiveRequestTile(props) {
           opacity: 0.4,
         }}></View> */}
       <View
-        style={{flexDirection: 'row', marginHorizontal: scalableheight.two}}>
+        style={{flexDirection: 'row', marginHorizontal: scalableheight.onepointfive, }}>
         <View
           style={{
             flex: 1,
             justifyContent: 'center',
             marginVertical: scalableheight.one,
+     
           }}>
           {/* <SubHeading
           style={{
@@ -135,11 +137,14 @@ export default function ActiveRequestTile(props) {
                 fontSize: fontSize.twelve,
                 color: '#707070',
                 alignItems: 'center',
+               width:  scalableheight.ten,
+               textAlign:"center",
+
                
                 // backgroundColor:'red'
                 // marginLeft: scalableheight.two,
               }}>
-              {'AED ' + props.details?.OrderAmount.toFixed(2)}
+              {'AED ' + props?.details?.OrderAmount?.toFixed(2)}
             </Text>
           </View>
 

@@ -26,7 +26,7 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import DynamicHeader from '../Shared/Components/DynamicHeader';
 import DynamicScrolledupheader from '../Shared/Components/DynamicScrolledupheader';
 import BranchListed from '../Shared/Components/BranchListed';
-
+import FastImage from 'react-native-fast-image'
 import MultiChoiceDropDownWithMultipleSelection from '../Shared/Components/MultiChoiceDropDownWithMultipleSelection';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -420,7 +420,28 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }, [dataSourceCordsHorizontal]);
   
  
-  
+    useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        // hideNavigationBar();
+        setkeyboardopen(true)
+        console.log('Keyboard is open');
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        // hideNavigationBar();
+        setkeyboardopen(false)
+        console.log('Keyboard is closed');
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   
     useEffect(() => {
@@ -867,11 +888,12 @@ dispatch(storedistance(inneritem?.Distance));
                   height: '100%',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  paddingTop: getStatusBarHeight()
                 }}>
                 <View
                   style={{
-                    width: '95%',
-                    height: '90%',
+                    width: '100%',
+                    height: '100%',
                     borderRadius: fontSize.eleven,
                     backgroundColor: 'white',
                     overflow: 'hidden',
@@ -941,6 +963,7 @@ dispatch(storedistance(inneritem?.Distance));
                       width: '100%',
                       height: '53%',
                       padding: scalableheight.two,
+             
                     }}>
                     <ScrollView
                       showsVerticalScrollIndicator={false}
@@ -1068,9 +1091,10 @@ dispatch(storedistance(inneritem?.Distance));
                             textAlignVertical: 'top',
                           }}
                         />
+                         <View style={{height: scalableheight.three, }} />
                       </View>
                       {keyboardopen ? (
-                        <View style={{height: scalableheight.two}} />
+                        <View style={{height: scalableheight.three}} />
                       ) : null}
                     </ScrollView>
                   </View>
@@ -1170,12 +1194,12 @@ dispatch(storedistance(inneritem?.Distance));
           style={{
             bottom: scalableheight.two,
             position: 'absolute',
-            width: '90%',
+            width: '95%',
             backgroundColor: '#E14E4E',
             zIndex: 2,
             alignSelf: 'center',
             borderRadius: fontSize.eleven,
-            paddingVertical: scalableheight.one,
+            paddingVertical: scalableheight.two,
             paddingHorizontal: scalableheight.two,
           }}>
           <TouchableOpacity
@@ -1221,7 +1245,7 @@ dispatch(storedistance(inneritem?.Distance));
                   opacity: 0.6,
                   marginLeft: scalableheight.one,
                 }}>
-                AED {price.toFixed(2)}
+                AED {price?.toFixed(2)}
               </Text>
               </View>
               </View>
@@ -1256,10 +1280,15 @@ dispatch(storedistance(inneritem?.Distance));
         useNativeDriver={true}
         keyExtractor={(item, index) => index.toString()}
         ref={scrollviewref}
+
+//         slideStyle={{ width: viewportWidth }}
+// inactiveSlideOpacity={1}
+// inactiveSlideScale={1}
         scrollEventThrottle={1}
         snapToAlignment="start"
-        decelerationRate={'fast'}
-        snapToInterval={scalableheight.fourtythree}
+        decelerationRate={'normal'}
+    
+        snapToInterval={isEnabled ? getStatusBarHeight() + scalableheight.fourtysix :  getStatusBarHeight() + scalableheight.fourtyseven}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: scrollOffsetY}}}],
           {

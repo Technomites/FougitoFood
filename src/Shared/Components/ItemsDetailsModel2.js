@@ -230,7 +230,7 @@ export default function ItemsDetailsModel2(props) {
                       color: '#F55050',
                     }}>
                     {'AED '}
-                    {props?.data?.Price.toFixed(2)}
+                    {props?.data?.Price?.toFixed(2)}
                   </Text>
                 </View>
 

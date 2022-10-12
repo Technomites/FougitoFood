@@ -128,7 +128,7 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
     dist = (dist * 180) / Math.PI;
     dist = dist * 60 * 1.1515;
     dist = dist * 1.609344;
-    SetKmAway(dist.toFixed(2));
+    SetKmAway(dist?.toFixed(2));
     // console.log(dist, 'final dist');
   };
   return (
@@ -254,7 +254,7 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
                   setQrvalue('');
                   setScanPermission(true);
                 }}
-                distance={ kmaway + ' KM AWAY'}
+                distance={ kmaway + ' away'}
               />
             </View>
           </View>

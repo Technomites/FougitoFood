@@ -29,16 +29,16 @@ export default function Bll(props) {
       <Text
         style={{
           ...styleSheet.Text3,
-          color: props.label == 'Total Amount' ? '#E14E4E' : null,
+          color: props.label == 'Total Amount' ? 'black' : "black",
         }}>
         {props.label}
       </Text>
       <Text
         style={{
           ...styleSheet.Text3,
-          color: props.label == 'Total Amount' ? '#E14E4E' : null,
+          color: props.label == 'Total Amount' ? 'black' : "black",
         }}>
-        AED {props.price}
+        AED {props?.price?.toFixed(2)}
       </Text>
     </View>
   );
@@ -99,7 +99,7 @@ const styleSheet = StyleSheet.create({
     opacity: 0.4,
   },
   Text3: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Inter-Bold',
     fontSize: fontSize.thirteen,
     color: '#29262A',
   },

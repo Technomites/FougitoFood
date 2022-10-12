@@ -760,7 +760,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               longitude: long,
             });
           }}
-          distance={item?.Distance + ' AWAY'}
+          distance={item?.Distance + ' away'}
         />
       //</Animatable.View> 
     ) : null;

@@ -79,12 +79,15 @@ const navigation = useNavigation();
       
            
     
-            <Text  style={{fontFamily: 'Inter-Medium',
+            <Text 
+            numberOfLines={1}
+            style={{fontFamily: 'Inter-Medium',
                     fontSize: fontSize.fifteen,
+                    width:scalableheight.thirtyfive,
                     color:"black",marginLeft: scalableheight.one}}>{item?.Value}</Text>
                      <Text  style={{fontFamily: 'Inter-Bold',
                     fontSize: fontSize.thirteen,
-                    color:"black",position:"absolute", right:0}}>AED {item?.Price.toFixed(2)}</Text>
+                    color:"black",position:"absolute", right:0}}>AED {item?.Price?.toFixed(2)}</Text>
          
 
        
