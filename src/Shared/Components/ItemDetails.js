@@ -70,7 +70,8 @@ useEffect(() => {
         backgroundColor:"white",
         flexDirection:"row",
         marginTop: scalableheight.borderwidth,
- 
+
+ paddingHorizontal:scalableheight.one
        
       }}>
         {showcounter ? 
@@ -147,12 +148,12 @@ style={{width:"50%", height:"100%", justifyContent:"center",alignItems:"center"}
 </Animatable.View>
         : null
 }
-     <View style={{height:"100%", width: "15%", alignItems:"center", justifyContent:"center"}}>
+     <View style={{height:"100%", width: "15%", alignItems:"center", justifyContent:"center", }}>
 <TouchableOpacity
 onPress={() => {{
   setanimationstate(true)
   setshowcounter(!showcounter)}}}
-style={{height: scalableheight.six, width: scalableheight.six,     backgroundColor:'#F9F9F9', borderRadius: fontSize.borderradiusmedium, alignItems:"center", justifyContent:"center",}}>
+style={{height: scalableheight.five, width: scalableheight.five,     backgroundColor:'#F9F9F9', borderRadius: fontSize.borderradius, alignItems:"center", justifyContent:"center",}}>
 <Text style={{
             
             fontFamily: 'Inter-Bold',
@@ -168,18 +169,18 @@ style={{height: scalableheight.six, width: scalableheight.six,     backgroundCol
 activeOpacity={1}
   onPress={props.onPress}
 style={{overflow:"hidden", height:"100%", width: "55%",justifyContent:"center", padding: scalableheight.one, flexDirection: "row", alignItems: "center",  justifyContent: "flex-start"}}>
-<View style={{      width: "25%", }}>
+<View style={{      width: "35%", height:"100%", justifyContent:"center", alignItems:"center"}}>
 <Image
                     resizeMode="stretch"
                     style={{
                       width: scalableheight.six,
                       height: scalableheight.six,
-                      borderRadius: fontSize.eleven
+                      borderRadius: fontSize.borderradius
                     }}
                     source={require('../../Resources/images/foods.png')}
                   />
                   </View>
-<View style={{marginLeft: scalableheight.one, width:"70%"}}>
+<View style={{marginLeft: scalableheight.one, width:"65%"}}>
 <Text 
 numberOfLines={1}
 style={{
@@ -199,7 +200,7 @@ style={{
           </View>
             
 </TouchableOpacity>
-<View style={{height:"100%", width: "30%",justifyContent:"center", padding: scalableheight.two,}}>
+<View style={{height:"100%", width: "30%",justifyContent:"center", alignItems:"flex-end"}}>
 
               <Text style={{
             

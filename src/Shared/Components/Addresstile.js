@@ -52,14 +52,14 @@ export default function Addresstile(props) {
                 <FontAwesome5
                   style={{alignSelf: 'center'}}
                   name={'briefcase'}
-                  color={props?.Latitude == Selectedcurrentaddress[0].Latitude  && props?.Longitude == Selectedcurrentaddress[0].Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
+                  color={props?.Latitude == Selectedcurrentaddress[0].Latitude && props?.Longitude == Selectedcurrentaddress[0].Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
                   size={fontSize.twenty}
                 />
               ) : (
                 <FontAwesome5
                   style={{alignSelf: 'center'}}
                   name={'building'}
-                  color={props?.Latitude == Selectedcurrentaddress[0].Latitude  && props?.Longitude == Selectedcurrentaddress[0].Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
+                  color={props?.Latitude == Selectedcurrentaddress[0].Latitude && props?.Longitude == Selectedcurrentaddress[0].Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
                   size={fontSize.twenty}
                 />
               )}
@@ -123,6 +123,7 @@ export default function Addresstile(props) {
                 {'Note to rider'}
               </Text>
               <Text
+                 numberOfLines={1}
                 style={{
                   fontFamily: 'Rubik-Italic',
                   fontSize: fontSize.eleven,

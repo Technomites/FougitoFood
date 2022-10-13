@@ -60,6 +60,7 @@ const navigation = useNavigation();
             // activeOpacity={1}
             onPress={() => {props.update(index, props.index)}}
             style={{flexDirection:"row", marginTop:scalableheight.two, alignItems:"center"}}>
+                <View style={{width:"70%", flexDirection:"row", alignItems:"center"}}>
               {renderIf(item?.selected == true)(
                 <MaterialIcons
                 name="check-box"
@@ -83,11 +84,14 @@ const navigation = useNavigation();
             numberOfLines={1}
             style={{fontFamily: 'Inter-Medium',
                     fontSize: fontSize.fifteen,
-                    width:scalableheight.thirtyfive,
+                 
                     color:"black",marginLeft: scalableheight.one}}>{item?.Value}</Text>
+                    </View>
+                    <View style={{width:"30%" ,justifyContent:"center"}}>
                      <Text  style={{fontFamily: 'Inter-Bold',
                     fontSize: fontSize.thirteen,
                     color:"black",position:"absolute", right:0}}>AED {item?.Price?.toFixed(2)}</Text>
+                    </View>
          
 
        

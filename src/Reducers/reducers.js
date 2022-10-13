@@ -140,7 +140,8 @@ const initialState = {
   orderdetailslink: '',
   addressdeletionstatus: '',
   branchlist: [],
-  review_restaurant:''
+  review_restaurant:'',
+  Profileinfo: []
 };
 
 function userReducer(state = initialState, action) {
@@ -551,6 +552,7 @@ function userReducer(state = initialState, action) {
         ProfileContact: action.ContactPayload,
         ProfileEmail: action.EmailPayload,
         ProfileImage: action.UserImagePayload,
+        Profileinfo: action.data
       };
     case Logoutuser:
       return {

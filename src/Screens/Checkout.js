@@ -17,7 +17,8 @@ import {
   Keyboard,
   Linking,
   Modal,
-  Dimensions
+  Dimensions,
+  
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {WebView} from 'react-native-webview';
@@ -53,6 +54,8 @@ import Addresstile from '../Shared/Components/Addresstile';
 import Bll from '../Shared/Components/Bll';
 import MYButton from '../Shared/Components/MYButton';
 
+import CountryInput from '../Shared/Components/CountryInput';
+
 import ItemDetailsModel from '../Shared/Components/ItemDetailsModel';
 import AuthenticationModel from '../Shared/Components/AuthenticationModel';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
@@ -70,6 +73,9 @@ import {
 import Geocoder from 'react-native-geocoding';
 import Geolocation from '@react-native-community/geolocation';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
+
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+
 const Checkout = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   const [modalVisible, setmodalVisible] = useState(false);
@@ -140,11 +146,15 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     orderdetails,
     cardorderplacementstatus,
     orderdetailslink,
-    alladdresses
+    alladdresses,
+    Profileinfo
   } = useSelector(state => state.userReducer);
   const refMap = useRef(null);
   const toast = useRef();
+  const ref = useRef();
+  const scrollref = useRef();
 
+  
   const customStyle = [
     {
       elementType: 'geometry',
@@ -322,12 +332,14 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   // dispatch(storecartprice(currentprice))
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      scrollref.current.scrollTo({ y: 0 , animated: true, });
       StatusBar.setBarStyle('dark-content');
     });
 
     //  Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
+
 
   useEffect(() => {
     if (couponresponsestatus != '' && couponresponsemessage != '') {
@@ -409,6 +421,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           setmodalVisiblepayment(true);
         }
       } else {
+        scrollref.current.scrollTo({ y: 0 , animated: true, });
         toast.current.show(orderplacementstatus, {
           type: 'normal',
           placement: 'bottom',
@@ -607,7 +620,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     setpayment(data);
   }
   const renderpayment = ({item, index}) => (
-    <View style={{width:Dimensions.get('window').width /1.08, }}>
+    // <View style={{width:Dimensions.get('window').width /1.08, }}>
+    <View style={{width: "100%"}}>
     <PaymentOptions
       option={item.icon}
       index={index}
@@ -637,10 +651,11 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   );
 
   const renderHiddenItem = ({item, index}) => (
-    <View style={{...styleSheet.rowBack}}>
+    <View style={{...styleSheet.rowBack, }}>
       <TouchableOpacity
         style={[styleSheet.actionButton, styleSheet.deleteBtn]}
         onPress={() => {
+          let lengthofcart = cartdata.length
           let data = [...cartdata];
           let reducepriced = data[index].completeitemorderprice;
           data.splice(index, 1);
@@ -649,6 +664,9 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           dispatch(filteredcatdata(data));
 
           console.log(data);
+          if(lengthofcart == 1){
+            navigation.goBack()
+          }
         }}>
             <MaterialCommunityIcons
                             style={{alignSelf: 'center'}}
@@ -712,6 +730,26 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   }, []);
 
   useEffect(() => {
+    if(AuthToken != ""){
+      Profileinfo
+      setfirstname(Profileinfo?.User?.FirstName)
+      setlastname(Profileinfo?.User?.LastName)
+      setemail(Profileinfo?.User?.Email)
+      setphonenumber(Profileinfo?.Contact)
+
+    }else{
+      setfirstname("")
+      setlastname("")
+      setemail("")
+      setphonenumber("")
+    }
+    
+  }, [pickuporder, AuthToken]);
+
+
+  
+
+  useEffect(() => {
    if(Selectedcurrentaddress.length > 0){
     console.log("Selectedcurrentaddress" + JSON.stringify(Selectedcurrentaddress));
     setplotnodetails(Selectedcurrentaddress[0].Floor )
@@ -737,11 +775,11 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   }, [pinlatitude, pinLongitude]);
 
 
-  useEffect(() => {
-  if(cartdata.length == 0){
-    navigation.goBack()
-  }
-  }, [cartdata]);
+  // useEffect(() => {
+  // if(cartdata.length == 0){
+  //   navigation.goBack()
+  // }
+  // }, [cartdata]);
  
 
   function getnewlocation() {
@@ -947,7 +985,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         }}>
         <PlainHeader title={'Cart'} />
     
-        <ScrollView
+        <AnimatedScrollView
+        ref ={scrollref}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps={'always'}
           style={{
@@ -1014,43 +1053,26 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
             // previewOpenDelay={3000}
             onRowDidOpen={onItemOpen}
           />
-          {/* {cartdata.map(item => {
-            return (
-              <View style={{alignItems: 'center'}}>
-                <ItemDetails
-                qty = {item?.Qty} 
-                title={item?.Name}
-                  price={item?.completeitemorderprice}
-                  onPress={() => {
-                    setmodalVisible(true);
-                  }}
-                />
-              </View>
-            );
-          })} */}
+       
+     
+
           {AuthToken == '' && (
             <>
-              <View style={{height: scalableheight.two}} />
-           
+             
+             {pickuporder == true &&
+       <>
+       
+      
 
-              <View style={{height: scalableheight.two}} />
-              <Text style={styleSheet.Text1}>Delivery Details</Text>
               <View style={{height: scalableheight.one}} />
+              <Text style={styleSheet.Text1}>Delivery Details</Text>
+    
+<View>
+
 
               <GooglePlacesAutocomplete
                 suppressDefaultStyles={false}
-                //  styles ={{
-
-                //   ...styleSheet.shadow,
-                //   width: '100%',
-                //   height: scalableheight.six,
-                //   fontSize: fontSize.fifteen,
-                //   backgroundColor: '#F9F9F9',
-                //   alignSelf: 'center',
-                //   borderRadius: fontSize.borderradiusmedium,
-                //   paddingHorizontal: '5%',
-                //   marginHorizontal: '0.4%',
-                // }}
+                ref={ref}
                 styles={{
                   textInput: {
                     ...styleSheet.shadow,
@@ -1062,6 +1084,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                     borderRadius: fontSize.borderradiusmedium,
                     paddingHorizontal: '5%',
                     marginHorizontal: '0.4%',
+                    marginTop: scalableheight.two,
                     marginBottom: scalableheight.two,
                   },
                 }}
@@ -1082,7 +1105,23 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   components: 'country:ae',
                 }}
               />
-
+              {Platform.OS != "ios" &&
+              <TouchableOpacity 
+              onPress={() => {
+                ref.current?.clear();
+              }}
+              style={{position:"absolute",      height: scalableheight.six,  marginTop: scalableheight.two,      justifyContent:"center", right: scalableheight.one}}
+              >
+                 <Ionicons
+              name="close-circle"
+              color={ 'rgba(211,211,211, 0.8)'}
+              size={fontSize.twenty}
+              style={{}}
+            />
+            </TouchableOpacity>
+}
+             
+</View>
               <View
                 style={{
                   height: scalableheight.twentysix,
@@ -1259,10 +1298,9 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   textAlignVertical: 'top',
                 }}
               />
-
-              <View style={{height: scalableheight.two}} />
-              <Text style={styleSheet.Text1}>Personal Details</Text>
-              <View style={{height: scalableheight.one}} />
+    </>}  
+              <Text style={{...styleSheet.Text1, marginVertical:scalableheight.two}}>Personal Details</Text>
+            
 
               <View
                 style={{
@@ -1341,7 +1379,15 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                 />
              
               </View>
-              <View
+           <CountryInput
+           
+           Onpress = {(text) =>{
+   
+            setphonenumber(text.substring(1))
+           }}
+           />
+         
+              {/* <View
                 style={{
                   width: '100%',
                   flexDirection: 'row',
@@ -1366,19 +1412,22 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                     marginHorizontal: '0.4%',
                   }}
                 />
-              </View>
+              </View> */}
               <Text style={styleSheet.Text1}>Payment Method</Text>
               <View style={{height: scalableheight.one}} />
+       
               <FlatList
                 keyExtractor={(item, index) => index.toString()}
                 horizontal
+                contentContainerStyle={{width:"100%"}}
                 showsHorizontalScrollIndicator={false}
                 data={payment}
                 renderItem={renderpayment}
                 // onEndReached={() => LoadFeaturedProjectPagination()}
                 // onEndReachedThreshold={0.1}
               />
-              <View style={{height: scalableheight.three}} />
+         
+              <View style={{height: scalableheight.onepointfive}} />
               <Bll label={'Sub Total'} price={price} />
               <Bll
                 label={'Delivery Charges'}
@@ -1523,13 +1572,18 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
 {AuthToken != '' && (
             <>
               <View style={{height: scalableheight.two}} />
+              
+              {pickuporder == true ? (
+              <>
               {Selectedcurrentaddress?.length > 0 ? (
                 <>
 <View style ={{flexDirection:"row", justifyContent:"space-between", alignItems:"center", }}>
                   <Text style={styleSheet.Text1}>Delivery Address</Text>
                 
                 <TouchableOpacity onPress={() => {
-
+   navigation.navigate('EditAddress', {
+    screenname: 'checkout',
+  });
                 }} activeOpacity={0.9}>
                   <Entypo
                     style={{alignSelf: 'center'}}
@@ -1562,8 +1616,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                       onPress={() => {
                         let currentaddress = [
                           {
-                            Latitude: item.Latitude,
-                            Longitude: item.Longitude,
+                            Latitude: item?.Latitude.toFixed(6),
+                            Longitude: item?.Longitude.toFixed(6),
                             icon: item.Type,
                             place: item.Type,
                             address: item.Address,
@@ -1577,7 +1631,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                         // navigation.goBack();
                       }}
                     
-                      style={{ width: scalableheight.thirtyfive, marginRight: scalableheight.one, marginBottom:scalableheight.one, }}>
+                      style={{ width: scalableheight.thirtyfive, marginRight: scalableheight.one, marginBottom:scalableheight.one, marginTop:scalableheight.one}}>
                       <Addresstile
                      
                         onPress={() => {
@@ -1599,23 +1653,10 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                     </TouchableOpacity>
                   );
                 }}
-                // renderItem={renderaddresses}
-                // onEndReached={() => LoadFeaturedProjectPagination()}
-                // onEndReachedThreshold={0.1}
+           
               />
               </View>
-                  {/* <Addresstile
-                    icon={Selectedcurrentaddress[0].icon}
-                    place={Selectedcurrentaddress[0].place}
-                    address={Selectedcurrentaddress[0].address}
-                    note={Selectedcurrentaddress[0].note}
-                    onPress={() => {
-                      navigation.navigate('EditAddress', {
-                        screenname: 'checkout',
-                      });
-                    }}
-                    screenname={'checkout'}
-                  /> */}
+                
 
 <View
                 style={{
@@ -1623,7 +1664,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   marginBottom: scalableheight.two,
-                  marginTop:scalableheight.two,
+                  marginTop:scalableheight.one,
                   alignSelf:"center"
                 }}>
                 <TextInput
@@ -1697,20 +1738,180 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   <View style={{height: scalableheight.one}} />
                 </TouchableOpacity>
               )}
+           </>) :
            
+           <>
+               <Text style={{...styleSheet.Text1, marginVertical:scalableheight.two}}>Personal Details</Text>
+            
+
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: scalableheight.two,
+              }}>
+              <TextInput
+                value={firstname}
+                onChangeText={text => setfirstname(text)}
+                placeholder={'First Name'}
+                style={{
+                  ...styleSheet.shadow,
+                  width: '100%',
+                  height: scalableheight.six,
+                  fontSize: fontSize.fifteen,
+                  backgroundColor: '#F9F9F9',
+                  alignSelf: 'center',
+                  borderRadius: fontSize.borderradiusmedium,
+                  paddingHorizontal: '5%',
+                  marginHorizontal: '0.4%',
+                }}
+              />
+            
+            </View>
+
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: scalableheight.two,
+              }}>
+            
+              <TextInput
+                value={lastname}
+                onChangeText={text => setlastname(text)}
+                placeholder={'Last Name'}
+                style={{
+                  ...styleSheet.shadow,
+                  width: '100%',
+                  height: scalableheight.six,
+                  fontSize: fontSize.fifteen,
+                  backgroundColor: '#F9F9F9',
+                  alignSelf: 'center',
+                  borderRadius: fontSize.borderradiusmedium,
+                  paddingHorizontal: '5%',
+                  marginHorizontal: '0.4%',
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: scalableheight.two,
+              }}>
+              <TextInput
+                value={email}
+                onChangeText={text => setemail(text)}
+                placeholder={'Email Address'}
+                style={{
+                  ...styleSheet.shadow,
+                  width: '100%',
+                  height: scalableheight.six,
+                  fontSize: fontSize.fifteen,
+                  backgroundColor: '#F9F9F9',
+                  alignSelf: 'center',
+                  borderRadius: fontSize.borderradiusmedium,
+                  paddingHorizontal: '5%',
+                  marginHorizontal: '0.4%',
+                }}
+              />
+           
+            </View>
+     {/* <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: scalableheight.two,
+                }}>
+              
+                <TextInput
+                disabled={true}
+                  value={phonenumber}
+                  onChangeText={text => setphonenumber(text)}
+                  keyboardType={'number-pad'}
+                  placeholder={'Phone Number'}
+                  style={{
+                    ...styleSheet.shadow,
+                    width: '100%',
+                    height: scalableheight.six,
+                    fontSize: fontSize.fifteen,
+                    backgroundColor: 'grey',
+                    alignSelf: 'center',
+                    borderRadius: fontSize.borderradiusmedium,
+                    paddingHorizontal: '5%',
+                    marginHorizontal: '0.4%',
+                  }}
+                />
+              </View> */}
+                    <View style={{justifyContent: 'center'}}>
+              <TextInput
+                style={{
+                  ...styleSheet.shadow,
+                  width: '100%',
+                  height: scalableheight.six,
+                  fontSize: fontSize.fifteen,
+
+                  alignSelf: 'center',
+                  borderRadius: fontSize.borderradiusmedium,
+                  paddingHorizontal: '5%',
+                  marginHorizontal: '0.4%',
+                  backgroundColor:"#E1E1E1",
+                  paddingLeft: scalableheight.tweleve
+                }}
+                editable={false}
+                keyboardType="numeric"
+                placeholderTextColor="#8c8c8c"
+                //          placeholder={'Enter Phone Number'}
+                onChangeText={text => setphonenumber(text)}
+                defaultValue={phonenumber.substring(3)}
+             
+              />
+              <Image
+                style={{
+                  height: scalableheight.three,
+                  width: scalableheight.four,
+                  resizeMode: 'stretch',
+                  position: 'absolute',
+                  left: scalableheight.one,
+                }}
+                source={require('../Resources/images/uaeFlag.png')}
+              />
+              <Text
+                style={{
+                  // color: 'rgba(41, 38, 42, 0.6)',
+                  fontFamily: 'Inter-Bold',
+                  fontSize: fontSize.fifteen,
+                  position: 'absolute',
+                  left: scalableheight.six,
+                }}>
+                +971
+              </Text>
+            </View>
+           
+           </>
+           
+           }
 
               <View style={{height: scalableheight.two}} />
               <Text style={styleSheet.Text1}>Payment Method</Text>
               <View style={{height: scalableheight.one}} />
+         
               <FlatList
                 keyExtractor={(item, index) => index.toString()}
                 horizontal
+                contentContainerStyle={{width:"100%"}}
                 showsHorizontalScrollIndicator={false}
                 data={payment}
                 renderItem={renderpayment}
                 // onEndReached={() => LoadFeaturedProjectPagination()}
                 // onEndReachedThreshold={0.1}
               />
+            
             </>
           )}
              {AuthToken != '' && (
@@ -1855,11 +2056,11 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
               <View style={{height: scalableheight.two}} />
             </>
           )}
-        </ScrollView>
+        </AnimatedScrollView>
         <View
           style={{
             paddingHorizontal: scalableheight.two,
-            paddingVertical:scalableheight.one,
+            paddingVertical:scalableheight.two,
             // position: 'absolute',
             // bottom: scalableheight.two,
             width: '100%',
@@ -2164,7 +2365,7 @@ const styleSheet = StyleSheet.create({
     width: '90%',
     paddingRight: scalableheight.two,
     marginBottom: scalableheight.one,
-    marginRight: scalableheight.two,
+
     borderRadius: fontSize.eleven,
     backgroundColor: 'white',
     flexDirection: 'row',

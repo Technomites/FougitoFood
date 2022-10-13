@@ -40,7 +40,7 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-  const {AuthToken, MyorderList, MyorderListpast} = useSelector(
+  const {AuthToken, MyorderList, MyorderListpast, orderplacementstatus, cardorderplacementstatus, orderdetails} = useSelector(
     state => state.userReducer,
   );
 
@@ -71,7 +71,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const toast = useRef();
   useEffect(() => {
     dispatch(Myorders(AuthToken));
-  }, [AuthToken]);
+  }, [AuthToken, orderplacementstatus, cardorderplacementstatus,orderdetails ]);
 
   function onRefresh() {
     NetInfo.fetch().then(state => {

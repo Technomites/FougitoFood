@@ -2,19 +2,14 @@ import React, {useState, useRef} from 'react';
 import {View, Text, Alert, StyleSheet, Pressable, Dimensions} from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
 import {useSelector} from 'react-redux';
+
 import {fontSize, scalableheight} from '../../Utilities/fonts';
-const CountryInput = ({
-  heading,
-  placeholder,
-  inputStyle,
-  containersStyle,
-  color,
-}) => {
+const CountryInput = (props) => {
   const [phoneNumber, setphoneNumber] = useState('');
   const phoneInput = useRef(null);
   const {Lang} = useSelector(state => state.userReducer);
   return (
-    <View style={{width: '100%', ...containersStyle, }}>
+    <View style={{width: '100.5%',   paddingBottom:scalableheight.two }}>
       <PhoneInput
         ref={phoneInput}
         defaultValue={phoneNumber}
@@ -22,24 +17,28 @@ const CountryInput = ({
         layout="first"
         // autoFocus
         containerStyle={styles.phoneContainer}
-        textContainerStyle={styles.textInput}
+        textContainerStyle={{...styles.textInput, ...styles.shadow }}
         style={{}}
         textInputStyle={{
-          color: 'black',
-          fontFamily: 'Rubik-Regular',
-          fontSize:fontSize.twelve,
+          // color: 'black',
+          // fontFamily: 'Rubik-Regular',
+          // fontSize:fontSize.twelve,
 
         }}
         flagButtonStyle={{
-          borderRadius: 8,
-          borderWidth: 0,
-          borderBottomEndRadius: 1,
-         
-         
-          backgroundColor: '#EEEBE7',
+          ...styles.shadow ,
+          width: '20%',
+          height: scalableheight.six,
+          fontSize: fontSize.fifteen,
+          backgroundColor: '#F9F9F9',
+          alignSelf: 'center',
+          borderRadius: fontSize.borderradiusmedium,
+          paddingHorizontal: '5%',
+          marginHorizontal: '0.4%',
         }}
         onChangeFormattedText={text => {
           setphoneNumber(text);
+          props.Onpress(text)
         }}
       />
     </View>
@@ -51,36 +50,41 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+   
+    
 
   },
   phoneContainer: {
     width: '100%',
-    height: 48,
-borderWidth:1, borderColor:"#A0A0A0",
-borderRadius:6,
-color: '#000000',
-    //backgroundColor: '#F7F7FA',
-    //backgroundColor: 'red',
-    backgroundColor:"#EEEBE7",
-    height: Dimensions.get('window').height / 15,
+   
+
+
+    backgroundColor: '#F9F9F9',
+    height: scalableheight.six,
   },
 
   textInput: {
-    paddingVertical: 0,
-   
-  
-    //paddingVertical: 7,
-    fontFamily: 'Rubik-Regular',
-   
-      borderRadius:13,
-  backgroundColor:"#EEEBE7",
-  
-
-   
-    paddingLeft: 5,
- 
-
+    width: '100%',
+          height: scalableheight.six,
+          fontSize: fontSize.fifteen,
+          backgroundColor: '#F9F9F9',
+          alignSelf: 'center',
+          borderRadius: fontSize.borderradiusmedium,
+          paddingHorizontal: '5%',
+       
+     
     
+  },
+ shadow:  {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 2,
   },
 });
 

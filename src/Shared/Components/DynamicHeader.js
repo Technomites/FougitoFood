@@ -140,7 +140,7 @@ const renderpopularcategories = ({item}) => (
             </ImageBackground>
             <Reviewscontainer
             token= {AuthToken}
-              rating={restrauntdetails?.AvgRating}
+              rating={restrauntdetails?.AvgRating?.toFixed(2)}
               reviews={restrauntdetails?.RatingCount}
               title={restrauntdetails?.BranchName}
               Address={restrauntdetails?.Address}
@@ -211,6 +211,7 @@ const renderpopularcategories = ({item}) => (
               {/* //</Animatable.View> */}
 
               <FlatList
+                key = "2"
                 keyExtractor={(item, index) => index.toString()}
                 horizontal
                 showsHorizontalScrollIndicator={false}

@@ -277,10 +277,24 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
         });
         dispatch(getalladdresses(AuthToken));
         if( screenname == 'checkout'){
+          // let currentaddress = [
+          //   {
+          //     Latitude: item.Latitude,
+          //     Longitude: item.Longitude,
+          //     icon: item.Type,
+          //     place: item.Type,
+          //     address: item.Address,
+          //     note: item.NoteToRider,
+          //     Street: item.Street,
+          //     Floor: item.Floor,
+          //   },
+          // ];
+          // console.log("currentaddress" + JSON.stringify(currentaddress));
+          // dispatch(storecurrentaddress(currentaddress));
           let currentaddress = [
             {
-              Latitude: pinlatitude,
-              Longitude: pinLongitude,
+              Latitude: pinlatitude.toFixed(6),
+              Longitude: pinLongitude.toFixed(6),
               icon: placeselected.title,
               place: placeselected.title,
               address: pinlocation,

@@ -103,6 +103,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   const [long, setlong] = useState(route?.params?.longitude);
   const [showbottomsheet, setshowbottomsheet] = useState(false);
   const [pinlocation, setpinlocation] = useState('');
+
   const [modaldataoptions, setmodaldataoptions] = useState([]);
   const [modaldataoptionsindex, setmodaldataoptionsindex] = useState();
   const [search, setsearch] = useState('');
@@ -220,7 +221,17 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       },
     ]);
    
+  
+
+
+    useEffect(() => {
+     
+      if(AuthToken != ""){
+        dispatch(getallrestrauntsbyid(restrauntdetails?.RestaurantBranchId, AuthToken));
+      }
    
+  
+    }, [AuthToken]);
 
     useEffect(() => {
       if(addedtofavourite == "Success"){
@@ -239,6 +250,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
      
   
     }, [addedtofavourite]);
+
+   
   
     useEffect(() => {
       if(restrauntdetails?.RestaurantBranchId != undefined){
@@ -252,14 +265,15 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }, [restrauntdetails]);
   
     useEffect(() => {
-      if(cartdata.length > 0){
+     
+      if(cartdata.length > 0 || restrauntdetails?.IsClose == true){
         setcartvisible(true)
       }else{
         setcartvisible(false)
      
       }
-     console.log("all cart data length" + cartdata.length + "data " + JSON.stringify(cartdata))
-    }, [cartdata]);
+
+    }, [cartdata, restrauntdetails]);
   
     useEffect(() => {
       if(restrauntmenu.length > 0){
@@ -272,14 +286,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }, [restrauntmenu]);
 
 
-  useEffect(() => {
-    if (addedtofavourite == 'Success') {
-      dispatch(
-        getallrestrauntsbyid(restrauntdetails?.RestaurantBranchId, AuthToken),
-      );
-      dispatch(clearfavourite());
-    }
-  }, [addedtofavourite]);
+ 
 
   useEffect(() => {
     if (restrauntdetails?.RestaurantBranchId != undefined) {
@@ -288,35 +295,11 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }
   }, [restrauntdetails]);
 
-  useEffect(() => {
-    if (cartdata.length > 0) {
-      setcartvisible(true);
-    } else {
-      setcartvisible(false);
-    }
-    console.log(
-      'all cart data length' +
-        cartdata.length +
-        'data ' +
-        JSON.stringify(cartdata),
-    );
-  }, [cartdata]);
+ 
 
-  useEffect(() => {
-    if (restrauntmenu.length > 0) {
-      setscreenloader(false);
-    }
-  }, [restrauntmenu]);
+ 
 
-  function toggleanimation() {
-    setmodalVisible(false)
-    if (animationtype == 'fadeInUpBig') {
-      setanimationtype('fadeOutDownBig');
-    } else {
-      setanimationtype('fadeInUpBig');
-    }
-  }
-
+  
   useEffect(() => {
     // hideNavigationBar();
     if (modalVisible == true) {
@@ -324,78 +307,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }
   }, [modalVisible]);
 
-  function clearandclose() {
-     
-    toggleanimation();
-    setanimationstate(true);
-    scrollviewref.current.scrollTo({ y: dataSourceCords[1] , animated: true, });
-   
-    Keyboard.dismiss();
-  }
-  function additemtocart() {
-    let errorcaused = false;
-    let arr = retaurantmenucategorydataoption;
 
-    for (const key in arr.MenuItemOptions) {
-      // console.log("yo yo" + JSON.stringify(arr.MenuItemOptions[key]))
-      let found = 0;
-
-      for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
-        if (
-          arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true
-        ) {
-          // console.log("yo yo" + JSON.stringify(arr.MenuItemOptions[key].MenuItemOptionValues))
-          found = 1;
-        }
-      }
-      if (found == 0 && arr.MenuItemOptions[key].IsRequired == true) {
-        errorcaused = true;
-        toast.current.show(
-          arr.MenuItemOptions[key].Title + ' is a required field',
-          {
-            type: 'normal',
-            placement: 'bottom',
-            duration: 4000,
-            offset: 10,
-            animationType: 'slide-in',
-          },
-        );
-      }
-    }
-
-    if (errorcaused == true) {
-    } else {
-      let a = [];
-      arr['SpecialInstructios'] = specialinstructions;
-      arr['Qty'] = count;
-
-      a.push(arr);
-
-      let addedprice = arr.Price;
-      for (const priceindex in arr.MenuItemOptions) {
-        for (const i in arr.MenuItemOptions[priceindex].MenuItemOptionValues) {
-          if (
-            arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].selected ==
-            true
-          ) {
-            addedprice =
-              addedprice +
-              arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].Price;
-          }
-        }
-      }
-      arr['priceperitem'] = addedprice;
-      addedprice = addedprice * count;
-      arr['completeitemorderprice'] = addedprice;
-      addedprice = price + addedprice;
-      dispatch(storecartprice(addedprice));
-      dispatch(storecartdata(a));
-      console.log('this is the price' + JSON.stringify(addedprice));
-      console.log('this is the data going into the cart' + JSON.stringify(arr));
-      clearandclose();
-      setcartvisible(true);
-    }
-  }
 
     useEffect(() => {
       StatusBar.setHidden(false);
@@ -413,11 +325,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }, [navigation]);
     
   
-    useEffect(() => {
-      console.log(
-        'dataSourceCordsHorizontal' + JSON.stringify(dataSourceCordsHorizontal),
-      );
-    }, [dataSourceCordsHorizontal]);
+   
   
  
     useEffect(() => {
@@ -460,7 +368,87 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       }
     }, [lat, long]);
   
-
+    function toggleanimation() {
+      setmodalVisible(false)
+      if (animationtype == 'fadeInUpBig') {
+        setanimationtype('fadeOutDownBig');
+      } else {
+        setanimationtype('fadeInUpBig');
+      }
+    }
+  
+    function clearandclose() {
+     
+      toggleanimation();
+      setanimationstate(true);
+      scrollviewref.current.scrollTo({ y: dataSourceCords[1] , animated: true, });
+     
+      Keyboard.dismiss();
+    }
+    function additemtocart() {
+      let errorcaused = false;
+      let arr = retaurantmenucategorydataoption;
+  
+      for (const key in arr.MenuItemOptions) {
+        // console.log("yo yo" + JSON.stringify(arr.MenuItemOptions[key]))
+        let found = 0;
+  
+        for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
+          if (
+            arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true
+          ) {
+            // console.log("yo yo" + JSON.stringify(arr.MenuItemOptions[key].MenuItemOptionValues))
+            found = 1;
+          }
+        }
+        if (found == 0 && arr.MenuItemOptions[key].IsRequired == true) {
+          errorcaused = true;
+          toast.current.show(
+            arr.MenuItemOptions[key].Title + ' is a required field',
+            {
+              type: 'normal',
+              placement: 'bottom',
+              duration: 4000,
+              offset: 10,
+              animationType: 'slide-in',
+            },
+          );
+        }
+      }
+  
+      if (errorcaused == true) {
+      } else {
+        let a = [];
+        arr['SpecialInstructios'] = specialinstructions;
+        arr['Qty'] = count;
+  
+        a.push(arr);
+  
+        let addedprice = arr.Price;
+        for (const priceindex in arr.MenuItemOptions) {
+          for (const i in arr.MenuItemOptions[priceindex].MenuItemOptionValues) {
+            if (
+              arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].selected ==
+              true
+            ) {
+              addedprice =
+                addedprice +
+                arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].Price;
+            }
+          }
+        }
+        arr['priceperitem'] = addedprice;
+        addedprice = addedprice * count;
+        arr['completeitemorderprice'] = addedprice;
+        addedprice = price + addedprice;
+        dispatch(storecartprice(addedprice));
+        dispatch(storecartdata(a));
+        console.log('this is the price' + JSON.stringify(addedprice));
+        console.log('this is the data going into the cart' + JSON.stringify(arr));
+        clearandclose();
+        setcartvisible(true);
+      }
+    }
 
   function getnewlocation() {
     Geocoder.from(lat, long)
@@ -553,48 +541,48 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     />
   );
 
-  const rendertypes = ({item, index}) => (
-    <TouchableOpacity
-      onPress={() => {
-        console.log(dataSourceCords[index]);
+  // const rendertypes = ({item, index}) => (
+  //   <TouchableOpacity
+  //     onPress={() => {
+  //       console.log(dataSourceCords[index]);
 
-        scrollviewref.current.scrollTo({
-          y: dataSourceCords[index + 1],
-          animated: true,
-        });
+  //       scrollviewref.current.scrollTo({
+  //         y: dataSourceCords[index + 1],
+  //         animated: true,
+  //       });
 
-        let data = [...restrauntmenu];
-        for (const index in data) {
-          data[index].visible = false;
-        }
-        data[index].visible = true;
-        dispatch(updatedmenuselection(data));
-      }}
-      style={{
-        backgroundColor: 'transparent',
-        paddingHorizontal: scalableheight.three,
-        alignItems: 'center',
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <Text
-        onLayout={event => {
-          const layout = event.nativeEvent.layout;
-          dataSourceCordsHorizontal[index] = layout.x; // we store this offset values in an array
-        }}
-        style={{
-          fontFamily: 'Inter-SemiBold',
-          color: item.visible ? '#E14E4E' : 'rgba(211,211,211, 0.9)',
-          fontSize: fontSize.fifteen,
-          paddingVertical: scalableheight.one,
-          borderBottomWidth: item.visible ? 1 : 0,
-          borderColor: '#E14E4E',
-        }}>
-        {item?.CategoryName}
-      </Text>
-    </TouchableOpacity>
-  );
+  //       let data = [...restrauntmenu];
+  //       for (const index in data) {
+  //         data[index].visible = false;
+  //       }
+  //       data[index].visible = true;
+  //       dispatch(updatedmenuselection(data));
+  //     }}
+  //     style={{
+  //       backgroundColor: 'transparent',
+  //       paddingHorizontal: scalableheight.three,
+  //       alignItems: 'center',
+  //       height: '100%',
+  //       alignItems: 'center',
+  //       justifyContent: 'center',
+  //     }}>
+  //     <Text
+  //       onLayout={event => {
+  //         const layout = event.nativeEvent.layout;
+  //         dataSourceCordsHorizontal[index] = layout.x; // we store this offset values in an array
+  //       }}
+  //       style={{
+  //         fontFamily: 'Inter-SemiBold',
+  //         color: item.visible ? '#E14E4E' : 'rgba(211,211,211, 0.9)',
+  //         fontSize: fontSize.fifteen,
+  //         paddingVertical: scalableheight.one,
+  //         borderBottomWidth: item.visible ? 1 : 0,
+  //         borderColor: '#E14E4E',
+  //       }}>
+  //       {item?.CategoryName}
+  //     </Text>
+  //   </TouchableOpacity>
+  // );
 
   function updateservingstate(index, arrindex) {
     console.log(arrindex);
@@ -717,6 +705,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
             ? 'light-content'
             : screenloader == true
             ? 'dark-content'
+            : modalVisible == true
+            ? 'dark-content'
             : 'light-content'
         }
         backgroundColor="transparent"
@@ -728,7 +718,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
             position: 'absolute',
             width: '100%',
             height: '100%',
-            backgroundColor: 'rgba(0,0,0,0.8)',
+            backgroundColor: 'white',
             zIndex: 2,
             elevation: 2,
           }}></View>
@@ -830,6 +820,11 @@ color: '#111111',
 
 
 if (currentRestrauntid != inneritem?.Id) {
+ 
+  // console.log("hello")
+  // console.log(inneritem?.Distance + "tr")
+  // console.log(inneritem)
+  setDataSourceCords([])
   dispatch(clearmenu())  
   setscreenloader(true)
 
@@ -837,11 +832,12 @@ if (currentRestrauntid != inneritem?.Id) {
   dispatch(storerestrauntbasicdata(inneritem));
 dispatch(storedistance(inneritem?.Distance));
   dispatch(storecartprice(0));
-  dispatch(cleancart());
-  dispatch(storerestrauntid(inneritem?.Id));
+
+   dispatch(storerestrauntid(inneritem?.Id));
   dispatch(getallrestrauntsbyid(inneritem?.Id, AuthToken));
  dispatch(getpopularcategoriesbyid(inneritem?.Id))
   dispatch(getrestrauntmenubyid(inneritem?.Id))
+  dispatch(cleancart());
 }
 
                         setSelectBranchVisible(false)
@@ -1203,10 +1199,13 @@ dispatch(storedistance(inneritem?.Distance));
             paddingHorizontal: scalableheight.two,
           }}>
           <TouchableOpacity
+          disabled={restrauntdetails?.IsClose}
             onPress={() => {
               navigation.navigate('Checkout');
             }}
             style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              {restrauntdetails?.IsClose != true ?
+              <>
             <View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View
@@ -1261,6 +1260,23 @@ dispatch(storedistance(inneritem?.Distance));
                 Checkout
               </Text>
             </View>
+            </>
+            :
+            <View style={{
+              alignItems:"center",
+  width:"100%"
+            }}>
+            <Text 
+            style={{
+              color: 'white',
+              fontFamily: 'Inter-Medium',
+              fontSize: fontSize.fourteen,
+              textAlign:"center",
+             
+            }}
+            >{restrauntdetails?.ClosingTimeSpan == null ? "Currently restaurant is closed for online order." : `Currently restaurant is closed! Online order will start at ${restrauntdetails?.ClosingTimeSpan}`}</Text>
+            </View>
+            }
           </TouchableOpacity>
         </View>
         // </Animatable.View>
@@ -1276,6 +1292,7 @@ dispatch(storedistance(inneritem?.Distance));
           </View> */}
 
       <AnimatedScrollView
+      key = "1"
         bounces={false}
         useNativeDriver={true}
         keyExtractor={(item, index) => index.toString()}
@@ -1295,7 +1312,7 @@ dispatch(storedistance(inneritem?.Distance));
             listener: event => {
               //  LayoutAnimation.easeInEaseOut();
               let y = event.nativeEvent.contentOffset.y;
-
+              if(dataSourceCords.length > 0){
               let closest = dataSourceCords[1];
               for (let item of dataSourceCords) {
                 if (
@@ -1305,6 +1322,8 @@ dispatch(storedistance(inneritem?.Distance));
                   closest = item;
                 }
               }
+
+             
               for (const index in dataSourceCords) {
                 if (dataSourceCords[index] == closest) {
                   if (restrauntmenu[index - 1]?.visible != true) {
@@ -1326,7 +1345,8 @@ dispatch(storedistance(inneritem?.Distance));
                     //  scrollviewhorizontalref.current.scrollTo({ y: dataSourceCordsHorizontal[0], animated: true });
                   }
                 }
-              }
+              }}
+
             },
           },
           {useNativeDriver: true},
@@ -1361,7 +1381,10 @@ dispatch(storedistance(inneritem?.Distance));
 
 
           <View style={{paddingHorizontal: scalableheight.one}}>
-            {restrauntmenu.map((item, key) => {
+          {restrauntmenu.length > 0 ?
+          (
+          
+            restrauntmenu.map((item, key) => {
               return (
                 <View
                   key={key.toString()}
@@ -1404,11 +1427,13 @@ dispatch(storedistance(inneritem?.Distance));
                   {/* </> */}
                 </View>
               );
-            })}
+            })) :null
+          }
           </View>
         </>
       </AnimatedScrollView>
-
+      {restrauntmenu.length > 0 ?
+          (
       <DynamicScrolledupheader
         scrollviewhorizontalref={scrollviewhorizontalref}
         //    pinlocation ={pinlocation}
@@ -1416,6 +1441,7 @@ dispatch(storedistance(inneritem?.Distance));
         //   setshowbottomsheet(true)
         //  }}
         scrolltocategory={index => {
+          if(dataSourceCords.length > 0){
           console.log(dataSourceCords[index]);
 
           scrollviewref.current.scrollTo({
@@ -1424,17 +1450,21 @@ dispatch(storedistance(inneritem?.Distance));
           });
 
           let data = [...restrauntmenu];
+
           for (const index in data) {
             data[index].visible = false;
           }
           data[index].visible = true;
           dispatch(updatedmenuselection(data));
+        }
         }}
         animHeaderValue={scrollOffsetY}
         dataSourceCordsHorizontal={dataSourceCordsHorizontal}
         isEnabled={isEnabled}
         toggleSwitch={toggleSwitch}
       />
+      ) :null}
+      
       {/* <View style={{backgroundColor:"#201F1F", position:"absolute", top: 0, width:"100%", height: scalableheight.tweleve + getStatusBarHeight() , zIndex: -2, elevation:-2, paddingTop: getStatusBarHeight() + scalableheight.ten}}>
 <AnimatedFlatList
               key={"1"}

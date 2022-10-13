@@ -1631,6 +1631,7 @@ export const GetProfile = AuthToken => {
           ContactPayload: json?.Result.Contact,
           EmailPayload: json?.Result.Email,
           UserImagePayload: json?.Result.Logo,
+          data: json?.Result,
         });
 
         console.log('Success');

@@ -12,6 +12,8 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
+
+// import {request}  from './SavedAddresses';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 import renderIf from 'render-if';
@@ -633,17 +635,19 @@ export default function Custombottomsheet(props) {
                   components: "country:ae",
                 }}
               />
-              
+        
               </View>
            
-                            <TouchableOpacity
+                     <TouchableOpacity
           //  onPress={() => {props.onPressnewlocation}
           onPress={() => {
-            getnewlocation()}}
+            getnewlocation()
+
+          }}
             style={{
               position: 'absolute',
        top: getStatusBarHeight() + scalableheight.fifteenpointfive,
-              right: scalableheight.four,
+              right: Platform.OS == "ios" ? scalableheight.six : scalableheight.four,
               elevation:112,
               zIndex:112
             }}>
@@ -652,8 +656,22 @@ export default function Custombottomsheet(props) {
                     color={'#F55050'}
                     size={fontSize.twentyfour}
                   />
-          </TouchableOpacity>
-
+          </TouchableOpacity>             
+          {/* {Platform.OS != "ios" &&
+              <TouchableOpacity 
+              onPress={() => {
+                ref.current?.clear();
+              }}
+              style={{position:"absolute",      height: scalableheight.six,  marginTop: scalableheight.two,      justifyContent:"center", right: scalableheight.one}}
+              >
+                 <Ionicons
+              name="close-circle"
+              color={ 'rgba(211,211,211, 0.8)'}
+              size={fontSize.twenty}
+              style={{}}
+            />
+            </TouchableOpacity>
+} */}
 <View 
   style={{
     position: 'absolute',

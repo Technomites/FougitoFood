@@ -43,6 +43,7 @@ const navigation = useNavigation();
         flexDirection:"row",
         marginTop: scalableheight.one,
         marginLeft: scalableheight.borderwidth,
+    
         // marginRight: scalableheight.two,
       
        

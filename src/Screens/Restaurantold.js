@@ -275,15 +275,15 @@ const Restaurantold = ({navigation, drawerAnimationStyle, props, route}) => {
 
   }, [restrauntdetails]);
 
-  useEffect(() => {
-    if(cartdata.length > 0){
-      setcartvisible(true)
-    }else{
-      setcartvisible(false)
+  // useEffect(() => {
+  //   if(cartdata.length > 0){
+  //     setcartvisible(true)
+  //   }else{
+  //     setcartvisible(false)
    
-    }
-   console.log("all cart data length" + cartdata.length + "data " + JSON.stringify(cartdata))
-  }, [cartdata]);
+  //   }
+  //  console.log("all cart data length" + cartdata.length + "data " + JSON.stringify(cartdata))
+  // }, [cartdata]);
 
   function toggleanimation() {
     if (animationtype == 'fadeInUpBig') {

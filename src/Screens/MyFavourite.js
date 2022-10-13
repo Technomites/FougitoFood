@@ -41,14 +41,15 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
     storedlong,
     AuthToken,
     favouriterestuarants,
-    currentRestrauntid
+    currentRestrauntid,
+    addedtofavourite
   } = useSelector(
     state => state.userReducer,
   );
 
   useEffect(() => {
  dispatch(getmyfavourites(storedlat, storedlong, AuthToken ))
-  }, [storedlat, storedlong]);
+  }, [storedlat, storedlong, addedtofavourite]);
 
   const [serving, setserving] = useState([
     {

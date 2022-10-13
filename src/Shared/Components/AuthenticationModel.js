@@ -700,7 +700,7 @@ export default function AuthenticationModel(props) {
                           }}>
                           Phone Number
                         </Text>
-                        <View>
+                        <View >
                         <TextInput
                           style={{
                             ...styleSheet.TextInput,
@@ -715,18 +715,26 @@ export default function AuthenticationModel(props) {
                           defaultValue={number}
                           keyboardType="number-pad"
                         />
-                             <Text style={{ 
+                        <View style={{ 
                                 position: 'absolute',
                                 left: scalableheight.two,
                             
-                                justifyContent: 'center',
-                                alignSelf: 'center',
-                       
+                             
+                  
                                 marginTop: scalableheight.one,
+                                // borderWidth:1, borderColor:"red",
                                 height: scalableheight.seven,
-                                textAlignVertical:"center",
+                          
+                               justifyContent:"center"
+                             }}>
+                        <Text
+                            
+                             style={{ 
+                          
                                 fontSize: fontSize.fifteen,
                                 color: '#8c8c8c',}}>+ 971</Text>
+                        </View>
+                         
                    </View>
                         <Text
                           style={{
@@ -891,18 +899,26 @@ export default function AuthenticationModel(props) {
                           keyboardType={'number-pad'}
                           defaultValue={number}
                         />
-                          <Text style={{ 
+  
+                                    <View style={{ 
                                 position: 'absolute',
                                 left: scalableheight.two,
                             
-                                justifyContent: 'center',
-                                alignSelf: 'center',
-                       
+                             
+                  
                                 marginTop: scalableheight.one,
+                                // borderWidth:1, borderColor:"red",
                                 height: scalableheight.seven,
-                                textAlignVertical:"center",
+                          
+                               justifyContent:"center"
+                             }}>
+                        <Text
+                            
+                             style={{ 
+                          
                                 fontSize: fontSize.fifteen,
                                 color: '#8c8c8c',}}>+ 971</Text>
+                        </View>
                    </View>
                         <Text
                           style={{
@@ -1060,18 +1076,25 @@ export default function AuthenticationModel(props) {
                           defaultValue={number}
                           keyboardType="numeric"
                         />
-                        <Text style={{ 
+        <View style={{ 
                                 position: 'absolute',
                                 left: scalableheight.two,
                             
-                                justifyContent: 'center',
-                                alignSelf: 'center',
-                       
+                             
+                  
                                 marginTop: scalableheight.one,
+                                // borderWidth:1, borderColor:"red",
                                 height: scalableheight.seven,
-                                textAlignVertical:"center",
+                          
+                               justifyContent:"center"
+                             }}>
+                        <Text
+                            
+                             style={{ 
+                          
                                 fontSize: fontSize.fifteen,
                                 color: '#8c8c8c',}}>+ 971</Text>
+                        </View>
                    </View>
 
                         <View style={{marginTop: scalableheight.two}}></View>
@@ -1602,9 +1625,10 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
 
-    marginTop: scalableheight.two,
-    height: scalableheight.six,
+    marginTop: scalableheight.one,
+    height: scalableheight.seven,
     paddingHorizontal: scalableheight.two,
+   
   },
   BackgroundImage: {
     flex: 1,

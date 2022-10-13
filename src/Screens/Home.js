@@ -97,24 +97,6 @@ import LocationEnabler from 'react-native-location-enabler';
 
 
 
-// // Adds a listener to be invoked when location settings checked using
-// // [checkSettings] or changed using [requestResolutionSettings]
-
-
-
-
-// // Define configuration
-// const config = {
-//   priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
-//   alwaysShow: true, // default false
-//   needBle: false, // default false
-// };
-
-// // Check if location is enabled or not
-// checkSettings(config);
-
-// // If location is disabled, prompt the user to turn on device location
-// requestResolutionSettings(config);
 
 
 const {
@@ -124,25 +106,21 @@ const {
 
 
 const Home = ({props, navigation, drawerAnimationStyle}) => {
+  
+
+
   const [enabled, requestResolution] = useLocationSettings(
-    {
-      priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
-      alwaysShow: true, // default false
-      needBle: true, // default false
-    },
-    false /* optional: default undefined */
-  );
-  
-  // console.log(`Location are ${enabled ? 'enabled' : 'disabled'}`);
-  
-  // ...
- 
+  {
+    priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
+    alwaysShow: true, // default false
+    needBle: true, // default false
+  },
+  false /* optional: default undefined */
+);
+
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
-  // const [lat, setlat] = useState(25.2048);
-  // const [long, setlong] = useState(55.2708);
-  // const [inlat, setinlat] = useState(25.2048);
-  // const [inlong, setinlong] = useState(55.2708);
+
   const [lat, setlat] = useState(0);
   const [long, setlong] = useState(0);
   const [inlat, setinlat] = useState(0);
@@ -572,6 +550,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+     
       requestResolution()
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
@@ -586,39 +565,11 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     return unsubscribe;
   }, [navigation]);
 
-  // useEffect(() => {
-  //   const keyboardDidShowListener = Keyboard.addListener(
-  //     'keyboardDidShow',
-  //     () => {
-  //       // hideNavigationBar();
-  //       console.log('Keyboard is open');
-  //     },
-  //   );
-  //   const keyboardDidHideListener = Keyboard.addListener(
-  //     'keyboardDidHide',
-  //     () => {
-  //       // hideNavigationBar();
-  //       console.log('Keyboard is closed');
-  //     },
-  //   );
 
-  //   return () => {
-  //     keyboardDidHideListener.remove();
-  //   };
-  // }, []);
 
-  useEffect(() => {
-    if (!enabled) {
-      requestResolution();
-    }
-  }, [])
 
-  useEffect(() => {
-    if (enabled) {
-     
-      getnewlocation()
-    }
-  }, [enabled])
+
+
 
 
   useEffect(() => {
@@ -672,6 +623,16 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     }
   }, [lat, long]);
 
+  useEffect(() => {
+    if (!enabled) {
+      requestResolution();
+    }else{
+      getnewlocation()
+    }
+  }, [enabled])
+
+ 
+
   function onRefresh() {
  
     NetInfo.fetch().then(state => {
@@ -710,7 +671,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         <Favourites
           image={item?.Logo}
           title={item?.NameAsPerTradeLicense}
-          reviews={item?.AvgRating + ' (' + item?.RatingCount + ' Reviews)'}
+          reviews={item?.AvgRating.toFixed(2) + ' (' + item?.RatingCount + ' Reviews)'}
           time={item?.OpeningTime + ' - ' + item?.ClosingTime}
           onPress={() => {
             dispatch(storerestrauntbasicdata(item));
@@ -744,7 +705,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         <Favourites
           image={item?.Logo}
           title={item?.NameAsPerTradeLicense}
-          reviews={item?.AvgRating + ' (' + item?.RatingCount + ' reviews)'}
+          reviews={item?.AvgRating.toFixed(2) + ' (' + item?.RatingCount + ' reviews)'}
           time={item?.OpeningTime + ' - ' + item?.ClosingTime}
           onPress={() => {
             dispatch(storerestrauntbasicdata(item));
@@ -800,8 +761,10 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         setpinlocation(addressComponent);
       })
       .catch(error =>{
-    
-        requestResolution()
+        if (Platform.OS != 'ios') {
+          requestResolution()
+        }
+        
         console.warn(error)});
   }
 
@@ -1143,7 +1106,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                 allrestraunts?.find(data =>
                   data?.NameAsPerTradeLicense.includes(search.trim()),
                 ) != undefined ? (
-                  // <Animatable.View
+                  <>
+                  {/* // <Animatable.View
                   //   animation="bounceInRight"
                   //   easing="ease"
                   //   iterationCount={1}
@@ -1152,7 +1116,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                   //     paddingBottom: scalableheight.pointfive,
 
                   //     justifyContent: 'center',
-                  //   }}>
+                  //   }}> */}
                     <Text
                       style={{
                         fontFamily: 'Inter-Bold',
@@ -1162,14 +1126,30 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                       }}>
                       RESTAURANTS NEARBY
                     </Text>
-             //     </Animatable.View>
+                    <FlatList
+                  key={'1'}
+                  showsHorizontalScrollIndicator={false}
+                  ref={ref}
+                  style={{zIndex: 200, elevation: 200}}
+                  keyExtractor={(item, index) => index.toString()}
+                  horizontal
+                  data={allrestraunts}
+                  renderItem={rendernearby}
+                  // onEndReached={() => LoadFeaturedProjectPagination()}
+                  // onEndReachedThreshold={0.1}
+                />
+             {/* //     </Animatable.View> */}
+             </>
                 ) : (
                   <View
                     style={{
+                      position:"absolute",
+                      bottom:0,
                       width: Dimensions.get('window').width / 1,
-                      height: scalableheight.twenty,
+                      height: scalableheight.twentytwo,
                       justifyContent: 'center',
                       alignItems: 'center',
+ 
                     
                       // borderWidth:1, borderColor:"red"
                     }}>
@@ -1187,18 +1167,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                   </View>
                 )}
 
-                <FlatList
-                  key={'1'}
-                  showsHorizontalScrollIndicator={false}
-                  ref={ref}
-                  style={{zIndex: 200, elevation: 200}}
-                  keyExtractor={(item, index) => index.toString()}
-                  horizontal
-                  data={allrestraunts}
-                  renderItem={rendernearby}
-                  // onEndReached={() => LoadFeaturedProjectPagination()}
-                  // onEndReachedThreshold={0.1}
-                />
+            
               </View>
             </>
           )}
