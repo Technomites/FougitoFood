@@ -68,7 +68,9 @@ import {
   GETALLBRANCHLIST,
   CLEARMENU,
   review_restaurant,
-  review_restaurant2
+  review_restaurant2,
+  CancelationOrder,
+  CancelationOrdernullstate,
 } from '../Actions/actions';
 
 const initialState = {
@@ -140,28 +142,25 @@ const initialState = {
   orderdetailslink: '',
   addressdeletionstatus: '',
   branchlist: [],
-  review_restaurant:'',
-  Profileinfo: []
+  review_restaurant: '',
+  Profileinfo: [],
+  CancelationStatus: '',
+  CancelationMessage: '',
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
-    
- 
-
     case CLEARMENU:
       return {
         ...state,
         restrauntmenu: action.payload,
       };
 
-
     case GETALLBRANCHLIST:
       return {
         ...state,
         branchlist: action.payload,
       };
-
 
     case DELETEDADDRESS:
       return {
@@ -294,6 +293,21 @@ function userReducer(state = initialState, action) {
         orderplacementstatus: action.payload,
         orderdetails: action.payloadorderresult,
       };
+
+    case CancelationOrder:
+      return {
+        ...state,
+        CancelationStatus: action.CancelationOrderStatus,
+        CancelationMessage: action.CancelationOrderStatusMessage,
+      };
+
+    case CancelationOrdernullstate:
+      return {
+        ...state,
+        CancelationStatus: action.status,
+        CancelationMessage: action.Message,
+      };
+
     case CardOrder:
       return {
         ...state,
@@ -378,7 +392,7 @@ function userReducer(state = initialState, action) {
         ...state,
         ReviewStatus: action.payload,
       };
-      case review_restaurant2:
+    case review_restaurant2:
       return {
         ...state,
         ReviewStatus: action.payload,
@@ -552,7 +566,7 @@ function userReducer(state = initialState, action) {
         ProfileContact: action.ContactPayload,
         ProfileEmail: action.EmailPayload,
         ProfileImage: action.UserImagePayload,
-        Profileinfo: action.data
+        Profileinfo: action.data,
       };
     case Logoutuser:
       return {

@@ -37,6 +37,8 @@ export const CreateOrder = 'CreateOrder';
 export const CardOrder = 'CardOrder';
 export const VerifyCoupon = 'VerifyCoupon';
 export const VerifyCouponClear = 'VerifyCouponClear';
+export const CancelationOrder = 'CancelationOrder';
+export const CancelationOrdernullstate = 'CancelationOrdernullstate';
 export const GetUserProfiles = 'GetUserProfiles';
 export const Logoutuser = 'Logoutuser';
 export const AsynClear = 'AsynClear';
@@ -72,13 +74,12 @@ export const ClearProfile = 'ClearProfile';
 export const DELETEDADDRESS = 'DELETEDADDRESS';
 export const GETALLBRANCHLIST = 'GETALLBRANCHLIST';
 export const CLEARMENU = 'CLEARMENU';
-const API_URl = 'https://api.fougito.com/api/';
+const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
 const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
-
 
 export const clearmenu = () => {
   try {
@@ -93,20 +94,24 @@ export const clearmenu = () => {
   }
 };
 
-export const getallrestaurantbranches = (id) => {
+export const getallrestaurantbranches = id => {
   try {
     return async dispatch => {
-      const result = await fetch(API_URl + 'Customer/Restaurant/' + id + '/GetActiveBranches', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
+      const result = await fetch(
+        API_URl + 'Customer/Restaurant/' + id + '/GetActiveBranches',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      });
+      );
 
       const json = await result.json();
 
-
-      console.log('getallrestaurantbranches ' +id +" " + JSON.stringify(json));
+      console.log(
+        'getallrestaurantbranches ' + id + ' ' + JSON.stringify(json),
+      );
 
       if (json.Status == 'Success') {
         dispatch({
@@ -120,7 +125,6 @@ export const getallrestaurantbranches = (id) => {
   }
 };
 
-
 export const deleteaddress = (id, token) => {
   try {
     console.log('deleteaddress');
@@ -131,7 +135,6 @@ export const deleteaddress = (id, token) => {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-     
       });
 
       const json = await result.json();
@@ -148,7 +151,6 @@ export const deleteaddress = (id, token) => {
     console.log(error);
   }
 };
- 
 
 export const clearprofileupdationstatus = () => {
   try {
@@ -612,6 +614,74 @@ export const createorder = (AuthToken, data) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const OrderCancel = (AuthToken, Orderid) => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${AuthToken}`);
+      myHeaders.append('Content-Type', 'application/json');
+
+      var raw = JSON.stringify({
+        orderId: Orderid,
+        cancellationReason: 'Mood Swings',
+      });
+
+      var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+      const result = await fetch(
+        API_URl + `Customer/Order/Cancel`,
+        requestOptions,
+      ).catch(error => {
+        dispatch({
+          type: CancelationOrder,
+          CancelationOrderStatus: 'Network Request Failed',
+          CancelationOrderStatusMessage: 'Network Request Failed',
+        });
+      });
+      json = await result.json().catch(error => {
+        dispatch({
+          type: CancelationOrder,
+          CancelationOrderStatus: 'Network Request Failed',
+          CancelationOrderStatusMessage: 'Network Request Failed',
+        });
+      });
+      console.log(json, 'Hello ,HELLO');
+
+      if (json.Status == 'Success') {
+        console.log(json.Message, json.Result, 'hehehh');
+        dispatch({
+          type: CancelationOrder,
+          CancelationOrderStatus: json?.Status,
+          CancelationOrderStatusMessage: json?.Message,
+        });
+        console.log('Success');
+      } else if (json?.Status == 'Error') {
+        dispatch({
+          type: CancelationOrder,
+          CancelationOrderStatus: json?.Status,
+          CancelationOrderStatusMessage: json?.Message,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const OrderCancelnullstate = () => {
+  return async dispatch => {
+    dispatch({
+      type: CancelationOrdernullstate,
+      status: '',
+      Message: '',
+    });
+  };
 };
 
 export const pickupstate = bool => {
