@@ -45,21 +45,21 @@ export default function Addresstile(props) {
                 <FontAwesome5
                   style={{alignSelf: 'center'}}
                   name={'home'}
-                  color={props?.Latitude == Selectedcurrentaddress[0].Latitude  && props?.Longitude == Selectedcurrentaddress[0].Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
+                  color={props?.Latitude == Selectedcurrentaddress[0]?.Latitude  && props?.Longitude == Selectedcurrentaddress[0]?.Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
                   size={fontSize.twenty}
                 />
               ) : props?.icon == 'Work' ? (
                 <FontAwesome5
                   style={{alignSelf: 'center'}}
                   name={'briefcase'}
-                  color={props?.Latitude == Selectedcurrentaddress[0].Latitude && props?.Longitude == Selectedcurrentaddress[0].Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
+                  color={props?.Latitude == Selectedcurrentaddress[0]?.Latitude && props?.Longitude == Selectedcurrentaddress[0]?.Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
                   size={fontSize.twenty}
                 />
               ) : (
                 <FontAwesome5
                   style={{alignSelf: 'center'}}
                   name={'building'}
-                  color={props?.Latitude == Selectedcurrentaddress[0].Latitude && props?.Longitude == Selectedcurrentaddress[0].Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
+                  color={props?.Latitude == Selectedcurrentaddress[0]?.Latitude && props?.Longitude == Selectedcurrentaddress[0]?.Longitude &&  props.screenname == "ckeckout" || props.screenname != "ckeckout" ? '#F55050' : "grey"}
                   size={fontSize.twenty}
                 />
               )}
@@ -90,7 +90,7 @@ export default function Addresstile(props) {
                 {props?.place}
               </Text>
          
-              {props?.Latitude == Selectedcurrentaddress[0].Latitude  && props?.Longitude == Selectedcurrentaddress[0].Longitude && (
+              {props?.Latitude == Selectedcurrentaddress[0]?.Latitude  && props?.Longitude == Selectedcurrentaddress[0]?.Longitude && (
                 // <TouchableOpacity onPress={props.onPress} activeOpacity={0.9}>
                   <AntDesign
                     style={{alignSelf: 'center'}}

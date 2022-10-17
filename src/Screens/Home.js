@@ -46,7 +46,8 @@ import {
   GetProfile,
   storelatlong,
   isconnected,
-  getalladdresses
+  getalladdresses,
+  storecurrentaddress
 } from '../Actions/actions';
 // import changeNavigationBarColor, {
 //   hideNavigationBar,
@@ -617,6 +618,20 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             var addressComponent = json.results[0].formatted_address;
             console.log(addressComponent);
             setpinlocation(addressComponent);
+            let currentaddress = [
+              {
+                Latitude: lat,
+                Longitude: long,
+                icon: "Others",
+                place: "Others",
+                address: addressComponent,
+                note: "",
+                Street: "",
+                Floor: "",
+              },
+            ];
+    
+            dispatch(storecurrentaddress(currentaddress));
           })
           .catch(error => console.warn(error));
       }
@@ -747,6 +762,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   }
 
   function getnewlocation() {
+   
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
     let lat = 0
     let long = 0
@@ -757,35 +773,24 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       setinlong(info?.coords?.longitude);
       lat =info?.coords?.latitude
       long = info?.coords?.longitude
-    });
-    Geocoder.from(lat, long)
-      .then(json => {
-        var addressComponent = json.results[0].formatted_address;
-        console.log(addressComponent);
-        setpinlocation(addressComponent);
-
-
-        let currentaddress = [
-          {
-            Latitude: lat,
-            Longitude: long,
-            icon: "Others",
-            place: "Others",
-            address: addressComponent,
-            note: "",
-            Street: "",
-            Floor: "",
-          },
-        ];
     
-        dispatch(storecurrentaddress(currentaddress));
-      })
-      .catch(error =>{
-        // if (Platform.OS != 'ios') {
-        //   requestResolution()
-        // }
+    });
+ 
+    // Geocoder.from(lat, long)
+    //   .then(json => {
+    //     var addressComponent = json.results[0].formatted_address;
+    
+    //     setpinlocation(addressComponent);
+
+ 
+
+    //   })
+    //   .catch(error =>{
+    //     // if (Platform.OS != 'ios') {
+    //     //   requestResolution()
+    //     // }
         
-        console.warn(error)});
+    //     console.warn(error)});
   }
 
 
