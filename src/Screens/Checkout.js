@@ -1602,6 +1602,40 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
            
         
           }}>
+                  {alladdresses?.find(data => data?.Latitude ==  Selectedcurrentaddress[0]?.Latitude && data?.Longitude ==  Selectedcurrentaddress[0]?.Longitude) == undefined  ? 
+                  <View
+                  
+                  style={{ width: scalableheight.thirtyfive, marginRight: scalableheight.one, marginBottom:scalableheight.one, marginTop:scalableheight.one}}>
+                  <Addresstile
+                     
+                  onPress={() => {
+                    // navigation.navigate('EditAddress', {
+                    //   // orderId: item.OrderNo,
+                    //   // completedetails: Order,
+                    // });
+                  }}
+                  //   // onModelPopUp={changestatus}
+                  icon={Selectedcurrentaddress[0].place}
+                  Latitude ={Selectedcurrentaddress[0].Latitude}
+                      Longitude = { Selectedcurrentaddress[0].Longitude}
+                  place={Selectedcurrentaddress[0].place}
+                  address={Selectedcurrentaddress[0].address}
+                  note={Selectedcurrentaddress[0].note}
+                 
+                  itemfull = {Selectedcurrentaddress[0]}
+                 
+                />
+                </View>
+                  :
+                null
+}
+</View>
+                  <View
+          style={{
+            width: '100%',
+           
+        
+          }}>
                   <FlatList
                 keyExtractor={(item, index) => index.toString()}
           

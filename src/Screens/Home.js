@@ -92,31 +92,31 @@ import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
-import LocationEnabler from 'react-native-location-enabler';
+// import LocationEnabler from 'react-native-location-enabler';
 
 
 
 
 
 
-const {
-  PRIORITIES: { HIGH_ACCURACY },
-  useLocationSettings,
-} = LocationEnabler;
+// const {
+//   PRIORITIES: { HIGH_ACCURACY },
+//   useLocationSettings,
+// } = LocationEnabler;
 
 
 const Home = ({props, navigation, drawerAnimationStyle}) => {
   
 
 
-  const [enabled, requestResolution] = useLocationSettings(
-  {
-    priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
-    alwaysShow: true, // default false
-    needBle: true, // default false
-  },
-  false /* optional: default undefined */
-);
+//   const [enabled, requestResolution] = useLocationSettings(
+//   {
+//     priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
+//     alwaysShow: true, // default false
+//     needBle: true, // default false
+//   },
+//   false /* optional: default undefined */
+// );
 
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
@@ -551,7 +551,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
      
-      requestResolution()
+      // requestResolution()
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
       NetInfo.fetch().then(state => {
@@ -623,13 +623,13 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     }
   }, [lat, long]);
 
-  useEffect(() => {
-    if (!enabled) {
-      requestResolution();
-    }else{
-      getnewlocation()
-    }
-  }, [enabled])
+  // useEffect(() => {
+  //   if (!enabled) {
+  //     requestResolution();
+  //   }else{
+  //     getnewlocation()
+  //   }
+  // }, [enabled])
 
  
 
@@ -748,22 +748,42 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
   function getnewlocation() {
     Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
+    let lat = 0
+    let long = 0
     Geolocation.getCurrentPosition(info => {
       setlat(info?.coords?.latitude);
       setlong(info?.coords?.longitude);
       setinlat(info?.coords?.latitude);
       setinlong(info?.coords?.longitude);
+      lat =info?.coords?.latitude
+      long = info?.coords?.longitude
     });
     Geocoder.from(lat, long)
       .then(json => {
         var addressComponent = json.results[0].formatted_address;
         console.log(addressComponent);
         setpinlocation(addressComponent);
+
+
+        let currentaddress = [
+          {
+            Latitude: lat,
+            Longitude: long,
+            icon: "Others",
+            place: "Others",
+            address: addressComponent,
+            note: "",
+            Street: "",
+            Floor: "",
+          },
+        ];
+    
+        dispatch(storecurrentaddress(currentaddress));
       })
       .catch(error =>{
-        if (Platform.OS != 'ios') {
-          requestResolution()
-        }
+        // if (Platform.OS != 'ios') {
+        //   requestResolution()
+        // }
         
         console.warn(error)});
   }

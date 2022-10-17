@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Text,
   View,
@@ -25,6 +25,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default function MultiChoiceDropDown(props) {
   const dispatch = useDispatch();
 const navigation = useNavigation();
+
 
 
   return (

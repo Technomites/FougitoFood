@@ -315,6 +315,15 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     
     }, []);
 
+    useEffect(() => {
+      if(retaurantmenucategorydataoption?.Price != undefined){
+        setcurrentitemprice(retaurantmenucategorydataoption?.Price)
+      }
+ 
+
+    
+    }, [retaurantmenucategorydataoption]);
+  
   
     React.useEffect(() => {
       const unsubscribe = navigation.addListener('focus', () => {
@@ -381,8 +390,9 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
      
       toggleanimation();
       setanimationstate(true);
+      setcurrentitemprice(0)
+      resetMultiChoiceDropDown()
       scrollviewref.current.scrollTo({ y: dataSourceCords[1] , animated: true, });
-     
       Keyboard.dismiss();
     }
     function additemtocart() {
@@ -584,9 +594,30 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   //   </TouchableOpacity>
   // );
 
+  function resetMultiChoiceDropDown(){
+   
+    let arr = retaurantmenucategorydataoption;
+
+    for (const key in arr.MenuItemOptions) {
+   
+        for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
+     
+   
+      
+            arr.MenuItemOptions[key].MenuItemOptionValues[
+              item
+            ].selected = false;
+       
+        }
+      
+    }
+  
+    dispatch(savemenucategoryoptiondetailsdata(arr));
+
+  }
   function updateservingstate(index, arrindex) {
     console.log(arrindex);
-    // let selectedprice = currentitemprice
+    let selectedprice = currentitemprice
     let arr = retaurantmenucategorydataoption;
 
     for (const key in arr.MenuItemOptions) {
@@ -601,15 +632,23 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
               arr.MenuItemOptions[key].MenuItemOptionValues[
                 item
               ].selected = false;
-              // selectedprice = selectedprice - arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
+               selectedprice = selectedprice - arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
             } else {
               arr.MenuItemOptions[key].MenuItemOptionValues[
                 item
               ].selected = true;
-              // selectedprice= selectedprice + arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
+              selectedprice= selectedprice + arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
             }
           } else {
             console.log('bye');
+            if( arr.MenuItemOptions[key].MenuItemOptionValues[
+              item
+            ].selected == true){
+              selectedprice = selectedprice - arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
+              arr.MenuItemOptions[key].MenuItemOptionValues[
+                item
+              ].selected = false;
+            }
             arr.MenuItemOptions[key].MenuItemOptionValues[
               item
             ].selected = false;
@@ -618,7 +657,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       }
     }
     // setmodaldataoptions(arr);
-    // setcurrentitemprice(selectedprice)
+    setcurrentitemprice(selectedprice)
     dispatch(savemenucategoryoptiondetailsdata(arr));
     console.log('modaldataoptions' + JSON.stringify(arr));
     // console.log('arr' + JSON.stringify(arr.MenuItemOptions.MenuItemOptionValues));
@@ -626,7 +665,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
 
   function updateservingstatemultiple(index, arrindex) {
     console.log(arrindex);
-
+    let selectedprice = currentitemprice
     let arr = retaurantmenucategorydataoption;
 
     for (const key in arr.MenuItemOptions) {
@@ -640,6 +679,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
               arr.MenuItemOptions[key].MenuItemOptionValues[
                 item
               ].selected = false;
+              selectedprice= selectedprice - arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
             } else {
               let count = 0;
               for (const countindex in arr.MenuItemOptions[key]
@@ -659,6 +699,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
                 arr.MenuItemOptions[key].MenuItemOptionValues[
                   item
                 ].selected = true;
+                selectedprice= selectedprice + arr.MenuItemOptions[key].MenuItemOptionValues[item].Price
               }
             }
           } else {
@@ -669,6 +710,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       }
     }
     // setmodaldataoptions(arr);
+    setcurrentitemprice(selectedprice)
     dispatch(savemenucategoryoptiondetailsdata(arr));
     console.log('modaldataoptions' + JSON.stringify(arr));
     // console.log('arr' + JSON.stringify(arr.MenuItemOptions.MenuItemOptionValues));
@@ -931,7 +973,7 @@ dispatch(storedistance(inneritem?.Distance));
                                 fontFamily: 'Inter-SemiBold',
                                 fontSize: fontSize.fourteen,
                               }}>
-                              {currentitemprice}
+                              {(currentitemprice * count).toFixed(2)}
                             </Text>
                     
                     </View> */}
@@ -989,7 +1031,8 @@ dispatch(storedistance(inneritem?.Distance));
                          
                             color: '#E14E4E',
                           }}>
-                         { "AED "} { retaurantmenucategorydataoption?.Price.toFixed(2)}
+                    { "AED "}{(currentitemprice * count).toFixed(2)}
+                         {/* { retaurantmenucategorydataoption?.Price.toFixed(2)} */}
                         </Text>
                         </View>
                         
@@ -1017,6 +1060,7 @@ dispatch(storedistance(inneritem?.Distance));
                                     data={item?.MenuItemOptionValues}
                                     index={key}
                                     update={updateservingstate}
+                                 
                                   />
                                   <View style={{height: scalableheight.one}} />
                                 </View>
@@ -1142,7 +1186,8 @@ dispatch(storedistance(inneritem?.Distance));
 
                         <TouchableOpacity
                           onPress={() => {
-                            setcount(count + 1);
+                          
+                            setcount( count + 1);
                           }}>
                           <AntDesign
                             name="pluscircle"
@@ -1375,6 +1420,34 @@ dispatch(storedistance(inneritem?.Distance));
               setSelectBranchVisible(true)
             }}
             pickupstate ={isEnabled}
+            scrollmeto={(index, item)=>{
+           console.log(index)
+           console.log(item?.CategoryId)
+           console.log(item?.CategoryName)
+           
+          
+           for (const key in restrauntmenu){
+            if(restrauntmenu[key].CategoryId == item?.CategoryId){
+console.log(key + "found")
+console.log(dataSourceCords[key] + "found");
+
+scrollviewref.current.scrollTo({
+  y: dataSourceCords[parseInt(key) + 1] + scalableheight.fourtynine,
+  animated: true,
+});
+
+// let data = [...restrauntmenu];
+
+// for (const index in data) {
+//   data[index].visible = false;
+// }
+// data[key].visible = true;
+// dispatch(updatedmenuselection(data));
+            }
+           }
+           
+            }}
+      
           />
 
   
@@ -1417,7 +1490,7 @@ dispatch(storedistance(inneritem?.Distance));
                             dispatch(savemenucategoryoptiondetailsdata(item));
                             setspecialinstructions('');
                             setcount(1);
-
+                        
                             setmodalVisible(true);
                           }}
                         />

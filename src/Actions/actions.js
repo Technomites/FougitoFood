@@ -72,7 +72,7 @@ export const ClearProfile = 'ClearProfile';
 export const DELETEDADDRESS = 'DELETEDADDRESS';
 export const GETALLBRANCHLIST = 'GETALLBRANCHLIST';
 export const CLEARMENU = 'CLEARMENU';
-const API_URl = 'https://api.fougito.com/api/';
+const API_URl = 'https://api.fougitodemo.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
 const header1 = {

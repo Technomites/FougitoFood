@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { LayoutAnimation, ImageBackground, Text, View, StyleSheet, Image, FlatList, Animated } from 'react-native';
+import { LayoutAnimation, ImageBackground, Text, View, StyleSheet, Image, FlatList, Animated, Touchable } from 'react-native';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import Reviewscontainer from './Reviewscontainer';
@@ -25,6 +25,7 @@ import {
   getallrestrauntsbyid,
   clearfavourite
 } from '../../Actions/actions';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const DynamicHeader = ( props) => {
 
   const {
@@ -62,12 +63,15 @@ const animateHeaderBackgroundColor = props.animHeaderValue.interpolate({
   useNativeDriver: true 
 })
 
-const renderpopularcategories = ({item}) => (
+const renderpopularcategories = ({item, index}) => (
+  <TouchableOpacity onPress={() => props.scrollmeto(index, item)}>
   <Categoriescard
     image={item?.Image}
     type={item?.CategoryName}
     price={item?.AvgPrice}
+
   />
+</TouchableOpacity>
 );
 
 
@@ -215,7 +219,9 @@ const renderpopularcategories = ({item}) => (
                 keyExtractor={(item, index) => index.toString()}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                data={popularcategories}
+               data={popularcategories}
+                // data={restrauntmenu}
+                
                 renderItem={renderpopularcategories}
                 // onEndReached={() => LoadFeaturedProjectPagination()}
                 // onEndReachedThreshold={0.1}
