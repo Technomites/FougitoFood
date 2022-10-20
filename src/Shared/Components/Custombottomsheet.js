@@ -14,7 +14,10 @@ import {
 } from 'react-native';
 
 // import {request}  from './SavedAddresses';
-import Geolocation from '@react-native-community/geolocation';
+//import Geolocation from '@react-native-community/geolocation';
+
+import Geolocation from "react-native-geolocation-service";
+
 import Geocoder from 'react-native-geocoding';
 import renderIf from 'render-if';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -29,7 +32,7 @@ import {useNavigation} from '@react-navigation/native';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import SavedAddresses from './SavedAddresses';
 import MYButton from '../Components/MYButton';
-import {getalladdresses, storecurrentaddress} from '../../Actions/actions';
+import {getalladdresses, storecurrentaddress, getdistancevalidation, cleardistancevalidation} from '../../Actions/actions';
 import Addresstile from '../../Shared/Components/Addresstile';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import * as Animatable from 'react-native-animatable';
@@ -39,7 +42,7 @@ import CountDown from 'react-native-countdown-component';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 export default function Custombottomsheet(props) {
-  const {AuthToken, alladdresses} = useSelector(state => state.userReducer);
+  const {AuthToken, alladdresses, validdistance} = useSelector(state => state.userReducer);
   // alert(props?.latitudepin, props?.longitudepin);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -66,7 +69,7 @@ export default function Custombottomsheet(props) {
   const [hidemarker, sethidemarker] = useState(false);
 
   const [showcurrent, setshowcurrent] = useState(false);
-  
+  const [temportystoreforselectedaddress, settemportystoreforselectedaddress] = useState(null);
   const [selectedaddress, setselectedaddress] = useState("");
   const [activatehideshow, setactivatehideshow] = useState(false);
   // != null ? props?.longitude : 55.2708
@@ -94,6 +97,21 @@ export default function Custombottomsheet(props) {
         ref.current?.clear();
         setshowcurrent(false)
         setselectedaddress(addressComponent)
+      },
+      (error) => {
+        console.log("hellooo" + JSON.stringify(error))
+      },
+      {
+        accuracy: {
+          android: 'high',
+          ios: 'best'
+        },
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 10000,
+        distanceFilter: 0,
+        forceRequestLocation: true,
+        showLocationDialog: true,
       })
       .catch(error =>{
     
@@ -313,6 +331,23 @@ export default function Custombottomsheet(props) {
     },
   ];
 
+  useEffect(() => {
+    console.log("this part is working")
+    console.log("validdistance" + validdistance)
+    console.log("validdistance" + validdistance)
+    if(validdistance == true && temportystoreforselectedaddress != null){
+      console.log("this part is alsoooo working")
+      dispatch(storecurrentaddress(temportystoreforselectedaddress));
+      props.onPressnewCoordinates(
+        temportystoreforselectedaddress?.Latitude,
+        temportystoreforselectedaddress?.Longitude,
+      );
+      settemportystoreforselectedaddress(null)
+      dispatch(cleardistancevalidation())
+    }
+    
+  }, [validdistance]);
+
   return (
     <>
       {props.state && (
@@ -368,8 +403,8 @@ export default function Custombottomsheet(props) {
             }}
             style={{
               position: 'absolute',
-              top: showmap == true ? scalableheight.seven : scalableheight.one,
-              right: scalableheight.one,
+              top: showmap == true ? getStatusBarHeight() + scalableheight.one : scalableheight.one,
+              right: scalableheight.onepointfive,
               elevation:10,
               zIndex:10
             }}>
@@ -498,12 +533,21 @@ export default function Custombottomsheet(props) {
                               },
                             ];
                             console.log(currentaddress);
+                          if(props.withvalidation == false){
                             dispatch(storecurrentaddress(currentaddress));
                             props.onPressnewCoordinates(
                               item.Latitude,
                               item.Longitude,
                             );
-                            clearandclose();
+                            
+                          
+                          }else{
+                            dispatch(getdistancevalidation(props.branchid,   item.Latitude,   item.Longitude ))
+                            settemportystoreforselectedaddress(currentaddress)
+                          }
+                          clearandclose();
+                          props.onPress()
+                          
                             //navigation.goBack();
                           }}
                           //  disabled={screenname == 'checkout' ? false : true}
@@ -565,12 +609,51 @@ export default function Custombottomsheet(props) {
           ) : (
             <View style={{height:"100%"}}>
               {/* <View style={{height: scalableheight.two}}></View> */}
-              <View
+                    
+        
+<View 
+  style={{
+    position: 'absolute',
+top: getStatusBarHeight() + scalableheight.fourteen,
+    // left: scalableheight.two,
+    elevation:112,
+    zIndex:112,
+    width:"100%",
+    paddingHorizontal:scalableheight.two,
+  
+
+  }}>
+    <View style={{width:"100%", backgroundColor: '#F9F9F9', borderRadius: fontSize.borderradiusmedium, ...styleSheet.shadow, padding:scalableheight.one
+  }}>
+<Text 
+  style={{
+    color: '#F55050',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.fifteen,
+    paddingBottom:scalableheight.pointfive
+  }}
+        >My Location</Text>
+             <Text 
+              style={{
+                color: 'grey',
+                fontFamily: 'Inter-SemiBold',
+                fontSize: fontSize.twelve,
+               
+              }}
+             numberOfLines={2}
+        
+          >{showcurrent ?  props.locationpin : selectedaddress}</Text>
+          </View>
+</View>
+       
+
+
+<View
               style={{
                 position:"absolute",
-                top:   getStatusBarHeight() + scalableheight.fourteen,
-                zIndex:10,
-                elevation:10,
+                top:  getStatusBarHeight() + scalableheight.seven,
+                zIndex:115,
+                elevation:115,
                 width:"100%",
                 paddingHorizontal:scalableheight.two,
                 justifyContent:"center",
@@ -646,61 +729,17 @@ export default function Custombottomsheet(props) {
           }}
             style={{
               position: 'absolute',
-       top: getStatusBarHeight() + scalableheight.fifteenpointfive,
+       top: getStatusBarHeight() + scalableheight.eightpointfive,
               right: Platform.OS == "ios" ? scalableheight.six : scalableheight.four,
-              elevation:112,
-              zIndex:112
+              elevation:120,
+              zIndex:120
             }}>
               <MaterialCommunityIcons
                     name={'crosshairs-gps'}
                     color={'#F55050'}
                     size={fontSize.twentyfour}
                   />
-          </TouchableOpacity>             
-          {/* {Platform.OS != "ios" &&
-              <TouchableOpacity 
-              onPress={() => {
-                ref.current?.clear();
-              }}
-              style={{position:"absolute",      height: scalableheight.six,  marginTop: scalableheight.two,      justifyContent:"center", right: scalableheight.one}}
-              >
-                 <Ionicons
-              name="close-circle"
-              color={ 'rgba(211,211,211, 0.8)'}
-              size={fontSize.twenty}
-              style={{}}
-            />
-            </TouchableOpacity>
-} */}
-<View 
-  style={{
-    position: 'absolute',
-top: getStatusBarHeight() + scalableheight.six,
-    // left: scalableheight.two,
-    elevation:112,
-    zIndex:112,
-    width:"100%",
-    paddingHorizontal:scalableheight.two
-
-  }}>
-<Text 
-  style={{
-    color: '#F55050',
-    fontFamily: 'Inter-SemiBold',
-    fontSize: fontSize.fifteen,
-  }}
-        >My Location</Text>
-             <Text 
-              style={{
-                color: 'grey',
-                fontFamily: 'Inter-SemiBold',
-                fontSize: fontSize.twelve,
-              }}
-             numberOfLines={2}
-        
-          >{showcurrent ?  props.locationpin : selectedaddress}</Text>
-</View>
-       
+          </TouchableOpacity>    
               <View
                 style={{
                   width: '100%',
@@ -743,7 +782,7 @@ top: getStatusBarHeight() + scalableheight.six,
                   // provider={PROVIDER_GOOGLE}
                   style={{
                     width: '100%',
-                    height: '75%',
+                    height: '100%',
                     borderRadius: fontSize.fifteen,
                  position:"absolute",
                  bottom:0
@@ -856,11 +895,19 @@ top: getStatusBarHeight() + scalableheight.six,
                         },
                       ];
                   
-                      dispatch(storecurrentaddress(currentaddress));
                     
+                   
 
+                      if(props.withvalidation == false){
+                        dispatch(storecurrentaddress(currentaddress));
+                        props.onPressnewCoordinates(pinlatitude, pinLongitude);
+                        
+                      
+                      }else{
+                        dispatch(getdistancevalidation(props.branchid,   pinlatitude,  pinLongitude ))
+                        settemportystoreforselectedaddress(currentaddress)
+                      }
                       setshowmap(false);
-                      props.onPressnewCoordinates(pinlatitude, pinLongitude);
                       clearandclose();
                       props.onPress()
                     } else {

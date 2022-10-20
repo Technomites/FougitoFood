@@ -33,13 +33,14 @@ export default function Bll(props) {
         }}>
         {props.label}
       </Text>
+      {props?.price > 0 &&
       <Text
         style={{
           ...styleSheet.Text3,
           color: props.label == 'Total Amount' ? 'black' : "black",
         }}>
         AED {props?.price?.toFixed(2)}
-      </Text>
+      </Text>}
     </View>
   );
 }

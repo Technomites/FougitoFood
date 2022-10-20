@@ -71,6 +71,11 @@ import {
   review_restaurant2,
   CancelationOrder,
   CancelationOrdernullstate,
+  CLEARAddressDELETION,
+  GETREPAY,
+  CLEARREPAY,
+  DISTANCEVAlidation,
+  CLEARDISTANCEVAlidation
 } from '../Actions/actions';
 
 const initialState = {
@@ -146,10 +151,44 @@ const initialState = {
   Profileinfo: [],
   CancelationStatus: '',
   CancelationMessage: '',
+  repayorderdetailslink: "",
+  validdistance: null
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
+    
+    
+    case CLEARDISTANCEVAlidation:
+      return {
+        ...state,
+        validdistance: action.payload,
+      };
+    case DISTANCEVAlidation:
+      return {
+        ...state,
+        validdistance: action.payload,
+      };
+
+
+    case CLEARREPAY:
+      return {
+        ...state,
+        repayorderdetailslink: action.payload,
+      };
+
+    case GETREPAY:
+      return {
+        ...state,
+        repayorderdetailslink: action.payload,
+      };
+    
+    case CLEARAddressDELETION:
+      return {
+        ...state,
+        addressdeletionstatus: action.payload,
+      };
+
     case CLEARMENU:
       return {
         ...state,
@@ -334,6 +373,7 @@ function userReducer(state = initialState, action) {
       };
 
     case CURRENTADDRESS:
+      AsyncStorage.setItem('currentaddress', JSON.stringify(action.payload));
       return {
         ...state,
         Selectedcurrentaddress: action.payload,

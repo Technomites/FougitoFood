@@ -61,7 +61,7 @@ const navigation = useNavigation();
         
           }}>{props.description.trim()}</Text>
         
-    
+    {props?.price > 0 &&
             <Text style={{
             
             fontFamily: 'Inter-Medium',
@@ -69,7 +69,7 @@ const navigation = useNavigation();
             color:"#111111",
             marginTop:scalableheight.pointfive
         
-          }}>{"AED "}{props?.price?.toFixed(2)}</Text> 
+          }}>{ "AED "}{props?.price?.toFixed(2)}</Text> }
 </View>
 <View style={{height:"100%", width: "25%", alignItems:"flex-end", justifyContent:"center", paddingRight: scalableheight.one}}>
 

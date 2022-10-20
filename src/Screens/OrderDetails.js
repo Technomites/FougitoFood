@@ -16,6 +16,7 @@ import {
   Modal,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import {WebView} from 'react-native-webview';
 import {
   OrderStatus,
   RestaurantReview,
@@ -24,6 +25,8 @@ import {
   OrderCancel,
   OrderCancelnullstate,
   Myorders,
+  getrepay,
+  clearlink
 } from '../Actions/actions';
 import ItemDetailsStatus from '../Shared/Components/ItemDetailsStatus';
 import PlainHeader from '../Shared/Components/PlainHeader';
@@ -37,6 +40,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 import ItemDetailsModel from '../Shared/Components/ItemDetailsModel';
@@ -52,17 +56,21 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
     ReviewStatus,
     CancelationStatus,
     CancelationMessage,
+    repayorderdetailslink
   } = useSelector(state => state.userReducer);
   const [screenloader, setscreenloader] = useState(true);
+  const [repayloader, setrepayloader] = useState(false);
   const [reviews, setReviews] = useState('');
   const [itemmodalVisible, setitemmodalVisible] = useState(false);
   const [itemmodaldata, setitemmodaldata] = useState([]);
+  const [previousscreen, setpreviousscreen] = useState("");
   const [MaxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
   const [DefaultRating, setDefaultRating] = useState(0);
   const [indexstate, setindexstate] = useState(0);
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
   const [loader, setLoader] = useState(false);
+  const [modalVisiblepayment, setmodalVisiblepayment] = useState(false);
   const GOOGLE_MAPS_APIKEY = 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso';
   const refMap = useRef(null);
   const toast = useRef();
@@ -71,6 +79,16 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   useEffect(() => {
     StatusBar.setHidden(false);
   }, []);
+
+
+  useEffect(() => {
+if(repayorderdetailslink != ""){
+  setrepayloader(false)
+  setmodalVisiblepayment(true)
+}
+  }, [repayorderdetailslink]);
+
+  
   var blueOceanStyles = [
     {
       featureType: 'administrative',
@@ -270,9 +288,15 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
     const unsubscribe = navigation.addListener('focus', () => {
       setDefaultRating(0);
       setscreenloader(true);
+      if (route?.params?.screenname != undefined) {
+        setpreviousscreen(route?.params?.screenname);
+      }else{
+        setpreviousscreen("");
+      }
+ 
     });
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, route]);
 
   const Review = () => {
     Keyboard.dismiss();
@@ -365,8 +389,10 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
       });
       dispatch(OrderCancelnullstate());
       setLoader(false);
+ 
       dispatch(Myorders(AuthToken));
-      navigation.navigate('Home');
+      navigation.navigate('Drawernavigator');
+      console.log("navifating to home")
     } else if (CancelationStatus === 'Error') {
       toast.current.show(CancelationMessage, {
         type: 'normal',
@@ -394,6 +420,10 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
     }
   }, [CancelationStatus]);
 
+  function repay(){
+    setrepayloader(true)
+dispatch(getrepay(orderResult[0]?.Id))
+  }
   //console.log(route?.params.completedetails[0].OrderStatus,'Order Details')
   // const [menuitems, SetMenuItems] = useState([
   //   {
@@ -467,6 +497,101 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
         barStyle={'dark-content'}
         backgroundColor="transparent"
       />
+        <Modal
+        transparent
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+        statusBarTranslucent
+        visible={modalVisiblepayment}
+        onRequestClose={() => setmodalVisiblepayment(false)}>
+        <View
+          style={{
+            paddingTop: getStatusBarHeight(),
+            width: '100%',
+            height: '100%',
+          }}>
+          {repayorderdetailslink != '' && (
+            <>
+              <TouchableOpacity
+                onPress={() => {
+                  // navigation.navigate("Home")
+                  setmodalVisiblepayment(false);
+                }}
+                style={{
+                  height: scalableheight.seven,
+                  width: scalableheight.five,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  position: 'absolute',
+                  top: scalableheight.six,
+                  left: scalableheight.one,
+                  zIndex: 10,
+                }}>
+                {/* <View style={styleSheet.backButtonMain}> */}
+                <AntDesign
+                  style={{alignSelf: 'center'}}
+                  name="arrowleft"
+                  color={'black'}
+                  size={fontSize.twentyfour}
+                />
+                {/* </View> */}
+              </TouchableOpacity>
+              <WebView
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
+                source={{uri: repayorderdetailslink}}
+                onMessage={event => {
+                  let newdata = JSON.parse(event.nativeEvent.data);
+                  console.log(newdata.data);
+                  if (event.nativeEvent.data == 'Exit') {
+                    setmodalVisiblepayment(false);
+                    toast.current.show(
+                      'There was an network failure while processing your payment. Please tru again later',
+                      {
+                        type: 'normal',
+                        placement: 'bottom',
+                        duration: 4000,
+                        offset: 10,
+                        animationType: 'slide-in',
+                        zIndex: 2,
+                      },
+                    );
+                  } else if (newdata.data.Result.paymentStatus == 'Failed') {
+                    setmodalVisiblepayment(false);
+                    toast.current.show(
+                      'There was an network failure while processing your payment. Please tru again later',
+                      {
+                        type: 'normal',
+                        placement: 'bottom',
+                        duration: 4000,
+                        offset: 10,
+                        animationType: 'slide-in',
+                        zIndex: 2,
+                      },
+                    );
+                  } else if (newdata.data.Result.paymentStatus == 'Paid') {
+                    setmodalVisiblepayment(false);
+                    toast.current.show('Payment Successful', {
+                      type: 'normal',
+                      placement: 'bottom',
+                      duration: 4000,
+                      offset: 10,
+                      animationType: 'slide-in',
+                      zIndex: 2,
+                    });
+                    dispatch(OrderStatus(AuthToken, orderdetails))
+dispatch(clearlink())
+                  }
+                }}
+              />
+            </>
+          )}
+        </View>
+      </Modal>
       <Modal
         transparent
         style={{
@@ -499,7 +624,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
           marginTop: getStatusBarHeight(),
           padding: scalableheight.one,
         }}>
-        <PlainHeader title={orderResult[0]?.OrderNo} />
+        <PlainHeader title={orderResult[0]?.OrderNo} previousscreen ={previousscreen} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{paddingBottom: scalableheight.fifteen}}>
@@ -1865,7 +1990,27 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                 }}></View>
               <Bll label={'Total Amount'} price={orderResult[0]?.TotalAmount} />
               <View style={{height: scalableheight.two}} />
-              {orderResult[0]?.Status == 'Pending' ? (
+              {orderResult[0]?.Status == 'Pending' && orderResult[0]?.IsPaid == false  ? (
+                repayloader == true ? (
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <ActivityIndicator size={'large'} color="#E14E4E" />
+                  </View>
+                ) : (
+                  <MYButton
+                    title={ 'Pay Now'}
+                    color="#E14E4E"
+                    textcolor="white"
+                    onPress={() => {
+                      repay();
+                    }}
+                  />
+                )
+              ) : null}
+              {orderResult[0]?.Status == 'Pending' && orderResult[0]?.IsPaid == false  ? (
                 loader == true ? (
                   <View
                     style={{
@@ -1876,7 +2021,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                   </View>
                 ) : (
                   <MYButton
-                    title={'Cancel'}
+                    title={ 'Cancel'}
                     color="black"
                     textcolor="white"
                     onPress={() => {
@@ -1885,6 +2030,7 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
                   />
                 )
               ) : null}
+           
 
               <View style={{height: scalableheight.ten}} />
             </View>

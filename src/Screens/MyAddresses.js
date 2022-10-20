@@ -9,6 +9,7 @@ import {
   Image,
   Modal,
   ScrollView,
+  LayoutAnimation
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
@@ -32,71 +33,18 @@ import {
 } from '@react-navigation/drawer';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 import {
-  deleteaddress
+  deleteaddress,
+  clearaddressdeletionstatus
 } from '../Actions/actions';
 
 
 const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   const dispatch = useDispatch();
   const [screenname, setscreenname] = useState('');
+  const [gesturestate, setgesturestate] = useState(false);
   const {AuthToken, alladdresses, addressdeletionstatus} = useSelector(state => state.userReducer);
   const toast = useRef();
-  const [addresses, Setaddresses] = useState([
-    {
-      Icon: require('../Resources/images/Homeicon.png'),
-      Place: 'Home',
-      address: '7399 Stefan Trace Joanne Ligh Street No.85',
-      Note: '4th floor, Take a left, 2nd brown Door on your right',
-    },
-    {
-      Icon: require('../Resources/images/Homeicon.png'),
-      Place: 'Work',
-      address: '7399 Stefan Trace Joanne Ligh Street No.85',
-      Note: '4th floor, Take a left, 2nd brown Door on your right',
-    },
-    {
-      Icon: require('../Resources/images/Othericon.png'),
-      Place: 'Other',
-      address: '7399 Stefan Trace Joanne Ligh Street No.85',
-      Note: '4th floor, Take a left, 2nd brown Door on your right',
-    },
-    {
-      Icon: require('../Resources/images/Homeicon.png'),
-      Place: 'Home',
-      address: '7399 Stefan Trace Joanne Ligh Street No.85',
-      Note: '4th floor, Take a left, 2nd brown Door on your right',
-    },
-    {
-      Icon: require('../Resources/images/Homeicon.png'),
-      Place: 'Work',
-      address: '7399 Stefan Trace Joanne Ligh Street No.85',
-      Note: '4th floor, Take a left, 2nd brown Door on your right',
-    },
-    {
-      Icon: require('../Resources/images/Othericon.png'),
-      Place: 'Other',
-      address: '7399 Stefan Trace Joanne Ligh Street No.85',
-      Note: '4th floor, Take a left, 2nd brown Door on your right',
-    },
-    {
-      Icon: require('../Resources/images/Homeicon.png'),
-      Place: 'Home',
-      address: '7399 Stefan Trace Joanne Ligh Street No.85',
-      Note: '4th floor, Take a left, 2nd brown Door on your right',
-    },
-    {
-      Icon: require('../Resources/images/Homeicon.png'),
-      Place: 'Work',
-      address: '7399 Stefan Trace Joanne Ligh Street No.85',
-      Note: '4th floor, Take a left, 2nd brown Door on your right',
-    },
-    {
-      Icon: require('../Resources/images/Othericon.png'),
-      Place: 'Other',
-      address: '7399 Stefan Trace Joanne Ligh Street No.85',
-      Note: '4th floor, Take a left, 2nd brown Door on your right',
-    },
-  ]);
+
 
  
   React.useEffect(() => {
@@ -107,6 +55,11 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
       if (route?.params?.screenname != undefined) {
         setscreenname(route?.params?.screenname);
       }
+      setgesturestate(false)
+      setTimeout(() => {
+        LayoutAnimation.easeInEaseOut()
+        setgesturestate(true)
+      }, 500);
     });
 
     //  Return the function to unsubscribe from the event so it gets removed on unmount
@@ -124,6 +77,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
         zIndex: 2,
       });
       dispatch(getalladdresses(AuthToken));
+      dispatch(clearaddressdeletionstatus())
     }
   }, [addressdeletionstatus]);
 
@@ -132,8 +86,8 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
       <TouchableOpacity
         style={[styleSheet.actionButton, styleSheet.deleteBtn]}
         onPress={() => {
-    
-          dispatch(deleteaddress(alladdresses[index].Id, AuthToken))
+
+           dispatch(deleteaddress(item.Id, AuthToken))
          
         }}>
         {/* <Text style={styleSheet.btnText}>Delete</Text> */}
@@ -218,10 +172,11 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
               );
             }}
           /> */}
-
+{gesturestate == true &&
 <SwipeListView
             key={'1'}
             data={alladdresses}
+            // swipeGestureBegan= {gesturestate}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: scalableheight.twentytwo}}
             keyExtractor={(item, index) => index.toString()}
@@ -271,10 +226,11 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
             disableRightSwipe={true}
             rightOpenValue={-scalableheight.seven}
             previewRowKey={'0'}
-            previewOpenValue={-50}
+            previewOpenValue={-60}
             // previewOpenDelay={3000}
             onRowDidOpen={onItemOpen}
           />
+}
         </View>
       </View>
       {screenname != 'checkout' && (

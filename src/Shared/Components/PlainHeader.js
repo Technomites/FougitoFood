@@ -33,7 +33,17 @@ export default function PlainHeader(props) {
         <TouchableOpacity
           onPress={() => {
             // navigation.navigate("Home")
-            navigation.goBack();
+            if(props.previousscreen == "checkout") {
+              navigation.navigate('Drawernavigator');
+            } else{
+              navigation.goBack()
+            }
+        
+            
+            
+          
+   
+           
           }}
           style={{
             height: scalableheight.seven,

@@ -64,7 +64,9 @@ const animateHeaderBackgroundColor = props.animHeaderValue.interpolate({
 })
 
 const renderpopularcategories = ({item, index}) => (
-  <TouchableOpacity onPress={() => props.scrollmeto(index, item)}>
+  <TouchableOpacity 
+  activeOpacity={0.9}
+  onPress={() => props.scrollmeto(index, item)}>
   <Categoriescard
     image={item?.Image}
     type={item?.CategoryName}

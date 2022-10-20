@@ -9,7 +9,10 @@ import {
   ImageBackground,
   StyleSheet,
   SafeAreaView,
+  Platform,
+  PermissionsAndroid
 } from 'react-native';
+import Geolocation from "react-native-geolocation-service";
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 import messaging from '@react-native-firebase/messaging';
@@ -23,9 +26,11 @@ import * as Animatable from 'react-native-animatable';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import LottieView from 'lottie-react-native';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
-import {storetoken, storetokenrefresh, refreshmytoken, isconnected, storecartdata, storerestrauntid, storecartprice} from '../Actions/actions';
+import {storetoken, storetokenrefresh, refreshmytoken, isconnected, storecartdata, storerestrauntid, storecartprice, storecurrentaddress} from '../Actions/actions';
+
 // import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 const SplashScreen = props => {
+  const [locationenabled, setlocationenabled] = useState(true);
   const {refreshtokendata, AuthToken} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -37,16 +42,20 @@ const SplashScreen = props => {
 
   async function navigatetogettingstarted() {
     const getgettingstartedvisited = await AsyncStorage.getItem('GettingStarted');
+   
+
+    
     if (getgettingstartedvisited != undefined && getgettingstartedvisited != '') {
       props.navigation.replace('Drawernavigator');
     }else{
       props.navigation.replace('GettingStarted');
     }
-
+  
   }
 
 
   useEffect(() => {
+ 
     NetInfo.fetch().then(state => {
    
       if (state.isConnected == true && state.isInternetReachable == true) {
@@ -58,6 +67,15 @@ const SplashScreen = props => {
     gettoken();
   }, []);
 
+  
+  // useEffect(() => {
+  //  if(locationenabled == false){
+  //   getLocation()
+  //  }else{
+
+  //   navigatetogettingstarted()
+  //  }
+  // }, [locationenabled]);
   
   async function gettoken() {
     const cartdatastore = await AsyncStorage.getItem('cartdata');
@@ -88,6 +106,11 @@ const SplashScreen = props => {
         dispatch(storetokenrefresh(JSON.parse(refresh)));
       }
     }
+
+    const address = await AsyncStorage.getItem('currentaddress');
+    if (address != undefined && address != '') {
+dispatch(storecurrentaddress(JSON.parse(address)))
+    }
    
   }
 
@@ -98,6 +121,147 @@ const SplashScreen = props => {
     }
 
   }, [refreshtokendata]);
+
+
+//   const getLocation = async () => {
+//     const hasLocationPermission = await hasLocationPermissions();
+//     if (!hasLocationPermission) {
+//       console.log("you will never have  have permission")
+//       return;
+//     }
+//   //   Geolocation.getCurrentPosition(
+//   //     (position) => {
+//   //         setLoader(false);
+//   //         const { coords } = position;
+//   //         console.log("CORDINATES =====> ", coords);
+          
+//   //         getLocationName(coords?.latitude, coords?.longitude);
+//   //     },
+//   //     (error) => {
+//   //         setLoader(false);
+//   //         ToastMessage(error?.message);
+//   //     },
+//   //     {
+//   //         timeout: 15000,
+//   //         maximumAge: 10000,
+//   //         distanceFilter: 0,
+//   //         enableHighAccuracy: highAccuracy,
+//   //         forceRequestLocation: forceLocation,
+//   //         showLocationDialog: showLocationDialog,
+//   //         accuracy: {android: 'high',ios: 'best'},
+//   //     },
+//   // );
+
+//   Geolocation.getCurrentPosition(info => {
+//     // setlat(info?.coords?.latitude);
+//     // setlong(info?.coords?.longitude);
+//     // setinlat(info?.coords?.latitude);
+//     // setinlong(info?.coords?.longitude);
+//   },
+//   (error) => {
+//     setlocationenabled(false)
+//   console.log("hellooo" + JSON.stringify(error))
+// },
+// {
+//   accuracy: {
+//     android: 'high',
+//     ios: 'best'
+//   },
+//   enableHighAccuracy: true,
+//   timeout: 15000,
+//   maximumAge: 10000,
+//   distanceFilter: 0,
+//   forceRequestLocation: true,
+//   showLocationDialog: true,
+// },
+  
+//   );
+//   };
+
+//   const hasLocationPermissions = async () => {
+   
+//     // if (Platform.OS === 'ios') {
+//     //   const hasPermission = await hasLocationPermissionIOS();
+//     //   return hasPermission;
+//     // }
+// console.log(Platform.Version)
+//     if (Platform.OS === 'android' && Platform.Version < 23) {
+//       return true;
+//     }
+
+//     console.log("next step")
+//     const hasPermission = await PermissionsAndroid.check(
+//       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+//     );
+//     console.log(hasPermission + "this is the permission splash")
+//     if (hasPermission) {
+//       return true;
+//     }else{
+//       console.log("Not Allowed")
+//       setlocationenabled(false)
+//     }
+
+//     const status = await PermissionsAndroid.request(
+//       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+//     );
+
+//     if (status === PermissionsAndroid.RESULTS.GRANTED) {
+//       console.log("you  have permission splash screen")
+//     setlocationenabled(true)
+//       return true;
+//     }
+
+//     if (status === PermissionsAndroid.RESULTS.DENIED) {
+//       console.log("you dont have permission")
+//       setlocationenabled(false)
+   
+//       // ToastAndroid.show(
+//       //   'Location permission denied by user.',
+//       //   ToastAndroid.LONG,
+//       // );
+//     } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+//       console.log("you will never have  have permission")
+//       setlocationenabled(false)
+
+//       // ToastAndroid.show(
+//       //   'Location permission revoked by user.',
+//       //   ToastAndroid.LONG,
+//       // );
+//     }
+
+  
+ 
+//     return false;
+//   };
+//   const hasLocationPermissionIOS = async () => {
+//     const openSetting = () => {
+//       Linking.openSettings().catch(() => {
+//         ToastMessage('success', 'Success', 'Unable to open settings');
+//       });
+//     };
+//     const status = await Geolocation.requestAuthorization('whenInUse');
+
+//     if (status === 'granted') {
+//       return true;
+//     }
+
+//     if (status === 'denied') {
+//       ToastMessage('error', 'Error', 'Location permission denied');
+//     }
+
+//     if (status === 'disabled') {
+//       Alert.alert(
+//         `Turn on Location Services to allow Bakery App to determine your location.`,
+//         '',
+//         [
+//           {text: 'Go to Settings', onPress: openSetting},
+//           {text: "Don't Use Location", onPress: () => {}},
+//         ],
+//       );
+//     }
+//     return false;
+//   };
+ 
   return (
     <View style={styleSheet.BackgroundImage}>
         <FocusAwareStatusBar

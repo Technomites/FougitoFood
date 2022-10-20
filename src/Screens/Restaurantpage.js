@@ -19,6 +19,7 @@ import {
   SafeAreaView,
   Keyboard,
   ImageBackground,
+  Platform
 } from 'react-native';
 // import Animated from 'react-native-reanimated';
 import HeaderComponentRestaurant from '../Shared/Components/HeaderComponentRestaurant';
@@ -49,7 +50,7 @@ import {
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import MultiChoiceDropDown from '../Shared/Components/MultiChoiceDropDown';
 import MYButton from '../Shared/Components/MYButton';
 import Custombottomsheet from '../Shared/Components/Custombottomsheet';
@@ -75,9 +76,12 @@ import {
   storerestrauntid,
   storerestrauntbasicdata,
   storedistance,
-  clearmenu
+  clearmenu,
+  getdistancevalidation,
+  cleardistancevalidation
 } from '../Actions/actions';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
+import { StickyView } from '@r0b0t3d/react-native-collapsible';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
@@ -97,6 +101,7 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
   const [specialinstructions, setspecialinstructions] = useState('');
   const [cartvisible, setcartvisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
+  const [temporarycoordinates, settemporarycoordinates] = useState(null);
   const [SelectBranchVisible, setSelectBranchVisible] = useState(false);
   const [count, setcount] = useState(1);
   const [lat, setlat] = useState(route?.params?.latitude);
@@ -128,7 +133,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     addedtofavourite,
     Selectedcurrentaddress,
     branchlist,
-    currentRestrauntid
+    currentRestrauntid,
+    validdistance
  
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
@@ -360,6 +366,36 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     };
   }, []);
 
+
+  useEffect(() => {
+    if(validdistance == false){
+      toast.current.show("Sorry for the inconvenience. We are currently not delivering to your area. Kindly select another address.", {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+      dispatch(cleardistancevalidation())
+    }else if(validdistance == true && temporarycoordinates != null){
+       setlat(temporarycoordinates?.Latitude);
+       setlong(temporarycoordinates?.Longitude);
+       setinlat(temporarycoordinates?.Latitude);
+       setinlong(temporarycoordinates?.Longitude);
+       settemporarycoordinates(null)
+    }
+
+
+
+
+     
+    
+  }, [validdistance]);
+
+
+
+  
+
   
     useEffect(() => {
      dispatch(pickupstate(isEnabled))
@@ -372,6 +408,20 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
             var addressComponent = json.results[0].formatted_address;
             console.log(addressComponent);
             setpinlocation(addressComponent);
+            let currentaddress = [
+              {
+                Latitude: lat,
+                Longitude: long,
+                icon: "Others",
+                place: "Others",
+                address: addressComponent,
+                note: "",
+                Street: "",
+                Floor: "",
+              },
+            ];
+        
+            dispatch(storecurrentaddress(currentaddress));
           })
           .catch(error => console.warn(error));
       }
@@ -394,6 +444,14 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
       resetMultiChoiceDropDown()
       scrollviewref.current.scrollTo({ y: dataSourceCords[1] , animated: true, });
       Keyboard.dismiss();
+    }
+
+    function updatecoordinates(lat, long) {
+      setlat(lat);
+      setlong(long);
+      setinlat(lat);
+      setinlong(long);
+      getLocation();
     }
     function additemtocart() {
       let errorcaused = false;
@@ -461,13 +519,26 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
     }
 
   function getnewlocation() {
-    Geocoder.from(lat, long)
-      .then(json => {
-        var addressComponent = json.results[0].formatted_address;
-        console.log(addressComponent);
-        setpinlocation(addressComponent);
-      })
-      .catch(error => console.warn(error));
+     
+    Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
+    
+    Geolocation.getCurrentPosition(info => {
+      let temporycordinates = [
+        {
+          Latitude: info?.coords?.latitude,
+          Longitude: info?.coords?.longitude,
+        
+        },]
+
+        settemporarycoordinates(temporycordinates)
+   
+      dispatch(getdistancevalidation(restrauntdetails?.RestaurantBranchId,   info?.coords?.latitude,   info?.coords?.longitude ))
+    
+    
+    });
+ 
+
+  
   }
   const getLocation = async () => {
     const hasLocationPermission = await hasLocationPermissions();
@@ -761,8 +832,8 @@ const Restaurantpage = ({navigation, drawerAnimationStyle, props, route}) => {
             width: '100%',
             height: '100%',
             backgroundColor: 'white',
-            zIndex: 2,
-            elevation: 2,
+            zIndex: 1200,
+            elevation: 1200,
           }}></View>
       )}
 
@@ -1343,14 +1414,15 @@ dispatch(storedistance(inneritem?.Distance));
         keyExtractor={(item, index) => index.toString()}
         ref={scrollviewref}
 
-//         slideStyle={{ width: viewportWidth }}
-// inactiveSlideOpacity={1}
-// inactiveSlideScale={1}
+        
         scrollEventThrottle={1}
-        snapToAlignment="start"
-        decelerationRate={'normal'}
-    
-        snapToInterval={isEnabled ? getStatusBarHeight() + scalableheight.fourtysix :  getStatusBarHeight() + scalableheight.fourtyseven}
+        snapToOffsets={[0, isEnabled ? getStatusBarHeight() + scalableheight.fourtysix :  getStatusBarHeight() + scalableheight.fourtyseven]}
+        snapToEnd={false}
+      //   snapToAlignment="start"
+         decelerationRate={ "fast"}
+   
+
+      //  snapToInterval={isEnabled ? getStatusBarHeight() + scalableheight.fourtysix :  getStatusBarHeight() + scalableheight.fourtyseven}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: scrollOffsetY}}}],
           {
@@ -1360,9 +1432,10 @@ dispatch(storedistance(inneritem?.Distance));
               if(dataSourceCords.length > 0){
               let closest = dataSourceCords[1];
               for (let item of dataSourceCords) {
+                
                 if (
-                  Math.abs(item - y) <
-                  Math.abs(closest - y) - scalableheight.fourtynine
+                  Math.abs(item - (y - scalableheight.sixtyfive )) <
+                  Math.abs(closest - (y - scalableheight.sixtyfive )) 
                 ) {
                   closest = item;
                 }
@@ -1396,13 +1469,19 @@ dispatch(storedistance(inneritem?.Distance));
           },
           {useNativeDriver: true},
         )}
+      
         showsVerticalScrollIndicator={false}
         style={{
           backgroundColor: '#F6F6F6',
+          marginBottom: Platform.OS == "ios" ? scalableheight.two : null
           // paddingHorizontal: scalableheight.one,
           //  marginTop: animatedtop
         }}>
+             
+               
+          
         <>
+   
           <DynamicHeader
             pinlocation={pinlocation}
             showlocation={() => {
@@ -1453,7 +1532,7 @@ scrollviewref.current.scrollTo({
   
 
 
-          <View style={{paddingHorizontal: scalableheight.one}}>
+          <View style={{paddingHorizontal: scalableheight.one, paddingBottom:scalableheight.tweleve}}>
           {restrauntmenu.length > 0 ?
           (
           
@@ -1490,7 +1569,7 @@ scrollviewref.current.scrollTo({
                             dispatch(savemenucategoryoptiondetailsdata(item));
                             setspecialinstructions('');
                             setcount(1);
-                        
+                         
                             setmodalVisible(true);
                           }}
                         />
@@ -1503,6 +1582,7 @@ scrollviewref.current.scrollTo({
             })) :null
           }
           </View>
+         
         </>
       </AnimatedScrollView>
       {restrauntmenu.length > 0 ?
@@ -1581,6 +1661,8 @@ scrollviewref.current.scrollTo({
         }}
         latitude={lat}
         longitude={long}
+        withvalidation = {true}
+        branchid= {restrauntdetails?.RestaurantBranchId}
       />
       <Toast
         ref={toast}

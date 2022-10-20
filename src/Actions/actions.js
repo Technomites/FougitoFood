@@ -74,11 +74,199 @@ export const ClearProfile = 'ClearProfile';
 export const DELETEDADDRESS = 'DELETEDADDRESS';
 export const GETALLBRANCHLIST = 'GETALLBRANCHLIST';
 export const CLEARMENU = 'CLEARMENU';
-const API_URl = 'https://api.fougitodemo.com/api/';
+export const CLEARAddressDELETION = 'CLEARAddressDELETION';
+export const review_restaurant = 'review_restaurant';
+export const review_restaurant2 = 'review_restaurant2';
+export const GETREPAY = 'GETREPAY';
+export const CLEARREPAY = 'CLEARREPAY';
+export const DISTANCEVAlidation = 'DISTANCEVAlidation';
+export const CLEARDISTANCEVAlidation = 'CLEARDISTANCEVAlidation';
+
+const API_URl = 'https://api.fougito.com/api/';
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
 const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
+};
+
+
+export const cleardistancevalidation = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: CLEARDISTANCEVAlidation,
+        payload: null,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getdistancevalidation = (BranchId, lat, long) => {
+  try {
+    return async dispatch => {
+      const result = await fetch(
+        API_URl + `Customer/Restaurant/Branch/` + BranchId + `/ValidateDistanct/${lat}/${long}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      const json = await result.json();
+
+      console.log(
+        'getdistancevalidation ' + BranchId + ' ' + JSON.stringify(json),
+      );
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: DISTANCEVAlidation,
+          payload: true,
+        });
+      }else{
+        dispatch({
+          type: DISTANCEVAlidation,
+          payload: false,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const clearlink = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: CLEARREPAY,
+        payload: "",
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getrepay = id => {
+  try {
+    return async dispatch => {
+      const result = await fetch(
+        API_URl + `Customer/Restaurant/Order/` + id + `/Repay?Client=1`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      const json = await result.json();
+
+      console.log(
+        'getrepay ' + id + ' ' + JSON.stringify(json),
+      );
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: GETREPAY,
+          payload: json.Result,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const RestaurantReview = (
+  token,
+  OrderID,
+  rating,
+  Restaurantid,
+  reviews,
+) => {
+  try {
+    return async dispatch => {
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append('Authorization', `Bearer ${token}`);
+
+      var raw = JSON.stringify({
+        OrderId: OrderID,
+        rating: rating,
+        restaurantId: Restaurantid,
+        review: reviews,
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+      const result = await fetch(
+        API_URl + 'Customer/Restaurant/Rating',
+        requestOptions,
+      ).catch(error => {
+        dispatch({
+          type: review_restaurant,
+          payload: 'Network Request Failed',
+        });
+      });
+
+      const json = await result.json().catch(error => {
+        dispatch({
+          type: review_restaurant,
+          payload: 'Network Request Failed',
+        });
+      });
+
+      if (json.Status == 'Success') {
+        console.log(' type: Login_User,');
+        dispatch({
+          type: review_restaurant,
+          payload: json?.Status,
+        });
+      } else {
+        console.log(json?.Message, 'EROORRR');
+        dispatch({
+          type: review_restaurant,
+          payload: json?.Status,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const RestaurantReviewNull = () => {
+  return async dispatch => {
+    dispatch({
+      type: review_restaurant2,
+      payload: '',
+    });
+  };
+};
+
+export const clearaddressdeletionstatus = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: CLEARAddressDELETION,
+        payload: "",
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const clearmenu = () => {
@@ -605,8 +793,7 @@ export const createorder = (AuthToken, data) => {
       } else {
         dispatch({
           type: CreateOrder,
-          payload:
-            'We are unable to place your order at the moment. Please try again later.',
+          payload: json.Message,
           payloadorderresult: 0,
         });
       }

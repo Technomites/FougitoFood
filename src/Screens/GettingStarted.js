@@ -40,7 +40,7 @@ const GettingStarted = props => {
   const [getstarted, SetGetstarted] = useState([
     {
       image: require('../Resources/images/GetstartedS1.png'),
-      caption: 'Best restaurants at your finger tips',
+      caption: 'One thousand flavors in one place',
       buttontitle: 'NEXT',
       buttontitle2: true,
 
@@ -50,7 +50,7 @@ const GettingStarted = props => {
     },
     {
       image: require('../Resources/images/GetstartedS2.png'),
-      caption: 'Why go out when you can have food delivered to your doorstep',
+      caption: 'Your favorite eateries one click away',
       buttontitle: 'NEXT',
       buttontitle2: true,
 
@@ -60,11 +60,13 @@ const GettingStarted = props => {
     },
     {
       image: require('../Resources/images/GetstartedS3.png'),
-      caption: 'Your favourite food delivered to you',
+      caption: 'Live longer with fresh food',
       buttontitle: 'PROCEED',
       buttontitle2: false,
     },
   ]);
+
+
 
   const dispatch = useDispatch();
   useEffect(() => {

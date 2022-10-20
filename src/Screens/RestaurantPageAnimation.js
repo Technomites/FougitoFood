@@ -22,7 +22,7 @@ import {
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import MultiChoiceDropDown from '../Shared/Components/MultiChoiceDropDown';
 import MYButton from '../Shared/Components/MYButton';
 import Custombottomsheet from '../Shared/Components/Custombottomsheet';

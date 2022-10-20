@@ -70,7 +70,8 @@ import Transparentinfobar from '../Shared/Components/Transparentinfobar';
 import Transparentsearch from '../Shared/Components/Transparentsearch';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from '@react-native-community/geolocation';
+//import Geolocation from '@react-native-community/geolocation';
+import Geolocation from "react-native-geolocation-service";
 import SavedAddresses from '../Shared/Components/SavedAddresses';
 import Starters from '../Shared/Components/Starters';
 import Favourites from '../Shared/Components/Favourites';
@@ -93,7 +94,8 @@ import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
-// import LocationEnabler from 'react-native-location-enabler';
+//import LocationEnabler from 'react-native-location-enabler';
+//import {LocationSettings} from '../Shared/Components/LocationEnabler';
 
 
 
@@ -107,7 +109,7 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 
 const Home = ({props, navigation, drawerAnimationStyle}) => {
-  
+  // const { enabled, request } = LocationSettings();
 
 
 //   const [enabled, requestResolution] = useLocationSettings(
@@ -133,6 +135,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const [modalVisible, setmodalVisible] = useState(false);
   const [loader, setloader] = useState(false);
   const [search, setsearch] = useState('');
+  const [Enabled, setEnabled] = useState(false);
   const [showmap, setshowmap] = useState(true);
   const [count, setcount] = useState(0);
   const [showbottomsheet, setshowbottomsheet] = useState(false);
@@ -208,7 +211,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     currentRestrauntid,
     AuthToken,
     internetconnectionstate,
-    Selectedcurrentaddress
+    Selectedcurrentaddress,
+    alladdresses
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
@@ -552,7 +556,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
      
-      // requestResolution()
+        // requestResolution()
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
       NetInfo.fetch().then(state => {
@@ -590,29 +594,53 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
   useEffect(() => {
     if (internetconnectionstate == true) {
-      Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
-      Geolocation.getCurrentPosition(info => {
-        setlat(info?.coords?.latitude);
-        setlong(info?.coords?.longitude);
-        setinlat(info?.coords?.latitude);
-        setinlong(info?.coords?.longitude);
-      });
-      getLocation();
+      if(Selectedcurrentaddress.length > 0){
+        setlat(Selectedcurrentaddress[0].Latitude)
+        setlong(Selectedcurrentaddress[0].Longitude)
+        setinlat(Selectedcurrentaddress[0].Latitude)
+        setinlong(Selectedcurrentaddress[0].Longitude)
+        setpinlocation(Selectedcurrentaddress[0].address);
+    
+      }else{
+        Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
+        Geolocation.getCurrentPosition(info => {
+          setlat(info?.coords?.latitude);
+          setlong(info?.coords?.longitude);
+          setinlat(info?.coords?.latitude);
+          setinlong(info?.coords?.longitude);
+        },
+        (error) => {
+          console.log("hellooo" + JSON.stringify(error))
+        },
+        {
+          accuracy: {
+            android: 'high',
+            ios: 'best'
+          },
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 10000,
+          distanceFilter: 0,
+          forceRequestLocation: true,
+          showLocationDialog: true,
+        });
+      }
+
+  
     }
   }, [internetconnectionstate]);
 
-  useEffect(() => {
-    setloader(false);
-  }, [allrestraunts]);
 
   useEffect(() => {
     if (internetconnectionstate == true) {
-      if (lat != null && long != null && lat != 0 && long != 0) {
+      if (lat != null && long != null && lat != 0 && long != 0 ) {
 
         setloader(true);
         dispatch(getallrestraunts(lat, long));
         dispatch(storelatlong(lat, long));
 
+
+        Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
         Geocoder.from(lat, long)
           .then(json => {
             var addressComponent = json.results[0].formatted_address;
@@ -630,21 +658,34 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                 Floor: "",
               },
             ];
-    
-            dispatch(storecurrentaddress(currentaddress));
+            if(alladdresses?.find(data => data?.Latitude ==  lat && data?.Longitude ==  long) == undefined){
+              dispatch(storecurrentaddress(currentaddress));
+            }
+          
           })
           .catch(error => console.warn(error));
+        
       }
     }
   }, [lat, long]);
 
-  // useEffect(() => {
-  //   if (!enabled) {
-  //     requestResolution();
-  //   }else{
-  //     getnewlocation()
-  //   }
-  // }, [enabled])
+  useEffect(() => {
+    setloader(false);
+  }, [allrestraunts]);
+
+  
+  useEffect(() => {
+    if (!Enabled) {
+      setTimeout(() => {
+        getLocation();
+      }, 1500);
+  
+     
+    }else{
+   
+      getnewlocation()
+    }
+  }, [Enabled])
 
  
 
@@ -672,7 +713,9 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     setlong(long);
     setinlat(lat);
     setinlong(long);
-    getLocation();
+    setTimeout(() => {
+      getLocation();
+    }, 1500);
   }
 
   const rendernearby = ({item, index}) =>
@@ -698,7 +741,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             }
 
             dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
-
+        
             navigation.navigate('Restaurantpage', {
               latitude: lat,
               longitude: long,
@@ -801,22 +844,70 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       console.log("you will never have  have permission")
       return;
     }
+  //   Geolocation.getCurrentPosition(
+  //     (position) => {
+  //         setLoader(false);
+  //         const { coords } = position;
+  //         console.log("CORDINATES =====> ", coords);
+          
+  //         getLocationName(coords?.latitude, coords?.longitude);
+  //     },
+  //     (error) => {
+  //         setLoader(false);
+  //         ToastMessage(error?.message);
+  //     },
+  //     {
+  //         timeout: 15000,
+  //         maximumAge: 10000,
+  //         distanceFilter: 0,
+  //         enableHighAccuracy: highAccuracy,
+  //         forceRequestLocation: forceLocation,
+  //         showLocationDialog: showLocationDialog,
+  //         accuracy: {android: 'high',ios: 'best'},
+  //     },
+  // );
+
+  Geolocation.getCurrentPosition(info => {
+    // setlat(info?.coords?.latitude);
+    // setlong(info?.coords?.longitude);
+    // setinlat(info?.coords?.latitude);
+    // setinlong(info?.coords?.longitude);
+  },
+  (error) => {
+  console.log("hellooo" + JSON.stringify(error))
+},
+{
+  accuracy: {
+    android: 'high',
+    ios: 'best'
+  },
+  enableHighAccuracy: true,
+  timeout: 15000,
+  maximumAge: 10000,
+  distanceFilter: 0,
+  forceRequestLocation: true,
+  showLocationDialog: true,
+},
+  
+  );
   };
 
   const hasLocationPermissions = async () => {
-    if (Platform.OS === 'ios') {
-      const hasPermission = await hasLocationPermissionIOS();
-      return hasPermission;
-    }
-
+   
+    // if (Platform.OS === 'ios') {
+    //   const hasPermission = await hasLocationPermissionIOS();
+    //   return hasPermission;
+    // }
+console.log(Platform.Version)
     if (Platform.OS === 'android' && Platform.Version < 23) {
       return true;
     }
 
+    console.log("next step")
     const hasPermission = await PermissionsAndroid.check(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     );
-
+    console.log(hasPermission + "this is the permission home")
     if (hasPermission) {
       return true;
     }
@@ -826,13 +917,14 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     );
 
     if (status === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("you  have permission")
+      console.log("you  have permission home screen")
+      setEnabled(true)
       return true;
     }
 
     if (status === PermissionsAndroid.RESULTS.DENIED) {
       console.log("you dont have permission")
-
+      setEnabled(false)
    
       // ToastAndroid.show(
       //   'Location permission denied by user.',
@@ -840,13 +932,15 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       // );
     } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
       console.log("you will never have  have permission")
- 
+      setEnabled(false)
 
       // ToastAndroid.show(
       //   'Location permission revoked by user.',
       //   ToastAndroid.LONG,
       // );
     }
+
+  
  
     return false;
   };
@@ -924,6 +1018,51 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               />
             </View>
           </ImageBackground>
+          {
+            showmap != true &&
+          <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingHorizontal:scalableheight.two, paddingTop:scalableheight.two}}>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter-Bold',
+                        fontSize: fontSize.sixteen,
+                        color: '#29262A',
+                        // paddingBottom:scalableheight.one
+                      }}>
+                      RESTAURANTS NEARBY
+                    </Text>
+
+                  
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => {
+            
+              LayoutAnimation.easeInEaseOut();
+                setshowmap(true);
+            }}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: fontSize.circle,
+             
+              height: scalableheight.four,
+              width: scalableheight.four,
+            }}>
+            <Image
+              resizeMode="stretch"
+              style={{
+                width: '100%',
+                height: '100%',
+                zIndex: 201,
+                elevation: 201,
+              }}
+              source={
+                showmap
+                  ? require('../Resources/images/listicon.png')
+                  : require('../Resources/images/mapicon.png')
+              }
+            />
+          </TouchableOpacity>
+          </View>}
           {showmap &&  (
             <>
               <View
@@ -1111,8 +1250,9 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                 }}>
                 <Infobar
                   onPress={() => {
-               
-                    setshowbottomsheet(true);
+                
+                 
+                setshowbottomsheet(true);
                   }}
                   Heading={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].place : 'Current Location'}
                   Details={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].address :  pinlocation}
@@ -1142,6 +1282,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
                   //     justifyContent: 'center',
                   //   }}> */}
+                  <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
                     <Text
                       style={{
                         fontFamily: 'Inter-Bold',
@@ -1151,6 +1292,39 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                       }}>
                       RESTAURANTS NEARBY
                     </Text>
+
+                  
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => {
+            
+              LayoutAnimation.easeInEaseOut()
+                setshowmap(false);
+            }}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: fontSize.circle,
+             
+              height: scalableheight.four,
+              width: scalableheight.four,
+            }}>
+            <Image
+              resizeMode="stretch"
+              style={{
+                width: '100%',
+                height: '100%',
+                zIndex: 201,
+                elevation: 201,
+              }}
+              source={
+                showmap
+                  ? require('../Resources/images/listicon.png')
+                  : require('../Resources/images/mapicon.png')
+              }
+            />
+          </TouchableOpacity>
+          </View>
                     <FlatList
                   key={'1'}
                   showsHorizontalScrollIndicator={false}
@@ -1269,7 +1443,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
                   style={{
                     width: '100%',
                     paddingHorizontal: scalableheight.one,
-                    marginTop: scalableheight.two,
+                   
                   }}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{flexGrow: 1, paddingBottom: 5}}
@@ -1301,40 +1475,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
             // {/* </View> */}
           }
         </View>
-        {internetconnectionstate == true && (
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={() => {
-            
-           
-                setshowmap(!showmap);
-            }}
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: fontSize.circle,
-              position: 'absolute',
-              right: scalableheight.two,
-              bottom: scalableheight.five,
-              height: scalableheight.seven,
-              width: scalableheight.seven,
-            }}>
-            <Image
-              resizeMode="stretch"
-              style={{
-                width: '100%',
-                height: '100%',
-                zIndex: 201,
-                elevation: 201,
-              }}
-              source={
-                showmap
-                  ? require('../Resources/images/listicon.png')
-                  : require('../Resources/images/mapicon.png')
-              }
-            />
-          </TouchableOpacity>
-        )}
+      
       </View>
       <Custombottomsheet
         state={showbottomsheet}
@@ -1350,6 +1491,8 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         }}
         latitude={lat}
         longitude={long}
+        withvalidation = {false}
+        branchid= {0}
       />
       <Toast
         ref={toast}

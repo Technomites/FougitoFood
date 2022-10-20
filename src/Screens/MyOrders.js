@@ -18,6 +18,7 @@ import {
   Myorders,
   storeorderid,
   isconnected,
+  
 } from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -227,7 +228,10 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                       // dispatch(OrderStatus(AuthToken, item.Id));
                       dispatch(storeorderid(item.Id));
                       // navigation.navigate('PreparingFood');
-                      navigation.navigate('OrderDetails');
+                  
+                      navigation.navigate('OrderDetails', {
+                        screenname: 'MyOrders',
+                      })
                       // alert(item.Id);
 
                       // dispatch(OrderStatus(AuthToken, item.Id));

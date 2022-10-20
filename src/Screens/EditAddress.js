@@ -16,13 +16,15 @@ import {
   getalladdresses,
   savemyaddress,
   clearaddressresponse,
-  storecurrentaddress
+  storecurrentaddress,
+  cleardistancevalidation,
+  getdistancevalidation,
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Geocoder from 'react-native-geocoding';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
@@ -58,6 +60,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
   const [note, setnote] = useState('');
   const [loader, setloader] = useState(false);
   const [screenname, setscreenname] = useState(false);
+  const [temportystoreforselectedaddress, settemportystoreforselectedaddress] = useState(null);
   const toast = useRef();
 
   const customStyle = [
@@ -235,6 +238,8 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
     notificationCount,
     AuthToken,
     addresscreationresponse,
+    restrauntdetails,
+    validdistance
   } = useSelector(state => state.userReducer);
 
   React.useEffect(() => {
@@ -258,9 +263,26 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
       SetPinLongitude(info?.coords?.longitude);
       // console.log(info?.coords?.latitude);
       // console.log(info?.coords?.longitude);
+    },
+    (error) => {
+      console.log("hellooo" + JSON.stringify(error))
+    },
+    {
+      accuracy: {
+        android: 'high',
+        ios: 'best'
+      },
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 10000,
+      distanceFilter: 0,
+      forceRequestLocation: true,
+      showLocationDialog: true,
     });
 
-    getLocation();
+    setTimeout(() => {
+      getLocation();
+    }, 1500);
   }, []);
 
   useEffect(() => {
@@ -304,8 +326,9 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
             },
           
           ];
-          console.log(currentaddress);
-          dispatch(storecurrentaddress(currentaddress));
+          dispatch(getdistancevalidation(restrauntdetails?.RestaurantBranchId,  pinlatitude,   pinLongitude ))
+          settemportystoreforselectedaddress(currentaddress)
+        
         }
         navigation.goBack();
       } else if (addresscreationresponse == 'Network Request Failed') {
@@ -480,6 +503,33 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
       dispatch(savemyaddress(data, AuthToken));
     }
   }
+
+
+  useEffect(() => {
+    if(validdistance == false){
+      toast.current.show("Sorry for the inconvenience. We are currently not delivering to your area. Kindly select another address.", {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+      settemportystoreforselectedaddress(null)
+      dispatch(cleardistancevalidation())
+    }else if(validdistance == true && temportystoreforselectedaddress != null){
+      console.log("currentaddress" + JSON.stringify(temportystoreforselectedaddress));
+      dispatch(storecurrentaddress(temportystoreforselectedaddress));
+      settemportystoreforselectedaddress(null)
+       dispatch(cleardistancevalidation())
+    }
+
+
+
+
+     
+    
+  }, [validdistance]);
+ 
   return (
     <Animated.View
       style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>

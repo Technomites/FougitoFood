@@ -37,7 +37,7 @@ import {
 // } from 'react-native-navigation-bar-color';
 import Toast from 'react-native-toast-notifications';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import RNAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
 import {SliderBox} from 'react-native-image-slider-box';
 import ImagesSwiper from 'react-native-image-swiper';

@@ -18,7 +18,7 @@ import {
   Linking,
   Modal,
   Dimensions,
-  
+  LayoutAnimation
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {WebView} from 'react-native-webview';
@@ -35,7 +35,9 @@ import {
   updatepriceafterdiscount,
   clearcardorderplacementstatus,
   storeorderid,
-  storecurrentaddress
+  storecurrentaddress,
+  cleardistancevalidation,
+  getdistancevalidation,
 } from '../Actions/actions';
 import Toast from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -71,7 +73,7 @@ import {
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
@@ -107,14 +109,16 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   const [hidemarker, sethidemarker] = useState(false);
   const [pinlocation, setpinlocation] = useState('');
   const [couponloader, setcouponloader] = useState(false);
-
+  const [showfulllist, setshowfulllist] = useState(false);
   const [firstname, setfirstname] = useState('');
   const [lastname, setlastname] = useState('');
   const [email, setemail] = useState('');
   const [phonenumber, setphonenumber] = useState('');
   const [couponvisible, setcouponvisible] = useState(false);
   const [modalVisiblepayment, setmodalVisiblepayment] = useState(false);
-
+  const [temportystoreforselectedaddress, settemportystoreforselectedaddress] = useState(null);
+  const [gesturestate, setgesturestate] = useState(false);
+  
   const [loader1, setloader1] = useState(false);
   const [loader2, setloader2] = useState(false);
 
@@ -147,13 +151,15 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     cardorderplacementstatus,
     orderdetailslink,
     alladdresses,
-    Profileinfo
+    Profileinfo,
+    validdistance
   } = useSelector(state => state.userReducer);
   const refMap = useRef(null);
   const toast = useRef();
   const ref = useRef();
   const scrollref = useRef();
-
+  const flatlistref = useRef();
+  const swiplistref = useRef();
   
   const customStyle = [
     {
@@ -334,6 +340,14 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
     const unsubscribe = navigation.addListener('focus', () => {
       scrollref.current.scrollTo({ y: 0 , animated: true, });
       StatusBar.setBarStyle('dark-content');
+      setshowfulllist(false)
+      dispatch(storeorderid(0))
+  setgesturestate(false)
+  setTimeout(() => {
+    LayoutAnimation.easeInEaseOut()
+    setgesturestate(true)
+  }, 500);
+  
     });
 
     //  Return the function to unsubscribe from the event so it gets removed on unmount
@@ -412,10 +426,12 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           dispatch(CartDetails(cartdata));
           dispatch(cleancart());
           console.log('PreparingFood');
-          navigation.replace('PreparingFood');
+          navigation.replace('OrderDetails', {
+            screenname: 'checkout',
+          })
         } else if (orderdetailslink != '') {
           dispatch(CartDetails(cartdata));
-          // dispatch(cleancart());
+          dispatch(cleancart());
           console.log('PAYMENT GATEWAY');
           console.log(orderdetailslink);
           setmodalVisiblepayment(true);
@@ -593,7 +609,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         // street:
         //   AuthToken != '' ? Selectedcurrentaddress[0].Street : buildingdetails,
         street: buildingdetails,
-        type: pickuporder ?  'Delivery' : 'Pickup' ,
+
+        DeliveryType: pickuporder ?  'Delivery' : 'Pickup' ,
         orderItems: order,
       };
 
@@ -724,14 +741,31 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
       SetPinLongitude(info?.coords?.longitude);
       console.log('info?.coords?.latitude' + info?.coords?.latitude);
       console.log('info?.coords?.longitude' + info?.coords?.longitude);
+    },
+    (error) => {
+      console.log("hellooo" + JSON.stringify(error))
+    },
+    {
+      accuracy: {
+        android: 'high',
+        ios: 'best'
+      },
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 10000,
+      distanceFilter: 0,
+      forceRequestLocation: true,
+      showLocationDialog: true,
     });
 
-    getLocation();
+    setTimeout(() => {
+      getLocation();
+    }, 1500);
   }, []);
 
   useEffect(() => {
     if(AuthToken != ""){
-      Profileinfo
+      
       setfirstname(Profileinfo?.User?.FirstName)
       setlastname(Profileinfo?.User?.LastName)
       setemail(Profileinfo?.User?.Email)
@@ -750,6 +784,36 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   
 
   useEffect(() => {
+console.log("--------------------")
+    if(alladdresses.length > 0){
+      let found = 0
+      for(const index in alladdresses){
+        if(alladdresses[index]?.Latitude == Selectedcurrentaddress[0]?.Latitude  && alladdresses[index]?.Longitude == Selectedcurrentaddress[0]?.Longitude ){
+         found = 1
+         console.log("-------------------- scrolling")
+         setTimeout(() => {
+   
+          flatlistref.current?.scrollToIndex({
+            index: index,
+            animated: true,
+          })
+        }, 500);
+       
+     
+        }
+      }
+      if(found = 0){
+        console.log("-------------------- not found")
+        setTimeout(() => {
+   
+          flatlistref.current?.scrollToIndex({
+            index: 0,
+            animated: true,
+          })
+        }, 500);
+      }
+  
+    }
    if(Selectedcurrentaddress.length > 0){
     console.log("Selectedcurrentaddress" + JSON.stringify(Selectedcurrentaddress));
     setplotnodetails(Selectedcurrentaddress[0].Floor )
@@ -760,6 +824,8 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   
  
   }, [Selectedcurrentaddress]);
+
+
   
 
   useEffect(() => {
@@ -780,6 +846,31 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
   //   navigation.goBack()
   // }
   // }, [cartdata]);
+
+  useEffect(() => {
+    if(validdistance == false){
+      toast.current.show("Sorry for the inconvenience. We are currently not delivering to your area. Kindly select another address.", {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+      settemportystoreforselectedaddress(null)
+      dispatch(cleardistancevalidation())
+    }else if(validdistance == true && temportystoreforselectedaddress != null){
+      console.log("currentaddress" + JSON.stringify(temportystoreforselectedaddress));
+      dispatch(storecurrentaddress(temportystoreforselectedaddress));
+      settemportystoreforselectedaddress(null)
+       dispatch(cleardistancevalidation())
+    }
+
+
+
+
+     
+    
+  }, [validdistance]);
  
 
   function getnewlocation() {
@@ -961,10 +1052,15 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                       animationType: 'slide-in',
                       zIndex: 2,
                     });
-                    dispatch(CartDetails(cartdata));
-                    dispatch(cleancart());
+               
                     console.log('PreparingFood');
-                    navigation.replace('PreparingFood');
+                 
+                    
+                    navigation.replace('OrderDetails', {
+                      screenname: 'checkout',
+                    })
+
+
                   }
                 }}
               />
@@ -997,6 +1093,10 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
         
           }}
           contentContainerStyle={{flexGrow: 1, paddingBottom: 5,      paddingHorizontal: scalableheight.two,}}>
+     
+     {gesturestate == true &&
+   
+          <>
           <View
             style={{flexDirection: 'row', marginBottom: scalableheight.one}}>
             <Text
@@ -1020,15 +1120,19 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
               PRICE
             </Text>
           </View>
+        
           <SwipeListView
             key={'1'}
             data={cartdata}
+        ref={swiplistref}
+        // swipeGestureBegan= {gesturestate}
+    
             showsVerticalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
             renderItem={(data, index) => {
               return (
-                // <SwipeRow >
-                // {/* {swipeAction} */}
+              
+                showfulllist == false && data?.index < 3 || showfulllist == true ?
                 <View style={{alignItems: 'center', width:"100%" }}>
                   <ItemDetails
                     qty={data?.item?.Qty}
@@ -1041,7 +1145,9 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                     }}
                   />
                 </View>
-                // {/* </SwipeRow> */}
+                : 
+                <></>
+              
               );
             }}
             renderHiddenItem={renderHiddenItem}
@@ -1049,13 +1155,24 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
             disableRightSwipe={true}
             rightOpenValue={-scalableheight.seven}
             previewRowKey={'0'}
-            previewOpenValue={-40}
+            previewOpenValue={-60}
             // previewOpenDelay={3000}
             onRowDidOpen={onItemOpen}
           />
-       
-     
+         
+{cartdata.length > 3 &&
+          <TouchableOpacity
+        onPress= {() => {
+          
+          setshowfulllist(!showfulllist)
+        }}
+          >
+         <Text style={{...styleSheet.Text1, color: "#E14E4E", fontSize: fontSize.twelve}}>{showfulllist ? "Show less" : "Show more"}</Text>
+         </TouchableOpacity>
+}
 
+</>
+}
           {AuthToken == '' && (
             <>
              
@@ -1296,6 +1413,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   borderRadius: fontSize.borderradiusmedium,
                   paddingHorizontal: '5%',
                   textAlignVertical: 'top',
+                  paddingTop: scalableheight.one
                 }}
               />
     </>}  
@@ -1638,7 +1756,10 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
           }}>
                   <FlatList
                 keyExtractor={(item, index) => index.toString()}
-          
+          ref={flatlistref}
+          initialScrollIndex={0}
+          onScrollToIndexFailed={({index, averageItemLength, }) => {
+            flatlistref.current?.scrollToOffset({ offset: index * averageItemLength, animated: true, });}}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 data={alladdresses}
@@ -1660,8 +1781,9 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                             Floor: item.Floor,
                           },
                         ];
-                        console.log("currentaddress" + JSON.stringify(currentaddress));
-                        dispatch(storecurrentaddress(currentaddress));
+                        dispatch(getdistancevalidation(restrauntdetails?.RestaurantBranchId,   item.Latitude,   item.Longitude ))
+                        settemportystoreforselectedaddress(currentaddress)
+                    
                         // navigation.goBack();
                       }}
                     
@@ -1749,6 +1871,7 @@ const Checkout = ({navigation, drawerAnimationStyle}) => {
                   borderRadius: fontSize.borderradiusmedium,
                   paddingHorizontal: '5%',
                   textAlignVertical: 'top',
+                  paddingTop: scalableheight.one
                 }}
               />
                 </>
