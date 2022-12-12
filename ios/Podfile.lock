@@ -1,7 +1,5 @@
 PODS:
   - boost (1.76.0)
-  - BVLinearGradient (2.6.2):
-    - React-Core
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.69.3)
   - FBReactNativeSpec (0.69.3):
@@ -48,8 +46,8 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
     - nanopb (~> 2.30908.0)
-  - FirebaseCoreInternal (9.6.0):
-    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+  - FirebaseCoreInternal (10.1.0):
+    - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FirebaseInstallations (8.15.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
@@ -132,9 +130,9 @@ PODS:
   - libwebp/mux (1.2.3):
     - libwebp/demux
   - libwebp/webp (1.2.3)
-  - lottie-ios (3.2.3)
-  - lottie-react-native (5.1.3):
-    - lottie-ios (~> 3.2.3)
+  - lottie-ios (3.4.4)
+  - lottie-react-native (5.1.4):
+    - lottie-ios (~> 3.4.0)
     - React-Core
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
@@ -351,21 +349,17 @@ PODS:
   - React-jsinspector (0.69.3)
   - React-logger (0.69.3):
     - glog
-  - react-native-date-picker (4.2.5):
-    - React-Core
   - react-native-geolocation-service (5.3.1):
     - React
   - react-native-maps (0.31.1):
     - React-Core
   - react-native-netinfo (8.3.1):
     - React-Core
-  - react-native-pager-view (5.4.25):
-    - React-Core
-  - react-native-safe-area-context (4.3.1):
+  - react-native-safe-area-context (4.4.1):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
-    - React
+    - React-Core
     - ReactCommon/turbomodule/core
   - react-native-webview (11.23.1):
     - React-Core
@@ -435,7 +429,7 @@ PODS:
     - React-jsi (= 0.69.3)
     - React-logger (= 0.69.3)
     - React-perflogger (= 0.69.3)
-  - ReactNativeCameraKit (12.1.0):
+  - ReactNativeCameraKit (13.0.0):
     - React-Core
   - RNCAsyncStorage (1.12.1):
     - React-Core
@@ -443,22 +437,20 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.10.1):
     - React-Core
-  - RNDateTimePicker (6.2.2):
-    - React-Core
   - RNDeviceInfo (8.7.1):
     - React-Core
-  - RNFastImage (8.6.1):
+  - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNFBApp (14.11.1):
     - Firebase/CoreOnly (= 8.15.0)
     - React-Core
-  - RNFBMessaging (14.11.1):
+  - RNFBMessaging (14.12.0):
     - Firebase/Messaging (= 8.15.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.5.0):
+  - RNGestureHandler (2.8.0):
     - React-Core
   - RNImageCropPicker (0.37.3):
     - React-Core
@@ -469,7 +461,7 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNReanimated (2.9.1):
+  - RNReanimated (2.12.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -496,11 +488,9 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.15.0):
+  - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
-  - RNSVG (12.4.3):
-    - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
   - SDWebImage (5.11.1):
@@ -514,7 +504,6 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
@@ -538,11 +527,9 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
-  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
-  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -561,7 +548,6 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
-  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
@@ -570,7 +556,6 @@ DEPENDENCIES:
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -598,8 +583,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
-  BVLinearGradient:
-    :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
@@ -638,16 +621,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
-  react-native-date-picker:
-    :path: "../node_modules/react-native-date-picker"
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
-  react-native-pager-view:
-    :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-webview:
@@ -684,8 +663,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/clipboard"
   RNCPushNotificationIOS:
     :path: "../node_modules/@react-native-community/push-notification-ios"
-  RNDateTimePicker:
-    :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFastImage:
@@ -702,8 +679,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNSVG:
-    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -711,7 +686,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
-  BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 1d83d91816fa605d16227a83f1b2e71c8df09d22
   FBReactNativeSpec: 626e35e73f83c637ff166f906d584f4c6750c251
@@ -719,7 +693,7 @@ SPEC CHECKSUMS:
   FirebaseAnalytics: 7761cbadb00a717d8d0939363eb46041526474fa
   FirebaseCore: 5743c5785c074a794d35f2fff7ecc254a91e08b1
   FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
-  FirebaseCoreInternal: bca76517fe1ed381e989f5e7d8abb0da8d85bed3
+  FirebaseCoreInternal: 96d75228e10fd369564da51bd898414eb0f54df5
   FirebaseInstallations: 40bd9054049b2eae9a2c38ef1c3dd213df3605cd
   FirebaseMessaging: 5e5118a2383b3531e730d974680954c679ca0a13
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
@@ -728,8 +702,8 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
   libwebp: 60305b2e989864154bd9be3d772730f08fc6a59c
-  lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
-  lottie-react-native: a501112fa980529ccb80b9f3ee117a7f98c6af3a
+  lottie-ios: 8f97d3271e155c2d688875c29cd3c74908aef5f8
+  lottie-react-native: b702fab740cdb952a8e2354713d3beda63ff97b0
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   RCT-Folly: b9d9fe1fc70114b751c076104e52f3b1b5e5a95a
@@ -746,12 +720,10 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 1842ca163b160aeb224d2c65b2a60c393b273c67
   React-jsinspector: bb2605f98aada5d81f3494690da3ef3b4ff3b716
   React-logger: 23a50ef4c18bf9adbb51e2c979318e6b3a2e44a1
-  react-native-date-picker: 55193347d8d0f40948f441ffd4e5db6f0a8fbe13
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-maps: 8b8bfada2c86205a7f5a07dd1f92f29b33ea83aa
   react-native-netinfo: 1a6035d3b9780221d407c277ebfb5722ace00658
-  react-native-pager-view: da490aa1f902c9a5aeecf0909cc975ad0e92e53e
-  react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
+  react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
   React-perflogger: 39d2ba8cbcac54d1bb1d9a980dab348e96aef467
   React-RCTActionSheet: b1ad907a2c8f8e4d037148ca507b7f2d6ab1c66d
@@ -765,26 +737,24 @@ SPEC CHECKSUMS:
   React-RCTVibration: dd8099eb46e9cee4692934bc8cbe5e9a4f5e8d31
   React-runtimeexecutor: 607eb048e22a16388c908ee1f6644200e8d1e19b
   ReactCommon: af7636436b382db7cde4583bbd642f0978e6e3ed
-  ReactNativeCameraKit: 5765fc3e38a8c3b6b26aff6e66f89d9855b1db46
+  ReactNativeCameraKit: 9d46a5d7dd544ca64aa9c03c150d2348faf437eb
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
-  RNDateTimePicker: b980b1090724ad425c7ceab4e8e6cde72a63f313
   RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
-  RNFastImage: 3207b9eb17c2425d574ca40db35185db6e324f4e
+  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBApp: 9646e09d041ea159b84584865212e4cf33acd179
-  RNFBMessaging: 3e2682ea5e15fe86da24d16d16019395a881f33c
-  RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
+  RNFBMessaging: 40dac204b4197a2661dec5be964780c6ec39bf65
+  RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
   RNImageCropPicker: 44e2807bc410741f35d4c45b6586aedfe3da39d2
-  RNReanimated: 2cf7451318bb9cc430abeec8d67693f9cf4e039c
-  RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
-  RNSVG: f3b60aeeaa81960e2e0536c3a9eef50b667ef3a9
+  RNReanimated: c3e58924b9418883b0bde9e78c4c957302f02435
+  RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 44c64131616253fa83366295acdbce3d14926041
 
-PODFILE CHECKSUM: 84babbaed11405e4a01cf0af44667adb1f437d6b
+PODFILE CHECKSUM: b256674dcd9b1d8926ad1a45728ef1efbe0faed3
 
 COCOAPODS: 1.11.3

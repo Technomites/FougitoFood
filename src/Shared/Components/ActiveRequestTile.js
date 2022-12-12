@@ -19,7 +19,9 @@ export default function ActiveRequestTile(props) {
       activeOpacity={0.9}
       onPress={props.onPress}
       style={{
-        ...style.shadow,
+        // ...style.shadow,
+        borderWidth: 1,
+        borderColor: 'rgba(128, 128,128, 0.6)',
         ...style.MainContainer,
         width: '99%',
         height: Dimensions.get('window').height / 6.5,
@@ -34,13 +36,12 @@ export default function ActiveRequestTile(props) {
             borderWidth: 0.5,
             borderColor: 'rgba(0, 0, 0, 0.3)',
             borderRadius: scalableheight.onepointfive,
-         
           }}>
           <Image
             source={{uri: props?.details?.RestaurantLogo}}
             style={{
               height: scalableheight.nine,
-              width: scalableheight.ten,
+              width: scalableheight.nine,
               resizeMode: 'contain',
               // borderRadius: fontSize.eight,
             }}
@@ -114,34 +115,26 @@ export default function ActiveRequestTile(props) {
           opacity: 0.4,
         }}></View> */}
       <View
-        style={{flexDirection: 'row', marginHorizontal: scalableheight.onepointfive, }}>
+        style={{
+          flexDirection: 'row',
+          marginHorizontal: scalableheight.onepointfive,
+        }}>
         <View
           style={{
             flex: 1,
             justifyContent: 'center',
             marginVertical: scalableheight.one,
-     
           }}>
-          {/* <SubHeading
-          style={{
-            fontFamily: 'Inter-SemiBold',
-            fontSize: 14,
-            color: Color.otptextColor,
-          }}
-          text={'Status'}
-        /> */}
           <View>
             <Text
               style={{
                 fontFamily: 'Inter-SemiBold',
-                fontSize: fontSize.twelve,
+                fontSize: fontSize.ten,
                 color: '#707070',
                 alignItems: 'center',
-               width:  scalableheight.ten,
-               textAlign:"center",
+                width: scalableheight.nine,
+                textAlign: 'center',
 
-               
-                // backgroundColor:'red'
                 // marginLeft: scalableheight.two,
               }}>
               {'AED ' + props?.details?.OrderAmount?.toFixed(2)}

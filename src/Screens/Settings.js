@@ -1,20 +1,33 @@
-import React, {useState, useEffect} from 'react';
-import {View, TouchableOpacity, StyleSheet, Image, Text} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import FastImage from 'react-native-fast-image';
 import {
   eraseNotificationStatus,
   seticonfocus,
   updateNotificationStatus,
+  deleteaccountcustomer,
+  cleardeletionstatus,
+  ClearAsycn,
 } from '../Actions/actions';
+import Toast from 'react-native-toast-notifications';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
-import BottomTab from '../Shared/Components/BottomTab';
-import Settingscomponent from '../Shared/Components/Settingscomponent';
+// import BottomTab from '../Shared/Components/BottomTab';
+
 import Animated from 'react-native-reanimated';
-import {GToastContainer, showToast} from 'react-native-gtoast';
-import renderIf from 'render-if';
-import Icon from 'react-native-vector-icons/Ionicons';
+
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-community/async-storage';
 import AccountInfotile from '../Shared/Components/AccountInfotile';
 import {
   createDrawerNavigator,
@@ -24,11 +37,15 @@ import {
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 import ChnagePasswordModel from '../Shared/Components/ChnagePasswordModel';
 import AuthenticationModel from '../Shared/Components/AuthenticationModel';
-import { ScrollView } from 'react-native-gesture-handler';
+
+import {ScrollView} from 'react-native-gesture-handler';
 
 const Settings = ({navigation, drawerAnimationStyle}) => {
   const [modalVisible, setmodalVisible] = useState(false);
   const [modalVisible2, setmodalVisible2] = useState(false);
+  const [modalVisible3, setmodalVisible3] = useState(false);
+  const toast = useRef();
+  const [loader, setloader] = useState(false);
   const [setting, SetSetting] = useState([
     {
       icon: 'person-outline',
@@ -59,6 +76,18 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
       },
       type: 1,
     },
+    {
+      icon: 'delete',
+      title: 'Delete Account',
+      onPress: () => {
+        console.log('delete account');
+        setmodalVisible3(true);
+        // navigation.navigate('ContactUs');
+        //  navigation.dispatch(DrawerActions.closeDrawer());
+      },
+      type: 3,
+    },
+
     // {
     //   icon: 'sharealt',
     //   title: 'Share with Your Friends',
@@ -68,34 +97,34 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
     //   },
     //   type: 4,
     // },
-    {
-      icon: 'information-variant',
-      title: 'About Us',
-      onPress: () => {
-   //     navigation.navigate('Aboutus');
-     
-      },
-      type: 5,
-    },
-    {
-      icon: 'briefcase-outline',
-      title: 'Legal',
-      onPress: () => {
-       navigation.navigate('Legal');
-    
-      },
-      type: 1,
-    },
-    {
-      icon: 'question',
-      title: 'Frequently Asked Questions',
-      onPress: () => {
-    //    navigation.navigate('Faqs');
-   
-      },
-      type: 6,
-    },
-   
+    //   {
+    //     icon: 'information-variant',
+    //     title: 'About Us',
+    //     onPress: () => {
+    //  //     navigation.navigate('Aboutus');
+
+    //     },
+    //     type: 5,
+    //   },
+    //   {
+    //     icon: 'briefcase-outline',
+    //     title: 'Legal',
+    //     onPress: () => {
+    //      navigation.navigate('Legal');
+
+    //     },
+    //     type: 1,
+    //   },
+    //   {
+    //     icon: 'question',
+    //     title: 'Frequently Asked Questions',
+    //     onPress: () => {
+    //   //    navigation.navigate('Faqs');
+
+    //     },
+    //     type: 6,
+    //   },
+
     // {
     //   icon: 'logout',
     //   title: 'Logout',
@@ -125,8 +154,16 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
     // },
   ]);
   const dispatch = useDispatch();
-  const {Lang, notificationStatus, AuthToken, ProfileName, ProfileImage, internetconnectionstate} =
-    useSelector(state => state.userReducer);
+  const {
+    userid,
+    Lang,
+    notificationStatus,
+    AuthToken,
+    ProfileName,
+    ProfileImage,
+    internetconnectionstate,
+    deletionstatus,
+  } = useSelector(state => state.userReducer);
 
   const [isEnabled, setIsEnabled] = useState(false);
 
@@ -134,15 +171,52 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
     dispatch(seticonfocus('setting'));
   }, []);
 
+  async function clear() {
+    await AsyncStorage.clear();
+  }
 
+  useEffect(() => {
+    setloader(false);
+
+    if (deletionstatus == 'true') {
+      toast.current.show('Your account has been deleted successfully.', {
+        type: 'normal',
+        placement: 'bottom',
+        duration: 4000,
+        offset: 10,
+        animationType: 'slide-in',
+      });
+
+      clear();
+      dispatch(ClearAsycn());
+      setmodalVisible3(false);
+    } else if (deletionstatus == 'false') {
+      toast.current.show(
+        'An error occured while deleting your account. Please try again later',
+        {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+        },
+      );
+    }
+    dispatch(cleardeletionstatus());
+  }, [deletionstatus]);
   const toggleSwitch = async () => {
     dispatch(updateNotificationStatus(!isEnabled));
     setIsEnabled(!isEnabled);
   };
 
+  function deleteaccount() {
+    setloader(true);
+    dispatch(deleteaccountcustomer(userid, AuthToken));
+  }
+
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: '#F6F6F6'}}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
@@ -180,24 +254,35 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Image
-              resizeMode="cover"
-                style={{
-                  height: '99.5%',
-                  width: '99.5%',
-                  borderRadius: fontSize.circle,
-                 
-
-                  // marginBottom: scalableheight.one,
-                }}
-                source={
-                  AuthToken != '' && internetconnectionstate == true 
-                    ? {
+                    {AuthToken != '' ?
+                      <FastImage
+                      style={{
+                         height: '99.5%',
+                         width: '99.5%',
+                         borderRadius: fontSize.circle,
+         
+                         // marginBottom: scalableheight.one,
+                       }}
+                       source={{
                         uri: ProfileImage,
+                        priority: FastImage.priority.normal,
                       }
-                    : require('../Resources/images/logoguest.png')
-                }
-              />
+                       }
+                       resizeMode={FastImage.resizeMode.cover}
+                     /> 
+                     :
+                     <Image
+                     resizeMode="cover"
+                     style={{
+                       height: '99.5%',
+                       width: '99.5%',
+                       borderRadius: fontSize.circle,
+     
+                       // marginBottom: scalableheight.one,
+                     }}
+                     source={require('../Resources/images/logoguest.png')}
+                   />}
+             
             </View>
           </View>
           <View
@@ -213,8 +298,9 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
                 color: '#29262A',
                 fontFamily: 'Inter-SemiBold',
               }}>
-                  
-              {AuthToken != '' && internetconnectionstate == true ? ProfileName : 'Guest User'}
+              {AuthToken != '' && internetconnectionstate == true
+                ? ProfileName
+                : 'Guest User'}
             </Text>
             <TouchableOpacity
               onPress={() =>
@@ -228,7 +314,9 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
                   color: '#E14E4E',
                   fontFamily: 'Inter-SemiBold',
                 }}>
-                {   AuthToken !== '' && internetconnectionstate == true ? 'ACCOUNT SETTINGS' : 'Login/Signup'}
+                {AuthToken !== '' && internetconnectionstate == true
+                  ? 'ACCOUNT SETTINGS'
+                  : 'Login/Signup'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -236,26 +324,25 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
         <View
           style={{
             height: '100%',
-           flex:1,
+            flex: 1,
             borderRadius: fontSize.fourtyeight,
-        
 
             borderWidth: scalableheight.borderTopWidth,
             borderColor: 'rgba(211,211,211, 0.6)',
           }}>
           <ScrollView
-          showsHorizontalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
             style={{
               paddingHorizontal: scalableheight.two,
-              marginVertical:scalableheight.three
-           
+              marginVertical: scalableheight.three,
             }}>
             {setting.map(item => {
               if (
-                AuthToken !== '' && internetconnectionstate == true ||
+                (AuthToken !== '' && internetconnectionstate == true) ||
                 (item.title !== 'Account Info' &&
                   item.title !== 'Change Password' &&
-                  item.title !== 'Logout')
+                  item.title !== 'Logout' &&
+                  item.title !== 'Delete Account')
               ) {
                 return (
                   <AccountInfotile
@@ -268,6 +355,7 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
                 );
               }
             })}
+
             {/* <AccountInfotile  /> */}
           </ScrollView>
         </View>
@@ -284,7 +372,118 @@ const Settings = ({navigation, drawerAnimationStyle}) => {
           setmodalVisible(false);
         }}
       />
-      <GToastContainer paddingBottom={100} style={{height: 40, width: 60}} />
+
+      {modalVisible3 && (
+        <View
+          style={{
+            elevation: 4000,
+            zIndex: 4000,
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            width: '100%',
+          }}>
+          <View
+            style={{
+              backgroundColor: '#303030',
+              padding: scalableheight.one,
+              width: '90%',
+              borderRadius: fontSize.eleven,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderWidth: 2,
+              borderColor: '#E14E4E',
+            }}>
+            <AntDesign
+              name={'exclamationcircle'}
+              color={'white'}
+              size={fontSize.thirtytwo}
+            />
+            <Text
+              style={{
+                fontFamily: 'Inter-SemiBold',
+                color: 'white',
+                fontSize: fontSize.fifteen,
+                paddingTop: scalableheight.one,
+                paddingVertical: scalableheight.pointfive,
+                textAlign: 'center',
+              }}>
+              Are you sure you want to delete this account?
+            </Text>
+
+            {loader == true ? (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  paddingVertical: scalableheight.one,
+                }}>
+                <ActivityIndicator size={'small'} color="#fff" />
+              </View>
+            ) : (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingVertical: scalableheight.one,
+                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    deleteaccount();
+                    //   setLoader(true);
+                    //  setanimationstate(true);
+                  }}
+                  style={{
+                    backgroundColor: '#E14E4E',
+                    width: scalableheight.seven,
+                    height: scalableheight.four,
+                    borderRadius: fontSize.borderradiusmedium,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter-SemiBold',
+                      color: 'white',
+                      fontSize: fontSize.fifteen,
+                    }}>
+                    Yes
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setmodalVisible3(false);
+                    // setanimationstate(true);
+                  }}
+                  style={{
+                    marginLeft: scalableheight.one,
+                    width: scalableheight.seven,
+                    height: scalableheight.four,
+                    borderRadius: fontSize.borderradiusmedium,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter-SemiBold',
+                      color: '#E14E4E',
+                      fontSize: fontSize.fifteen,
+                    }}>
+                    No
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        </View>
+        //  </Animatable.View>
+      )}
+
+      <Toast
+        ref={toast}
+        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
+      />
     </Animated.View>
   );
 };

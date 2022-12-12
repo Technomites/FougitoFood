@@ -14,7 +14,6 @@ import {
   Keyboard,
 } from 'react-native';
 
-import renderIf from 'render-if';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -135,6 +134,7 @@ export default function AuthenticationModel(props) {
       setLoader(false);
     }
   }, [PayLoadLoginStatus]);
+
   const LoginHandler = () => {
     Keyboard.dismiss();
     if (number.length === 0) {
@@ -154,7 +154,7 @@ export default function AuthenticationModel(props) {
         animationType: 'slide-in',
       });
     } else {
-      let newnumber = 971 + number
+      let newnumber = 971 + number;
       dispatch(Login(newnumber, password));
       setLoader(true);
     }
@@ -343,7 +343,7 @@ export default function AuthenticationModel(props) {
 
   const signUpHandler = async () => {
     Keyboard.dismiss();
-    if (number == ''){
+    if (number == '') {
       toast.current.show('Enter Phone Number', {
         type: 'normal',
         placement: 'bottom',
@@ -351,7 +351,7 @@ export default function AuthenticationModel(props) {
         offset: 10,
         animationType: 'slide-in',
       });
-    } else if (fullname == ''){
+    } else if (fullname == '') {
       toast.current.show('Enter Full Name', {
         type: 'normal',
         placement: 'bottom',
@@ -359,7 +359,7 @@ export default function AuthenticationModel(props) {
         offset: 10,
         animationType: 'slide-in',
       });
-    }else if (email == ''){
+    } else if (email == '') {
       toast.current.show('Enter Email Address', {
         type: 'normal',
         placement: 'bottom',
@@ -367,7 +367,7 @@ export default function AuthenticationModel(props) {
         offset: 10,
         animationType: 'slide-in',
       });
-    }else if (password == ''){
+    } else if (password == '') {
       toast.current.show('Enter Password', {
         type: 'normal',
         placement: 'bottom',
@@ -375,7 +375,7 @@ export default function AuthenticationModel(props) {
         offset: 10,
         animationType: 'slide-in',
       });
-    }else if (confirmpassword == ''){
+    } else if (confirmpassword == '') {
       toast.current.show('Enter Confirm Password', {
         type: 'normal',
         placement: 'bottom',
@@ -411,7 +411,7 @@ export default function AuthenticationModel(props) {
 
       return;
     } else {
-      let newnumber = 971 + number
+      let newnumber = 971 + number;
       dispatch(Signup(newnumber, fullname, email, password));
       setLoader(true);
     }
@@ -471,7 +471,7 @@ export default function AuthenticationModel(props) {
         animationType: 'slide-in',
       });
     } else {
-      let newnumber = 971 + number
+      let newnumber = 971 + number;
       dispatch(ForgetPassword(newnumber));
       setLoader(true);
     }
@@ -518,7 +518,7 @@ export default function AuthenticationModel(props) {
   }, [props.state]);
 
   function clearandclose() {
-    props.togglemodel()
+    // props.togglemodel();
     toggleanimation();
     setanimationstate(true);
     setnumber('');
@@ -539,6 +539,7 @@ export default function AuthenticationModel(props) {
     setCodeTwo('');
     setCodeThree('');
     setCodeFour('');
+  
   }
 
   function togglescreen(index) {
@@ -585,37 +586,34 @@ export default function AuthenticationModel(props) {
   return (
     <>
       {props.state && (
-        // <Animatable.View
-        //   animation={animationstate ? animationtype : null}
-        //   onAnimationEnd={() => {
-        //     setanimationstate(false);
-        //     if (animationtype == 'fadeOutDownBig') {
-        //       setanimationtype('fadeInUpBig');
-
-        //       props.togglemodel();
-        //     }
-        //   }}
-        //   easing="ease"
-        //   //  iterationCount="infinite"
-        //   iterationCount={1}
+        <Animatable.View
+          animation={animationstate ? animationtype : null}
+          onAnimationEnd={() => {
+            setanimationstate(false);
+            if (animationtype == 'fadeOutDownBig') {
+              setanimationtype('fadeInUpBig');
+ 
+              props.togglemodel();
+            }
+          }}
+          easing="ease"
+          //  iterationCount="infinite"
+          iterationCount={1}
+          style={{
+            zIndex: 3,
+            elevation: 3,
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+          }}>
+        {/* // <View
         //   style={{
         //     zIndex: 3,
         //     elevation: 3,
         //     position: 'absolute',
         //     width: '100%',
         //     height: '100%',
-        //   }}>
-        <View
-       
-        style={{
-          zIndex: 3,
-          elevation: 3,
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-        }}>
-
-
+        //   }}> */}
           <KeyboardAvoidingView
             style={{width: '100%', height: '100%'}}
             behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
@@ -633,7 +631,8 @@ export default function AuthenticationModel(props) {
                   borderRadius: fontSize.eleven,
                   backgroundColor: 'white',
                 }}>
-                <View style={{width: '100%', height: signupvisible? "0%":'40%'}}>
+                <View
+                  style={{width: '100%', height: signupvisible ? '0%' : '40%'}}>
                   <Image
                     resizeMode="cover"
                     style={{
@@ -654,23 +653,22 @@ export default function AuthenticationModel(props) {
                     }}
                     source={require('../../Resources/images/logo-black.png')}
                   />
-              
                 </View>
-             
+
                 <ScrollView
-                keyboardShouldPersistTaps={"always"}
+                  keyboardShouldPersistTaps={'always'}
                   showsVerticalScrollIndicator={false}
-                  style={{width: '100%', height: signupvisible? "100%": '60%'}}
-                
+                  style={{
+                    width: '100%',
+                    height: signupvisible ? '100%' : '60%',
+                  }}
                   contentContainerStyle={{
                     ...styleSheet.scrollcontainer,
                     paddingHorizontal: scalableheight.two,
                     justifyContent: 'center',
                     // flexGrow: signupvisible ? 1 : null,
-              
-                
                   }}>
-                  {renderIf(loginvisible == true)(
+                  {loginvisible == true &&
                     <>
                       <Animatable.View
                         animation={
@@ -700,42 +698,40 @@ export default function AuthenticationModel(props) {
                           }}>
                           Phone Number
                         </Text>
-                        <View >
-                        <TextInput
-                          style={{
-                            ...styleSheet.TextInput,
-                            ...styleSheet.shadow,
-                            paddingLeft:scalableheight.ten
-                          }}
-                          
-                          placeholderTextColor="#8c8c8c"
-                          placeholder={'Enter number here'}
-                          maxLength={9}
-                          onChangeText={text => setnumber(text)}
-                          defaultValue={number}
-                          keyboardType="number-pad"
-                        />
-                        <View style={{ 
-                                position: 'absolute',
-                                left: scalableheight.two,
-                            
-                             
-                  
-                                marginTop: scalableheight.one,
-                                // borderWidth:1, borderColor:"red",
-                                height: scalableheight.seven,
-                          
-                               justifyContent:"center"
-                             }}>
-                        <Text
-                            
-                             style={{ 
-                          
+                        <View>
+                          <TextInput
+                            style={{
+                              ...styleSheet.TextInput,
+                              ...styleSheet.shadow,
+                              paddingLeft: scalableheight.ten,
+                            }}
+                            placeholderTextColor="#8c8c8c"
+                            placeholder={'Enter number here'}
+                            maxLength={9}
+                            onChangeText={text => setnumber(text)}
+                            defaultValue={number}
+                            keyboardType="number-pad"
+                          />
+                          <View
+                            style={{
+                              position: 'absolute',
+                              left: scalableheight.two,
+
+                              marginTop: scalableheight.one,
+                              // borderWidth:1, borderColor:"red",
+                              height: scalableheight.seven,
+
+                              justifyContent: 'center',
+                            }}>
+                            <Text
+                              style={{
                                 fontSize: fontSize.fifteen,
-                                color: '#8c8c8c',}}>+ 971</Text>
+                                color: '#8c8c8c',
+                              }}>
+                              + 971
+                            </Text>
+                          </View>
                         </View>
-                         
-                   </View>
                         <Text
                           style={{
                             ...styleSheet.Text5,
@@ -762,7 +758,7 @@ export default function AuthenticationModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ? 'eye-off': 'eye' }
+                              name={newpasswordshow ? 'eye-off' : 'eye'}
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -818,9 +814,9 @@ export default function AuthenticationModel(props) {
                           </Text>
                         </TouchableOpacity>
                       </Animatable.View>
-                    </>,
-                  )}
-                  {renderIf(signupvisible == true)(
+                    </>
+                  }
+                  {signupvisible == true &&
                     <>
                       <Animatable.View
                         animation={
@@ -843,7 +839,7 @@ export default function AuthenticationModel(props) {
                           }}>
                           Sign Up
                         </Text>
-                      
+
                         <Text
                           style={{
                             ...styleSheet.Text5,
@@ -878,7 +874,7 @@ export default function AuthenticationModel(props) {
                           onChangeText={text => Setemail(text)}
                           defaultValue={email}
                         />
-                          <Text
+                        <Text
                           style={{
                             ...styleSheet.Text5,
                             marginTop: scalableheight.two,
@@ -886,40 +882,40 @@ export default function AuthenticationModel(props) {
                           Phone Number
                         </Text>
                         <View>
-                        <TextInput
-                          style={{
-                            ...styleSheet.TextInput,
-                            ...styleSheet.shadow,
-                            paddingLeft:scalableheight.ten
-                          }}
-                          placeholderTextColor="#8c8c8c"
-                          placeholder={'Enter number here'}
-                          maxLength={9}
-                          onChangeText={text => setnumber(text)}
-                          keyboardType={'number-pad'}
-                          defaultValue={number}
-                        />
-  
-                                    <View style={{ 
-                                position: 'absolute',
-                                left: scalableheight.two,
-                            
-                             
-                  
-                                marginTop: scalableheight.one,
-                                // borderWidth:1, borderColor:"red",
-                                height: scalableheight.seven,
-                          
-                               justifyContent:"center"
-                             }}>
-                        <Text
-                            
-                             style={{ 
-                          
+                          <TextInput
+                            style={{
+                              ...styleSheet.TextInput,
+                              ...styleSheet.shadow,
+                              paddingLeft: scalableheight.ten,
+                            }}
+                            placeholderTextColor="#8c8c8c"
+                            placeholder={'Enter number here'}
+                            maxLength={9}
+                            onChangeText={text => setnumber(text)}
+                            keyboardType={'number-pad'}
+                            defaultValue={number}
+                          />
+
+                          <View
+                            style={{
+                              position: 'absolute',
+                              left: scalableheight.two,
+
+                              marginTop: scalableheight.one,
+                              // borderWidth:1, borderColor:"red",
+                              height: scalableheight.seven,
+
+                              justifyContent: 'center',
+                            }}>
+                            <Text
+                              style={{
                                 fontSize: fontSize.fifteen,
-                                color: '#8c8c8c',}}>+ 971</Text>
+                                color: '#8c8c8c',
+                              }}>
+                              + 971
+                            </Text>
+                          </View>
                         </View>
-                   </View>
                         <Text
                           style={{
                             ...styleSheet.Text5,
@@ -946,7 +942,7 @@ export default function AuthenticationModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ?  'eye-off' :'eye' }
+                              name={newpasswordshow ? 'eye-off' : 'eye'}
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -977,7 +973,7 @@ export default function AuthenticationModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ?  'eye-off' : 'eye' }
+                              name={newpasswordshow ? 'eye-off' : 'eye'}
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -1023,8 +1019,8 @@ export default function AuthenticationModel(props) {
                         </TouchableOpacity>
                       </Animatable.View>
                     </>
-                  )}
-                  {renderIf(forgetpasswordvisible == true)(
+                  }
+                  {forgetpasswordvisible == true &&
                     <>
                       <Animatable.View
                         animation={
@@ -1053,7 +1049,8 @@ export default function AuthenticationModel(props) {
                             textAlign: 'left',
                             marginTop: scalableheight.two,
                           }}>
-                         Enter the phone number associated with your account. We will send a verification for confirmation.
+                          Enter the phone number associated with your account.
+                          We will send a verification for confirmation.
                         </Text>
                         <Text
                           style={{
@@ -1063,39 +1060,39 @@ export default function AuthenticationModel(props) {
                           Phone Number
                         </Text>
                         <View>
-                        <TextInput
-                          style={{
-                            ...styleSheet.TextInput,
-                            ...styleSheet.shadow,
-                            paddingLeft:scalableheight.ten
-                          }}
-                          placeholderTextColor="#8c8c8c"
-                          placeholder={'Enter number here'}
-                          maxLength={9}
-                          onChangeText={text => setnumber(text)}
-                          defaultValue={number}
-                          keyboardType="numeric"
-                        />
-        <View style={{ 
-                                position: 'absolute',
-                                left: scalableheight.two,
-                            
-                             
-                  
-                                marginTop: scalableheight.one,
-                                // borderWidth:1, borderColor:"red",
-                                height: scalableheight.seven,
-                          
-                               justifyContent:"center"
-                             }}>
-                        <Text
-                            
-                             style={{ 
-                          
+                          <TextInput
+                            style={{
+                              ...styleSheet.TextInput,
+                              ...styleSheet.shadow,
+                              paddingLeft: scalableheight.ten,
+                            }}
+                            placeholderTextColor="#8c8c8c"
+                            placeholder={'Enter number here'}
+                            maxLength={9}
+                            onChangeText={text => setnumber(text)}
+                            defaultValue={number}
+                            keyboardType="numeric"
+                          />
+                          <View
+                            style={{
+                              position: 'absolute',
+                              left: scalableheight.two,
+
+                              marginTop: scalableheight.one,
+                              // borderWidth:1, borderColor:"red",
+                              height: scalableheight.seven,
+
+                              justifyContent: 'center',
+                            }}>
+                            <Text
+                              style={{
                                 fontSize: fontSize.fifteen,
-                                color: '#8c8c8c',}}>+ 971</Text>
+                                color: '#8c8c8c',
+                              }}>
+                              + 971
+                            </Text>
+                          </View>
                         </View>
-                   </View>
 
                         <View style={{marginTop: scalableheight.two}}></View>
                         {loader == true ? (
@@ -1140,17 +1137,17 @@ export default function AuthenticationModel(props) {
                               textAlign: 'center',
                               marginTop: scalableheight.two,
                             }}>
-                           Login with a different account?
+                            Login with a different account?
                           </Text>
                           <Text
                             style={{...styleSheet.Text4, textAlign: 'center'}}>
-                           LOGIN
+                            LOGIN
                           </Text>
                         </TouchableOpacity>
                       </Animatable.View>
-                    </>,
-                  )}
-                  {renderIf(otpvisible == true)(
+                    </>
+                  }
+                  {otpvisible == true &&
                     <>
                       <Animatable.View
                         animation={
@@ -1376,7 +1373,7 @@ export default function AuthenticationModel(props) {
                             ) : null}
                           </>
                         )}
-                            <TouchableOpacity
+                        <TouchableOpacity
                           onPress={() => {
                             togglescreen(1);
                           }}>
@@ -1394,9 +1391,9 @@ export default function AuthenticationModel(props) {
                           </Text>
                         </TouchableOpacity>
                       </Animatable.View>
-                    </>,
-                  )}
-                  {renderIf(changenewpassword == true)(
+                    </>
+                  }
+                  {changenewpassword == true &&
                     <>
                       <Animatable.View
                         animation={
@@ -1417,7 +1414,7 @@ export default function AuthenticationModel(props) {
                             fontSize: fontSize.twentytwo,
                             color: 'black',
                           }}>
-                          Change Password 
+                          Change Password
                         </Text>
 
                         <Text
@@ -1503,35 +1500,33 @@ export default function AuthenticationModel(props) {
                           />
                         )}
                       </Animatable.View>
-                    </>,
-                  )}
+                    </>
+                  }
                 </ScrollView>
                 <TouchableOpacity
-                    onPress={() => {
-                      clearandclose();
-                    }}
-                    style={{
-                      position: 'absolute',
-                      top: scalableheight.one,
-                      right: scalableheight.one,
-                    }}>
-                    <Ionicons
-                      name="close-circle"
-                      color={signupvisible ?  '#E14E4E':'#F5F5F5'}
-                      size={fontSize.thirtyseven}
-                      style={{}}
-                    />
-                  </TouchableOpacity>
+                  onPress={() => {
+                    clearandclose();
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: scalableheight.one,
+                    right: scalableheight.one,
+                  }}>
+                  <Ionicons
+                    name="close-circle"
+                    color={signupvisible ? '#E14E4E' : '#F5F5F5'}
+                    size={fontSize.thirtyseven}
+                    style={{}}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </KeyboardAvoidingView>
-          </View>
-        // </Animatable.View>
+        {/* // </View> */}
+        </Animatable.View>
       )}
 
-
-
-{/* {props.state && animationtype == 'fadeInUpBig' && ( */}
+      {/* {props.state && animationtype == 'fadeInUpBig' && ( */}
       {props.state && (
         <View
           style={{
@@ -1547,7 +1542,6 @@ export default function AuthenticationModel(props) {
         ref={toast}
         style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
       />
-     
     </>
   );
 }
@@ -1628,7 +1622,6 @@ const styleSheet = StyleSheet.create({
     marginTop: scalableheight.one,
     height: scalableheight.seven,
     paddingHorizontal: scalableheight.two,
-   
   },
   BackgroundImage: {
     flex: 1,
@@ -1671,15 +1664,17 @@ const styleSheet = StyleSheet.create({
     marginTop: scalableheight.one,
   },
   shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.23,
+    // shadowRadius: 2.62,
 
-    elevation: 2,
+    // elevation: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
   },
   RenderItemView: {
     borderTopColor: '#EFEFEF',

@@ -23,7 +23,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 export default function SavedAddresses(props) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {AuthToken, alladdresses, Selectedcurrentaddress} = useSelector(state => state.userReducer);
+  const {AuthToken, alladdresses, Selectedcurrentaddress} = useSelector(
+    state => state.userReducer,
+  );
 
   return (
     <View
@@ -31,11 +33,18 @@ export default function SavedAddresses(props) {
         flexDirection: 'row',
         borderBottomWidth: 1,
         borderRadius: fontSize.borderradiusmedium,
-        backgroundColor: Selectedcurrentaddress[0]?.Latitude == props.Latitude &&  Selectedcurrentaddress[0]?.Longitude == props.Longitude ? 'rgba(245, 80, 80, 0.3)' : null,
+        backgroundColor:
+          Selectedcurrentaddress[0]?.Latitude == props.Latitude &&
+          Selectedcurrentaddress[0]?.Longitude == props.Longitude
+            ? 'rgba(245, 80, 80, 0.3)'
+            : null,
         borderColor: 'rgba(211,211,211, 0.5)',
         paddingVertical: scalableheight.one,
-        borderWidth: Selectedcurrentaddress[0]?.Latitude == props.Latitude &&  Selectedcurrentaddress[0]?.Longitude == props.Longitude ? 1 : 0 , 
-      
+        borderWidth:
+          Selectedcurrentaddress[0]?.Latitude == props.Latitude &&
+          Selectedcurrentaddress[0]?.Longitude == props.Longitude
+            ? 1
+            : 0,
       }}>
       <View style={{justifyContent: 'flex-start'}}>
         {/* <FontAwesome

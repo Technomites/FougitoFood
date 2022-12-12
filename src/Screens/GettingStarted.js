@@ -26,10 +26,18 @@ import NetInfo from '@react-native-community/netinfo';
 import * as Animatable from 'react-native-animatable';
 import MYButton from '../Shared/Components/MYButton';
 import {useSelector, useDispatch} from 'react-redux';
-import renderIf from 'render-if';
 
-// import Modal from "react-native-modal";
-import {storetoken, storetokenrefresh, refreshmytoken, isconnected, storecartdata, storerestrauntid, storecartprice} from '../Actions/actions';
+
+
+import {
+  storetoken,
+  storetokenrefresh,
+  refreshmytoken,
+  isconnected,
+  storecartdata,
+  storerestrauntid,
+  storecartprice,
+} from '../Actions/actions';
 
 const GettingStarted = props => {
   const {refreshtokendata, AuthToken} = useSelector(state => state.userReducer);
@@ -66,15 +74,23 @@ const GettingStarted = props => {
     },
   ]);
 
-
-
   const dispatch = useDispatch();
   useEffect(() => {
     StatusBar.setHidden(false);
   }, []);
 
+  function closeanimationstate() {
+    setanimationstate(false);
+  }
 
-
+  function buttonpress() {
+    setanimationstate(true);
+    count < 2
+      ? setcount(count + 1)
+      : (AsyncStorage.setItem('GettingStarted', 'Done'),
+        props.navigation.replace('Drawernavigator'));
+    // getstarted[count]?.onPress
+  }
   return (
     <ImageBackground
       resizeMode="cover"
@@ -84,86 +100,29 @@ const GettingStarted = props => {
         barStyle={'dark-content'}
         backgroundColor="transparent"
       />
-      {/* <Animatable.View
+      <Animatable.View
         animation={animationstate ? 'bounceInRight' : undefined}
-        onAnimationEnd={() => {
-          setanimationstate(false);
-        }}
+        onAnimationEnd={closeanimationstate}
         // animation={ getstart1  ? 'bounceInRight' :  getstart2  ? 'bounceInRight':  getstart3 ? 'bounceInRight' : undefined}
         //animation="bounceInRight"
         easing="ease"
         // iterationCount="infinite"
         iterationCount={1}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingVertical: scalableheight.two,
-          justifyContent: 'flex-start',
-          width: '100%',
-          position: 'absolute',
-          bottom: 0,
-        }}> */}
-           <View
-       
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingVertical: scalableheight.two,
-          justifyContent: 'flex-start',
-          width: '100%',
-          position: 'absolute',
-          bottom: 0,
-        }}>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-          }}>
+        style={styleSheet.animagetionstyle}>
+        <View style={styleSheet.innerview}>
           <Image
             resizeMode="contain"
             style={styleSheet.Image}
             source={require('../Resources/images/logo-black.png')}
           />
-          <Text
-            style={{
-              color: '#29262A',
-              fontSize: fontSize.twentyseven,
-              fontWeight: '700',
-              fontFamily: 'Inter-ExtraBold',
-              textAlign: 'center',
-              width: '80%',
-              paddingBottom:scalableheight.one
-            }}>
-            Getting Started
-          </Text>
+          <Text style={styleSheet.text3}>Getting Started</Text>
 
-          <Text
-            style={{
-              color: '#29262A',
-              fontSize: fontSize.fourteen,
-              fontFamily: 'Rubik-Regular',
-              textAlign: 'center',
-              width: '80%',
-              // marginBottom: scalableheight.two,
-            }}>
-            {getstarted[count]?.caption}
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              alignContent: 'center',
-              width: '100%',
-              position: 'relative',
-              marginVertical: scalableheight.pointfive,
-            }}>
+          <Text style={styleSheet.text4}>{getstarted[count]?.caption}</Text>
+          <View style={styleSheet.innervieew4}>
             {getstarted.map((item, index) => {
               return (
                 <Entypo
-                key={index.toString()}
-           
+                  key={index.toString()}
                   style={{margin: -15}}
                   name="dot-single"
                   color={index === count ? '#E14E4E' : 'rgba(245, 80, 80, 0.5)'}
@@ -173,23 +132,12 @@ const GettingStarted = props => {
             })}
           </View>
 
-          <View style={{width: '100%', padding: scalableheight.three}}>
+          <View style={styleSheet.innerview6}>
             <MYButton
               color={'#E14E4E'}
               title={getstarted[count]?.buttontitle}
               textcolor={'white'}
-              onPress={() => {
-                setanimationstate(true);
-                count < 2
-                  ? setcount(count + 1)
-                  : (
-                     AsyncStorage.setItem(
-                      'GettingStarted',
-                      "Done",
-                    ),
-                    props.navigation.replace('Drawernavigator'))
-                // getstarted[count]?.onPress
-              }}
+              onPress={buttonpress}
             />
             {getstarted[count]?.buttontitle2 ? (
               <MYButton
@@ -198,29 +146,71 @@ const GettingStarted = props => {
                 onPress={getstarted[count]?.press2}
               />
             ) : (
-              <View
-                style={{
-                  width: '100%',
-
-                  justifyContent: 'center',
-                  alignItems: 'center',
-
-                  height: scalableheight.seven,
-
-                  borderRadius: fontSize.borderradiusmedium,
-
-                  marginTop: '1%',
-                  marginBottom: '1%',
-                }}></View>
+              <View style={styleSheet.innerview6}></View>
             )}
           </View>
         </View>
-      </View>
+      </Animatable.View>
     </ImageBackground>
   );
 };
 
 const styleSheet = StyleSheet.create({
+  innerview6: {
+    width: '100%',
+
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    height: scalableheight.seven,
+
+    borderRadius: fontSize.borderradiusmedium,
+
+    marginTop: '1%',
+    marginBottom: '1%',
+  },
+  innerview6: {width: '100%', padding: scalableheight.three},
+
+  innervieew4: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    width: '100%',
+    position: 'relative',
+    marginVertical: scalableheight.pointfive,
+  },
+  text4: {
+    color: '#29262A',
+    fontSize: fontSize.fourteen,
+    fontFamily: 'Rubik-Regular',
+    textAlign: 'center',
+    width: '80%',
+    // marginBottom: scalableheight.two,
+  },
+  text3: {
+    color: '#29262A',
+    fontSize: fontSize.twentyseven,
+    fontWeight: '700',
+    fontFamily: 'Inter-ExtraBold',
+    textAlign: 'center',
+    width: '80%',
+    paddingBottom: scalableheight.one,
+  },
+  innerview: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  animagetionstyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: scalableheight.two,
+    justifyContent: 'flex-start',
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+  },
   Text1: {
     color: '#F9B35E',
     fontSize: 18,

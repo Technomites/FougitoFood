@@ -1,4 +1,4 @@
-import qs from 'qs';
+
 import AsyncStorage from '@react-native-community/async-storage';
 // import RNFetchBlob from 'rn-fetch-blob';
 import {Platform} from 'react-native';
@@ -81,14 +81,211 @@ export const GETREPAY = 'GETREPAY';
 export const CLEARREPAY = 'CLEARREPAY';
 export const DISTANCEVAlidation = 'DISTANCEVAlidation';
 export const CLEARDISTANCEVAlidation = 'CLEARDISTANCEVAlidation';
+export const DELETEACCOUNT = 'DELETEACCOUNT';
+export const GetNotifications = 'GetNotifications';
+export const ClearNotifications = 'ClearNotifications';
+export const NotificationCount = 'NotificationCount';
+export const DINEINTOGGLE = 'DINEINTOGGLE';
 
-const API_URl = 'https://api.fougito.com/api/';
+
+// const API_URl = 'https://api.fougito.com/api/';
+const API_URl = 'https://motors.fougitodemo.com/api/';
+
 // const API_URl = 'http://192.168.18.119:45460/api/';
 
 const header1 = {
   'Content-Type': 'application/x-www-form-urlencoded',
 };
 
+export const toggledinein = (state) => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: DINEINTOGGLE,
+        payload: state,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const readnotificationbyid = (id, token) => {
+  try {
+    return async dispatch => {
+      console.log(id);
+      const result = await fetch(API_URl + `Notification/MarkRead/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const json = await result.json();
+
+      console.log(id + 'readnotificationbyid ' + JSON.stringify(json));
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const readall = token => {
+  try {
+    return async dispatch => {
+      const result = await fetch(API_URl + 'Notification/MarkAllSeen/ByUser', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const json = await result.json();
+
+      console.log('readall ' + JSON.stringify(json));
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getnotificationcount = token => {
+  try {
+    return async dispatch => {
+      const result = await fetch(
+        API_URl + 'Notification/NewNotificationCount/ByUser',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const json = await result.json();
+
+      console.log('getnotificationcount ' + JSON.stringify(json.Result));
+
+      if (json.Status == 'Success') {
+        dispatch({
+          type: NotificationCount,
+          payload: parseInt(json.Result),
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllNotifications = (pageNumber, token) => {
+  try {
+    return async dispatch => {
+      const result = await fetch(`${API_URl}Notification/GetAll/ByUser`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        // body: JSON.stringify({
+        //   search: '',
+        //   pageNumber: pageNumber,
+        //   pageSize: 10,
+        // }),
+        body: JSON.stringify({
+          paging: {
+            skip: 0,
+            search: '',
+            pageNumber: pageNumber,
+            pageSize: 10,
+          },
+        }),
+      });
+
+      const json = await result.json();
+
+      console.log(
+        'RESPONSE =====> ' + pageNumber + '   ' + JSON.stringify(json.Result),
+      );
+
+      if (json.Status == 'Success') {
+        json.Result.forEach(object => {
+          object.expanded = false;
+        });
+        dispatch({
+          type: GetNotifications,
+          notificationList: json.Result,
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const clearnotifications = data => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: ClearNotifications,
+        payload: data,
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const cleardeletionstatus = () => {
+  try {
+    return async dispatch => {
+      dispatch({
+        type: DELETEACCOUNT,
+        payload: '',
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteaccountcustomer = (id, token) => {
+  try {
+    return async dispatch => {
+      const result = await fetch(API_URl + `Customer/` + id, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const json = await result.json();
+
+      console.log('deleteaccount ' + JSON.stringify(json));
+
+      if (json.Id != undefined) {
+        dispatch({
+          type: DELETEACCOUNT,
+          payload: 'true',
+        });
+      } else {
+        dispatch({
+          type: DELETEACCOUNT,
+          payload: 'false',
+        });
+      }
+    };
+  } catch (error) {
+    dispatch({
+      type: DELETEACCOUNT,
+      payload: 'false',
+    });
+    console.log(error);
+  }
+};
 
 export const cleardistancevalidation = () => {
   try {
@@ -107,7 +304,10 @@ export const getdistancevalidation = (BranchId, lat, long) => {
   try {
     return async dispatch => {
       const result = await fetch(
-        API_URl + `Customer/Restaurant/Branch/` + BranchId + `/ValidateDistanct/${lat}/${long}`,
+        API_URl +
+          `Customer/Restaurant/Branch/` +
+          BranchId +
+          `/ValidateDistanct/${lat}/${long}`,
         {
           method: 'GET',
           headers: {
@@ -127,7 +327,7 @@ export const getdistancevalidation = (BranchId, lat, long) => {
           type: DISTANCEVAlidation,
           payload: true,
         });
-      }else{
+      } else {
         dispatch({
           type: DISTANCEVAlidation,
           payload: false,
@@ -139,13 +339,12 @@ export const getdistancevalidation = (BranchId, lat, long) => {
   }
 };
 
-
 export const clearlink = () => {
   try {
     return async dispatch => {
       dispatch({
         type: CLEARREPAY,
-        payload: "",
+        payload: '',
       });
     };
   } catch (error) {
@@ -168,9 +367,7 @@ export const getrepay = id => {
 
       const json = await result.json();
 
-      console.log(
-        'getrepay ' + id + ' ' + JSON.stringify(json),
-      );
+      console.log('getrepay ' + id + ' ' + JSON.stringify(json));
 
       if (json.Status == 'Success') {
         dispatch({
@@ -183,7 +380,6 @@ export const getrepay = id => {
     console.log(error);
   }
 };
-
 
 export const RestaurantReview = (
   token,
@@ -261,7 +457,7 @@ export const clearaddressdeletionstatus = () => {
     return async dispatch => {
       dispatch({
         type: CLEARAddressDELETION,
-        payload: "",
+        payload: '',
       });
     };
   } catch (error) {
@@ -530,9 +726,11 @@ export const updateprofilepicture = (picture, token) => {
   }
 };
 
-export const refreshmytoken = (data, token) => {
+export const refreshmytoken = data => {
   try {
     console.log('refreshmytoken');
+    console.log('data' + JSON.stringify(data));
+    // console.log('token' + JSON.stringify(token));
     return async dispatch => {
       const result = await fetch(
         API_URl + 'ServiceAndDeliveryStaffAccount/RefreshToken',
@@ -540,7 +738,7 @@ export const refreshmytoken = (data, token) => {
           method: 'POST',
           headers: {
             Accept: 'text/plain',
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
@@ -548,7 +746,7 @@ export const refreshmytoken = (data, token) => {
       );
 
       const json = await result.json();
-      console.log('refreshmytoken' + JSON.stringify(json));
+      console.log('new refreshed token' + JSON.stringify(json));
 
       if (json.Status == 'Success') {
         await AsyncStorage.setItem(
@@ -560,6 +758,7 @@ export const refreshmytoken = (data, token) => {
         dispatch({
           type: StoreNEWRefreshTokenDATA,
           payloadtoken: json.Result.Token,
+          payloadrefreshexecuted: true,
         });
       }
     };
@@ -1888,6 +2087,7 @@ export const GetProfile = AuthToken => {
           ContactPayload: json?.Result.Contact,
           EmailPayload: json?.Result.Email,
           UserImagePayload: json?.Result.Logo,
+          UserID: json?.Result.Id,
           data: json?.Result,
         });
 
@@ -1945,6 +2145,11 @@ export const logout = AuthToken => {
       }
     };
   } catch (error) {
+    dispatch({
+      type: Logoutuser,
+      LogoutSatusPayload: 'Network Request Failed',
+      LogoutPayload: 'Network Request Failed',
+    });
     console.log(error);
   }
 };

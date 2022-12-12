@@ -13,7 +13,6 @@ import {
   RefreshControl,
   TextInput,
   Dimensions,
-
   FlatList,
   TouchableWithoutFeedback,
   Platform,
@@ -26,13 +25,13 @@ import {
   Linking,
   PermissionsAndroid,
   ActivityIndicatorBase,
-  LayoutAnimation
+  LayoutAnimation,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-notifications';
 
-import renderIf from 'render-if';
-// import Modal from "react-native-modal";
+
+
 import {
   seticonfocus,
   getallrestraunts,
@@ -47,22 +46,18 @@ import {
   storelatlong,
   isconnected,
   getalladdresses,
-  storecurrentaddress
+  storecurrentaddress,
+  getnotificationcount,
+  clearmenu,
+  toggledinein
 } from '../Actions/actions';
-// import changeNavigationBarColor, {
-//   hideNavigationBar,
-//   showNavigationBar,
-// } from 'react-native-navigation-bar-color';
 
-import RBSheet from 'react-native-raw-bottom-sheet';
-// import {BottomSheetModalProvider, BottomSheet} from '@gorhom/bottom-sheet';
-import RNAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
-import {SliderBox} from 'react-native-image-slider-box';
-import ImagesSwiper from 'react-native-image-swiper';
+
+// 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import NetInfo from '@react-native-community/netinfo';
-import BookingHeader from '../Shared/Components/BookingHeader';
+
 import HeaderComponent from '../Shared/Components/HeaderComponent';
 import Infobar from '../Shared/Components/Infobar';
 import Animated from 'react-native-reanimated';
@@ -71,7 +66,7 @@ import Transparentsearch from '../Shared/Components/Transparentsearch';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 //import Geolocation from '@react-native-community/geolocation';
-import Geolocation from "react-native-geolocation-service";
+import Geolocation from 'react-native-geolocation-service';
 import SavedAddresses from '../Shared/Components/SavedAddresses';
 import Starters from '../Shared/Components/Starters';
 import Favourites from '../Shared/Components/Favourites';
@@ -94,12 +89,7 @@ import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
-//import LocationEnabler from 'react-native-location-enabler';
-//import {LocationSettings} from '../Shared/Components/LocationEnabler';
-
-
-
-
+import Homescreendinein from '../Shared/Components/Homescreendinein';
 
 
 // const {
@@ -107,23 +97,21 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 //   useLocationSettings,
 // } = LocationEnabler;
 
-
 const Home = ({props, navigation, drawerAnimationStyle}) => {
-  // const { enabled, request } = LocationSettings();
 
 
-//   const [enabled, requestResolution] = useLocationSettings(
-//   {
-//     priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
-//     alwaysShow: true, // default false
-//     needBle: true, // default false
-//   },
-//   false /* optional: default undefined */
-// );
+  //   const [enabled, requestResolution] = useLocationSettings(
+  //   {
+  //     priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
+  //     alwaysShow: true, // default false
+  //     needBle: true, // default false
+  //   },
+  //   false /* optional: default undefined */
+  // );
 
   const [searchText, setSearchText] = useState('');
   const [Loading, setLoading] = useState(false);
-
+  const [restrauntwithindinindistancedata, setrestrauntwithindinindistancedata] = useState([]);
   const [lat, setlat] = useState(0);
   const [long, setlong] = useState(0);
   const [inlat, setinlat] = useState(0);
@@ -137,11 +125,13 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const [search, setsearch] = useState('');
   const [Enabled, setEnabled] = useState(false);
   const [showmap, setshowmap] = useState(true);
+  const [closest, setclosest] = useState(0.01);
   const [count, setcount] = useState(0);
   const [showbottomsheet, setshowbottomsheet] = useState(false);
   const [showpinmap, setshowpinmap] = useState(false);
   const [locationenabled, setlocationenabled] = useState(false);
   const [center, setCenter] = useState();
+  const [Dineinpopup, setDineinpopup] = useState(false);
   const [serving, setserving] = useState([
     {
       selected: false,
@@ -189,22 +179,6 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   const refRBSheet = useRef();
   const toast = useRef();
 
-
-
-  const [flavours, setflavours] = useState([
-    {
-      selected: false,
-      serving: 'Hummus',
-    },
-    {
-      selected: false,
-      serving: 'Chicken Munchurian',
-    },
-    {
-      selected: false,
-      serving: 'Pasta',
-    },
-  ]);
   const {
     newNotificationCount,
     allrestraunts,
@@ -212,12 +186,9 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     AuthToken,
     internetconnectionstate,
     Selectedcurrentaddress,
-    alladdresses
+    alladdresses,
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
-
-
-
 
   const customStyle = [
     {
@@ -555,8 +526,11 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-     
-        // requestResolution()
+      // requestResolution()
+      if (AuthToken != '') {
+        dispatch(getnotificationcount(AuthToken));
+      }
+
       dispatch(seticonfocus('home'));
       StatusBar.setHidden(false);
       NetInfo.fetch().then(state => {
@@ -564,83 +538,72 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
           dispatch(isconnected(true));
         } else {
           dispatch(isconnected(false));
+          setshowmap(false);
         }
       });
     });
     return unsubscribe;
-  }, [navigation]);
-
-
-
-
-
-
-
+  }, [navigation, AuthToken]);
 
   useEffect(() => {
     StatusBar.setHidden(false);
     listeners();
-   
   }, []);
 
   useEffect(() => {
-    console.log(AuthToken + "-----------------------")
-    if (internetconnectionstate == true && AuthToken != "") {
+    console.log(AuthToken + '-----------------------');
+    if (internetconnectionstate == true && AuthToken != '') {
+      dispatch(getnotificationcount(AuthToken));
       dispatch(GetProfile(AuthToken));
       dispatch(getalladdresses(AuthToken));
     }
   }, [AuthToken, internetconnectionstate]);
 
-
   useEffect(() => {
     if (internetconnectionstate == true) {
-      if(Selectedcurrentaddress.length > 0){
-        setlat(Selectedcurrentaddress[0].Latitude)
-        setlong(Selectedcurrentaddress[0].Longitude)
-        setinlat(Selectedcurrentaddress[0].Latitude)
-        setinlong(Selectedcurrentaddress[0].Longitude)
+      if (Selectedcurrentaddress.length > 0) {
+        setlat(Selectedcurrentaddress[0].Latitude);
+        setlong(Selectedcurrentaddress[0].Longitude);
+        setinlat(Selectedcurrentaddress[0].Latitude);
+        setinlong(Selectedcurrentaddress[0].Longitude);
         setpinlocation(Selectedcurrentaddress[0].address);
-    
-      }else{
-        Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
-        Geolocation.getCurrentPosition(info => {
-          setlat(info?.coords?.latitude);
-          setlong(info?.coords?.longitude);
-          setinlat(info?.coords?.latitude);
-          setinlong(info?.coords?.longitude);
-        },
-        (error) => {
-          console.log("hellooo" + JSON.stringify(error))
-        },
-        {
-          accuracy: {
-            android: 'high',
-            ios: 'best'
+      } else {
+        Geocoder.init('AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8');
+        Geolocation.getCurrentPosition(
+          info => {
+            setlat(info?.coords?.latitude);
+            setlong(info?.coords?.longitude);
+            setinlat(info?.coords?.latitude);
+            setinlong(info?.coords?.longitude);
           },
-          enableHighAccuracy: true,
-          timeout: 15000,
-          maximumAge: 10000,
-          distanceFilter: 0,
-          forceRequestLocation: true,
-          showLocationDialog: true,
-        });
+          error => {
+            console.log('hellooo' + JSON.stringify(error));
+          },
+          {
+            accuracy: {
+              android: 'high',
+              ios: 'best',
+            },
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 10000,
+            distanceFilter: 0,
+            forceRequestLocation: true,
+            showLocationDialog: true,
+          },
+        );
       }
-
-  
     }
   }, [internetconnectionstate]);
 
-
   useEffect(() => {
     if (internetconnectionstate == true) {
-      if (lat != null && long != null && lat != 0 && long != 0 ) {
-
+      if (lat != null && long != null && lat != 0 && long != 0) {
         setloader(true);
         dispatch(getallrestraunts(lat, long));
         dispatch(storelatlong(lat, long));
 
-
-        Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
+        Geocoder.init('AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8');
         Geocoder.from(lat, long)
           .then(json => {
             var addressComponent = json.results[0].formatted_address;
@@ -650,51 +613,124 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
               {
                 Latitude: lat,
                 Longitude: long,
-                icon: "Others",
-                place: "Others",
+                icon: 'Others',
+                place: 'Others',
                 address: addressComponent,
-                note: "",
-                Street: "",
-                Floor: "",
+                note: '',
+                Street: '',
+                Floor: '',
               },
             ];
-            if(alladdresses?.find(data => data?.Latitude ==  lat && data?.Longitude ==  long) == undefined){
+            if (
+              alladdresses?.find(
+                data => data?.Latitude == lat && data?.Longitude == long,
+              ) == undefined
+            ) {
               dispatch(storecurrentaddress(currentaddress));
             }
-          
           })
           .catch(error => console.warn(error));
-        
       }
     }
   }, [lat, long]);
 
   useEffect(() => {
+    let smallest = 100000;
+    for (const index in allrestraunts) {
+      if (
+        smallest > parseFloat(allrestraunts[index].Distance.replace(' Km', ''))
+      ) {
+        smallest = parseFloat(allrestraunts[index].Distance.replace(' Km', ''));
+      }
+
+      console.log(allrestraunts[index].Distance.replace(' Km', ''));
+    }
+    console.log('smallest' + smallest);
+    if (smallest == 100000) {
+      setclosest(undefined);
+    } else {
+      setclosest(smallest);
+    }
+
     setloader(false);
+
+let smallestdistanceavailable = 1000
+let data = []
+    for(const item in allrestraunts){
+  
+      if(parseFloat(allrestraunts[item].Distance.replace(' Km', '')) * 1000 < 1000){
+        if(parseFloat(allrestraunts[item].Distance.replace(' Km', '')) * 1000 < smallestdistanceavailable)
+        smallestdistanceavailable = parseFloat(allrestraunts[item].Distance.replace(' Km', '')) * 1000
+      data = allrestraunts[item]
+      }
+    
+    }
+
+    if(smallestdistanceavailable < 500){
+      console.log("smallest distance" + smallestdistanceavailable)
+      console.log("smallest distance data" + JSON.stringify(data))
+      setrestrauntwithindinindistancedata(data)
+         setDineinpopup(true)
+    }
+ 
+    
+ 
   }, [allrestraunts]);
 
-  
   useEffect(() => {
     if (!Enabled) {
       setTimeout(() => {
         getLocation();
       }, 1500);
-  
-     
-    }else{
-   
-      getnewlocation()
+    } else {
+      getnewlocation();
     }
-  }, [Enabled])
+  }, [Enabled]);
 
- 
+  function refreshselectedlocation() {
+    if (internetconnectionstate == true) {
+      if (lat != null && long != null && lat != 0 && long != 0) {
+        setloader(true);
+        dispatch(getallrestraunts(lat, long));
+        dispatch(storelatlong(lat, long));
+
+        Geocoder.init('AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8');
+        Geocoder.from(lat, long)
+          .then(json => {
+            var addressComponent = json.results[0].formatted_address;
+            console.log(addressComponent);
+            setpinlocation(addressComponent);
+            let currentaddress = [
+              {
+                Latitude: lat,
+                Longitude: long,
+                icon: 'Others',
+                place: 'Others',
+                address: addressComponent,
+                note: '',
+                Street: '',
+                Floor: '',
+              },
+            ];
+            if (
+              alladdresses?.find(
+                data => data?.Latitude == lat && data?.Longitude == long,
+              ) == undefined
+            ) {
+              dispatch(storecurrentaddress(currentaddress));
+            }
+          })
+          .catch(error => console.warn(error));
+      }
+    }
+  }
 
   function onRefresh() {
- 
     NetInfo.fetch().then(state => {
       if (state.isConnected == true && state.isInternetReachable == true) {
         dispatch(GetProfile(AuthToken));
-        getnewlocation();
+        // getnewlocation();
+        refreshselectedlocation();
       } else {
         toast.current.show('No Internet Connection', {
           type: 'normal',
@@ -708,18 +744,21 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
     });
   }
 
+  function closedinein(){
+    setDineinpopup(false)
+  }
+
   function updatecoordinates(lat, long) {
     setlat(lat);
     setlong(long);
     setinlat(lat);
     setinlong(long);
-    setTimeout(() => {
-      getLocation();
-    }, 1500);
+    // setTimeout(() => {
+    //   getLocation();
+    // }, 1500);
   }
 
   const rendernearby = ({item, index}) =>
-
     item?.NameAsPerTradeLicense.includes(search.trim()) ? (
       <View
         style={{
@@ -729,19 +768,22 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         <Favourites
           image={item?.Logo}
           title={item?.NameAsPerTradeLicense}
-          reviews={item?.AvgRating.toFixed(2) + ' (' + item?.RatingCount + ' Reviews)'}
+          reviews={
+            item?.AvgRating.toFixed(2) + ' (' + item?.RatingCount + ' Reviews)'
+          }
           time={item?.OpeningTime + ' - ' + item?.ClosingTime}
           onPress={() => {
             dispatch(storerestrauntbasicdata(item));
             dispatch(storedistance(item?.Distance));
             if (currentRestrauntid != item?.Id) {
+              dispatch(clearmenu());
               dispatch(storecartprice(0));
               dispatch(cleancart());
               dispatch(storerestrauntid(item?.Id));
             }
 
             dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
-        
+
             navigation.navigate('Restaurantpage', {
               latitude: lat,
               longitude: long,
@@ -752,7 +794,7 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
         />
       </View>
     ) : null;
- 
+
   const renderItem = ({item, index}) =>
     item?.NameAsPerTradeLicense.includes(search.trim()) ? (
       // <Animatable.View
@@ -760,35 +802,36 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
       //   easing="ease"
       //   iterationCount={1}
       //   style={{}}>
-        <Favourites
-          image={item?.Logo}
-          title={item?.NameAsPerTradeLicense}
-          reviews={item?.AvgRating.toFixed(2) + ' (' + item?.RatingCount + ' reviews)'}
-          time={item?.OpeningTime + ' - ' + item?.ClosingTime}
-          onPress={() => {
-            dispatch(storerestrauntbasicdata(item));
-            dispatch(storedistance(item?.Distance));
-            if (currentRestrauntid != item?.Id) {
-              dispatch(storecartprice(0));
-              dispatch(cleancart());
-              dispatch(storerestrauntid(item?.Id));
-            }
-            dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
-            navigation.navigate('Restaurantpage', {
-              latitude: lat,
-              longitude: long,
-            });
-          }}
-          distance={item?.Distance + ' away'}
-        />
-      //</Animatable.View> 
-    ) : null;
-  
-  
-  
-    function activaterestaurant(key, lat, long) {
-    setinlat(lat);
-    setinlong(long);
+      <Favourites
+        image={item?.Logo}
+        title={item?.NameAsPerTradeLicense}
+        reviews={
+          item?.AvgRating.toFixed(2) + ' (' + item?.RatingCount + ' Reviews)'
+        }
+        time={item?.OpeningTime + ' - ' + item?.ClosingTime}
+        onPress={() => {
+          dispatch(storerestrauntbasicdata(item));
+          dispatch(storedistance(item?.Distance));
+          if (currentRestrauntid != item?.Id) {
+            dispatch(clearmenu());
+            dispatch(storecartprice(0));
+            dispatch(cleancart());
+            dispatch(storerestrauntid(item?.Id));
+          }
+          dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
+          navigation.navigate('Restaurantpage', {
+            latitude: lat,
+            longitude: long,
+          });
+        }}
+        distance={item?.Distance + ' away'}
+      />
+    ) : //</Animatable.View>
+    null;
+
+  function activaterestaurant(key, lat, long) {
+    // setinlat(lat);
+    // setinlong(long);
     console.log('selected');
     let arr = [...allrestraunts];
     for (const index in arr) {
@@ -805,109 +848,161 @@ const Home = ({props, navigation, drawerAnimationStyle}) => {
   }
 
   function getnewlocation() {
-   
-    Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
-    let lat = 0
-    let long = 0
+    Geocoder.init('AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8');
+    let lat = 0;
+    let long = 0;
     Geolocation.getCurrentPosition(info => {
       setlat(info?.coords?.latitude);
       setlong(info?.coords?.longitude);
       setinlat(info?.coords?.latitude);
       setinlong(info?.coords?.longitude);
-      lat =info?.coords?.latitude
-      long = info?.coords?.longitude
-    
+      lat = info?.coords?.latitude;
+      long = info?.coords?.longitude;
     });
- 
+
     // Geocoder.from(lat, long)
     //   .then(json => {
     //     var addressComponent = json.results[0].formatted_address;
-    
-    //     setpinlocation(addressComponent);
 
- 
+    //     setpinlocation(addressComponent);
 
     //   })
     //   .catch(error =>{
     //     // if (Platform.OS != 'ios') {
     //     //   requestResolution()
     //     // }
-        
+
     //     console.warn(error)});
   }
 
-
-  
   const getLocation = async () => {
-    const hasLocationPermission = await hasLocationPermissions();
-    if (!hasLocationPermission) {
-      console.log("you will never have  have permission")
-      return;
-    }
-  //   Geolocation.getCurrentPosition(
-  //     (position) => {
-  //         setLoader(false);
-  //         const { coords } = position;
-  //         console.log("CORDINATES =====> ", coords);
-          
-  //         getLocationName(coords?.latitude, coords?.longitude);
-  //     },
-  //     (error) => {
-  //         setLoader(false);
-  //         ToastMessage(error?.message);
-  //     },
-  //     {
-  //         timeout: 15000,
-  //         maximumAge: 10000,
-  //         distanceFilter: 0,
-  //         enableHighAccuracy: highAccuracy,
-  //         forceRequestLocation: forceLocation,
-  //         showLocationDialog: showLocationDialog,
-  //         accuracy: {android: 'high',ios: 'best'},
-  //     },
-  // );
+    if (Platform.OS != 'ios') {
+      const hasLocationPermission = await hasLocationPermissions();
+      if (!hasLocationPermission) {
+        console.log('you will never have  have permission');
+        return;
+      } else {
+        Geolocation.getCurrentPosition(
+          info => {
+            setlat(info?.coords?.latitude);
+            setlong(info?.coords?.longitude);
+            setinlat(info?.coords?.latitude);
+            setinlong(info?.coords?.longitude);
+          },
+          error => {
+            console.log('getCurrentPosition error' + JSON.stringify(error));
+          },
+          {
+            accuracy: {
+              android: 'high',
+              ios: 'best',
+            },
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 10000,
+            distanceFilter: 0,
+            forceRequestLocation: true,
+            showLocationDialog: true,
+          },
+        );
+      }
+    } else {
+      const hasLocationPermission = await hasLocationPermissionIOS();
 
-  Geolocation.getCurrentPosition(info => {
-    // setlat(info?.coords?.latitude);
-    // setlong(info?.coords?.longitude);
-    // setinlat(info?.coords?.latitude);
-    // setinlong(info?.coords?.longitude);
-  },
-  (error) => {
-  console.log("hellooo" + JSON.stringify(error))
-},
-{
-  accuracy: {
-    android: 'high',
-    ios: 'best'
-  },
-  enableHighAccuracy: true,
-  timeout: 15000,
-  maximumAge: 10000,
-  distanceFilter: 0,
-  forceRequestLocation: true,
-  showLocationDialog: true,
-},
-  
-  );
+      if (!hasLocationPermission) {
+        console.log('you will never have  have permission');
+        return;
+      } else {
+        console.log('refetching location');
+        Geolocation.getCurrentPosition(
+          info => {
+            setlat(info?.coords?.latitude);
+            setlong(info?.coords?.longitude);
+            setinlat(info?.coords?.latitude);
+            setinlong(info?.coords?.longitude);
+          },
+          error => {
+            console.log('hellooo' + JSON.stringify(error));
+          },
+          {
+            accuracy: {
+              android: 'high',
+              ios: 'best',
+            },
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 10000,
+            distanceFilter: 0,
+            forceRequestLocation: true,
+            showLocationDialog: true,
+          },
+        );
+      }
+    }
+
+    //   Geolocation.getCurrentPosition(
+    //     (position) => {
+    //         setLoader(false);
+    //         const { coords } = position;
+    //         console.log("CORDINATES =====> ", coords);
+
+    //         getLocationName(coords?.latitude, coords?.longitude);
+    //     },
+    //     (error) => {
+    //         setLoader(false);
+    //         ToastMessage(error?.message);
+    //     },
+    //     {
+    //         timeout: 15000,
+    //         maximumAge: 10000,
+    //         distanceFilter: 0,
+    //         enableHighAccuracy: highAccuracy,
+    //         forceRequestLocation: forceLocation,
+    //         showLocationDialog: showLocationDialog,
+    //         accuracy: {android: 'high',ios: 'best'},
+    //     },
+    // );
+
+    Geolocation.getCurrentPosition(
+      info => {
+        // setlat(info?.coords?.latitude);
+        // setlong(info?.coords?.longitude);
+        // setinlat(info?.coords?.latitude);
+        // setinlong(info?.coords?.longitude);
+      },
+      error => {
+        console.log('hellooo' + JSON.stringify(error));
+      },
+      {
+        accuracy: {
+          android: 'high',
+          ios: 'best',
+        },
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 10000,
+        distanceFilter: 0,
+        forceRequestLocation: true,
+        showLocationDialog: true,
+      },
+    );
   };
 
   const hasLocationPermissions = async () => {
-   
     // if (Platform.OS === 'ios') {
     //   const hasPermission = await hasLocationPermissionIOS();
     //   return hasPermission;
     // }
-console.log(Platform.Version)
+    console.log(Platform.Version);
     if (Platform.OS === 'android' && Platform.Version < 23) {
       return true;
     }
 
-    console.log("next step")
+    console.log('next step');
     const hasPermission = await PermissionsAndroid.check(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     );
-    console.log(hasPermission + "this is the permission home")
+    console.log(hasPermission + 'this is the permission home');
     if (hasPermission) {
       return true;
     }
@@ -917,22 +1012,22 @@ console.log(Platform.Version)
     );
 
     if (status === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("you  have permission home screen")
-      setEnabled(true)
+      console.log('you  have permission home screen');
+      setEnabled(true);
       return true;
     }
 
     if (status === PermissionsAndroid.RESULTS.DENIED) {
-      console.log("you dont have permission")
-      setEnabled(false)
-   
+      console.log('you dont have permission');
+      setEnabled(false);
+
       // ToastAndroid.show(
       //   'Location permission denied by user.',
       //   ToastAndroid.LONG,
       // );
     } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-      console.log("you will never have  have permission")
-      setEnabled(false)
+      console.log('you will never have  have permission');
+      setEnabled(false);
 
       // ToastAndroid.show(
       //   'Location permission revoked by user.',
@@ -940,8 +1035,6 @@ console.log(Platform.Version)
       // );
     }
 
-  
- 
     return false;
   };
   const hasLocationPermissionIOS = async () => {
@@ -962,7 +1055,7 @@ console.log(Platform.Version)
 
     if (status === 'disabled') {
       Alert.alert(
-        `Turn on Location Services to allow Bakery App to determine your location.`,
+        `Turn on Location Services to allow Fougito Food to determine your location.`,
         '',
         [
           {text: 'Go to Settings', onPress: openSetting},
@@ -972,36 +1065,74 @@ console.log(Platform.Version)
     }
     return false;
   };
- 
 
+  function navigatetoQR() {
+    navigation.navigate('Qrcode', {
+      latitude: lat,
+      longitude: long,
+    });
+  }
 
+  function infobarpress() {
+    setshowbottomsheet(!showbottomsheet);
+  }
 
+  function openmap() {
+    if (Platform.OS == 'ios') {
+      LayoutAnimation.easeInEaseOut();
+    }
+
+    setshowmap(true);
+  }
+  function closemap() {
+    if (Platform.OS == 'ios') {
+      LayoutAnimation.easeInEaseOut();
+    }
+
+    setshowmap(false);
+  }
+
+  function closebottomsheet() {
+    setshowbottomsheet(false);
+  }
+
+  function reloaddata() {
+    NetInfo.fetch().then(state => {
+      if (state.isConnected == true && state.isInternetReachable == true) {
+        dispatch(isconnected(true));
+        console.log('true');
+      } else {
+        dispatch(isconnected(false));
+        console.log('false' + state.isConnected);
+      }
+    });
+  }
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, overflow: 'hidden', backgroundColor:"white"}}>
+      style={{
+        flex: 1,
+        ...drawerAnimationStyle,
+        overflow: 'hidden',
+        backgroundColor: '#F6F6F6',
+      }}>
       <FocusAwareStatusBar
         barStyle={showbottomsheet ? 'dark-content' : 'light-content'}
         backgroundColor="transparent"
       />
       {/* <StatusBar barStyle="light-content" /> */}
-      <View style={{height: '100%', width: '100%', alignSelf: 'center'}}>
-        <View style={{backgroundColor: 'white', height: '100%', width: '100%'}}>
+      <View style={styleSheet.container}>
+        <View style={styleSheet.innercontainer}>
           <ImageBackground
             resizeMode="cover"
             style={{
-              width: '100%',
+              ...styleSheet.imagebackgroundcontainer,
               height: scalableheight.fifteen + getStatusBarHeight(),
-              zIndex: 10,
-              elevation: 10,
             }}
-            imageStyle={{
-              borderBottomLeftRadius: fontSize.twenty,
-              borderBottomRightRadius: fontSize.twenty,
-            }}
+            imageStyle={styleSheet.imageStyle}
             source={require('../Resources/images/homebackground.png')}>
             <View style={{marginTop: getStatusBarHeight()}}></View>
             <HeaderComponent />
-            <View style={{paddingHorizontal: scalableheight.one}}>
+            <View style={styleSheet.innercontainer2}>
               {/* <Transparentinfobar Heading ={"Home"} Details ={"Clifton block 2, plot no 245, near bilawal house"}/>
              <View style={{marginTop: scalableheight.one}}></View> */}
               <Transparentsearch
@@ -1009,105 +1140,108 @@ console.log(Platform.Version)
                 onchange={val => {
                   setsearch(val);
                 }}
-                OnPress={() => {
-                  navigation.navigate('Qrcode', {
-                    latitude: lat,
-                    longitude: long,
-                  });
-                }}
+                OnPress={() => navigatetoQR()}
               />
             </View>
           </ImageBackground>
-          {
-            showmap != true &&
-          <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingHorizontal:scalableheight.two, paddingTop:scalableheight.two}}>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Bold',
-                        fontSize: fontSize.sixteen,
-                        color: '#29262A',
-                        // paddingBottom:scalableheight.one
-                      }}>
-                      RESTAURANTS NEARBY
-                    </Text>
 
-                  
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={() => {
-            
-              LayoutAnimation.easeInEaseOut();
-                setshowmap(true);
-            }}
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: fontSize.circle,
-             
-              height: scalableheight.four,
-              width: scalableheight.four,
-            }}>
-            <Image
-              resizeMode="stretch"
+          {showmap != true && internetconnectionstate == true && (
+            <View style={styleSheet.infobarview}>
+              <Infobar
+                onPress={() => infobarpress()}
+                Heading={
+                  Selectedcurrentaddress?.length > 0
+                    ? Selectedcurrentaddress[0].place
+                    : 'Current Location'
+                }
+                Details={
+                  Selectedcurrentaddress?.length > 0
+                    ? Selectedcurrentaddress[0].address
+                    : pinlocation
+                }
+              />
+            </View>
+          )}
+          {showmap != true && internetconnectionstate == true && (
+            <View
               style={{
-                width: '100%',
-                height: '100%',
-                zIndex: 201,
-                elevation: 201,
-              }}
-              source={
-                showmap
-                  ? require('../Resources/images/listicon.png')
-                  : require('../Resources/images/mapicon.png')
-              }
-            />
-          </TouchableOpacity>
-          </View>}
-          {showmap &&  (
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: scalableheight.two,
+                paddingTop: scalableheight.two,
+              }}>
+              <Text style={styleSheet.nearby}>RESTAURANTS NEARBY</Text>
+
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => openmap()}
+                style={styleSheet.openmapstyle}>
+                <Image
+                  resizeMode="stretch"
+                  style={styleSheet.openmapimagestyle}
+                  source={
+                    showmap
+                      ? require('../Resources/images/listicon.png')
+                      : require('../Resources/images/mapicon.png')
+                  }
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+          {showmap && (
             <>
               <View
                 style={{
                   ...styleSheet.shadow,
-                  height: scalableheight.eighty,
-                  width: '100%',
-                  backgroundColor: '#F5F5F5',
-                  borderRadius: fontSize.fifteen,
-                  overflow: 'hidden',
-                  position: 'absolute',
-                  bottom: scalableheight.twentythree,
-                  zIndex: 1,
+                  ...styleSheet.mapvisible,
                 }}>
-                {lat != null && long != null && inlat != null && inlong != null? (
+                {lat != null &&
+                long != null &&
+                inlat != null &&
+                inlong != null ? (
                   <MapView
                     // provider={PROVIDER_GOOGLE}
                     // customMapStyle={customStyle}
                     // userInterfaceStyle={"dark"}
                     ref={refMap}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: fontSize.fifteen,
-                    }}
+                    showsMyLocationButton={false}
+                    style={styleSheet.locationicon}
                     showsUserLocation
                     region={{
                       latitude: inlat,
                       longitude: inlong,
-                      // latitude: lat,
-                      // longitude: long,
-                      longitudeDelta: 0.01,
-                      latitudeDelta: 0.01,
+                      longitudeDelta:
+                     closest == undefined
+                          ? 0.01
+                          : closest < 3 
+                          ? 0.1
+                          : closest < 10
+                          ? 0.4
+                          : closest < 20
+                          ? 0.5
+                          : 0.6,
+                      latitudeDelta:
+                      closest == undefined
+                      ? 0.01
+                      : closest < 3 
+                      ? 0.1
+                          : closest < 10
+                          ? 0.4
+                          : closest < 20
+                          ? 0.5
+                          : 0.6,
                     }}
                     initialRegion={{
                       latitude: lat,
                       longitude: long,
-
                       latitudeDelta: 0.0922,
                       longitudeDelta: 0.0421,
                     }}>
                     {allrestraunts.map((item, key) => {
                       return (
                         <Marker
-                        key={key.toString()}
+                          key={key.toString()}
                           position={center}
                           coordinate={{
                             latitude: item?.Latitude,
@@ -1124,7 +1258,7 @@ console.log(Platform.Version)
 
                           //   }}
                           //  pinColor = {"red"} // any color
-                       
+
                           title={'Restaurant'}
                           description={item?.NameAsPerTradeLicense}
                           onPress={() =>
@@ -1135,32 +1269,18 @@ console.log(Platform.Version)
                             )
                           }>
                           {item?.expanded ? (
-                            <View
-                              style={{
-                                height: scalableheight.six,
-                                width: scalableheight.six,
-                              }}>
+                            <View style={styleSheet.expandedicon}>
                               <Image
                                 source={require('../Resources/images/redmarker.png')}
-                                style={{
-                                  height: scalableheight.six,
-                                  width: scalableheight.six,
-                                }}
+                                style={styleSheet.marker}
                                 resizeMode="contain"
                               />
                             </View>
                           ) : (
-                            <View
-                              style={{
-                                height: scalableheight.six,
-                                width: scalableheight.six,
-                              }}>
+                            <View style={styleSheet.marker}>
                               <Image
                                 source={require('../Resources/images/redmarker.png')}
-                                style={{
-                                  height: scalableheight.four,
-                                  width: scalableheight.four,
-                                }}
+                                style={styleSheet.smallmarker}
                                 resizeMode="contain"
                               />
                             </View>
@@ -1195,26 +1315,7 @@ console.log(Platform.Version)
                   </MapView>
                 ) : null}
               </View>
-              <View
-                style={{
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  backgroundColor: 'white',
-                  borderRadius: fontSize.borderradiusmedium,
-                  shadowColor: '#470000',
-                  shadowOffset: {width: 0, height: 1},
-                  shadowOpacity: 0.2,
-                  elevation: 3,
-                  position: 'absolute',
-                  bottom: scalableheight.thirtyfour,
-                  right: scalableheight.one,
-                  elevation: 5,
-                  zIndex: 5,
-                  alignSelf: 'center',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingHorizontal: scalableheight.one,
-                }}>
+              <View style={styleSheet.mapview2}>
                 <TouchableOpacity
                   onPress={() => {
                     // getnewlocation();
@@ -1233,46 +1334,28 @@ console.log(Platform.Version)
                 </TouchableOpacity>
               </View>
 
-              <View
-                style={{
-                  width: '100%',
-                  alignSelf: 'center',
-
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-
-                  paddingHorizontal: scalableheight.one,
-                  position: 'absolute',
-                  bottom: scalableheight.twentyfour,
-                  elevation: 5,
-                  zIndex: 5,
-                }}>
+              <View style={styleSheet.infobar2}>
                 <Infobar
-                  onPress={() => {
-                
-                 
-                setshowbottomsheet(true);
-                  }}
-                  Heading={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].place : 'Current Location'}
-                  Details={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].address :  pinlocation}
+                  onPress={() => infobarpress()}
+                  Heading={
+                    Selectedcurrentaddress?.length > 0
+                      ? Selectedcurrentaddress[0].place
+                      : 'Current Location'
+                  }
+                  Details={
+                    Selectedcurrentaddress?.length > 0
+                      ? Selectedcurrentaddress[0].address
+                      : pinlocation
+                  }
                 />
-                        
               </View>
-              <View
-                style={{
-                  paddingHorizontal: scalableheight.one,
-                  position: 'absolute',
-                  bottom: scalableheight.one,
-                  zIndex: 200,
-                  elevation: 200,
-                }}>
+              <View style={styleSheet.search}>
                 {allrestraunts?.length > 0 &&
                 allrestraunts?.find(data =>
                   data?.NameAsPerTradeLicense.includes(search.trim()),
                 ) != undefined ? (
                   <>
-                  {/* // <Animatable.View
+                    {/* // <Animatable.View
                   //   animation="bounceInRight"
                   //   easing="ease"
                   //   iterationCount={1}
@@ -1282,91 +1365,53 @@ console.log(Platform.Version)
 
                   //     justifyContent: 'center',
                   //   }}> */}
-                  <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Bold',
-                        fontSize: fontSize.sixteen,
-                        color: '#29262A',
-                        // paddingBottom:scalableheight.one
-                      }}>
-                      RESTAURANTS NEARBY
-                    </Text>
+                    <View style={styleSheet.nearby2}>
+                      <Text style={styleSheet.nearby}>RESTAURANTS NEARBY</Text>
 
-                  
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={() => {
-            
-              LayoutAnimation.easeInEaseOut()
-                setshowmap(false);
-            }}
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: fontSize.circle,
-             
-              height: scalableheight.four,
-              width: scalableheight.four,
-            }}>
-            <Image
-              resizeMode="stretch"
-              style={{
-                width: '100%',
-                height: '100%',
-                zIndex: 201,
-                elevation: 201,
-              }}
-              source={
-                showmap
-                  ? require('../Resources/images/listicon.png')
-                  : require('../Resources/images/mapicon.png')
-              }
-            />
-          </TouchableOpacity>
-          </View>
+                      <TouchableOpacity
+                        activeOpacity={0.6}
+                        onPress={() => closemap()}
+                        style={{
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: fontSize.circle,
+
+                          height: scalableheight.four,
+                          width: scalableheight.four,
+                        }}>
+                        <Image
+                          resizeMode="stretch"
+                          style={styleSheet.listimage}
+                          source={
+                            showmap
+                              ? require('../Resources/images/listicon.png')
+                              : require('../Resources/images/mapicon.png')
+                          }
+                        />
+                      </TouchableOpacity>
+                    </View>
                     <FlatList
-                  key={'1'}
-                  showsHorizontalScrollIndicator={false}
-                  ref={ref}
-                  style={{zIndex: 200, elevation: 200}}
-                  keyExtractor={(item, index) => index.toString()}
-                  horizontal
-                  data={allrestraunts}
-                  renderItem={rendernearby}
-                  // onEndReached={() => LoadFeaturedProjectPagination()}
-                  // onEndReachedThreshold={0.1}
-                />
-             {/* //     </Animatable.View> */}
-             </>
+                      key={'1'}
+                      showsHorizontalScrollIndicator={false}
+                      ref={ref}
+                      style={{zIndex: 200, elevation: 200}}
+                      keyExtractor={(item, index) => index.toString()}
+                      horizontal
+                      data={allrestraunts}
+                      renderItem={rendernearby}
+                      // onEndReached={() => LoadFeaturedProjectPagination()}
+                      // onEndReachedThreshold={0.1}
+                    />
+                    {/* //     </Animatable.View> */}
+                  </>
                 ) : (
-                  <View
-                    style={{
-                      position:"absolute",
-                      bottom:0,
-                      width: Dimensions.get('window').width / 1,
-                      height: scalableheight.twentytwo,
-                      justifyContent: 'center',
-                      alignItems: 'center',
- 
-                    
-                      // borderWidth:1, borderColor:"red"
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Bold',
-                        fontSize: fontSize.fifteen,
-                        color: '#29262A',
-                        opacity: 0.4,
-                        marginTop:scalableheight.two
-                      }}>
+                  <View style={styleSheet.restaurantstyle}>
+                    <Text style={styleSheet.norestaurant}>
                       {/* No Restaurants NearBy */}
                       No Restaurants
                     </Text>
                   </View>
                 )}
-
-            
               </View>
             </>
           )}
@@ -1388,27 +1433,9 @@ console.log(Platform.Version)
                   </Text> */}
                   <TouchableOpacity
                     activeOpacity={0.9}
-                    onPress={() => {
-                      NetInfo.fetch().then(state => {
-                        if (
-                          state.isConnected == true &&
-                          state.isInternetReachable == true
-                        ) {
-                          dispatch(isconnected(true));
-                          console.log('true');
-                        } else {
-                          dispatch(isconnected(false));
-                          console.log('false' + state.isConnected);
-                        }
-                      });
-                    }}>
+                    onPress={() => reloaddata()}>
                     <Image
-                      style={{
-                        // marginVertical: scalableheight.five,
-                        height: '100%',
-                        width: '100%',
-                        textAlign: 'center',
-                      }}
+                      style={styleSheet.skeletonstyle}
                       resizeMode={'contain'}
                       source={require('../Resources/images/Skeleton/Retry.gif')}
                     />
@@ -1416,11 +1443,7 @@ console.log(Platform.Version)
                 </>
               ) : loader == true ? (
                 <Image
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    textAlign: 'center',
-                  }}
+                  style={styleSheet.skeletonstyle}
                   resizeMode={'cover'}
                   source={require('../Resources/images/Skeleton/4.gif')}
                 />
@@ -1440,33 +1463,15 @@ console.log(Platform.Version)
                   renderItem={renderItem}
                   // ListFooterComponent={renderFooter}
                   // onEndReached={loadMoreNotifications}
-                  style={{
-                    width: '100%',
-                    paddingHorizontal: scalableheight.one,
-                   
-                  }}
+                  style={styleSheet.flatlistrefresh}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{flexGrow: 1, paddingBottom: 5}}
                   // contentContainerStyle={{paddingBottom: 54}}
                   keyExtractor={(item, index) => index.toString()}
                 />
               ) : (
-                <View
-                  style={{
-                    width: Dimensions.get('window').width / 1,
-                    height: Dimensions.get('window').height / 1.2,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-Bold',
-                      fontSize: fontSize.fifteen,
-                      color: '#29262A',
-                      opacity: 0.4,
-                    
-                    }}>
+                <View style={styleSheet.norestaurantview2}>
+                  <Text style={styleSheet.norestaurant3}>
                     {/* No Restraunts NearBy */}
                     No Restauraunts
                   </Text>
@@ -1475,34 +1480,76 @@ console.log(Platform.Version)
             // {/* </View> */}
           }
         </View>
-      
       </View>
       <Custombottomsheet
         state={showbottomsheet}
         locationpin={pinlocation}
-        onPressnewCoordinates={(a, b) => {
-          updatecoordinates(a, b);
-        }}
-        onPress={() => {
-          setshowbottomsheet(false);
-        }}
-        onPressnewlocation={() => {
-          getnewlocation();
-        }}
+        onPressnewCoordinates={(a, b) => updatecoordinates(a, b)}
+        onPress={() => closebottomsheet()}
+        onPressnewlocation={() => getnewlocation()}
         latitude={lat}
         longitude={long}
-        withvalidation = {false}
-        branchid= {0}
+        withvalidation={false}
+        branchid={0}
       />
-      <Toast
-        ref={toast}
-        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
+
+<Homescreendinein
+        state={Dineinpopup}
+        data = {() => {
+
+        }}
+        proceed = {()=>{
+           closedinein()
+           dispatch(storerestrauntbasicdata(restrauntwithindinindistancedata));
+           dispatch(storedistance(restrauntwithindinindistancedata.Distance));
+  
+         
+           if (currentRestrauntid != restrauntwithindinindistancedata.Id) {
+             dispatch(clearmenu());
+             dispatch(storecartprice(0));
+             dispatch(cleancart());
+             dispatch(storerestrauntid(restrauntwithindinindistancedata.Id));
+           }
+           dispatch(toggledinein(true))
+           dispatch(getallrestrauntsbyid(restrauntwithindinindistancedata.Id, AuthToken));
+
+           navigation.navigate('Restaurantpage', {
+             latitude: lat,
+             longitude: long,
+           });
+           // navigation.navigate('Restaurantpage');
+        }}
+        togglemodel={closedinein}
+        name= {restrauntwithindinindistancedata?.NameAsPerTradeLicense}
+      
       />
+   
+      <Toast ref={toast} style={styleSheet.toastmessage} />
     </Animated.View>
   );
 };
 
 const styleSheet = StyleSheet.create({
+  toastmessage: {
+    marginBottom: scalableheight.ten,
+    justifyContent: 'center',
+  },
+  container: {
+    height: '100%',
+    width: '100%',
+    alignSelf: 'center',
+  },
+  innercontainer: {
+    backgroundColor: '#F6F6F6',
+    height: '100%',
+    width: '100%',
+  },
+  imagebackgroundcontainer: {
+    width: '100%',
+
+    zIndex: 10,
+    elevation: 10,
+  },
   Text1: {
     color: '#F9B35E',
     fontSize: 18,
@@ -1547,6 +1594,168 @@ const styleSheet = StyleSheet.create({
     shadowOpacity: 0.18,
     shadowRadius: 1.0,
     elevation: 3,
+  },
+  imageStyle: {
+    borderBottomLeftRadius: fontSize.twenty,
+    borderBottomRightRadius: fontSize.twenty,
+  },
+  innercontainer2: {
+    paddingHorizontal: scalableheight.one,
+  },
+
+  nearby: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.sixteen,
+    color: '#29262A',
+    // paddingBottom:scalableheight.one
+  },
+  nearby2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: scalableheight.one,
+  },
+  openmapstyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: fontSize.circle,
+
+    height: scalableheight.four,
+    width: scalableheight.four,
+  },
+  openmapimagestyle: {
+    width: '100%',
+    height: '100%',
+    zIndex: 201,
+    elevation: 201,
+  },
+  mapvisible: {
+    height: scalableheight.fiftyfive,
+    width: '100%',
+    backgroundColor: '#F6F6F6',
+    borderRadius: fontSize.fifteen,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: scalableheight.thirtythree,
+    zIndex: 1,
+  },
+  locationicon: {
+    width: '100%',
+    height: '100%',
+    borderRadius: fontSize.fifteen,
+  },
+  expandedicon: {
+    height: scalableheight.six,
+    width: scalableheight.six,
+  },
+  marker: {
+    height: scalableheight.six,
+    width: scalableheight.six,
+  },
+  smallmarker: {
+    height: scalableheight.four,
+    width: scalableheight.four,
+  },
+  mapview2: {
+    width: scalableheight.six,
+    height: scalableheight.six,
+    backgroundColor: '#F6F6F6',
+    borderRadius: fontSize.borderradiusmedium,
+    shadowColor: '#470000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 3,
+    position: 'absolute',
+    bottom: scalableheight.thirtyfour,
+    right: scalableheight.one,
+    elevation: 5,
+    zIndex: 5,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: scalableheight.one,
+  },
+  infobar2: {
+    width: '100%',
+    alignSelf: 'center',
+
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    paddingHorizontal: scalableheight.two,
+
+    elevation: 5,
+    zIndex: 5,
+    position: 'absolute',
+    bottom: scalableheight.twentythree,
+  },
+  infobarview: {
+    width: '100%',
+    alignSelf: 'center',
+
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    paddingHorizontal: scalableheight.one,
+    marginTop: scalableheight.two,
+    elevation: 5,
+    zIndex: 5,
+  },
+  search: {
+    paddingHorizontal: scalableheight.one,
+    position: 'absolute',
+    bottom: scalableheight.one,
+    zIndex: 200,
+    elevation: 200,
+    backgroundColor: '#F6F6F6',
+    width: '100%',
+  },
+  listimage: {
+    width: '100%',
+    height: '100%',
+    zIndex: 201,
+    elevation: 201,
+  },
+  restaurantstyle: {
+    position: 'absolute',
+    bottom: 0,
+    width: Dimensions.get('window').width / 1,
+    height: scalableheight.twentytwo,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    // borderWidth:1, borderColor:"red"
+  },
+  norestaurant: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    color: '#29262A',
+    opacity: 0.4,
+    marginTop: scalableheight.two,
+  },
+  skeletonstyle: {
+    // marginVertical: scalableheight.five,
+    height: '100%',
+    width: '100%',
+    textAlign: 'center',
+  },
+  flatlistrefresh: {
+    width: '100%',
+    paddingHorizontal: scalableheight.one,
+  },
+  norestaurantview2: {
+    width: Dimensions.get('window').width / 1,
+    height: Dimensions.get('window').height / 1.2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  norestaurant3: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    color: '#29262A',
+    opacity: 0.4,
   },
 });
 export default Home;

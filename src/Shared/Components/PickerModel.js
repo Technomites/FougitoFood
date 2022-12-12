@@ -1,14 +1,16 @@
 import React, {useState} from 'react';
 import {Modal, StyleSheet, Text, View, TextInput} from 'react-native';
-import Icon from "react-native-vector-icons/Ionicons"
+import Icon from 'react-native-vector-icons/Ionicons';
 import AuthButton from '../../Shared/Components/AuthButton';
 const App = props => {
   const [text, settext] = useState('');
   return (
     <View style={{flex: 1}}>
-      <Modal 
-      statusBarTranslucent
-      animationType="fade" transparent={true} visible={props.modalPopUp}>
+      <Modal
+        statusBarTranslucent
+        animationType="fade"
+        transparent={true}
+        visible={props.modalPopUp}>
         <View
           style={{
             flex: 1,

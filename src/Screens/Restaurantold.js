@@ -17,8 +17,8 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import ScreenWrapper from '../Shared/Components/ScreenWrapper';
-import renderIf from 'render-if';
-// import Modal from "react-native-modal";
+
+
 import {
   getpopularcategoriesbyid,
   getrestrauntmenubyid,
@@ -29,7 +29,7 @@ import {
   pickupstate,
   markfavourite,
   getallrestrauntsbyid,
-  clearfavourite
+  clearfavourite,
 } from '../Actions/actions';
 // import changeNavigationBarColor, {
 //   hideNavigationBar,
@@ -38,9 +38,9 @@ import {
 import Toast from 'react-native-toast-notifications';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
-import RNAndroidKeyboardAdjust from 'rn-android-keyboard-adjust';
-import {SliderBox} from 'react-native-image-slider-box';
-import ImagesSwiper from 'react-native-image-swiper';
+
+
+
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import NetInfo from '@react-native-community/netinfo';
 import HeaderComponentRestaurant from '../Shared/Components/HeaderComponentRestaurant';
@@ -62,7 +62,6 @@ import {
   withCollapsibleContext,
   StickyView,
   CollapsibleView,
-  
 } from '@r0b0t3d/react-native-collapsible';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -81,7 +80,7 @@ import {createConfigItem} from '@babel/core';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import moment from 'moment';
 // import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {styles} from 'react-native-element-dropdown/src/components/TextInput/styles';
+
 import Custombottomsheet from '../Shared/Components/Custombottomsheet';
 import FocusAwareStatusBar from '../component/StatusBar/customStatusBar';
 
@@ -93,7 +92,7 @@ const Restaurantold = ({navigation, drawerAnimationStyle, props, route}) => {
   const [dataSourceCords, setDataSourceCords] = useState([]);
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(false);
-  const [selecteditemimage, setselecteditemimage] = useState("");
+  const [selecteditemimage, setselecteditemimage] = useState('');
   const [dataSourceCordsHorizontal, setdataSourceCordsHorizontal] = useState(
     [],
   );
@@ -212,8 +211,7 @@ const Restaurantold = ({navigation, drawerAnimationStyle, props, route}) => {
     price,
     AuthToken,
     addedtofavourite,
-    Selectedcurrentaddress
- 
+    Selectedcurrentaddress,
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
@@ -224,11 +222,10 @@ const Restaurantold = ({navigation, drawerAnimationStyle, props, route}) => {
 
     scrollToIndex,
     scrollHandler,
-    
 
     scrollY, // <-- Animated scroll position. In case you need to do some animation in your header or somewhere else
   } = useCollapsibleContext();
-  
+
   // useEffect(() => {
   //     console.log(route?.params?.latitude, 'hellow');
   //   }, [route?.params?.latitude]);
@@ -251,28 +248,21 @@ const Restaurantold = ({navigation, drawerAnimationStyle, props, route}) => {
   //   //  Return the function to unsubscribe from the event so it gets removed on unmount
   //   return unsubscribe;
   // }, [navigation]);
-  
 
   useEffect(() => {
-    if(addedtofavourite == "Success"){
-
-      dispatch(getallrestrauntsbyid(restrauntdetails?.RestaurantBranchId, AuthToken));
-  dispatch(clearfavourite())
-      
+    if (addedtofavourite == 'Success') {
+      dispatch(
+        getallrestrauntsbyid(restrauntdetails?.RestaurantBranchId, AuthToken),
+      );
+      dispatch(clearfavourite());
     }
-   
-
   }, [addedtofavourite]);
 
   useEffect(() => {
-    if(restrauntdetails?.RestaurantBranchId != undefined){
-      dispatch(getpopularcategoriesbyid(restrauntdetails?.RestaurantBranchId))
-      dispatch(getrestrauntmenubyid(restrauntdetails?.RestaurantBranchId))
-  
-      
+    if (restrauntdetails?.RestaurantBranchId != undefined) {
+      dispatch(getpopularcategoriesbyid(restrauntdetails?.RestaurantBranchId));
+      dispatch(getrestrauntmenubyid(restrauntdetails?.RestaurantBranchId));
     }
-   
-
   }, [restrauntdetails]);
 
   // useEffect(() => {
@@ -280,7 +270,7 @@ const Restaurantold = ({navigation, drawerAnimationStyle, props, route}) => {
   //     setcartvisible(true)
   //   }else{
   //     setcartvisible(false)
-   
+
   //   }
   //  console.log("all cart data length" + cartdata.length + "data " + JSON.stringify(cartdata))
   // }, [cartdata]);
@@ -299,68 +289,71 @@ const Restaurantold = ({navigation, drawerAnimationStyle, props, route}) => {
     }
   }, [modalVisible]);
 
-  function additemtocart(){
- 
-    let errorcaused = false
+  function additemtocart() {
+    let errorcaused = false;
     let arr = retaurantmenucategorydataoption;
-   
+
     for (const key in arr.MenuItemOptions) {
       // console.log("yo yo" + JSON.stringify(arr.MenuItemOptions[key]))
-  let found = 0
+      let found = 0;
 
-        for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
-        
-        if(arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true){
+      for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
+        if (
+          arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true
+        ) {
           // console.log("yo yo" + JSON.stringify(arr.MenuItemOptions[key].MenuItemOptionValues))
-found = 1
+          found = 1;
+        }
+      }
+      if (found == 0 && arr.MenuItemOptions[key].IsRequired == true) {
+        errorcaused = true;
+        toast.current.show(
+          arr.MenuItemOptions[key].Title + ' is a required field',
+          {
+            type: 'normal',
+            placement: 'bottom',
+            duration: 4000,
+            offset: 10,
+            animationType: 'slide-in',
+          },
+        );
+      }
+    }
+
+    if (errorcaused == true) {
+    } else {
+      let a = [];
+      arr['SpecialInstructios'] = specialinstructions;
+      arr['Qty'] = count;
+
+      a.push(arr);
+
+      let addedprice = arr.Price;
+      for (const priceindex in arr.MenuItemOptions) {
+        for (const i in arr.MenuItemOptions[priceindex].MenuItemOptionValues) {
+          if (
+            arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].selected ==
+            true
+          ) {
+            addedprice =
+              addedprice +
+              arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].Price;
           }
         }
-      if(found == 0 &&  arr.MenuItemOptions[key].IsRequired == true){
-        errorcaused = true
-        toast.current.show(arr.MenuItemOptions[key].Title + " is a required field", {
-          type: 'normal',
-          placement: 'bottom',
-          duration: 4000,
-          offset: 10,
-          animationType: 'slide-in',
-        });
       }
-
-    }
-
-    if(errorcaused == true){
-
-    }else{
-      let a = []
-      arr["SpecialInstructios"] = specialinstructions
-      arr["Qty"] = count
-  
-      a.push(
-        arr
-      )
-
-
-    let addedprice = arr.Price
-    for(const priceindex in arr.MenuItemOptions){
-      for(const i in arr.MenuItemOptions[priceindex].MenuItemOptionValues){
-        if(arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].selected == true){
-          addedprice = addedprice + arr.MenuItemOptions[priceindex].MenuItemOptionValues[i].Price
-        }
-      }
-    } 
-    arr["priceperitem"] = addedprice
-    addedprice = addedprice * count
-    arr["completeitemorderprice"] = addedprice
-    addedprice = price + addedprice
-    dispatch(storecartprice(addedprice))
-    dispatch(storecartdata(a))
-    console.log("this is the price" + JSON.stringify(addedprice))
-    console.log("this is the data going into the cart" + JSON.stringify(arr))
-   clearandclose();
-    setcartvisible(true);
+      arr['priceperitem'] = addedprice;
+      addedprice = addedprice * count;
+      arr['completeitemorderprice'] = addedprice;
+      addedprice = price + addedprice;
+      dispatch(storecartprice(addedprice));
+      dispatch(storecartdata(a));
+      console.log('this is the price' + JSON.stringify(addedprice));
+      console.log('this is the data going into the cart' + JSON.stringify(arr));
+      clearandclose();
+      setcartvisible(true);
     }
   }
-  
+
   function clearandclose() {
     collapse();
     Keyboard.dismiss();
@@ -406,9 +399,9 @@ found = 1
   }, [modalVisible]);
 
   useEffect(() => {
-   dispatch(pickupstate(isEnabled))
+    dispatch(pickupstate(isEnabled));
   }, [isEnabled]);
-  
+
   useEffect(() => {
     if (lat != null && long != null) {
       Geocoder.from(lat, long)
@@ -518,7 +511,7 @@ found = 1
           data[index].visible = false;
         }
         data[index].visible = true;
-      dispatch(updatedmenuselection(data))
+        dispatch(updatedmenuselection(data));
       }}
       style={{
         backgroundColor: 'transparent',
@@ -527,7 +520,6 @@ found = 1
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        
       }}>
       <Text
         onLayout={event => {
@@ -548,32 +540,38 @@ found = 1
   );
 
   function updateservingstate(index, arrindex) {
-    console.log(arrindex)
+    console.log(arrindex);
 
     let arr = retaurantmenucategorydataoption;
-   
-    for (const key in arr.MenuItemOptions) {
 
-      if(key == arrindex){
+    for (const key in arr.MenuItemOptions) {
+      if (key == arrindex) {
         for (const item in arr.MenuItemOptions[key].MenuItemOptionValues) {
           if (item == index) {
-            console.log("hello")
-                    if (arr.MenuItemOptions[key].MenuItemOptionValues[item].selected == true) {
-                      
-                      arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = false;
-                    } else {
-                      arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = true;
-                    }
-                  } else {
-                    console.log("bye")
-                    arr.MenuItemOptions[key].MenuItemOptionValues[item].selected = false;
-                  }
+            console.log('hello');
+            if (
+              arr.MenuItemOptions[key].MenuItemOptionValues[item].selected ==
+              true
+            ) {
+              arr.MenuItemOptions[key].MenuItemOptionValues[
+                item
+              ].selected = false;
+            } else {
+              arr.MenuItemOptions[key].MenuItemOptionValues[
+                item
+              ].selected = true;
+            }
+          } else {
+            console.log('bye');
+            arr.MenuItemOptions[key].MenuItemOptionValues[
+              item
+            ].selected = false;
+          }
         }
       }
-
     }
     // setmodaldataoptions(arr);
-    dispatch(savemenucategoryoptiondetailsdata(arr))
+    dispatch(savemenucategoryoptiondetailsdata(arr));
     console.log('modaldataoptions' + JSON.stringify(arr));
     // console.log('arr' + JSON.stringify(arr.MenuItemOptions.MenuItemOptionValues));
   }
@@ -600,7 +598,7 @@ found = 1
   };
 
   return (
-    <ScreenWrapper drawer={drawerAnimationStyle} style={{flex: 1, }}>
+    <ScreenWrapper drawer={drawerAnimationStyle} style={{flex: 1}}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
         backgroundColor="transparent"
@@ -637,7 +635,7 @@ found = 1
                   height: '90%',
                   borderRadius: fontSize.eleven,
                   backgroundColor: 'white',
-                  overflow:"hidden"
+                  overflow: 'hidden',
                 }}>
                 <View style={{width: '100%', height: '30%'}}>
                   <Image
@@ -648,9 +646,8 @@ found = 1
                     }}
                     source={{uri: selecteditemimage}}
                   />
-                  {renderIf(
-                    serving?.filter(item => item.selected == true) != '',
-                  )(
+                  {
+                    serving?.filter(item => item.selected == true) != '' &&
                     <View
                       style={{
                         flexDirection: 'row',
@@ -690,7 +687,7 @@ found = 1
                           );
                         })}
                     </View>,
-                  )}
+                  }
                   <TouchableOpacity
                     onPress={() => {
                       clearandclose();
@@ -714,97 +711,96 @@ found = 1
                     width: '100%',
                     height: '53%',
                     padding: scalableheight.two,
-                    
                   }}>
                   <ScrollView
                     showsVerticalScrollIndicator={false}
                     nestedScrollEnabled={true}
                     contentContainerStyle={{
                       flexGrow: 1,
-                      justifyContent: retaurantmenucategorydataoption.MenuItemOptions.length > 0 ?'space-evenly' : null,
+                      justifyContent:
+                        retaurantmenucategorydataoption.MenuItemOptions.length >
+                        0
+                          ? 'space-evenly'
+                          : null,
                     }}>
-                      <View>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Bold',
-                        fontSize: fontSize.sixteen,
-                        color: 'black',
-                      }}>
-                   {retaurantmenucategorydataoption?.Name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.fourteen,
-                        color: 'black',
-                      }}>
-                       {retaurantmenucategorydataoption?.Description}
-                    </Text>
-                    <View style={{height: scalableheight.one}} />
+                    <View>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-Bold',
+                          fontSize: fontSize.sixteen,
+                          color: 'black',
+                        }}>
+                        {retaurantmenucategorydataoption?.Name}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-Medium',
+                          fontSize: fontSize.fourteen,
+                          color: 'black',
+                        }}>
+                        {retaurantmenucategorydataoption?.Description}
+                      </Text>
+                      <View style={{height: scalableheight.one}} />
                     </View>
-                    {retaurantmenucategorydataoption?.MenuItemOptions?.length > 0 &&
-                  
-                  retaurantmenucategorydataoption.MenuItemOptions?.map((item, key) => {
-                      return (
-                        item?.MenuItemOptionValues[0].Price != 0.00 ? 
-                        <>
-                          
-                        <MultiChoiceDropDown
-                        title={item?.Title}
-                        data={item?.MenuItemOptionValues}
-                        index={key}
-                        update={updateservingstate}
-                      />
-                         <View style={{height: scalableheight.one}} />
-                      </>
-                        : 
-                        <>
+                    {retaurantmenucategorydataoption?.MenuItemOptions?.length >
+                      0 &&
+                      retaurantmenucategorydataoption.MenuItemOptions?.map(
+                        (item, key) => {
+                          return item?.MenuItemOptionValues[0].Price != 0.0 ? (
+                            <>
+                              <MultiChoiceDropDown
+                                title={item?.Title}
+                                data={item?.MenuItemOptionValues}
+                                index={key}
+                                update={updateservingstate}
+                              />
+                              <View style={{height: scalableheight.one}} />
+                            </>
+                          ) : (
+                            <>
+                              <Mltichoicehorizontallist
+                                title={item?.Title}
+                                data={item?.MenuItemOptionValues}
+                                index={key}
+                                update={updateservingstate}
+                              />
+                              <View style={{height: scalableheight.one}} />
+                            </>
+                          );
+                        },
+                      )}
 
-                 
-                        <Mltichoicehorizontallist
-                        title={item?.Title}
-                        data={item?.MenuItemOptionValues}
-                        index={key}
-                        update={updateservingstate}
-                      />
-                         <View style={{height: scalableheight.one}} />
-                      </>
-                      )})
-                 
-}
+                    <View>
+                      <View style={{height: scalableheight.one}} />
+                      <Text
+                        style={{
+                          fontFamily: 'Inter-SemiBold',
+                          fontSize: fontSize.thirteen,
+                          color: 'black',
+                          opacity: 0.4,
+                        }}>
+                        Special Instructions
+                      </Text>
+                      <View style={{height: scalableheight.one}} />
+                      <TextInput
+                        multiline
+                        value={specialinstructions}
+                        onChangeText={text => setspecialinstructions(text)}
+                        placeholder={'Type here'}
+                        style={{
+                          ...styleSheet.shadow,
+                          width: '98%',
+                          height: scalableheight.fifteen,
+                          fontSize: fontSize.fifteen,
+                          backgroundColor: '#F9F9F9',
+                          alignSelf: 'center',
+                          borderRadius: fontSize.borderradiusmedium,
+                          paddingHorizontal: '5%',
 
-                   
-<View>
-                    <View style={{height: scalableheight.one}} />
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.thirteen,
-                        color: 'black',
-                        opacity: 0.4,
-                      }}>
-                      Special Instructions
-                    </Text>
-                    <View style={{height: scalableheight.one}} />
-                    <TextInput
-                      multiline
-                      value={specialinstructions}
-                      onChangeText={text => setspecialinstructions(text)}
-                      placeholder={'Type here'}
-                      style={{
-                        ...styleSheet.shadow,
-                        width: '98%',
-                        height: scalableheight.fifteen,
-                        fontSize: fontSize.fifteen,
-                        backgroundColor: '#F9F9F9',
-                        alignSelf: 'center',
-                        borderRadius: fontSize.borderradiusmedium,
-                        paddingHorizontal: '5%',
-            
-                        textAlignVertical: 'top',
-                      }}
-                    />
-</View>
+                          textAlignVertical: 'top',
+                        }}
+                      />
+                    </View>
                     {keyboardopen ? (
                       <View style={{height: scalableheight.two}} />
                     ) : null}
@@ -868,7 +864,7 @@ found = 1
                     title={'Add To Cart'}
                     textcolor={'white'}
                     onPress={() => {
-                   additemtocart()
+                      additemtocart();
                     }}
                   />
                 </View>
@@ -965,7 +961,7 @@ found = 1
           </TouchableOpacity>
         </Animatable.View>
       )}
-   
+
       <View
         style={{
           height: '100%',
@@ -975,18 +971,11 @@ found = 1
           zIndex: 1,
           elevation: 1,
           position: 'absolute',
-          backgroundColor: '#F6F6F6'
-       
-
+          backgroundColor: '#F6F6F6',
         }}>
- 
-             
-        <CollapsibleContainer style={{  backgroundColor: '#F6F6F6', }}>
-     
-          <CollapsibleHeaderContainer style={{  backgroundColor: '#F6F6F6'}}>
-        
-          <StickyView>
-     
+        <CollapsibleContainer style={{backgroundColor: '#F6F6F6'}}>
+          <CollapsibleHeaderContainer style={{backgroundColor: '#F6F6F6'}}>
+            <StickyView>
               <View
                 style={{
                   width: '100%',
@@ -999,13 +988,9 @@ found = 1
                     scalableheight.seven +
                     getStatusBarHeight() +
                     scalableheight.seven,
-                 
-
                 }}>
                 {/* <HeaderComponentRestaurant newNotificationCount={newNotificationCount}  isEnabled={isEnabled}
                        toggleSwitch={toggleSwitch}/>  */}
-                  
-            
               </View>
             </StickyView>
             <ImageBackground
@@ -1047,8 +1032,16 @@ found = 1
                 }}>
                 <View style={{width: '95%'}}>
                   <Infobar
-                      Heading={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].place : 'Current Location'}
-                      Details={Selectedcurrentaddress?.length > 0 ? Selectedcurrentaddress[0].address :  pinlocation}
+                    Heading={
+                      Selectedcurrentaddress?.length > 0
+                        ? Selectedcurrentaddress[0].place
+                        : 'Current Location'
+                    }
+                    Details={
+                      Selectedcurrentaddress?.length > 0
+                        ? Selectedcurrentaddress[0].address
+                        : pinlocation
+                    }
                     onPress={() => {
                       setshowbottomsheet(true);
                     }}
@@ -1058,7 +1051,7 @@ found = 1
             </ImageBackground>
 
             <Reviewscontainer
-            token= {AuthToken}
+              token={AuthToken}
               rating={restrauntdetails?.AvgRating}
               reviews={restrauntdetails?.RatingCount}
               title={restrauntdetails?.BranchName}
@@ -1067,13 +1060,23 @@ found = 1
                 // console.log(JSON.stringify(restrauntdetails.RestaurantBranchId))
                 // console.log( restrauntdetails?.Isfavourite)
 
-                 dispatch(markfavourite(restrauntdetails?.RestaurantBranchId, restrauntdetails?.Isfavourite ? "DELETE" : "POST", AuthToken))
+                dispatch(
+                  markfavourite(
+                    restrauntdetails?.RestaurantBranchId,
+                    restrauntdetails?.Isfavourite ? 'DELETE' : 'POST',
+                    AuthToken,
+                  ),
+                );
               }}
-              Isfavourite = {restrauntdetails?.Isfavourite}
+              Isfavourite={restrauntdetails?.Isfavourite}
               image={restrauntdetails?.Logo}
             />
 
-            <View style={{paddingHorizontal: scalableheight.one,   backgroundColor: '#F6F6F6',}}>
+            <View
+              style={{
+                paddingHorizontal: scalableheight.one,
+                backgroundColor: '#F6F6F6',
+              }}>
               <Animatable.View
                 animation="bounceInRight"
                 easing="ease"
@@ -1085,7 +1088,6 @@ found = 1
                   paddingVertical: scalableheight.two,
                   justifyContent: 'flex-start',
                   width: '100%',
-            
                 }}>
                 <View
                   style={{
@@ -1095,7 +1097,6 @@ found = 1
                     justifyContent: 'center',
                     backgroundColor: '#E14E4E',
                     borderRadius: fontSize.borderradius,
-                  
                   }}>
                   <MaterialIcons
                     name="local-fire-department"
@@ -1131,11 +1132,10 @@ found = 1
                 }}
               />
             </View>
-          
+
             <StickyView style={{backgroundColor: 'transparent'}}>
-          
               <FlatList
-              key={"1"}
+                key={'1'}
                 keyExtractor={(item, index) => index.toString()}
                 refs={scrollviewhorizontalref}
                 overflow={'hidden'}
@@ -1146,9 +1146,8 @@ found = 1
                   width: '100%',
                   height: scalableheight.seven,
                   flexDirection: 'row',
-                   backgroundColor: 'transparent',
+                  backgroundColor: 'transparent',
                   // backgroundColor: '#F6F6F6',
-             
                 }}
                 data={restrauntmenu}
                 renderItem={rendertypes}
@@ -1156,53 +1155,45 @@ found = 1
                 // onEndReachedThreshold={0.1}
               />
             </StickyView>
-        
           </CollapsibleHeaderContainer>
 
           <CollapsibleScrollView
-    
-              keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item, index) => index.toString()}
             refs={scrollviewref}
             scrollEventThrottle={16}
-            
             onMomentumScrollEnd={event => {
               // console.log("3eeee" + event.nativeEvent?.contentOffset?.y)
               // let num = scrollOffsetY
               // console.log("a" + JSON.stringify(dataSourceCords) )
               // console.log("a" + JSON.stringify(dataSourceCords) )
-             
+
               let y = event.nativeEvent.contentOffset.y;
               // console.log("y" + JSON.stringify(y) )
 
+              let closest = dataSourceCords[1];
+              for (let item of dataSourceCords) {
+                if (Math.abs(item - y) < Math.abs(closest - y)) {
+                  closest = item;
+                }
+              }
+              for (const index in dataSourceCords) {
+                if (dataSourceCords[index] == closest) {
+                  if (restrauntmenu[index - 1]?.visible != true) {
+                    let data = [...restrauntmenu];
+                    for (const index in data) {
+                      data[index].visible = false;
+                    }
+                    data[index - 1].visible = true;
 
-
-let closest = dataSourceCords[1];
-  for(let item of dataSourceCords){
-    if(Math.abs(item - y)<Math.abs(closest - y)){
-      closest = item;
-    }
-  }
-for(const index in dataSourceCords){
-  if(dataSourceCords[index] == closest){
-    if (restrauntmenu[index - 1]?.visible != true) {
-            let data = [...restrauntmenu];
-            for (const index in data) {
-              data[index].visible = false;
-            }
-            data[index - 1].visible = true;
-
-
-
-            dispatch(updatedmenuselection(data))
-            scrollviewhorizontalref.current?.scrollToIndex({
-              index: index - 1 ,
-              animated: true,
-            });
-            //  scrollviewhorizontalref.current.scrollTo({ y: dataSourceCordsHorizontal[0], animated: true });
-          }
-   
-  }
-}
+                    dispatch(updatedmenuselection(data));
+                    scrollviewhorizontalref.current?.scrollToIndex({
+                      index: index - 1,
+                      animated: true,
+                    });
+                    //  scrollviewhorizontalref.current.scrollTo({ y: dataSourceCordsHorizontal[0], animated: true });
+                  }
+                }
+              }
               // if (y < dataSourceCords[2] - 150) {
               //   if (types[0].visible != true) {
               //     let data = [...types];
@@ -1282,51 +1273,45 @@ for(const index in dataSourceCords){
               backgroundColor: '#F6F6F6',
               paddingHorizontal: scalableheight.one,
             }}>
-             
-             {restrauntmenu.map((item, key) => {
+            {restrauntmenu.map((item, key) => {
               return (
-               <>
-               {search == "" &&
-                <Text
-              onLayout={event => {
-                const layout = event.nativeEvent.layout;
-                dataSourceCords[key + 1] = layout.y; // we store this offset values in an array
-              }}
-              style={styleSheet.heading}>
-              {item?.CategoryName}{' '}
-            </Text>
-             }
-            {item?.Items?.map((item, key) => {
-              return (
-                item?.Name.toLowerCase().includes(search.trim().toLowerCase()) ? 
-                <View style={{width: '100%', alignItems: 'center'}}>
-                  <Starters
-                    image={item?.Image}
-                    title={item?.Name}
-                    description={
-                     item?.Description
-                    }
-                    price={item?.Price}
-                    onPress={() => {
-                      setselecteditemimage(item?.Image)
-                      setmodaldataoptions(item)
-                      setmodaldataoptionsindex(key)
-                      dispatch(savemenucategoryoptiondetailsdata(item))
-                      setspecialinstructions("")
-                      setcount(1)
-                      setmodalVisible(true);
-                    }}
-                  />
-                </View> : null
+                <>
+                  {search == '' && (
+                    <Text
+                      onLayout={event => {
+                        const layout = event.nativeEvent.layout;
+                        dataSourceCords[key + 1] = layout.y; // we store this offset values in an array
+                      }}
+                      style={styleSheet.heading}>
+                      {item?.CategoryName}{' '}
+                    </Text>
+                  )}
+                  {item?.Items?.map((item, key) => {
+                    return item?.Name.toLowerCase().includes(
+                      search.trim().toLowerCase(),
+                    ) ? (
+                      <View style={{width: '100%', alignItems: 'center'}}>
+                        <Starters
+                          image={item?.Image}
+                          title={item?.Name}
+                          description={item?.Description}
+                          price={item?.Price}
+                          onPress={() => {
+                            setselecteditemimage(item?.Image);
+                            setmodaldataoptions(item);
+                            setmodaldataoptionsindex(key);
+                            dispatch(savemenucategoryoptiondetailsdata(item));
+                            setspecialinstructions('');
+                            setcount(1);
+                            setmodalVisible(true);
+                          }}
+                        />
+                      </View>
+                    ) : null;
+                  })}
+                </>
               );
             })}
-               </>
-              );
-            })}
-
-           
-
-         
           </CollapsibleScrollView>
         </CollapsibleContainer>
       </View>
@@ -1339,17 +1324,14 @@ for(const index in dataSourceCords){
         onPressnewlocation={() => {
           getnewlocation();
         }}
-       setlocation = {false}
+        setlocation={false}
         latitude={lat}
         longitude={long}
       />
-       <Toast
+      <Toast
         ref={toast}
         style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
       />
-
-
-
     </ScreenWrapper>
   );
 };

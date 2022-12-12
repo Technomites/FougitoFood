@@ -21,36 +21,20 @@ export default function PlainHeader(props) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  function navigatetoscreen() {
+    // navigation.navigate("Home")
+    if (props.previousscreen == 'checkout') {
+      navigation.navigate('Drawernavigator');
+    } else {
+      navigation.goBack();
+    }
+  }
   return (
     <View style={styleSheet.header}>
-      <View
-        style={{
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-        }}>
+      <View style={styleSheet.innerheadercontainer}>
         <TouchableOpacity
-          onPress={() => {
-            // navigation.navigate("Home")
-            if(props.previousscreen == "checkout") {
-              navigation.navigate('Drawernavigator');
-            } else{
-              navigation.goBack()
-            }
-        
-            
-            
-          
-   
-           
-          }}
-          style={{
-            height: scalableheight.seven,
-            width: scalableheight.five,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+          onPress={navigatetoscreen}
+          style={styleSheet.innerviewcontainer}>
           {/* <View style={styleSheet.backButtonMain}> */}
           <AntDesign
             style={{alignSelf: 'center'}}
@@ -61,22 +45,9 @@ export default function PlainHeader(props) {
           {/* </View> */}
         </TouchableOpacity>
 
-        <Text
-          style={{
-            color: 'black',
-            fontSize: fontSize.seventeen,
-            fontFamily: 'Inter-SemiBold',
-          }}>
-          {props.title}
-        </Text>
+        <Text style={styleSheet.text4}>{props.title}</Text>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
-            style={{
-              height: scalableheight.seven,
-              width: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}></TouchableOpacity>
+          <TouchableOpacity style={styleSheet.touchableview}></TouchableOpacity>
         </View>
       </View>
     </View>
@@ -91,7 +62,7 @@ const styleSheet = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#F6F6F6',
     paddingHorizontal: scalableheight.one,
   },
 
@@ -114,5 +85,28 @@ const styleSheet = StyleSheet.create({
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  innerheadercontainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  innerviewcontainer: {
+    height: scalableheight.seven,
+    width: scalableheight.five,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text4: {
+    color: 'black',
+    fontSize: fontSize.seventeen,
+    fontFamily: 'Inter-SemiBold',
+  },
+  touchableview: {
+    height: scalableheight.seven,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

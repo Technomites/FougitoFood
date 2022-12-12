@@ -10,7 +10,6 @@ import {
   Alert,
   Platform,
   StyleSheet,
-  
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
@@ -39,8 +38,7 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import Favourites from '../Shared/Components/Favourites';
 
-import {CameraScreen} from 'react-native-camera-kit';
-
+import {Camera, CameraScreen} from 'react-native-camera-kit';
 
 const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
   console.log(route?.params?.latitude, 'latitude');
@@ -60,36 +58,39 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
   const dispatch = useDispatch();
 
   const requestCameraPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: "Cool Photo App Camera Permission",
-          message:
-            "Cool Photo App needs access to your camera " +
-            "so you can take awesome pictures.",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK"
+    if (Platform.OS != 'ios') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Fougito Food App Camera Permission',
+            message:
+              'Fougito Food App needs access to your camera to scan QR code.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          setCamScanner(true);
+          console.log('You can use the camera');
+        } else {
+          console.log('Camera permission denied');
         }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        setCamScanner(true);
-        console.log("You can use the camera");
-      } else {
-        console.log("Camera permission denied");
+      } catch (err) {
+        console.warn(err);
       }
-    } catch (err) {
-      console.warn(err);
+    }
+    if (Platform.OS == 'ios') {
+      setCamScanner(true);
     }
   };
- 
+
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-     
       setCamScanner(false);
-      requestCameraPermission()
-   
+      requestCameraPermission();
+
       // setTimeout(async () => {
       //   setCamScanner(true);
       // }, 500);
@@ -133,9 +134,9 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
   };
   return (
     <Animated.View style={{flex: 1, ...drawerAnimationStyle}}>
-          <FocusAwareStatusBar
-        barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
-        backgroundColor="white"
+      <FocusAwareStatusBar
+        barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
+        backgroundColor="transparent"
       />
       <View
         style={{
@@ -144,28 +145,26 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
           width: '100%',
           backgroundColor: '#000',
         }}>
-           
-        <View style={{position: 'absolute', top: getStatusBarHeight()}}>
-          
+        <View
+          style={{position: 'absolute', top: getStatusBarHeight(), zIndex: 1}}>
           <TransparentHeader
             title={'Scan QR Code'}
             refresh={qrvalue}
             onpressback={() => {
-             
-                // navigation.navigate("Home")
-                navigation.goBack();
-                setvisible(false)
-                setScanPermission(true);
-                setQrvalue('');
+              // navigation.navigate("Home")
+              navigation.goBack();
+              setvisible(false);
+              setScanPermission(true);
+              setQrvalue('');
             }}
             onpress={() => {
-              setvisible(false)
+              setvisible(false);
               setScanPermission(true);
               setQrvalue('');
             }}
           />
         </View>
-        {camscanner &&(
+        {camscanner && (
           <CameraScreen
             scanBarcode={scanpermission}
             onReadCode={event => {
@@ -177,7 +176,7 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
                   AuthToken,
                 ),
               );
-              setvisible(true)
+              setvisible(true);
               console.log(event.nativeEvent.codeStringValue, 'eventtt');
             }}
             showFrame={true} // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
@@ -205,7 +204,7 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
             }}
             easing="ease"
             iterationCount={1}> */}
-              {qrvalue != '' && visible == true && (
+        {qrvalue != '' && visible == true && (
           <View>
             <View
               style={{
@@ -226,7 +225,7 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
                   restrauntdetails?.AvgRating +
                   ' (' +
                   restrauntdetails?.RatingCount +
-                  ' reviews)'
+                  ' Reviews)'
                 }
                 time={
                   restrauntdetails?.OpeningTime +
@@ -254,7 +253,7 @@ const Qrcode = ({navigation, drawerAnimationStyle, route, params}) => {
                   setQrvalue('');
                   setScanPermission(true);
                 }}
-                distance={ kmaway + ' away'}
+                distance={kmaway + 'Km away'}
               />
             </View>
           </View>
@@ -290,7 +289,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     padding: 10,
     alignItems: 'center',
   },
@@ -324,3 +323,9 @@ const styles = StyleSheet.create({
   },
 });
 export default Qrcode;
+
+
+
+
+
+

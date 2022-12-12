@@ -35,143 +35,72 @@ import {
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const Legal = ({navigation, drawerAnimationStyle}) => {
+  function gotocontactus() {
+    navigation.navigate('ContactUs');
+  }
   return (
-    <Animated.View
-      style={{flex: 1, backgroundColor: 'white', ...drawerAnimationStyle}}>
+    <Animated.View style={[styles.MainContainerview, drawerAnimationStyle]}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
       />
-      <View
-        style={{
-          alignSelf: 'center',
-          paddingTop: getStatusBarHeight(),
-          flex: 12,
-        }}>
+      <View style={styles.innerview}>
         <PlainHeader title={'Legal'} />
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{
-            paddingHorizontal: scalableheight.two,
-          }}>
+          style={styles.paddingHorizontaltwo}>
           <View>
             <TouchableOpacity
-              onPress={() => {
-                // navigation.navigate('TermsCondition');
-              }}
               activeOpacity={0.9}
-              style={{
-                ...styles.shadow,
-
-                ...styles.MainContainer,
-                paddingVertical: scalableheight.two,
-              }}>
-              <View
-                style={{
-                  ...styles.topViewContainer,
-                }}>
-                <Text
-                  style={{
-                    color: '#29262A',
-                    fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.fifteen,
-                    paddingHorizontal: scalableheight.two,
-                  }}>
-                  Terms & Conditions
-                </Text>
+              style={[
+                styles.MainContainer,
+                // ...styles.shadow,
+                styles.border,
+              ]}>
+              <View style={styles.topViewContainer}>
+                <Text style={styles.text4}>Terms & Conditions</Text>
               </View>
             </TouchableOpacity>
 
             <TouchableOpacity
               activeOpacity={0.9}
-              style={{
-                ...styles.shadow,
-                ...styles.MainContainer,
-                paddingVertical: scalableheight.two,
-              }}>
+              style={[
+                styles.MainContainer,
+                // ...styles.shadow,
+                styles.border,
+              ]}>
               <View
                 style={{
                   ...styles.topViewContainer,
                 }}>
-                <Text
-                  style={{
-                    color: '#29262A',
-                    fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.fifteen,
-                    paddingHorizontal: scalableheight.two,
-                  }}>
-                  Privacy Policy
-                </Text>
+                <Text style={styles.text4}>Privacy Policy</Text>
               </View>
             </TouchableOpacity>
 
             <TouchableOpacity
               activeOpacity={0.9}
-              style={{
-                ...styles.shadow,
-                ...styles.MainContainer,
-                paddingVertical: scalableheight.two,
-              }}>
-              <View
-                style={{
-                  ...styles.topViewContainer,
-                }}>
-                <Text
-                  style={{
-                    color: '#29262A',
-                    fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.fifteen,
-                    paddingHorizontal: scalableheight.two,
-                  }}>
-                  Return Policy
-                </Text>
+              style={[
+                styles.MainContainer,
+                // ...styles.shadow,
+                styles.border,
+              ]}>
+              <View style={styles.topViewContainer}>
+                <Text style={styles.text4}>Return Policy</Text>
               </View>
             </TouchableOpacity>
 
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginVertical: scalableheight.twenty,
-              }}>
-              <Text
-                style={{
-                  color: '#29262A',
-                  fontFamily: 'Inter-Bold',
-                  fontSize: fontSize.twenty,
-                }}>
-                Want To Know More?
-              </Text>
-              <Text
-                style={{
-                  fontFamily: 'Rubik-MediumItalic',
-                  fontSize: fontSize.twelve,
-                  color: '#636363',
-                  textAlign: 'center',
-                }}>
+            <View style={styles.innerview4}>
+              <Text style={styles.text7}>Want To Know More?</Text>
+              <Text style={styles.text8}>
                 For any further queries,{'\n'} Feel free to reach out to us.
               </Text>
-              <View style={{width: '50%'}}>
+              <View style={styles.width50}>
                 <TouchableOpacity
                   activeOpacity={0.9}
-                  onPress={() => {
-                    navigation.navigate('ContactUs');
-                  }}
-                  style={{
-                    ...styles.Loginbutton,
-                    marginTop: scalableheight.one,
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: fontSize.fifteen,
-                      color: 'white',
-                      fontFamily: 'Inter-SemiBold',
-                      width: '75%',
-                      textAlign: 'center',
-                    }}>
-                    CONTACT US
-                  </Text>
-                  <Text style={{width: '25%'}}>
+                  onPress={gotocontactus}
+                  style={[styles.Loginbutton, styles.margintopone]}>
+                  <Text style={styles.text9}>CONTACT US</Text>
+                  <Text style={styles.width25}>
                     <Entypo
                       name="phone"
                       size={scalableheight.three}
@@ -189,6 +118,40 @@ const Legal = ({navigation, drawerAnimationStyle}) => {
 };
 
 const styles = StyleSheet.create({
+  margintopone: {
+    marginTop: scalableheight.one,
+  },
+  width25: {width: '25%'},
+  text9: {
+    fontSize: fontSize.fifteen,
+    color: 'white',
+    fontFamily: 'Inter-SemiBold',
+    width: '75%',
+    textAlign: 'center',
+  },
+  width50: {width: '50%'},
+  text8: {
+    fontFamily: 'Rubik-MediumItalic',
+    fontSize: fontSize.twelve,
+    color: '#636363',
+    textAlign: 'center',
+  },
+  text7: {
+    color: '#29262A',
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.twenty,
+  },
+  innerview4: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: scalableheight.twenty,
+  },
+  text4: {
+    color: '#29262A',
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    paddingHorizontal: scalableheight.two,
+  },
   MainContainer: {
     borderRadius: fontSize.eleven,
     // paddingVertical: fontSize.fifteen,
@@ -214,6 +177,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+  },
+  MainContainerview: {
+    flex: 1,
+    backgroundColor: '#F6F6F6',
+  },
+  innerview: {
+    alignSelf: 'center',
+    paddingTop: getStatusBarHeight(),
+    flex: 12,
+  },
+  paddingHorizontaltwo: {
+    paddingHorizontal: scalableheight.two,
+  },
+  border: {
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
+
+    paddingVertical: scalableheight.two,
   },
 });
 export default Legal;

@@ -18,10 +18,9 @@ import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
-
+import FastImage from 'react-native-fast-image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 export default function Favourites(props) {
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -29,27 +28,9 @@ export default function Favourites(props) {
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={props.onPress}
-      style={{
-        ...styleSheet.shadow,
-        height: scalableheight.fifteen,
-        width: '99%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: scalableheight.one,
-        marginTop:scalableheight.one,
-        borderRadius: fontSize.eleven,
-        backgroundColor: 'white',
-        flexDirection: 'row',
-        alignSelf: 'center',
-      }}>
-      <View
-        style={{
-          height: '100%',
-          width: '70%',
-          justifyContent: 'center',
-          padding: scalableheight.two,
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      style={styleSheet.maincontainer}>
+      <View style={styleSheet.innerview}>
+        <View style={styleSheet.innerview2}>
           <FontAwesome
             name={'star'}
             color={'#E14E4E'}
@@ -57,99 +38,95 @@ export default function Favourites(props) {
             size={fontSize.seventeen}
           />
 
-          <Text
-            style={{
-              marginLeft: scalableheight.zeropointeight,
-              fontFamily: 'Inter-SemiBold',
-              fontSize: fontSize.twelve,
-              color: '#111111',
-              opacity: 0.8,
-            }}>
-            {props.reviews}
-          </Text>
+          <Text style={styleSheet.reviewtext}>{props.reviews}</Text>
         </View>
-        <Text
-          numberOfLines={1}
-          style={{
-            fontFamily: 'Inter-Bold',
-            fontSize: fontSize.sixteen,
-            color: '#111111',
-            paddingVertical: scalableheight.pointfive,
-          }}>
+        <Text numberOfLines={1} style={styleSheet.text1}>
           {props.title}
         </Text>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={styleSheet.innerview3}>
           <AntDesign
             name={'clockcircle'}
             color={'black'}
             style={{opacity: 0.2}}
             size={fontSize.thirteen}
           />
-          <Text
-            style={{
-              marginLeft: scalableheight.one,
-              fontFamily: 'Inter-SemiBold',
-              fontSize: fontSize.eleven,
-              color: '#111111',
-              opacity: 0.4,
-            }}>
-            {props.time}
-          </Text>
+          <Text style={styleSheet.text2}>{props.time}</Text>
         </View>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginLeft: -scalableheight.zeropointnine,
-          }}>
+        <View style={styleSheet.innerview4}>
           <Entypo
             name={'location-pin'}
             color={'black'}
             style={{opacity: 0.2}}
             size={fontSize.twenty}
           />
-          <Text
-            style={{
-              marginLeft: scalableheight.zeropointsix,
-
-              fontFamily: 'Inter-SemiBold',
-              fontSize: fontSize.eleven,
-              color: '#111111',
-              opacity: 0.4,
-            }}>
-            {props.distance}
-          </Text>
+          <Text style={styleSheet.text5}>{props.distance}</Text>
         </View>
       </View>
-      <View
-        style={{
-          height: '100%',
-          width: scalableheight.thirteen,
-          //  width:''
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-          paddingRight: scalableheight.one,
-        }}>
-        <Image
+      <View style={styleSheet.innerview9}>
+        {/* <Image
           resizeMode="contain"
           resizeMethod="resize"
           style={{
             width: '100%',
-            height: scalableheight.tweleve,
+            height: "100%",
             borderRadius: fontSize.eleven,
             // borderWidth: 1,
             alignItems: 'center',
           }}
          
               source={  props?.image ? {uri: props.image} : null}>
-          </Image>
+          </Image> */}
+        <FastImage
+          style={styleSheet.fastimageview}
+          source={{
+            uri: props.image ? props.image : null,
+            // headers: { Authorization: 'someAuthToken' },
+            priority: FastImage.priority.normal,
+          }}
+          resizeMode={FastImage.resizeMode.contain}
+        />
       </View>
     </TouchableOpacity>
   );
 }
 
 const styleSheet = StyleSheet.create({
+  fastimageview: {
+    width: '100%',
+    height: '100%',
+    borderRadius: fontSize.eleven,
+    // borderWidth: 1,
+    alignItems: 'center',
+  },
+  innerview9: {
+    height: '100%',
+    width: '30%',
+    //  width:''
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    paddingRight: scalableheight.one,
+  },
+  text5: {
+    marginLeft: scalableheight.zeropointsix,
+
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.eleven,
+    color: '#111111',
+    opacity: 0.4,
+  },
+  innerview4: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: -scalableheight.zeropointnine,
+  },
+  text2: {
+    marginLeft: scalableheight.one,
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.eleven,
+    color: '#111111',
+    opacity: 0.4,
+  },
   header: {
     width: '100%',
     alignSelf: 'center',
@@ -188,4 +165,40 @@ const styleSheet = StyleSheet.create({
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
+  maincontainer: {
+    // ...styleSheet.shadow,
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
+    height: scalableheight.fifteen,
+    width: '99%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: scalableheight.one,
+    marginTop: scalableheight.one,
+    borderRadius: fontSize.eleven,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
+  innerview: {
+    height: '100%',
+    width: '70%',
+    justifyContent: 'center',
+    padding: scalableheight.two,
+  },
+  innerview2: {flexDirection: 'row', alignItems: 'center'},
+  reviewtext: {
+    marginLeft: scalableheight.zeropointeight,
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.twelve,
+    color: '#111111',
+    opacity: 0.8,
+  },
+  text1: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.sixteen,
+    color: '#111111',
+    paddingVertical: scalableheight.pointfive,
+  },
+  innerview3: {flexDirection: 'row', alignItems: 'center'},
 });

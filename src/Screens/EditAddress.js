@@ -32,7 +32,7 @@ import Favourites from '../Shared/Components/Favourites';
 import Addresstile from '../Shared/Components/Addresstile';
 import MYButton from '../Shared/Components/MYButton';
 import Addressplace from '../Shared/Components/Addressplace';
-import BottomTab from '../Shared/Components/BottomTab';
+// import BottomTab from '../Shared/Components/BottomTab';
 import Animated from 'react-native-reanimated';
 import Octicons from 'react-native-vector-icons/Octicons';
 import NetInfo from '@react-native-community/netinfo';
@@ -40,7 +40,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SuccessModal from '../Shared/Components/SuccessModal';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {Item} from 'react-native-paper/lib/typescript/components/List/List';
+
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 import SavedAddresses from '../Shared/Components/SavedAddresses';
 
@@ -48,7 +48,10 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
   const dispatch = useDispatch();
   const [lat, setlat] = useState(24.8607);
   const [long, setlong] = useState(67.0011);
-  const [placeselected, SetPlaceSelected] = useState({"icon": "home", "title": "Home"});
+  const [placeselected, SetPlaceSelected] = useState({
+    icon: 'home',
+    title: 'Home',
+  });
   const [modelpopup, SetModelPopUP] = useState(false);
   const [address, setaddress] = useState('');
   const [pinlatitude, SetPinLatitude] = useState(0);
@@ -60,7 +63,8 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
   const [note, setnote] = useState('');
   const [loader, setloader] = useState(false);
   const [screenname, setscreenname] = useState(false);
-  const [temportystoreforselectedaddress, settemportystoreforselectedaddress] = useState(null);
+  const [temportystoreforselectedaddress, settemportystoreforselectedaddress] =
+    useState(null);
   const toast = useRef();
 
   const customStyle = [
@@ -239,12 +243,11 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
     AuthToken,
     addresscreationresponse,
     restrauntdetails,
-    validdistance
+    validdistance,
   } = useSelector(state => state.userReducer);
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-     
       setscreenname('');
       console.log(route?.params?.screenname + 'name');
       if (route?.params?.screenname != undefined) {
@@ -257,28 +260,30 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
   }, [navigation, route]);
 
   useEffect(() => {
-    Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
-    Geolocation.getCurrentPosition(info => {
-      SetPinLatitude(info?.coords?.latitude);
-      SetPinLongitude(info?.coords?.longitude);
-      // console.log(info?.coords?.latitude);
-      // console.log(info?.coords?.longitude);
-    },
-    (error) => {
-      console.log("hellooo" + JSON.stringify(error))
-    },
-    {
-      accuracy: {
-        android: 'high',
-        ios: 'best'
+    Geocoder.init('AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8');
+    Geolocation.getCurrentPosition(
+      info => {
+        SetPinLatitude(info?.coords?.latitude);
+        SetPinLongitude(info?.coords?.longitude);
+        // console.log(info?.coords?.latitude);
+        // console.log(info?.coords?.longitude);
       },
-      enableHighAccuracy: true,
-      timeout: 15000,
-      maximumAge: 10000,
-      distanceFilter: 0,
-      forceRequestLocation: true,
-      showLocationDialog: true,
-    });
+      error => {
+        console.log('hellooo' + JSON.stringify(error));
+      },
+      {
+        accuracy: {
+          android: 'high',
+          ios: 'best',
+        },
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 10000,
+        distanceFilter: 0,
+        forceRequestLocation: true,
+        showLocationDialog: true,
+      },
+    );
 
     setTimeout(() => {
       getLocation();
@@ -298,7 +303,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
           zIndex: 2,
         });
         dispatch(getalladdresses(AuthToken));
-        if( screenname == 'checkout'){
+        if (screenname == 'checkout') {
           // let currentaddress = [
           //   {
           //     Latitude: item.Latitude,
@@ -324,11 +329,15 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
               Street: street,
               Floor: floor,
             },
-          
           ];
-          dispatch(getdistancevalidation(restrauntdetails?.RestaurantBranchId,  pinlatitude,   pinLongitude ))
-          settemportystoreforselectedaddress(currentaddress)
-        
+          dispatch(
+            getdistancevalidation(
+              restrauntdetails?.RestaurantBranchId,
+              pinlatitude,
+              pinLongitude,
+            ),
+          );
+          settemportystoreforselectedaddress(currentaddress);
         }
         navigation.goBack();
       } else if (addresscreationresponse == 'Network Request Failed') {
@@ -504,52 +513,53 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
     }
   }
 
-
+  function navigatehome() {
+    SetModelPopUP(false);
+    navigation.navigate('Home');
+  }
   useEffect(() => {
-    if(validdistance == false){
-      toast.current.show("Sorry for the inconvenience. We are currently not delivering to your area. Kindly select another address.", {
-        type: 'normal',
-        placement: 'bottom',
-        duration: 4000,
-        offset: 10,
-        animationType: 'slide-in',
-      });
-      settemportystoreforselectedaddress(null)
-      dispatch(cleardistancevalidation())
-    }else if(validdistance == true && temportystoreforselectedaddress != null){
-      console.log("currentaddress" + JSON.stringify(temportystoreforselectedaddress));
+    if (validdistance == false) {
+      toast.current.show(
+        'Sorry for the inconvenience. We are currently not delivering to your area. Kindly select another address.',
+        {
+          type: 'normal',
+          placement: 'bottom',
+          duration: 4000,
+          offset: 10,
+          animationType: 'slide-in',
+        },
+      );
+      settemportystoreforselectedaddress(null);
+      dispatch(cleardistancevalidation());
+    } else if (
+      validdistance == true &&
+      temportystoreforselectedaddress != null
+    ) {
+      console.log(
+        'currentaddress' + JSON.stringify(temportystoreforselectedaddress),
+      );
       dispatch(storecurrentaddress(temportystoreforselectedaddress));
-      settemportystoreforselectedaddress(null)
-       dispatch(cleardistancevalidation())
+      settemportystoreforselectedaddress(null);
+      dispatch(cleardistancevalidation());
     }
-
-
-
-
-     
-    
   }, [validdistance]);
- 
+
+  function selectedplace(item) {
+    SetPlaceSelected(item);
+  }
   return (
-    <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+    <Animated.View style={[drawerAnimationStyle, styleSheet.mainviewcontainer]}>
       <FocusAwareStatusBar
         barStyle={'dark-content'}
         backgroundColor="transparent"
       />
-      <View
-        style={{
-          height: '100%',
-          width: '100%',
-          alignSelf: 'center',
-          paddingTop: getStatusBarHeight(),
-        }}>
+      <View style={styleSheet.innerview}>
         <PlainHeader title={'Create Address'} />
-        <View style={{height: scalableheight.three}} />
+        <View style={styleSheet.heightthree} />
         <ScrollView
-        keyboardShouldPersistTaps={"always"}
-          style={{width: '100%', paddingHorizontal: scalableheight.two}}>
-          <View style={{height: scalableheight.one}} />
+          keyboardShouldPersistTaps={'always'}
+          style={styleSheet.scrollviewstyle}>
+          <View style={styleSheet.heightone} />
 
           <GooglePlacesAutocomplete
             suppressDefaultStyles={false}
@@ -568,14 +578,7 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
             styles={{
               textInput: {
                 ...styleSheet.shadow,
-                width: '100%',
-                height: scalableheight.six,
-                fontSize: fontSize.fifteen,
-                backgroundColor: '#F9F9F9',
-                alignSelf: 'center',
-                borderRadius: fontSize.borderradiusmedium,
-                paddingHorizontal: '5%',
-                marginHorizontal: '0.4%',
+                ...styleSheet.googlesearchstyle,
               },
             }}
             placeholder="Search"
@@ -590,59 +593,35 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
                 .catch(error => console.warn(error));
             }}
             query={{
-              key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
+              key: 'AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8',
               language: 'en',
-              components: "country:ae",
+              components: 'country:ae',
             }}
           />
 
-          <View
-            style={{
-              marginTop: scalableheight.one,
-              height: scalableheight.twentysix,
-              borderRadius: fontSize.eight,
-              overflow: 'hidden',
-
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+          <View style={styleSheet.innerview2}>
             {hidemarker == false ? (
               <MaterialIcons
-                style={{
-                  position: 'absolute',
-                  alignSelf: 'center',
-                  alignContent: 'center',
-                  zIndex: 3,
-                  elevation: 3,
-                }}
+                style={styleSheet.iconstyle}
                 name="location-pin"
                 color={'#F55050'}
                 size={scalableheight.six}
               />
             ) : (
               <Entypo
-                style={{
-                  position: 'absolute',
-                  alignSelf: 'center',
-                  alignContent: 'center',
-                  zIndex: 3,
-                  elevation: 3,
-                }}
+                style={styleSheet.iconstyle}
                 name="dot-single"
                 color={'#F55050'}
                 size={scalableheight.six}
               />
             )}
             <MapView
+              showsMyLocationButton={false}
               // provider={PROVIDER_GOOGLE}
               // customMapStyle={customStyle}
               ref={refMap}
               showsUserLocation
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: fontSize.fifteen,
-              }}
+              style={styleSheet.mapviewstyle}
               region={{
                 latitude: pinlatitude,
                 longitude: pinLongitude,
@@ -682,44 +661,15 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
               }}></MapView>
           </View>
 
-          <View
-            style={{
-              marginTop: scalableheight.two,
-              ...styleSheet.shadow,
-              width: '99%',
-              height: scalableheight.eight,
-              fontSize: fontSize.fifteen,
-              backgroundColor: '#F9F9F9',
-              alignSelf: 'center',
-              borderRadius: fontSize.borderradiusmedium,
-              paddingHorizontal: '5%',
-              justifyContent: 'center',
-            }}>
+          <View style={[styleSheet.shadow, styleSheet.innerview3]}>
             <Text numberOfLines={2}>{pinlocation}</Text>
           </View>
           <View>
-            <View
-              style={{
-                marginTop: scalableheight.two,
-                marginBottom: scalableheight.one,
-              }}>
-              <Text
-                style={{
-                  fontFamily: 'Inter-Bold',
-                  fontSize: fontSize.fifteen,
-                  color: 'black',
-                  opacity: 0.5,
-                }}>
-                Building & Street
-              </Text>
+            <View style={styleSheet.innerview4}>
+              <Text style={styleSheet.text2}>Building & Street</Text>
             </View>
-            <View style={{...styleSheet.container, ...styleSheet.shadow}}>
-              <View
-                style={{
-                  height: '100%',
-                  width: '85%',
-                  justifyContent: 'center',
-                }}>
+            <View style={[styleSheet.container, styleSheet.shadow]}>
+              <View style={styleSheet.innerview5}>
                 <TextInput
                   returnKeyType="next"
                   // numberOfLines={props.inputLine}
@@ -730,43 +680,18 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
                   placeholder={'Enter building & street here'}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
-                  style={{
-                    width: '100%',
-                    height: scalableheight.six,
-                    fontSize: fontSize.fifteen,
-                    backgroundColor: '#F9F9F9',
-                    alignSelf: 'center',
-                    borderRadius: fontSize.borderradiusmedium,
-                    paddingHorizontal: '5%',
-                  }}
+                  style={styleSheet.innerview6}
                 />
               </View>
             </View>
           </View>
 
           <View>
-            <View
-              style={{
-                marginTop: scalableheight.two,
-                marginBottom: scalableheight.one,
-              }}>
-              <Text
-                style={{
-                  fontFamily: 'Inter-Bold',
-                  fontSize: fontSize.fifteen,
-                  color: 'black',
-                  opacity: 0.5,
-                }}>
-                Flat No & Floor (Optional)
-              </Text>
+            <View style={styleSheet.innerview7}>
+              <Text style={styleSheet.text2}>Flat No & Floor (Optional)</Text>
             </View>
-            <View style={{...styleSheet.container, ...styleSheet.shadow}}>
-              <View
-                style={{
-                  height: '100%',
-                  width: '85%',
-                  justifyContent: 'center',
-                }}>
+            <View style={[styleSheet.container, styleSheet.shadow]}>
+              <View style={styleSheet.innerview8}>
                 <TextInput
                   returnKeyType="next"
                   value={floor}
@@ -779,49 +704,24 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
                   placeholder={'Enter flat no & floor here '}
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
-                  style={{
-                    width: '100%',
-                    height: scalableheight.six,
-                    fontSize: fontSize.fifteen,
-                    backgroundColor: '#F9F9F9',
-                    alignSelf: 'center',
-                    borderRadius: fontSize.borderradiusmedium,
-                    paddingHorizontal: '5%',
-                  }}
+                  style={styleSheet.textinputview}
                 />
               </View>
             </View>
           </View>
 
           <View>
-            <View
-              style={{
-                marginTop: scalableheight.two,
-                marginBottom: scalableheight.one,
-              }}>
-              <Text
-                style={{
-                  fontFamily: 'Inter-Bold',
-                  fontSize: fontSize.fifteen,
-                  color: 'black',
-                  opacity: 0.5,
-                }}>
-                Note To Rider (Optional)
-              </Text>
+            <View style={styleSheet.innerview7}>
+              <Text style={styleSheet.text2}>Note To Rider (Optional)</Text>
             </View>
             <View
-              style={{
-                ...styleSheet.container,
-                height: scalableheight.thirteen,
-                ...styleSheet.shadow,
-              }}>
-              <View
-                style={{
-                  height: '100%',
-                  width: '100%',
-                  justifyContent: 'center',
-                  paddingVertical: scalableheight.one,
-                }}>
+              style={[
+                styleSheet.container,
+           
+                styleSheet.heightten,
+                styleSheet.shadow,
+              ]}>
+              <View style={styleSheet.innerview11}>
                 <TextInput
                   multiline
                   returnKeyType="next"
@@ -836,37 +736,17 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
                   // secureTextEntry={props.secure}
                   // placeholder={props.placeHolder}
 
-                  style={{
-                    width: '100%',
-                    height: scalableheight.six,
-                    fontSize: fontSize.fifteen,
-                    backgroundColor: '#F9F9F9',
-                    alignSelf: 'center',
-                    borderRadius: fontSize.borderradiusmedium,
-                    paddingHorizontal: '5%',
-                    textAlignVertical: 'top',
-                    height: '100%',
-                  }}
+                  style={styleSheet.textinputview2}
                 />
               </View>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-
-              marginVertical: fontSize.nine,
-            }}>
+          <View style={styleSheet.innerview12}>
             {place.map((item, index) => {
               return (
                 <Addressplace
-                key={index.toString()}
-                  onPress={() => {
-                    // console.log(item)
-                    SetPlaceSelected(item);
-                  }}
+                  key={index.toString()}
+                  onPress={() => selectedplace(item)}
                   data={item}
                   selection={placeselected}
                 />
@@ -874,31 +754,17 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
             })}
           </View>
 
-          <View style={{height: scalableheight.tweleve}}></View>
+          <View style={styleSheet.heightwwelve}></View>
         </ScrollView>
 
-        <View
-          style={{
-            marginVertical: fontSize.eight,
-            position: 'absolute',
-            bottom: scalableheight.two,
-            width: '100%',
-            paddingHorizontal: scalableheight.two,
-          }}>
+        <View style={styleSheet.innerview13}>
           {loader == true ? (
-            <View
-              style={{
-                height: scalableheight.seven,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={styleSheet.activityview}>
               <ActivityIndicator size={'large'} color="#E14E4E" />
             </View>
           ) : (
             <MYButton
-              onPress={() => {
-                addresssave();
-              }}
+              onPress={addresssave}
               color={'rgba(225, 78, 78, 1)'}
               title={'SAVE NEW ADDRESS'}
               textcolor={'white'}
@@ -906,22 +772,14 @@ const EditAddress = ({props, navigation, drawerAnimationStyle, route}) => {
           )}
         </View>
       </View>
-      <SuccessModal
-        successModalShown={modelpopup}
-        onNoPress={() => {
-          SetModelPopUP(false);
-          navigation.navigate('Home');
-        }}
-      />
-      <Toast
-        ref={toast}
-        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
-      />
+      <SuccessModal successModalShown={modelpopup} onNoPress={navigatehome} />
+      <Toast ref={toast} style={styleSheet.toastview} />
     </Animated.View>
   );
 };
 
 const styleSheet = StyleSheet.create({
+  toastview: {marginBottom: scalableheight.ten, justifyContent: 'center'},
   container: {
     height: scalableheight.six,
     backgroundColor: '#F9F9F9',
@@ -974,15 +832,153 @@ const styleSheet = StyleSheet.create({
     width: '100%',
   },
   shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.23,
+    // shadowRadius: 2.62,
 
-    elevation: 2,
+    // elevation: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
+  },
+  mainviewcontainer: {
+    flex: 1,
+    backgroundColor: '#F6F6F6',
+  },
+  innerview: {
+    height: '100%',
+    width: '100%',
+    alignSelf: 'center',
+    paddingTop: getStatusBarHeight(),
+  },
+  heightone: {height: scalableheight.one},
+  heightthree: {height: scalableheight.three},
+  heightten:{height: scalableheight.fourteen},
+  scrollviewstyle: {width: '100%', paddingHorizontal: scalableheight.two},
+  googlesearchstyle: {
+    width: '100%',
+    height: scalableheight.six,
+    fontSize: fontSize.fifteen,
+    backgroundColor: '#F9F9F9',
+    alignSelf: 'center',
+    borderRadius: fontSize.borderradiusmedium,
+    paddingHorizontal: '5%',
+    marginHorizontal: '0.4%',
+  },
+  innerview2: {
+    marginTop: scalableheight.one,
+    height: scalableheight.twentysix,
+    borderRadius: fontSize.eight,
+    overflow: 'hidden',
+
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconstyle: {
+    position: 'absolute',
+    alignSelf: 'center',
+    alignContent: 'center',
+    zIndex: 3,
+    elevation: 3,
+  },
+  mapviewstyle: {
+    width: '100%',
+    height: '100%',
+    borderRadius: fontSize.fifteen,
+  },
+  innerview3: {
+    marginTop: scalableheight.two,
+    width: '99%',
+    height: scalableheight.eight,
+    fontSize: fontSize.fifteen,
+    backgroundColor: '#F9F9F9',
+    alignSelf: 'center',
+    borderRadius: fontSize.borderradiusmedium,
+    paddingHorizontal: '5%',
+    justifyContent: 'center',
+  },
+  innerview4: {
+    marginTop: scalableheight.two,
+    marginBottom: scalableheight.one,
+  },
+  text2: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    color: 'black',
+    opacity: 0.5,
+  },
+  innerview5: {
+    height: '100%',
+    width: '85%',
+    justifyContent: 'center',
+  },
+  innerview6: {
+    width: '100%',
+    height: '100%',
+    fontSize: fontSize.fifteen,
+    // backgroundColor: '#F9F9F9',
+    alignSelf: 'center',
+    borderRadius: fontSize.borderradiusmedium,
+    paddingHorizontal: '5%',
+  },
+  innerview7: {
+    marginTop: scalableheight.two,
+    marginBottom: scalableheight.one,
+  },
+  innerview8: {
+    height: '100%',
+    width: '85%',
+    justifyContent: 'center',
+  },
+  textinputview: {
+    width: '100%',
+    height: '92%',
+    fontSize: fontSize.fifteen,
+    // backgroundColor: '#F9F9F9',
+    alignSelf: 'center',
+    borderRadius: fontSize.borderradiusmedium,
+    paddingHorizontal: '5%',
+  },
+  innerview11: {
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
+    paddingVertical: scalableheight.one,
+  },
+  textinputview2: {
+    width: '98%',
+    height: scalableheight.six,
+    fontSize: fontSize.fifteen,
+    // backgroundColor: '#F9F9F9',
+    alignSelf: 'center',
+    borderRadius: fontSize.borderradiusmedium,
+    paddingHorizontal: '5%',
+    textAlignVertical: 'top',
+    height: '100%',
+  },
+  innerview12: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+
+    marginVertical: fontSize.nine,
+  },
+  heightwwelve: {height: scalableheight.tweleve},
+  innerview13: {
+    position: 'absolute',
+    paddingBottom: scalableheight.two,
+    bottom: 0,
+    width: '100%',
+    paddingHorizontal: scalableheight.two,
+    backgroundColor: '#F6F6F6',
+  },
+  activityview: {
+    height: scalableheight.seven,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 export default EditAddress;

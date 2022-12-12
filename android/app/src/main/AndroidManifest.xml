@@ -3,11 +3,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESSCOARSELOCATION"/>
+    <!-- <uses-permission android:name="android.permission.ACCESSCOARSELOCATION"/> -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
 
     <application
       android:name=".MainApplication"
@@ -16,10 +16,11 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme"
-   android:extractNativeLibs="true"
+  android:extractNativeLibs="true"
      
       
       >
+       <!-- android:extractNativeLibs="false" -->
 
       <activity
         android:name=".MainActivity"
@@ -36,6 +37,6 @@
       </activity>
           <meta-data
      android:name="com.google.android.geo.API_KEY"
-     android:value="AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso"/>
+     android:value="AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8"/>
     </application>
 </manifest>

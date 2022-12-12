@@ -42,9 +42,10 @@ LogBox.ignoreLogs([
 ]);
 
 
-const TransitionScreenOptions = {
-  ...TransitionPresets.SlideFromRightIOS,
-};
+// const TransitionScreenOptions = {
+//   ...TransitionPresets.SlideFromRightIOS,
+// };
+
 
 function App() {
   return <MainNavigator />;

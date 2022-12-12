@@ -27,17 +27,14 @@ export default function Faqtitle(props) {
     <Collapse
       onToggle={() => handleAccordian(0)}
       isExpanded={selectedFaq === 0 ? true : false}>
-      <CollapseHeader
-        style={{
-          flexDirection: 'row',
-        }}>
-        <View style={{width: '95%'}}>
+      <CollapseHeader style={styles.flexrow}>
+        <View style={styles.width95}>
           <Text style={[styles.subheading, {borderTopWidth: 0}]}>
             {props?.data.question}
           </Text>
         </View>
         <View style={{width: '5%'}}>
-          <Text style={{alignSelf: 'center', marginTop: scalableheight.one}}>
+          <Text style={styles.textview}>
             <Fntaw
               name={selectedFaq === 0 ? 'angle-up' : 'angle-down'}
               size={scalableheight.two}
@@ -46,11 +43,8 @@ export default function Faqtitle(props) {
           </Text>
         </View>
       </CollapseHeader>
-      <CollapseBody
-        style={{
-          flexDirection: 'row',
-        }}>
-        <Collapse style={{flexDirection: 'row'}}>
+      <CollapseBody style={styles.flexrow}>
+        <Collapse style={styles.flexrow}>
           <CollapseHeader>
             <Text style={styles.content}>{props?.data.answer}</Text>
           </CollapseHeader>
@@ -75,4 +69,9 @@ const styles = StyleSheet.create({
     fontSize: fontSize.twelve,
     fontFamily: 'Inter-Medium',
   },
+  flexrow: {
+    flexDirection: 'row',
+  },
+  width95: {width: '95%'},
+  textview: {alignSelf: 'center', marginTop: scalableheight.one},
 });

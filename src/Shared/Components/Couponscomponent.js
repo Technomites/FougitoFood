@@ -20,9 +20,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import Clipboard from '@react-native-community/clipboard';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
-import {format} from 'date-fns';
+
 import moment from 'moment';
 
 export default function Couponscomponent(props) {
@@ -31,32 +30,14 @@ export default function Couponscomponent(props) {
 
   return (
     <View
-      style={{
-        ...styleSheet.shadow,
-        ...styleSheet.MainContainer,
-        width: '100%',
-        height: Dimensions.get('window').height / 8,
-        borderRadius: fontSize.borderradiusmedium,
-        padding: scalableheight.pointfive,
-      }}>
-      <View style={{height: '100%', width: '100%', flexDirection: 'row'}}>
-        <View
-          style={{
-            height: '100%',
-            width: '20%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            // borderWidth:1, borderColor:"red"
-          }}>
-          <View
-            style={{
-              width: '80%',
-              height: '80%',
-              backgroundColor: '#F9F9F9',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: fontSize.borderradiusmedium,
-            }}>
+      style={[
+        // ...styleSheet.shadow,
+        styleSheet.MainContainer,
+        styleSheet.maincontainerview,
+      ]}>
+      <View style={styleSheet.mainview}>
+        <View style={styleSheet.innerview}>
+          <View style={styleSheet.innerview2}>
             <FontAwesome5
               name="tags"
               size={fontSize.twenty}
@@ -64,66 +45,27 @@ export default function Couponscomponent(props) {
             />
           </View>
         </View>
-        <View style={{height: '100%', width: '50%', justifyContent: 'center', 
-        // borderWidth:1, borderColor:"blue"
-        }}>
-          <Text
-              numberOfLines={1}
-            style={{
-              fontFamily: 'Inter-Medium',
-              fontSize: fontSize.eleven,
-              color: '#F55050',
-            }}>
+        <View style={styleSheet.innerview3}>
+          <Text numberOfLines={1} style={styleSheet.text1}>
             {props.sale}
           </Text>
-          <Text
-          numberOfLines={1}
-            style={{
-              fontFamily: 'Inter-Bold',
-              fontSize: fontSize.sixteen,
-              color: 'black',
-            }}>
+          <Text numberOfLines={1} style={styleSheet.text2}>
             {props.title}
           </Text>
-          <Text
-            style={{
-              fontFamily: 'Inter-Medium',
-              fontSize: fontSize.twelve,
-              color: '#636363',
-            }}>
-          {props.Name}
+          <Text style={styleSheet.text3}>{props.Name}</Text>
+        </View>
+        <View style={styleSheet.innerview4}>
+          <Text numberOfLines={1} style={styleSheet.text4}>
+            {props.daysleft <= 0 ? 'Expired' : props.daysleft + ' days left'}
           </Text>
+          <FontAwesome
+            name="clipboard"
+            size={fontSize.fifteen}
+            color={'#F55050'}
+          />
         </View>
-        <View
-          style={{
-            height: '100%',
-            width: '30%',
-            alignItems: 'flex-end',
-            justifyContent: 'space-between',
-            paddingHorizontal:scalableheight.one
-            // borderWidth:1, borderColor:"red"
-          }}>
-         <Text
-         numberOfLines={1}
-          style={{
-            // position: 'absolute',
-            // right: scalableheight.one,
-            // top: scalableheight.one,
-            fontFamily: 'Inter-Bold',
-            fontSize: fontSize.twelve,
-            color: '#F55050',
-          }}>
-          {props.daysleft <= 0 ? "Expired" : props.daysleft + ' days left'}
-        </Text>
-        <FontAwesome
-              name="clipboard"
-              size={fontSize.fifteen}
-              color={'#F55050'}
-            />
-        </View>
-       
       </View>
-{/* 
+      {/* 
       <View style={{height: '0%', width: '100%'}}>
         <View
           style={{
@@ -160,6 +102,40 @@ export default function Couponscomponent(props) {
 }
 
 const styleSheet = StyleSheet.create({
+  text4: {
+    // position: 'absolute',
+    // right: scalableheight.one,
+    // top: scalableheight.one,
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.twelve,
+    color: '#F55050',
+  },
+  innerview4: {
+    height: '100%',
+    width: '30%',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    paddingHorizontal: scalableheight.one,
+    // borderWidth:1, borderColor:"red"
+  },
+  text2: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.sixteen,
+    color: 'black',
+  },
+  text1: {
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.eleven,
+    color: '#F55050',
+  },
+  innerview2: {
+    width: '80%',
+    height: '80%',
+    backgroundColor: '#F9F9F9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: fontSize.borderradiusmedium,
+  },
   header: {
     width: '100%',
     alignSelf: 'center',
@@ -200,5 +176,33 @@ const styleSheet = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+  },
+  maincontainerview: {
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
+
+    width: '100%',
+    height: Dimensions.get('window').height / 8,
+    borderRadius: fontSize.borderradiusmedium,
+    padding: scalableheight.pointfive,
+  },
+  mainview: {height: '100%', width: '100%', flexDirection: 'row'},
+  innerview: {
+    height: '100%',
+    width: '20%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // borderWidth:1, borderColor:"red"
+  },
+  innerview3: {
+    height: '100%',
+    width: '50%',
+    justifyContent: 'center',
+    // borderWidth:1, borderColor:"blue"
+  },
+  text3: {
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.twelve,
+    color: '#636363',
   },
 });

@@ -21,7 +21,6 @@ import * as Animatable from 'react-native-animatable';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {parseWithOptions} from 'date-fns/fp';
 import {filteredcatdata, storecartprice} from '../../Actions/actions';
 export default function ItemDetailsStatus(props) {
   const dispatch = useDispatch();
@@ -46,7 +45,9 @@ export default function ItemDetailsStatus(props) {
   return (
     <View
       style={{
-        ...styleSheet.shadow,
+        // ...styleSheet.shadow,
+        borderWidth: 1,
+        borderColor: 'rgba(128, 128,128, 0.6)',
         height: scalableheight.nine,
         width: '99%',
         alignItems: 'center',

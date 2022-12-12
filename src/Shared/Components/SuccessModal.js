@@ -24,66 +24,28 @@ const SuccessModal = props => {
       transparent={true}
       visible={props.successModalShown}
       onRequestClose={() => {}}>
-      <View
-        style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', height: '100%'}}>
+      <View style={styles.mainview}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <View
-              style={{
-                width: '100%',
-                alignItems: 'center',
-                // backgroundColor: 'red',
-                height: scalableheight.three,
-              }}></View>
-            <View
-              style={{
-                width: '100%',
-                height: scalableheight.thirteen,
-                alignItems: 'center',
-              }}>
+            <View style={styles.innerview}></View>
+            <View style={styles.innerview3}>
               <FontAwesome5
                 name="check-circle"
                 size={scalableheight.thirteen}
                 color={'#000'}
               />
             </View>
-            <View
-              style={{
-                width: '100%',
-                //    height: scalableheight.thirteen,
-                alignItems: 'center',
-                paddingTop: fontSize.ten,
-              }}>
+            <View style={styles.innerview4}>
               {props.msg ? (
-                <Text
-                  style={{
-                    fontFamily: 'Rubik-Medium',
-                    fontSize: fontSize.fifteen,
-                    color: 'black',
-                    textAlign: 'center',
-                  }}>
-                  {props.msg}
-                </Text>
+                <Text style={styles.text5}>{props.msg}</Text>
               ) : (
-                <Text
-                  style={{
-                    fontFamily: 'Inter-SemiBold',
-                    fontSize: fontSize.twentytwo,
-                    color: 'rgba(41, 38, 42, 1)',
-                    textAlign: 'center',
-                  }}>
+                <Text style={styles.text6}>
                   Your Address has been Saved Successfully.
                 </Text>
               )}
             </View>
 
-            <View
-              style={{
-                width: '90%',
-                height: scalableheight.thirteen,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+            <View style={styles.innerview10}>
               <MYButton
                 onPress={props.onNoPress}
                 color={'rgba(225, 78, 78, 1)'}
@@ -121,6 +83,42 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  mainview: {flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', height: '100%'},
+  innerview: {
+    width: '100%',
+    alignItems: 'center',
+    // backgroundColor: 'red',
+    height: scalableheight.three,
+  },
+  innerview3: {
+    width: '100%',
+    height: scalableheight.thirteen,
+    alignItems: 'center',
+  },
+  innerview4: {
+    width: '100%',
+    //    height: scalableheight.thirteen,
+    alignItems: 'center',
+    paddingTop: fontSize.ten,
+  },
+  text5: {
+    fontFamily: 'Rubik-Medium',
+    fontSize: fontSize.fifteen,
+    color: 'black',
+    textAlign: 'center',
+  },
+  text6: {
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.twentytwo,
+    color: 'rgba(41, 38, 42, 1)',
+    textAlign: 'center',
+  },
+  innerview10: {
+    width: '90%',
+    height: scalableheight.thirteen,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

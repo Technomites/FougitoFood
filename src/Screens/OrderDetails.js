@@ -14,6 +14,7 @@ import {
   Keyboard,
   ActivityIndicator,
   Modal,
+  ImageBackground,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {WebView} from 'react-native-webview';
@@ -26,7 +27,7 @@ import {
   OrderCancelnullstate,
   Myorders,
   getrepay,
-  clearlink
+  clearlink,
 } from '../Actions/actions';
 import ItemDetailsStatus from '../Shared/Components/ItemDetailsStatus';
 import PlainHeader from '../Shared/Components/PlainHeader';
@@ -56,14 +57,14 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
     ReviewStatus,
     CancelationStatus,
     CancelationMessage,
-    repayorderdetailslink
+    repayorderdetailslink,
   } = useSelector(state => state.userReducer);
   const [screenloader, setscreenloader] = useState(true);
   const [repayloader, setrepayloader] = useState(false);
   const [reviews, setReviews] = useState('');
   const [itemmodalVisible, setitemmodalVisible] = useState(false);
   const [itemmodaldata, setitemmodaldata] = useState([]);
-  const [previousscreen, setpreviousscreen] = useState("");
+  const [previousscreen, setpreviousscreen] = useState('');
   const [MaxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
   const [DefaultRating, setDefaultRating] = useState(0);
   const [indexstate, setindexstate] = useState(0);
@@ -76,19 +77,18 @@ const OrderDetails = ({route, props, navigation, drawerAnimationStyle}) => {
   const toast = useRef();
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     StatusBar.setHidden(false);
   }, []);
 
-
   useEffect(() => {
-if(repayorderdetailslink != ""){
-  setrepayloader(false)
-  setmodalVisiblepayment(true)
-}
+    if (repayorderdetailslink != '') {
+      setrepayloader(false);
+      setmodalVisiblepayment(true);
+    }
   }, [repayorderdetailslink]);
 
-  
   var blueOceanStyles = [
     {
       featureType: 'administrative',
@@ -290,10 +290,9 @@ if(repayorderdetailslink != ""){
       setscreenloader(true);
       if (route?.params?.screenname != undefined) {
         setpreviousscreen(route?.params?.screenname);
-      }else{
-        setpreviousscreen("");
+      } else {
+        setpreviousscreen('');
       }
- 
     });
     return unsubscribe;
   }, [navigation, route]);
@@ -389,10 +388,10 @@ if(repayorderdetailslink != ""){
       });
       dispatch(OrderCancelnullstate());
       setLoader(false);
- 
+
       dispatch(Myorders(AuthToken));
       navigation.navigate('Drawernavigator');
-      console.log("navifating to home")
+      console.log('navifating to home');
     } else if (CancelationStatus === 'Error') {
       toast.current.show(CancelationMessage, {
         type: 'normal',
@@ -420,115 +419,49 @@ if(repayorderdetailslink != ""){
     }
   }, [CancelationStatus]);
 
-  function repay(){
-    setrepayloader(true)
-dispatch(getrepay(orderResult[0]?.Id))
+  function repay() {
+    setrepayloader(true);
+    dispatch(getrepay(orderResult[0]?.Id));
   }
-  //console.log(route?.params.completedetails[0].OrderStatus,'Order Details')
-  // const [menuitems, SetMenuItems] = useState([
-  //   {
-  //     qty: '1',
-  //     itemname: 'Enchiladas',
-  //     price: '20',
-  //   },
-  //   {
-  //     qty: '1',
-  //     itemname: 'Burrito',
-  //     price: '20',
-  //   },
-  //   {
-  //     qty: '1',
-  //     itemname: 'Enchiladas',
-  //     price: '20',
-  //   },
-  //   {
-  //     qty: '1',
-  //     itemname: 'Burrito',
-  //     price: '20',
-  //   },
-  //   {
-  //     qty: '1',
-  //     itemname: 'Enchiladas',
-  //     price: '20',
-  //   },
-  //   {
-  //     qty: '1',
-  //     itemname: 'Burrito',
-  //     price: '20',
-  //   },
-  // ]);
-  // const [address, Setaddress] = useState([
-  //   {
-  //     qty: '1',
-  //     itemname: 'Enchiladas',
-  //     price: '20',
-  //   },
-  //   {
-  //     qty: '1',
-  //     itemname: 'Burrito',
-  //     price: '20',
-  //   },
-  //   {
-  //     qty: '1',
-  //     itemname: 'Enchiladas',
-  //     price: '20',
-  //   },
-  //   {
-  //     qty: '1',
-  //     itemname: 'Burrito',
-  //     price: '20',
-  //   },
-  //   {
-  //     qty: '1',
-  //     itemname: 'Enchiladas',
-  //     price: '20',
-  //   },
-  //   {
-  //     qty: '1',
-  //     itemname: 'Burrito',
-  //     price: '20',
-  //   },
-  // ]);
 
+  function closemodal() {
+    setmodalVisiblepayment(false);
+  }
+
+  function closeloader() {
+    setscreenloader(false);
+  }
+
+  function closeitemdetailsmodal() {
+    setitemmodalVisible(false);
+  }
+
+  function changeration(item) {
+    setDefaultRating(item);
+  }
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      style={{...drawerAnimationStyle, ...styles.animatedviewstyle}}>
       <FocusAwareStatusBar
         barStyle={'dark-content'}
         backgroundColor="transparent"
       />
-        <Modal
+      <Modal
         transparent
-        style={{
-          width: '100%',
-          height: '100%',
-        }}
+        style={styles.modalview1}
         statusBarTranslucent
         visible={modalVisiblepayment}
         onRequestClose={() => setmodalVisiblepayment(false)}>
         <View
           style={{
-            paddingTop: getStatusBarHeight(),
-            width: '100%',
-            height: '100%',
+            ...styles.paddingtopbarheight,
+            ...styles.modalview1,
           }}>
           {repayorderdetailslink != '' && (
             <>
               <TouchableOpacity
-                onPress={() => {
-                  // navigation.navigate("Home")
-                  setmodalVisiblepayment(false);
-                }}
-                style={{
-                  height: scalableheight.seven,
-                  width: scalableheight.five,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  position: 'absolute',
-                  top: scalableheight.six,
-                  left: scalableheight.one,
-                  zIndex: 10,
-                }}>
+                onPress={closemodal}
+                style={styles.touchableview}>
                 {/* <View style={styleSheet.backButtonMain}> */}
                 <AntDesign
                   style={{alignSelf: 'center'}}
@@ -539,10 +472,7 @@ dispatch(getrepay(orderResult[0]?.Id))
                 {/* </View> */}
               </TouchableOpacity>
               <WebView
-                style={{
-                  width: '100%',
-                  height: '100%',
-                }}
+                style={styles.modalview1}
                 source={{uri: repayorderdetailslink}}
                 onMessage={event => {
                   let newdata = JSON.parse(event.nativeEvent.data);
@@ -583,8 +513,8 @@ dispatch(getrepay(orderResult[0]?.Id))
                       animationType: 'slide-in',
                       zIndex: 2,
                     });
-                    dispatch(OrderStatus(AuthToken, orderdetails))
-dispatch(clearlink())
+                    dispatch(OrderStatus(AuthToken, orderdetails));
+                    dispatch(clearlink());
                   }
                 }}
               />
@@ -594,75 +524,39 @@ dispatch(clearlink())
       </Modal>
       <Modal
         transparent
-        style={{
-          width: '100%',
-          height: '100%',
-          // zIndex: 1,
-          // elevation: 1,
-          // position: 'absolute',
-        }}
+        style={styles.modalview1}
         statusBarTranslucent
-        animationType="slide"
+        animationType="none"
         visible={screenloader}
-        onRequestClose={() => setscreenloader(false)}>
-        <View
-          style={{
-            height: '100%',
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'rgba(0,0,0,0.8)',
-          }}>
-          <ActivityIndicator size="small" color={'red'} />
-        </View>
+        onRequestClose={closeloader}>
+        <ImageBackground
+          resizeMode="cover"
+          style={[styles.alignandjustifycenter, styles.modalview1]}
+          source={require('../Resources/images/orderdetailsloader.gif')}></ImageBackground>
       </Modal>
-      <View
-        style={{
-          //height: '100%',
-          width: '100%',
-          alignSelf: 'center',
-          marginTop: getStatusBarHeight(),
-          padding: scalableheight.one,
-        }}>
-        <PlainHeader title={orderResult[0]?.OrderNo} previousscreen ={previousscreen} />
+      <View style={styles.containerview}>
+        <PlainHeader
+          title={orderResult[0]?.OrderNo}
+          previousscreen={previousscreen}
+        />
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{paddingBottom: scalableheight.fifteen}}>
-          <View
-            style={{
-              padding: scalableheight.one,
-            }}>
-            <View style={{...styles.shadow, ...styles.MainContainer}}>
+          style={styles.paddingBottomfifteen}>
+          <View style={styles.paddingone}>
+            <View
+              style={[
+                // ...styles.shadow,
+                styles.borderwwidthandcolor,
+
+                styles.MainContainer,
+              ]}>
               {orderResult != undefined && (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignContent: 'center',
-                    height: scalableheight.twenty,
-                  }}>
-                  <View
-                    style={{
-                      width: '50%',
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <View
-                      style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        // marginTop: scalableheight.five,
-                        // backgroundColor:'yellow'
-                      }}>
+                <View style={styles.view2}>
+                  <View style={styles.view3}>
+                    <View style={styles.alignandjustifycenter}>
                       {orderResult[0]?.Status == 'Pending' && (
                         <Image
-                          style={{
-                            height: scalableheight.twenty,
-                            width: scalableheight.twenty,
-                            marginTop: -scalableheight.three,
-                          }}
+                          style={styles.imageview}
                           resizeMode={'contain'}
                           source={require('../Resources/images/Pending.gif')}
                         />
@@ -670,11 +564,7 @@ dispatch(clearlink())
 
                       {orderResult[0]?.Status == 'Confirmed' && (
                         <Image
-                          style={{
-                            height: scalableheight.twenty,
-                            width: scalableheight.twenty,
-                            marginTop: -scalableheight.three,
-                          }}
+                          style={styles.imageview}
                           resizeMode={'contain'}
                           source={require('../Resources/images/Confirmed.gif')}
                         />
@@ -682,11 +572,7 @@ dispatch(clearlink())
 
                       {orderResult[0]?.Status == 'Preparing' && (
                         <Image
-                          style={{
-                            height: scalableheight.twenty,
-                            width: scalableheight.twenty,
-                            marginTop: -scalableheight.three,
-                          }}
+                          style={styles.imageview}
                           resizeMode={'contain'}
                           source={require('../Resources/images/FoodPreperainggif.gif')}
                         />
@@ -694,11 +580,7 @@ dispatch(clearlink())
 
                       {orderResult[0]?.Status == 'FoodReady' && (
                         <Image
-                          style={{
-                            height: scalableheight.twenty,
-                            width: scalableheight.twenty,
-                            marginTop: -scalableheight.three,
-                          }}
+                          style={styles.imageview}
                           resizeMode={'contain'}
                           source={require('../Resources/images/FoodReady.gif')}
                         />
@@ -706,11 +588,7 @@ dispatch(clearlink())
 
                       {orderResult[0]?.Status == 'OnTheWay' && (
                         <Image
-                          style={{
-                            height: scalableheight.twenty,
-                            width: scalableheight.twenty,
-                            marginTop: -scalableheight.three,
-                          }}
+                          style={styles.imageview}
                           resizeMode={'contain'}
                           source={require('../Resources/images/Ontheway.gif')}
                         />
@@ -718,12 +596,7 @@ dispatch(clearlink())
 
                       {orderResult[0]?.Status == 'Delivered' && (
                         <Image
-                          style={{
-                            height: scalableheight.fifteen,
-                            width: scalableheight.fifteen,
-
-                            alignSelf: 'center',
-                          }}
+                          style={styles.imageview2}
                           resizeMode={'contain'}
                           source={require('../Resources/images/Delivered.gif')}
                         />
@@ -731,50 +604,20 @@ dispatch(clearlink())
 
                       {orderResult[0]?.Status == 'Canceled' && (
                         <Image
-                          style={{
-                            height: scalableheight.twenty,
-                            width: scalableheight.twenty,
-                            marginTop: -scalableheight.three,
-                          }}
+                          style={styles.imageview}
                           resizeMode={'contain'}
                           source={require('../Resources/images/Cancelled.gif')}
                         />
                       )}
                     </View>
                   </View>
-                  <View style={{width: '50%'}}>
-                    <Text
-                      style={{
-                        color: '#F55050',
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.twelve,
-                      }}>
-                      Order Type
-                    </Text>
-                    <Text
-                      style={{
-                        color: '#29262A',
-                        fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.twelve,
-                        paddingBottom: scalableheight.pointeightfive,
-                      }}>
+                  <View style={styles.width50}>
+                    <Text style={styles.text7}>Order Type</Text>
+                    <Text style={styles.text8}>
                       {orderResult[0]?.DeliveryType}
                     </Text>
-                    <Text
-                      style={{
-                        color: '#F55050',
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.twelve,
-                      }}>
-                      Status
-                    </Text>
-                    <Text
-                      style={{
-                        color: '#29262A',
-                        fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.twelve,
-                        paddingBottom: scalableheight.pointeightfive,
-                      }}>
+                    <Text style={styles.text7}>Status</Text>
+                    <Text style={styles.text8}>
                       {orderResult[0]?.Status == 'Confirmed'
                         ? 'Order Confirmed'
                         : orderResult[0]?.Status == 'Preparing'
@@ -844,20 +687,8 @@ dispatch(clearlink())
                         </View>
                       </>
                     )} */}
-                    <Text
-                      style={{
-                        color: '#F55050',
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.twelve,
-                      }}>
-                      ETA
-                    </Text>
-                    <Text
-                      style={{
-                        color: '#29262A',
-                        fontFamily: 'Inter-Medium',
-                        fontSize: fontSize.twelve,
-                      }}>
+                    <Text style={styles.text7}>ETA</Text>
+                    <Text style={styles.text9}>
                       {orderResult[0]?.EstimatedDeliveryMinutes < 0
                         ? 0
                         : orderResult[0]?.EstimatedDeliveryMinutes}{' '}
@@ -866,21 +697,13 @@ dispatch(clearlink())
                   </View>
                 </View>
               )}
-              <View
-                style={{
-                  height: scalableheight.twentytwo,
-                  borderRadius: fontSize.eight,
-
-                  overflow: 'hidden',
-                }}>
+              <View style={styles.mapview}>
                 <MapView
+                  showsMyLocationButton={false}
                   // provider={PROVIDER_GOOGLE}
                   customMapStyle={blueOceanStyles}
                   ref={refMap}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                  }}
+                  style={styles.modalview1}
                   // showsUserLocation
                   region={{
                     latitude:
@@ -920,10 +743,7 @@ dispatch(clearlink())
                     }}>
                     <Image
                       resizeMode="contain"
-                      style={{
-                        width: scalableheight.three,
-                        height: scalableheight.three,
-                      }}
+                      style={styles.imageview3}
                       source={require('../Resources/images/Userlocationicon.png')}
                     />
                   </Marker>
@@ -944,10 +764,7 @@ dispatch(clearlink())
                       }}>
                       <Image
                         resizeMode="contain"
-                        style={{
-                          width: scalableheight.three,
-                          height: scalableheight.three,
-                        }}
+                        style={styles.imageview3}
                         source={require('../Resources/images/RestaurantLocationicon.png')}
                       />
                     </Marker>
@@ -1084,33 +901,13 @@ dispatch(clearlink())
                 );
               })}
             </View> */}
-            <View
-              style={{
-                // flexDirection: 'row',
-                // justifyContent: 'space-between',
-                // alignItems: 'center',
-                marginTop: scalableheight.one,
-              }}>
-              <Text
-                style={{
-                  fontFamily: 'Inter-Bold',
-                  fontSize: fontSize.sixteen,
-                  color: '#29262A',
-                }}>
-                Items
-              </Text>
+            <View style={styles.margintopone}>
+              <Text style={styles.text10}>Items</Text>
             </View>
-            <View style={{width: '100%'}}>
+            <View style={styles.widthfull}>
               <FlatList
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps={'always'}
-                style={
-                  {
-                    // width: '50%',
-                    //paddingHorizontal: scalableheight.one,
-                    // marginTop: scalableheight.two,
-                  }
-                }
                 contentContainerStyle={{
                   flexGrow: 1,
                   paddingBottom: scalableheight.one,
@@ -1119,11 +916,7 @@ dispatch(clearlink())
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={(data, index) => {
                   return (
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        marginVertical: scalableheight.pointfive,
-                      }}>
+                    <View style={styles.itemdetailsstatusview}>
                       <ItemDetailsStatus
                         qty={data.item.Quantity}
                         title={data.item.MenuItems.Name}
@@ -1161,7 +954,13 @@ dispatch(clearlink())
                   : 'PickUp Info'}
               </Text>
               <View style={{marginTop: scalableheight.one}}></View>
-              <View style={{...styles.shadow, ...styles.MainContainer}}>
+              <View
+                style={{
+                  // ...styles.shadow,
+                  borderWidth: 1,
+                  borderColor: 'rgba(128, 128,128, 0.6)',
+                  ...styles.MainContainer,
+                }}>
                 <View
                   style={{
                     ...styles.topViewContainer,
@@ -1520,7 +1319,13 @@ dispatch(clearlink())
                         Rider Info
                       </Text>
                       <View style={{marginTop: scalableheight.one}}></View>
-                      <View style={{...styles.shadow, ...styles.MainContainer}}>
+                      <View
+                        style={{
+                          // ...styles.shadow,
+                          borderWidth: 1,
+                          borderColor: 'rgba(128, 128,128, 0.6)',
+                          ...styles.MainContainer,
+                        }}>
                         <View
                           style={{
                             flexDirection: 'row',
@@ -1689,7 +1494,9 @@ dispatch(clearlink())
                   <View style={{marginTop: scalableheight.one}}></View>
                   <View
                     style={{
-                      ...styles.shadow,
+                      // ...styles.shadow,
+                      borderWidth: 1,
+                      borderColor: 'rgba(128, 128,128, 0.6)',
                       ...styles.MainContainer,
                       paddingVertical: scalableheight.two,
                     }}>
@@ -1798,6 +1605,11 @@ dispatch(clearlink())
                           {MaxRating.map((item, key) => {
                             return (
                               <TouchableOpacity
+                                disabled={
+                                  orderResult[0]?.RestaurantRatings.length > 0
+                                    ? true
+                                    : false
+                                }
                                 activeOpacity={0.7}
                                 key={item}
                                 onPress={() => setDefaultRating(item)}>
@@ -1878,7 +1690,7 @@ dispatch(clearlink())
                               <TouchableOpacity
                                 activeOpacity={0.7}
                                 key={item}
-                                onPress={() => setDefaultRating(item)}>
+                                onPress={() => changeration(item)}>
                                 {/* <Image
               resizeMode={'contain'}
                 style={{height: 35, width: 35}}
@@ -1889,9 +1701,7 @@ dispatch(clearlink())
                 }
               /> */}
                                 <FontAwesome
-                                  style={{
-                                    marginRight: scalableheight.pointeight,
-                                  }}
+                                  style={styles.marginRightpoint8}
                                   name="star"
                                   size={fontSize.twenty}
                                   color={
@@ -1913,26 +1723,7 @@ dispatch(clearlink())
                       }}>
                       {'Review'}
                     </Text> */}
-                        <View
-                          style={{
-                            marginVertical: scalableheight.one,
-                            backgroundColor: '#F9F9F9',
-                            height: scalableheight.ten,
-                            borderRadius: scalableheight.one,
-                            paddingHorizontal: scalableheight.one,
-                            width: '100%',
-
-                            shadowColor: '#000',
-                            shadowOffset: {
-                              width: 0,
-                              height: 2,
-                            },
-                            shadowOpacity: 0.23,
-                            shadowRadius: 2.62,
-
-                            elevation: 1,
-                            // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
-                          }}>
+                        <View style={styles.textinputview}>
                           <TextInput
                             multiline
                             value={reviews}
@@ -1941,25 +1732,17 @@ dispatch(clearlink())
                             }}
                             placeholderTextColor="lightgray"
                             placeholder="Type here"
-                            onChangeText={text => {
-                              setReviews(text);
-                            }}
+                            onChangeText={text => setReviews(text)}
                           />
                         </View>
                         {loader == true ? (
-                          <View
-                            style={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}>
+                          <View style={styles.alignandjustifycenter}>
                             <ActivityIndicator size={'large'} color="#E14E4E" />
                           </View>
                         ) : (
                           <MYButton
                             title={'SUBMIT'}
-                            onPress={() => {
-                              Review();
-                            }}
+                            onPress={() => Review()}
                             color="#E14E4E"
                             textcolor="white"
                           />
@@ -1971,68 +1754,52 @@ dispatch(clearlink())
               </>
             )}
             <View>
-              <View style={{height: scalableheight.three}} />
+              <View style={styles.height3} />
               <Bll label={'Sub Total'} price={orderResult[0]?.Amount} />
               <Bll
                 label={'Delivery Charges'}
                 price={orderResult[0]?.DeliveryCharges}
               />
 
-              <View style={{height: scalableheight.one}} />
+              <View style={styles.height1} />
               {/* <Text style={{...styles.Text4, textAlign: 'right'}}>
                 I HAVE A COUPON
               </Text> */}
-              <View
-                style={{
-                  borderTopColor: 'rgba(211,211,211, 0.5)',
-                  borderTopWidth: scalableheight.borderTopWidth,
-                  marginVertical: scalableheight.one,
-                }}></View>
+              <View style={styles.containerview3}></View>
               <Bll label={'Total Amount'} price={orderResult[0]?.TotalAmount} />
-              <View style={{height: scalableheight.two}} />
-              {orderResult[0]?.Status == 'Pending' && orderResult[0]?.IsPaid == false  ? (
+              <View style={styles.height2} />
+              {orderResult[0]?.Status == 'Pending' &&
+              orderResult[0]?.IsPaid == false ? (
                 repayloader == true ? (
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
+                  <View style={styles.alignandjustifycenter}>
                     <ActivityIndicator size={'large'} color="#E14E4E" />
                   </View>
                 ) : (
                   <MYButton
-                    title={ 'Pay Now'}
+                    title={'Pay Now'}
                     color="#E14E4E"
                     textcolor="white"
-                    onPress={() => {
-                      repay();
-                    }}
+                    onPress={repay}
                   />
                 )
               ) : null}
-              {orderResult[0]?.Status == 'Pending' && orderResult[0]?.IsPaid == false  ? (
+              {orderResult[0]?.Status == 'Pending' &&
+              orderResult[0]?.IsPaid == false ? (
                 loader == true ? (
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
+                  <View style={styles.alignandjustifycenter}>
                     <ActivityIndicator size={'large'} color="#E14E4E" />
                   </View>
                 ) : (
                   <MYButton
-                    title={ 'Cancel'}
+                    title={'Cancel'}
                     color="black"
                     textcolor="white"
-                    onPress={() => {
-                      cancelorder();
-                    }}
+                    onPress={cancelorder()}
                   />
                 )
               ) : null}
-           
 
-              <View style={{height: scalableheight.ten}} />
+              <View style={styles.height10} />
             </View>
           </View>
         </ScrollView>
@@ -2040,19 +1807,56 @@ dispatch(clearlink())
       <ItemsDetailsModel2
         state={itemmodalVisible}
         data={itemmodaldata}
-        togglemodel={() => {
-          setitemmodalVisible(false);
-        }}
+        togglemodel={closeitemdetailsmodal}
       />
-      <Toast
-        ref={toast}
-        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
-      />
+      <Toast ref={toast} style={styles.toast} />
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
+  marginRightpoint8: {
+    marginRight: scalableheight.pointeight,
+  },
+  textinputview: {
+    marginVertical: scalableheight.one,
+    backgroundColor: '#F9F9F9',
+    height: scalableheight.ten,
+    borderRadius: scalableheight.one,
+    paddingHorizontal: scalableheight.one,
+    width: '100%',
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 1,
+    // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+  },
+  height3: {height: scalableheight.three},
+  height1: {
+    height: scalableheight.one,
+  },
+  containerview3: {
+    borderTopColor: 'rgba(211,211,211, 0.5)',
+    borderTopWidth: scalableheight.borderTopWidth,
+    marginVertical: scalableheight.one,
+  },
+  height2: {height: scalableheight.two},
+  height10: {height: scalableheight.ten},
+  toast: {marginBottom: scalableheight.ten, justifyContent: 'center'},
+  itemdetailsstatusview: {
+    alignItems: 'center',
+    marginVertical: scalableheight.pointfive,
+  },
+  imageview3: {
+    width: scalableheight.three,
+    height: scalableheight.three,
+  },
   MainContainer: {
     backgroundColor: 'white',
     width: '100%',
@@ -2060,12 +1864,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: fontSize.eight,
     padding: scalableheight.two,
-    shadowColor: '#470000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.2,
-    elevation: 2,
-    borderWidth: scalableheight.borderTopWidth,
-    borderColor: 'rgba(211,211,211, 0.6)',
+    // shadowColor: '#470000',
+    // shadowOffset: {width: 0, height: 1},
+    // shadowOpacity: 0.2,
+    // elevation: 2,
+
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
   },
   centeredView: {
     flex: 1,
@@ -2118,6 +1923,104 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  animatedviewstyle: {
+    flex: 1,
+    backgroundColor: '#F6F6F6',
+  },
+  modalview1: {
+    width: '100%',
+    height: '100%',
+  },
+  paddingtopbarheight: {
+    paddingTop: getStatusBarHeight(),
+  },
+  touchableview: {
+    height: scalableheight.seven,
+    width: scalableheight.five,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: scalableheight.six,
+    left: scalableheight.one,
+    zIndex: 10,
+  },
+  alignandjustifycenter: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  containerview: {
+    //height: '100%',
+    width: '100%',
+    alignSelf: 'center',
+    marginTop: getStatusBarHeight(),
+    padding: scalableheight.one,
+  },
+  paddingBottomfifteen: {paddingBottom: scalableheight.fifteen},
+  paddingone: {
+    padding: scalableheight.one,
+  },
+  borderwwidthandcolor: {
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
+  },
+  view2: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    height: scalableheight.twenty,
+  },
+  view3: {
+    width: '50%',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  imageview: {
+    height: scalableheight.twenty,
+    width: scalableheight.twenty,
+    marginTop: -scalableheight.three,
+  },
+  imageview2: {
+    height: scalableheight.fifteen,
+    width: scalableheight.fifteen,
+
+    alignSelf: 'center',
+  },
+  width50: {width: '50%'},
+  text7: {
+    color: '#F55050',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.twelve,
+  },
+  text8: {
+    color: '#29262A',
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.twelve,
+    paddingBottom: scalableheight.pointeightfive,
+  },
+  text9: {
+    color: '#29262A',
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.twelve,
+  },
+  mapview: {
+    height: scalableheight.twentytwo,
+    borderRadius: fontSize.eight,
+
+    overflow: 'hidden',
+  },
+  margintopone: {
+    marginTop: scalableheight.one,
+  },
+  text10: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.sixteen,
+    color: '#29262A',
+  },
+  widthfull: {
+    width: '100%',
   },
 });
 export default OrderDetails;

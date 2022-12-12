@@ -39,23 +39,8 @@ export default function HeaderComponent(props) {
 
   return (
     <View style={styleSheet.header}>
-      <View
-        style={{
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'row',
-        }}>
-        <TouchableOpacity
-          onPress={openMenu}
-          style={{
-            height: scalableheight.seven,
-            width: scalableheight.five,
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            left: 0,
-          }}>
+      <View style={styleSheet.container}>
+        <TouchableOpacity onPress={openMenu} style={styleSheet.menu}>
           <MaterialCommunityIcons
             name="menu"
             color={'white'}
@@ -65,11 +50,7 @@ export default function HeaderComponent(props) {
 
         <Image
           resizeMode="contain"
-          style={{
-            alignSelf: 'center',
-            width: scalableheight.thirteen,
-            height: scalableheight.four,
-          }}
+          style={styleSheet.logo}
           source={require('../../Resources/images/logo.png')}
         />
 
@@ -104,6 +85,20 @@ const styleSheet = StyleSheet.create({
 
     // backgroundColor:'red',
   },
+  container: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  menu: {
+    height: scalableheight.seven,
+    width: scalableheight.five,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    left: 0,
+  },
 
   text: {
     fontSize: 20,
@@ -116,6 +111,11 @@ const styleSheet = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     right: '-1%',
+  },
+  logo: {
+    alignSelf: 'center',
+    width: scalableheight.thirteen,
+    height: scalableheight.four,
   },
 });
 

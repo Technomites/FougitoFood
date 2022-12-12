@@ -15,14 +15,14 @@ import {
   storecartprice,
   cleancart,
   storerestrauntid,
-  getallrestrauntsbyid
+  getallrestrauntsbyid,
 } from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader from '../Shared/Components/PlainHeader';
 import Favourites from '../Shared/Components/Favourites';
 
-import BottomTab from '../Shared/Components/BottomTab';
+// import BottomTab from '../Shared/Components/BottomTab';
 import Animated from 'react-native-reanimated';
 import Octicons from 'react-native-vector-icons/Octicons';
 import NetInfo from '@react-native-community/netinfo';
@@ -33,7 +33,6 @@ import {
 } from '@react-navigation/drawer';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
-
 const MyFavourite = ({navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   const {
@@ -42,13 +41,11 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
     AuthToken,
     favouriterestuarants,
     currentRestrauntid,
-    addedtofavourite
-  } = useSelector(
-    state => state.userReducer,
-  );
+    addedtofavourite,
+  } = useSelector(state => state.userReducer);
 
   useEffect(() => {
- dispatch(getmyfavourites(storedlat, storedlong, AuthToken ))
+    dispatch(getmyfavourites(storedlat, storedlong, AuthToken));
   }, [storedlat, storedlong, addedtofavourite]);
 
   const [serving, setserving] = useState([
@@ -69,36 +66,35 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
     },
   ]);
 
+  function navigatetorestaurant(item, index) {
+    dispatch(storerestrauntbasicdata(item));
+    dispatch(storedistance(item?.Distance));
+    if (currentRestrauntid != item?.Id) {
+      dispatch(storecartprice(0));
+      dispatch(cleancart());
+      dispatch(storerestrauntid(item?.Id));
+    }
+    dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
+    navigation.navigate('Restaurantpage', {
+      latitude: storedlat,
+      longitude: storedlong,
+    });
+  }
   const renderItem = ({item, index}) => (
     <Favourites
       image={item.Logo}
       title={item.NameAsPerTradeLicense}
-      reviews={`${item.AvgRating} (${item.RatingCount} Reviews)`}
-      time={`${item.OpeningTime} AM - ${item.ClosingTime} PM`}
-      onPress={() => {
-        dispatch(storerestrauntbasicdata(item));
-        dispatch(storedistance(item?.Distance));
-        if (currentRestrauntid != item?.Id) {
-          dispatch(storecartprice(0));
-          dispatch(cleancart());
-          dispatch(storerestrauntid(item?.Id));
-        }
-        dispatch(getallrestrauntsbyid(item?.Id, AuthToken));
-        navigation.navigate('Restaurantpage', {
-          latitude: storedlat,
-          longitude: storedlong,
-        });
-
-
-      }}
+      reviews={`${item.AvgRating.toFixed(2)} (${item.RatingCount} Reviews)`}
+      time={`${item.OpeningTime} - ${item.ClosingTime}`}
+      onPress={() => navigatetorestaurant(item, index)}
       distance={`${item.Distance} away`}
     />
   );
 
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
-        <FocusAwareStatusBar
+      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: '#F6F6F6'}}>
+      <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
       />
@@ -112,31 +108,31 @@ const MyFavourite = ({navigation, drawerAnimationStyle}) => {
           paddingTop: getStatusBarHeight(),
         }}>
         <PlainHeader title={'My Favourites'} />
-    
-        <View style={{width: '100%', paddingHorizontal: scalableheight.two,}}>
-         {favouriterestuarants.length > 0 ?
-         
-          <FlatList
-            data={favouriterestuarants}
-            renderItem={renderItem}
-            // ListFooterComponent={renderFooter}
-            // onEndReached={loadMoreNotifications}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 54}}
-            keyExtractor={(item, index) => index.toString()}
-          />
-          :
-          <View
-          style={{
-            // justifyContent: 'center',
-            // alignItems: 'center',
-            alignSelf: 'center',
-            marginVertical: scalableheight.fourty,
-          }}>
-          <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
-            No Data Found
-          </Text>
-        </View>}
+
+        <View style={{width: '100%', paddingHorizontal: scalableheight.two}}>
+          {favouriterestuarants.length > 0 ? (
+            <FlatList
+              data={favouriterestuarants}
+              renderItem={renderItem}
+              // ListFooterComponent={renderFooter}
+              // onEndReached={loadMoreNotifications}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingBottom: 54}}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          ) : (
+            <View
+              style={{
+                // justifyContent: 'center',
+                // alignItems: 'center',
+                alignSelf: 'center',
+                marginVertical: scalableheight.fourty,
+              }}>
+              <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
+                No Data Found
+              </Text>
+            </View>
+          )}
         </View>
       </View>
     </Animated.View>

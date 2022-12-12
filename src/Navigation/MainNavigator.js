@@ -23,10 +23,9 @@ import {
 //   hideNavigationBar,
 //   showNavigationBar,
 // } from 'react-native-navigation-bar-color';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import CustomButton from '../Shared/Components/CustomButton';
-import LinearGradient from 'react-native-linear-gradient';
-import RadialGradient from 'react-native-radial-gradient';
+
+
+
 import Toast from 'react-native-toast-notifications';
 import AuthenticationModel from '../Shared/Components/AuthenticationModel';
 import {useSelector, useDispatch} from 'react-redux';
@@ -44,31 +43,24 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 import GettingStarted from '../Screens/GettingStarted';
 import SplashScreen from '../Screens/SplashScreen';
 import * as Animatable from 'react-native-animatable';
 import Home from '../Screens/Home';
 import Restaurantpage from '../Screens/Restaurantpage';
 import Checkout from '../Screens/Checkout';
-// import RestaurantPageAnimation from '../Screens/RestaurantPageAnimation';
 import Settings from '../Screens/Settings';
 import Help from '../Screens/Help';
 import Coupons from '../Screens/Coupons';
 import PreparingFood from '../Screens/PreparingFood';
-
-import Login from '../Screens/Login';
-import SignUp from '../Screens/SignUp';
-import OtpVerification from '../Screens/OtpVerification';
 import ContactUs from '../Screens/ContactUs';
 import Aboutus from '../Screens/Aboutus';
-import ForgotPassword from '../Screens/ForgotPassword';
 import MyFavourite from '../Screens/MyFavourite';
 import MyOrders from '../Screens/MyOrders';
 import MyAddresses from '../Screens/MyAddresses';
-import Changepassword from '../Screens/Changepassword';
 import OrderDetails from '../Screens/OrderDetails';
 import EditAddress from '../Screens/EditAddress';
 import AccountSettings from '../Screens/AccountSettings';
@@ -76,8 +68,7 @@ import Legal from '../Screens/Legal';
 import Faqs from '../Screens/Faqs';
 import Qrcode from '../Screens/Qrcode';
 import TermsCondition from '../Screens/Terms&Condition';
-
-import Changepasswordforgot from '../Screens/Changepasswordforgot';
+import MyNotification from '../Screens/MyNotification';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -87,18 +78,16 @@ import Animated, {
 } from 'react-native-reanimated';
 // import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {fontSize, scalableheight} from '../Utilities/fonts';
-import renderIf from 'render-if';
+
 import {totalSize, height} from 'react-native-dimension';
-import {PortalProvider} from 'react-native-portal';
 import DeviceInfo from 'react-native-device-info';
 import NetInfo from '@react-native-community/netinfo';
 import {eraselogout, logout, ClearAsycn} from '../Actions/actions';
-import {GToastContainer, showToast} from 'react-native-gtoast';
+import FastImage from 'react-native-fast-image';
 
-// import { StatusBar } from 'expo-status-bar';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-const Tab = createBottomTabNavigator();
+
 
 const TransitionScreenOptions = {
   ...TransitionPresets.SlideFromRightIOS,
@@ -118,6 +107,7 @@ const CustomDrawerStyle = ({navigation}) => {
     ProfileName,
     ProfileImage,
     internetconnectionstate,
+    NotificationCount,
   } = useSelector(state => state.userReducer);
 
   let options = [
@@ -148,15 +138,15 @@ const CustomDrawerStyle = ({navigation}) => {
     //   },
     //   type: 1,
     // },
-    {
-      label: 'Contact Us',
-      img: 'phone',
-      onPress: () => {
-        navigation.navigate('ContactUs');
-        navigation.dispatch(DrawerActions.closeDrawer());
-      },
-      type: 5,
-    },
+    // {
+    //   label: 'Contact Us',
+    //   img: 'phone',
+    //   onPress: () => {
+    //     navigation.navigate('ContactUs');
+    //     navigation.dispatch(DrawerActions.closeDrawer());
+    //   },
+    //   type: 5,
+    // },
   ];
   const [modalVisible, setmodalVisible] = useState(false);
   const [logoutmodal, setlogoutmodal] = useState(false);
@@ -188,6 +178,7 @@ const CustomDrawerStyle = ({navigation}) => {
 
       setanimationtype('fadeOutDownBig');
       ClearAsyncStorage();
+
       dispatch(ClearAsycn());
 
       //  setlogoutmodal(false);
@@ -218,7 +209,7 @@ const CustomDrawerStyle = ({navigation}) => {
   }, [userLogoutStatus, UserLogout]);
   const logoutHandle = () => {
     // dispatch(logout(AuthToken));
-    setnointernet();
+    setnointernet(false);
     // const deviceId = DeviceInfo.getUniqueId();
     // console.log(deviceId);
     NetInfo.fetch().then(state => {
@@ -247,6 +238,74 @@ const CustomDrawerStyle = ({navigation}) => {
     });
   };
 
+  function navigateaccount() {
+    navigation.navigate('AccountSettings');
+  }
+  function openmodal() {
+    setmodalVisible(true);
+  }
+
+  function navigatehome() {
+    navigation.navigate('Home');
+    navigation.dispatch(DrawerActions.closeDrawer());
+  }
+
+  function navigatetonotification() {
+    navigation.navigate('MyNotification');
+    navigation.dispatch(DrawerActions.closeDrawer());
+  }
+
+  function navigatetomyorders() {
+    navigation.navigate('MyOrders');
+    navigation.dispatch(DrawerActions.closeDrawer());
+  }
+
+  function navigatetocoupon() {
+    navigation.navigate('Coupons');
+    navigation.dispatch(DrawerActions.closeDrawer());
+  }
+
+  function navigatetofavourites() {
+    navigation.navigate('MyFavourite');
+    navigation.dispatch(DrawerActions.closeDrawer());
+  }
+
+  function navigatetoaddresses() {
+    navigation.navigate('MyAddresses', {
+      screenname: 'drawer',
+    });
+    navigation.dispatch(DrawerActions.closeDrawer());
+  }
+
+  function openlogout() {
+    //logoutHandle()
+    // setlogoutmodal(true)
+    // alert('mm')
+    setlogoutmodal(true);
+    setanimationtype('fadeInUpBig');
+    // setlogoutmodal(true)
+  }
+
+  function animationended() {
+    // setanimationstate(false);
+
+    if (animationtype == 'fadeInUpBig') {
+      // setanimationtype('fadeOutDownBig')
+    } else {
+      // setanimationtype('fadeInUpBig');
+      // setlogoutmodal(false);
+      setlogoutmodal(false);
+    }
+  }
+
+  function changeanimation() {
+    setanimationtype('fadeOutDownBig');
+    // setanimationstate(true);
+  }
+
+  function closemodal() {
+    setmodalVisible(false);
+  }
   return (
     // <ImageBackground
     //   resizeMode="cover"
@@ -271,20 +330,10 @@ const CustomDrawerStyle = ({navigation}) => {
    
     </Modal> */}
 
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          width: '100%',
-          paddingLeft: scalableheight.pointfive,
-        }}>
+      <View style={styleSheet.customdrawercontainer}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{
-            marginTop: getStatusBarHeight(),
-            width: '100%',
-          }}>
+          style={styleSheet.customdrawerscrollstyle}>
           {/* <View
             style={{
               width: '95%',
@@ -298,81 +347,46 @@ const CustomDrawerStyle = ({navigation}) => {
               flexDirection: 'row',
               alignItems: 'center',
             }}> */}
-          <View
-            style={{
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: scalableheight.two,
-            }}>
-            <Image
-              style={{
-                width: scalableheight.fifteen,
-                height: scalableheight.fifteen,
-                borderRadius: fontSize.circle,
-                borderWidth: scalableheight.borderwidth,
-                borderColor: 'black',
-              }}
-              source={
-                AuthToken != '' &&
-                internetconnectionstate == true &&
-                ProfileImage != ''
-                  ? {
-                      uri: ProfileImage,
-                    }
-                  : require('../Resources/images/logoguest.png')
-              }
-            />
+          <View style={styleSheet.cdinnerview}>
+            {AuthToken != '' &&
+            internetconnectionstate == true &&
+            ProfileImage != '' ? (
+              <FastImage
+                style={styleSheet.cdfastimagestyle}
+                source={{
+                  uri: ProfileImage,
+
+                  // headers: { Authorization: 'someAuthToken' },
+                  priority: FastImage.priority.high,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+            ) : (
+              <Image
+                style={styleSheet.cdfastimagestyle}
+                source={require('../Resources/images/logoguest.png')}
+              />
+            )}
             <View style={{marginTop: scalableheight.one}}>
               {AuthToken != '' && internetconnectionstate == true ? (
                 <TouchableOpacity
                   activeOpacity={0.9}
-                  style={{justifyContent: 'center', alignItems: 'center'}}
-                  onPress={() => navigation.navigate('AccountSettings')}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: fontSize.eightteen,
-                      fontFamily: 'Inter-SemiBold',
-                    }}>
-                    {ProfileName.trim()}
-                  </Text>
+                  style={styleSheet.justifyandaligncenter}
+                  onPress={navigateaccount}>
+                  <Text style={styleSheet.text4}>{ProfileName.trim()}</Text>
                   <View>
-                    <Text
-                      style={{
-                        color: 'white',
-                        fontSize: fontSize.twelve,
-                        fontFamily: 'Inter-Medium',
-                        opacity: 0.8,
-                      }}>
-                      Account Settings
-                    </Text>
+                    <Text style={styleSheet.text5}>Account Settings</Text>
                   </View>
                 </TouchableOpacity>
               ) : (
                 internetconnectionstate == true && (
                   <TouchableOpacity
-                    style={{alignItems: 'center'}}
+                    style={styleSheet.aligncenter}
                     activeOpacity={0.9}
-                    onPress={() => setmodalVisible(true)}>
-                    <Text
-                      style={{
-                        color: 'white',
-                        fontSize: fontSize.eightteen,
-                        fontFamily: 'Inter-SemiBold',
-                      }}>
-                      {'Guest User'}
-                    </Text>
+                    onPress={openmodal}>
+                    <Text style={styleSheet.text6}>{'Guest User'}</Text>
                     <View>
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontSize: fontSize.twelve,
-                          fontFamily: 'Inter-Medium',
-                          opacity: 0.8,
-                        }}>
-                        Login/Signup
-                      </Text>
+                      <Text style={styleSheet.text5}>Login/Signup</Text>
                     </View>
                   </TouchableOpacity>
                 )
@@ -434,219 +448,102 @@ const CustomDrawerStyle = ({navigation}) => {
 
           <TouchableOpacity
             activeOpacity={0.9}
-            onPress={() => {
-              navigation.navigate('Home');
-              navigation.dispatch(DrawerActions.closeDrawer());
-            }}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-
-              // borderTopWidth: scalableheight.borderTopWidth,
-              // borderColor: '#adadad',
-              height: Dimensions.get('window').height / 15,
-              marginHorizontal: scalableheight.two,
-            }}>
-            <View
-              style={{
-                ...styleSheet.shadowicon,
-                width: scalableheight.five,
-                height: scalableheight.five,
-                borderRadius: fontSize.nine,
-                backgroundColor: '#F9F9F9',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+            onPress={navigatehome}
+            style={styleSheet.innerview}>
+            <View style={[styleSheet.shadowicon, styleSheet.innerview2]}>
               <MaterialCommunityIcons
                 name={'home-outline'}
                 color={'black'}
                 size={fontSize.twentyfour}
               />
             </View>
-            <Text
-              style={{
-                color: 'white',
-                fontFamily: 'Inter-Medium',
-                fontSize: fontSize.fourteen,
-                marginLeft: scalableheight.two,
-              }}>
-              {'Home'}
-            </Text>
+            <Text style={styleSheet.text9}>{'Home'}</Text>
           </TouchableOpacity>
-
-          {/* {renderIf(ProfileInfo != '')(
-            <> */}
 
           {AuthToken != '' && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => {
-                navigation.navigate('MyOrders');
-                navigation.dispatch(DrawerActions.closeDrawer());
-              }}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderTopWidth: scalableheight.borderTopWidth,
-                borderColor: '#adadad',
-                height: Dimensions.get('window').height / 13,
-                marginHorizontal: scalableheight.two,
-              }}>
-              <View
-                style={{
-                  ...styleSheet.shadowicon,
-                  width: scalableheight.five,
-                  height: scalableheight.five,
-                  borderRadius: fontSize.nine,
-                  backgroundColor: '#F9F9F9',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+              onPress={navigatetonotification}
+              style={styleSheet.innerview7}>
+              <View style={[styleSheet.shadowicon, styleSheet.innerview2]}>
+                <Icon
+                  //    onPress={props.onPress}
+                  name="bell-outline"
+                  size={fontSize.twentytwo}
+                  color={'black'}
+                />
+                {NotificationCount > 0 ? (
+                  <View style={styleSheet.notificationiconstyle}>
+                    <Text style={styleSheet.notificationtext}>
+                      {NotificationCount}
+                    </Text>
+                  </View>
+                ) : null}
+              </View>
+              <Text style={styleSheet.text9}>{'Notifications'}</Text>
+            </TouchableOpacity>
+          ) : null}
+
+          {AuthToken != '' && internetconnectionstate == true ? (
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={navigatetomyorders}
+              style={styleSheet.innerview10}>
+              <View style={[styleSheet.shadowicon, styleSheet.innerview2]}>
                 <MaterialIcons
                   name={'history'}
                   color={'black'}
                   size={fontSize.twentytwo}
                 />
               </View>
-              <Text
-                style={{
-                  color: 'white',
-                  fontFamily: 'Inter-Medium',
-                  fontSize: fontSize.fourteen,
-                  marginLeft: scalableheight.two,
-                }}>
-                {'My Orders'}
-              </Text>
+              <Text style={styleSheet.text9}>{'My Orders'}</Text>
             </TouchableOpacity>
           ) : null}
 
           {AuthToken != '' && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => {
-                navigation.navigate('Coupons');
-                navigation.dispatch(DrawerActions.closeDrawer());
-              }}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderTopWidth: scalableheight.borderTopWidth,
-                borderColor: '#adadad',
-                height: Dimensions.get('window').height / 13,
-                marginHorizontal: scalableheight.two,
-              }}>
-              <View
-                style={{
-                  ...styleSheet.shadowicon,
-                  width: scalableheight.five,
-                  height: scalableheight.five,
-                  borderRadius: fontSize.nine,
-                  backgroundColor: '#F9F9F9',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+              onPress={navigatetocoupon}
+              style={styleSheet.innerview10}>
+              <View style={[styleSheet.shadowicon, styleSheet.innerview2]}>
                 <AntDesign
                   name={'tagso'}
                   color={'black'}
                   size={fontSize.twentytwo}
                 />
               </View>
-              <Text
-                style={{
-                  color: 'white',
-                  fontFamily: 'Inter-Medium',
-                  fontSize: fontSize.fourteen,
-                  marginLeft: scalableheight.two,
-                }}>
-                {'My Coupons'}
-              </Text>
+              <Text style={styleSheet.text9}>{'My Coupons'}</Text>
             </TouchableOpacity>
           ) : null}
           {AuthToken != '' && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => {
-                navigation.navigate('MyFavourite');
-                navigation.dispatch(DrawerActions.closeDrawer());
-              }}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderTopWidth: scalableheight.borderTopWidth,
-                borderColor: '#adadad',
-                height: Dimensions.get('window').height / 13,
-                marginHorizontal: scalableheight.two,
-              }}>
-              <View
-                style={{
-                  ...styleSheet.shadowicon,
-                  width: scalableheight.five,
-                  height: scalableheight.five,
-                  borderRadius: fontSize.nine,
-                  backgroundColor: '#F9F9F9',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+              onPress={navigatetofavourites}
+              style={styleSheet.innerview10}>
+              <View style={[styleSheet.shadowicon, styleSheet.innerview2]}>
                 <AntDesign
                   name={'hearto'}
                   color={'black'}
                   size={fontSize.twentytwo}
                 />
               </View>
-              <Text
-                style={{
-                  color: 'white',
-                  fontFamily: 'Inter-Medium',
-                  fontSize: fontSize.fourteen,
-                  marginLeft: scalableheight.two,
-                }}>
-                {'My Favourites'}
-              </Text>
+              <Text style={styleSheet.text9}>{'My Favourites'}</Text>
             </TouchableOpacity>
           ) : null}
 
           {AuthToken != '' && internetconnectionstate == true ? (
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => {
-                navigation.navigate('MyAddresses', {
-                  screenname: 'drawer',
-                });
-                navigation.dispatch(DrawerActions.closeDrawer());
-              }}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderTopWidth: scalableheight.borderTopWidth,
-                borderColor: '#adadad',
-                height: Dimensions.get('window').height / 13,
-                marginHorizontal: scalableheight.two,
-              }}>
-              <View
-                style={{
-                  ...styleSheet.shadowicon,
-                  width: scalableheight.five,
-                  height: scalableheight.five,
-                  borderRadius: fontSize.nine,
-                  backgroundColor: '#F9F9F9',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+              onPress={navigatetoaddresses}
+              style={styleSheet.innerview10}>
+              <View style={[styleSheet.shadowicon, styleSheet.innerview2]}>
                 <Ionicons
                   name={'location-outline'}
                   color={'black'}
                   size={fontSize.twentytwo}
                 />
               </View>
-              <Text
-                style={{
-                  color: 'white',
-                  fontFamily: 'Inter-Medium',
-                  fontSize: fontSize.fourteen,
-                  marginLeft: scalableheight.two,
-                }}>
-                {'My Addresses'}
-              </Text>
+              <Text style={styleSheet.text9}>{'My Addresses'}</Text>
             </TouchableOpacity>
           ) : null}
 
@@ -657,25 +554,8 @@ const CustomDrawerStyle = ({navigation}) => {
                   key={index.toString()}
                   activeOpacity={0.9}
                   onPress={() => item.onPress()}
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-
-                    borderTopWidth: scalableheight.borderTopWidth,
-                    borderColor: '#adadad',
-                    height: Dimensions.get('window').height / 13,
-                    marginHorizontal: scalableheight.two,
-                  }}>
-                  <View
-                    style={{
-                      ...styleSheet.shadowicon,
-                      width: scalableheight.five,
-                      height: scalableheight.five,
-                      borderRadius: fontSize.nine,
-                      backgroundColor: '#F9F9F9',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
+                  style={styleSheet.innerview10}>
+                  <View style={[styleSheet.shadowicon, styleSheet.innerview2]}>
                     {item.type == 1 ? (
                       <Ionicons
                         name={item.img}
@@ -708,67 +588,27 @@ const CustomDrawerStyle = ({navigation}) => {
                       />
                     ) : null}
                   </View>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontFamily: 'Inter-Medium',
-                      fontSize: fontSize.fourteen,
-                      marginLeft: scalableheight.two,
-                    }}>
-                    {item.label}
-                  </Text>
+                  <Text style={styleSheet.text9}>{item.label}</Text>
                 </TouchableOpacity>
               );
             })}
           </View>
 
-          {renderIf(AuthToken != '' && internetconnectionstate == true)(
+          {AuthToken != '' && internetconnectionstate == true &&
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => {
-                //logoutHandle()
-                // setlogoutmodal(true)
-                // alert('mm')
-                setlogoutmodal(true);
-                setanimationtype('fadeInUpBig');
-                // setlogoutmodal(true)
-              }}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-
-                borderTopWidth: scalableheight.borderTopWidth,
-                borderColor: '#adadad',
-                height: Dimensions.get('window').height / 13,
-                marginHorizontal: scalableheight.two,
-              }}>
-              <View
-                style={{
-                  ...styleSheet.shadowicon,
-                  width: scalableheight.five,
-                  height: scalableheight.five,
-                  borderRadius: fontSize.nine,
-                  backgroundColor: '#F9F9F9',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+              onPress={openlogout}
+              style={styleSheet.innerview10}>
+              <View style={[styleSheet.shadowicon, styleSheet.innerview2]}>
                 <MaterialIcons
                   name={'logout'}
                   color={'black'}
                   size={fontSize.twentytwo}
                 />
               </View>
-              <Text
-                style={{
-                  color: 'white',
-                  fontFamily: 'Inter-Medium',
-                  fontSize: fontSize.fourteen,
-                  marginLeft: scalableheight.two,
-                }}>
-                {'Logout'}
-              </Text>
-            </TouchableOpacity>,
-          )}
+              <Text style={styleSheet.text9}>{'Logout'}</Text>
+            </TouchableOpacity>
+          }
           {/* {renderIf(AuthToken == '')(
             <TouchableOpacity
               activeOpacity={0.9}
@@ -814,128 +654,40 @@ const CustomDrawerStyle = ({navigation}) => {
         </ScrollView>
       </View>
       {logoutmodal && (
-        <Modal
-          style={{width: '100%', height: '100%'}}
-          transparent
-          statusBarTranslucent>
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              paddingBottom: scalableheight.eight,
-            }}>
+        <Modal style={styleSheet.modalview3} transparent statusBarTranslucent>
+          <View style={styleSheet.innermodalview}>
             <Animatable.View
               animation={animationtype}
-              onAnimationEnd={() => {
-                // setanimationstate(false);
-
-                if (animationtype == 'fadeInUpBig') {
-                  // setanimationtype('fadeOutDownBig')
-                } else {
-                  // setanimationtype('fadeInUpBig');
-                  // setlogoutmodal(false);
-                  setlogoutmodal(false);
-                }
-              }}
+              onAnimationEnd={animationended}
               easing="ease"
               //  iterationCount="infinite"
               iterationCount={1}
-              style={{
-                // bottom: scalableheight.two,
-                // position: 'absolute',
-
-                width: Dimensions.get('window').width / 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: scalableheight.sixteen,
-              }}>
-              <View
-                style={{
-                  backgroundColor: '#303030',
-                  height: '100%',
-                  width: '90%',
-                  borderRadius: fontSize.eleven,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+              style={styleSheet.animatedview}>
+              <View style={styleSheet.animatedinnerview}>
                 <AntDesign
                   name={'exclamationcircle'}
                   color={'white'}
                   size={fontSize.thirtytwo}
                 />
-                <Text
-                  style={{
-                    fontFamily: 'Inter-SemiBold',
-                    color: 'white',
-                    fontSize: fontSize.fifteen,
-                    paddingTop: scalableheight.pointfive,
-                  }}>
+                <Text style={styleSheet.modaltext}>
                   Are you sure you want to logout?
                 </Text>
 
                 {loader == true ? (
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      paddingVertical: scalableheight.one,
-                    }}>
+                  <View style={styleSheet.activityloaderview}>
                     <ActivityIndicator size={'small'} color="#fff" />
                   </View>
                 ) : (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      paddingVertical: scalableheight.one,
-                    }}>
+                  <View style={styleSheet.innerview12}>
                     <TouchableOpacity
-                      onPress={() => {
-                        logoutHandle();
-                        //   setLoader(true);
-                        //  setanimationstate(true);
-                      }}
-                      style={{
-                        backgroundColor: '#E14E4E',
-                        width: scalableheight.seven,
-                        height: scalableheight.four,
-                        borderRadius: fontSize.borderradiusmedium,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: 'Inter-SemiBold',
-                          color: 'white',
-                          fontSize: fontSize.fifteen,
-                        }}>
-                        Yes
-                      </Text>
+                      onPress={logoutHandle}
+                      style={styleSheet.logoutview}>
+                      <Text style={styleSheet.logouttext}>Yes</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => {
-                        setanimationtype('fadeOutDownBig');
-                        // setanimationstate(true);
-                      }}
-                      style={{
-                        marginLeft: scalableheight.one,
-                        width: scalableheight.seven,
-                        height: scalableheight.four,
-                        borderRadius: fontSize.borderradiusmedium,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: 'Inter-SemiBold',
-                          color: '#E14E4E',
-                          fontSize: fontSize.fifteen,
-                        }}>
-                        No
-                      </Text>
+                      onPress={changeanimation}
+                      style={styleSheet.innerview14}>
+                      <Text style={styleSheet.text19}>No</Text>
                     </TouchableOpacity>
                   </View>
                 )}
@@ -946,22 +698,11 @@ const CustomDrawerStyle = ({navigation}) => {
       )}
       <Modal
         transparent
-        style={{
-          width: '100%',
-          height: '100%',
-          // zIndex: 1,
-          // elevation: 1,
-          // position: 'absolute',
-        }}
+        style={styleSheet.modalview3}
         statusBarTranslucent
         visible={modalVisible}
         onRequestClose={() => setmodalVisible(false)}>
-        <AuthenticationModel
-          state={modalVisible}
-          togglemodel={() => {
-            setmodalVisible(false);
-          }}
-        />
+        <AuthenticationModel state={modalVisible} togglemodel={closemodal} />
       </Modal>
       {/* <View
 style={{position:"absolute",
@@ -979,18 +720,7 @@ zIndex:999999999999999,
           }}
         />
 </View> */}
-      <Toast
-        ref={toast}
-        style={{
-          marginBottom: scalableheight.eight,
-          justifyContent: 'center',
-          width: '50%',
-          alignItems: 'center',
-          alignContent: 'center',
-          position: 'relative',
-          left: scalableheight.ten,
-        }}
-      />
+      <Toast ref={toast} style={styleSheet.toastview} />
     </>
   );
 };
@@ -1018,24 +748,13 @@ const Drawernavigator = props => {
       // contentContainerStyle={{flex:1, backgroundColor:"red", borderWidth:10, borderColor:"blue"}}
       contentContainerStyle={{flex: 1}}
       drawerType="slide"
-      // screenOptions={TransitionScreenOptions}
       overlayColor="transparent"
       initialRouteName="DrawerStack"
       drawerPosition={'left'}
-      drawerType="back"
-      screenOptions={TransitionScreenOptions}
-      drawerStyle={{
-        //   drawerContentOptions={{
-
-        width: '63%',
-
-        backgroundColor: 'transparent',
-      }}
-      sceneContainerStyle={{
-        // backgroundColor: "rgba(0,0,0,0.9)",
-
-        backgroundColor: 'transparent',
-      }}
+      // drawerType="back"
+      // screenOptions={TransitionScreenOptions}
+      drawerStyle={styleSheet.drawerstyle1}
+      sceneContainerStyle={styleSheet.sceneContainerStyle}
       drawerContent={props => {
         setTimeout(() => {
           setprogress(props.progress);
@@ -1057,12 +776,17 @@ const Drawernavigator = props => {
       <Drawer.Screen name="Checkout" options={{headerShown: false}}>
         {props => <Checkout {...props} drawerAnimationStyle={animatedStyle} />}
       </Drawer.Screen>
+      <Drawer.Screen name="MyNotification" options={{headerShown: false}}>
+        {props => (
+          <MyNotification {...props} drawerAnimationStyle={animatedStyle} />
+        )}
+      </Drawer.Screen>
 
-      <Drawer.Screen name="Changepassword" options={{headerShown: false}}>
+      {/* <Drawer.Screen name="Changepassword" options={{headerShown: false}}>
         {props => (
           <Changepassword {...props} drawerAnimationStyle={animatedStyle} />
         )}
-      </Drawer.Screen>
+      </Drawer.Screen> */}
 
       <Drawer.Screen name="MyFavourite" options={{headerShown: false}}>
         {props => (
@@ -1129,7 +853,7 @@ const Drawernavigator = props => {
 const DrawerStack = () => {
   return (
     <Stack.Navigator
-      screenOptions={TransitionScreenOptions}
+      // screenOptions={TransitionScreenOptions}
       initialRouteName="CustomDrawerStyle">
       <Stack.Screen
         name="CustomDrawerStyle"
@@ -1150,6 +874,11 @@ const DrawerStack = () => {
       <Stack.Screen
         name="Help"
         component={Help}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MyNotification"
+        component={MyNotification}
         options={{headerShown: false}}
       />
 
@@ -1178,37 +907,14 @@ const MainNavigator = () => {
       <NavigationContainer theme={navTheme}>
         <ImageBackground
           resizeMode="cover"
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100%',
-            width: '100%',
-            position: 'absolute',
-          }}
+          style={styleSheet.backgroundview}
           source={require('../Resources/images/background.png')}>
           <Image
             resizeMode="contain"
-            style={{
-              position: 'absolute',
-              bottom: scalableheight.three,
-              left: scalableheight.three,
-              width: scalableheight.thirteen,
-              height: scalableheight.four,
-            }}
+            style={styleSheet.imageview}
             source={require('../Resources/images/logo.png')}
           />
-          <Text
-            style={{
-              position: 'absolute',
-              bottom: scalableheight.three,
-              right: scalableheight.four,
-              color: 'white',
-              fontFamily: 'Inter-Medium',
-              fontSize: fontSize.twelve,
-              opacity: 0.7,
-            }}>
-            Version 1.0.5
-          </Text>
+          <Text style={styleSheet.text20}>Version 1.0.5</Text>
         </ImageBackground>
         {/*     <View    style={{
            
@@ -1265,21 +971,6 @@ const MainNavigator = () => {
           />
 
           <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SignUp"
-            component={SignUp}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Changepasswordforgot"
-            component={Changepasswordforgot}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
             name="OrderDetails"
             component={OrderDetails}
             options={{headerShown: false}}
@@ -1320,16 +1011,7 @@ const MainNavigator = () => {
             component={Qrcode}
             options={{headerShown: false}}
           />
-          <Stack.Screen
-            name="OtpVerification"
-            component={OtpVerification}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="ForgotPassword"
-            component={ForgotPassword}
-            options={{headerShown: false}}
-          />
+
           <Stack.Screen
             name="Help"
             component={Help}
@@ -1449,6 +1131,213 @@ const styleSheet = StyleSheet.create({
     paddingVertical: scalableheight.one,
     paddingHorizontal: scalableheight.four,
     marginLeft: scalableheight.one,
+  },
+  customdrawercontainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    width: '100%',
+    paddingLeft: scalableheight.pointfive,
+  },
+  customdrawerscrollstyle: {
+    marginTop: getStatusBarHeight(),
+    width: '100%',
+  },
+  cdinnerview: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: scalableheight.two,
+  },
+  cdfastimagestyle: {
+    width: scalableheight.fifteen,
+    height: scalableheight.fifteen,
+    borderRadius: fontSize.circle,
+    borderWidth: scalableheight.borderwidth,
+    borderColor: 'black',
+  },
+  justifyandaligncenter: {justifyContent: 'center', alignItems: 'center'},
+  text4: {
+    color: 'white',
+    fontSize: fontSize.eightteen,
+    fontFamily: 'Inter-SemiBold',
+  },
+  text5: {
+    color: 'white',
+    fontSize: fontSize.twelve,
+    fontFamily: 'Inter-Medium',
+    opacity: 0.8,
+  },
+  aligncenter: {alignItems: 'center'},
+  text6: {
+    color: 'white',
+    fontSize: fontSize.eightteen,
+    fontFamily: 'Inter-SemiBold',
+  },
+  innerview: {
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    // borderTopWidth: scalableheight.borderTopWidth,
+    // borderColor: '#adadad',
+    height: Dimensions.get('window').height / 15,
+    marginHorizontal: scalableheight.two,
+  },
+  innerview2: {
+    width: scalableheight.five,
+    height: scalableheight.five,
+    borderRadius: fontSize.nine,
+    backgroundColor: '#F9F9F9',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text9: {
+    color: 'white',
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.fourteen,
+    marginLeft: scalableheight.two,
+  },
+  innerview7: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderTopWidth: scalableheight.borderTopWidth,
+    borderColor: '#adadad',
+    height: Dimensions.get('window').height / 13,
+    marginHorizontal: scalableheight.two,
+  },
+  notificationiconstyle: {
+    position: 'absolute',
+    top: -scalableheight.pointfive,
+    left: -scalableheight.one,
+    backgroundColor: 'black',
+    padding: scalableheight.pointfive,
+    borderRadius: fontSize.borderradiuslarge,
+  },
+  notificationtext: {
+    color: 'white',
+
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.eight,
+  },
+  innerview10: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderTopWidth: scalableheight.borderTopWidth,
+    borderColor: '#adadad',
+    height: Dimensions.get('window').height / 13,
+    marginHorizontal: scalableheight.two,
+  },
+  modalview3: {width: '100%', height: '100%'},
+  innermodalview: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingBottom: scalableheight.eight,
+  },
+  animatedview: {
+    // bottom: scalableheight.two,
+    // position: 'absolute',
+
+    width: Dimensions.get('window').width / 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: scalableheight.sixteen,
+  },
+  animatedinnerview: {
+    backgroundColor: '#303030',
+    height: '100%',
+    width: '90%',
+    borderRadius: fontSize.eleven,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modaltext: {
+    fontFamily: 'Inter-SemiBold',
+    color: 'white',
+    fontSize: fontSize.fifteen,
+    paddingTop: scalableheight.pointfive,
+  },
+  activityloaderview: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: scalableheight.one,
+  },
+  innerview12: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: scalableheight.one,
+  },
+  logoutview: {
+    backgroundColor: '#E14E4E',
+    width: scalableheight.seven,
+    height: scalableheight.four,
+    borderRadius: fontSize.borderradiusmedium,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logouttext: {
+    fontFamily: 'Inter-SemiBold',
+    color: 'white',
+    fontSize: fontSize.fifteen,
+  },
+  innerview14: {
+    marginLeft: scalableheight.one,
+    width: scalableheight.seven,
+    height: scalableheight.four,
+    borderRadius: fontSize.borderradiusmedium,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text19: {
+    fontFamily: 'Inter-SemiBold',
+    color: '#E14E4E',
+    fontSize: fontSize.fifteen,
+  },
+  toastview: {
+    marginBottom: scalableheight.eight,
+    justifyContent: 'center',
+    width: '50%',
+    alignItems: 'center',
+    alignContent: 'center',
+    position: 'relative',
+    left: scalableheight.ten,
+  },
+  drawerstyle1: {
+    //   drawerContentOptions={{
+
+    width: '63%',
+
+    backgroundColor: 'transparent',
+  },
+  sceneContainerStyle: {
+    // backgroundColor: "rgba(0,0,0,0.9)",
+
+    backgroundColor: 'transparent',
+  },
+  backgroundview: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+  },
+  imageview: {
+    position: 'absolute',
+    bottom: scalableheight.three,
+    left: scalableheight.three,
+    width: scalableheight.thirteen,
+    height: scalableheight.four,
+  },
+  text20: {
+    position: 'absolute',
+    bottom: scalableheight.three,
+    right: scalableheight.four,
+    color: 'white',
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.twelve,
+    opacity: 0.7,
   },
 });
 

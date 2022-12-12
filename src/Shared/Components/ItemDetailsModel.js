@@ -13,7 +13,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-import renderIf from 'render-if';
+
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -176,62 +176,81 @@ export default function ItemDetailsModel(props) {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                   }}>
-                  <View
-                    style={{
-                      height: scalableheight.five,
-                      width: scalableheight.five,
-                      //padding: scalableheight.one,
-                      backgroundColor: '#F9F9F9',
-                      borderRadius: fontSize.borderradiusmedium,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                       <Text
+                  <View style={{width: '15%', alignItems: 'center'}}>
+                    <View
+                      style={{
+                        height: scalableheight.five,
+                        width: scalableheight.five,
+                        //padding: scalableheight.one,
+                        backgroundColor: '#F9F9F9',
+                        borderRadius: fontSize.borderradiusmedium,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      {/* <Text
+                       numberOfLines={1}
                       style={{
                         fontFamily: 'Inter-Bold',
                         fontSize: fontSize.twelve,
                         color: '#E14E4E',
                       }}>
                       QTY
-                    </Text>
+                    </Text> */}
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          fontFamily: 'Inter-Bold',
+                          fontSize: fontSize.fourteen,
+                          color: '#111111',
+                        }}>
+                        {props?.data?.Qty}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{width: '20%', alignItems: 'center'}}>
+                    <Image
+                      resizeMode="cover"
+                      style={{
+                        width: scalableheight.six,
+                        height: scalableheight.six,
+                        borderRadius: fontSize.eleven,
+                      }}
+                      // source={{uri: props?.data?.image}}
+                      source={{uri: props?.data?.Image}}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      width: '35%',
+                      alignItems: 'center',
+                      overflow: 'hidden',
+                    }}>
                     <Text
                       style={{
                         fontFamily: 'Inter-Bold',
                         fontSize: fontSize.fourteen,
                         color: '#111111',
                       }}>
-                      {props?.data?.Qty}
+                      {props?.data?.Name}
                     </Text>
                   </View>
-
-                  <Image
-                    resizeMode="stretch"
+                  <View
                     style={{
-                      width: scalableheight.six,
-                      height: scalableheight.six,
-                      borderRadius: fontSize.eleven,
-                    }}
-                    // source={{uri: props?.data?.image}}
-                    source={require('../../Resources/images/foods.png')}
-                  />
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-Bold',
-                      fontSize: fontSize.fourteen,
-                      color: '#111111',
-                      width: scalableheight.seventeen,
+                      width: '30%',
+                      alignItems: 'center',
+                      overflow: 'hidden',
+                      justifyContent: 'center',
                     }}>
-                    {props?.data?.Name}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-Medium',
-                      fontSize: fontSize.fourteen,
-                      color: '#111111',
-                    }}>
-                    {'AED '}
-                    {props?.data?.completeitemorderprice?.toFixed(2)}
-                  </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter-Medium',
+                        fontSize: fontSize.fourteen,
+                        color: '#111111',
+                      }}>
+                      {'AED '}
+                      {props?.data?.completeitemorderprice?.toFixed(2)}
+                    </Text>
+                  </View>
                 </View>
 
                 {props?.data?.MenuItemOptions?.map(item => {

@@ -75,7 +75,15 @@ import {
   GETREPAY,
   CLEARREPAY,
   DISTANCEVAlidation,
-  CLEARDISTANCEVAlidation
+  CLEARDISTANCEVAlidation,
+  DELETEACCOUNT,
+  GetNotifications,
+  ClearNotifications,
+  NotificationCount,
+  DINEINTOGGLE
+
+
+
 } from '../Actions/actions';
 
 const initialState = {
@@ -116,8 +124,6 @@ const initialState = {
   UpdatePicStatus: '',
   UpdatePicStatusMessage: '',
   Selectedcurrentaddress: [],
-  UserLogout: '',
-  userLogoutStatus: '',
   addresscreationresponse: '',
   alladdresses: [],
   orderplacementstatus: '',
@@ -152,13 +158,50 @@ const initialState = {
   CancelationStatus: '',
   CancelationMessage: '',
   repayorderdetailslink: "",
-  validdistance: null
+  validdistance: null,
+  deletionstatus: "",
+  userid: "",
+   Notificationsdata: [],
+   NotificationCount: 0,
+   refreshcomplete: false,
+   dinein: false
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
     
-    
+  
+
+  
+
+    case NotificationCount:
+      return {
+        ...state,
+        NotificationCount: action.payload,
+
+      };
+
+    case ClearNotifications:
+      return {
+        ...state,
+        Notificationsdata: action.payload,
+
+      };
+
+    case GetNotifications:
+      return {
+        ...state,
+        Notificationsdata: [...state.Notificationsdata, ...action.notificationList],
+
+      };
+
+
+      case DELETEACCOUNT:
+        return {
+          ...state,
+          deletionstatus: action.payload,
+        };
+
     case CLEARDISTANCEVAlidation:
       return {
         ...state,
@@ -307,6 +350,7 @@ function userReducer(state = initialState, action) {
         ...state,
         AuthToken: action.payloadtoken,
         refreshtokendata: null,
+       refreshcomplete: action.payloadrefreshexecuted
       };
 
     case RefreshToken:
@@ -378,6 +422,15 @@ function userReducer(state = initialState, action) {
         ...state,
         Selectedcurrentaddress: action.payload,
       };
+
+
+      case DINEINTOGGLE:
+   
+        return {
+          ...state,
+          dinein: action.payload,
+        };
+  
 
     case AsynClear:
       return {
@@ -509,11 +562,13 @@ function userReducer(state = initialState, action) {
       AsyncStorage.setItem('cartdata', JSON.stringify(action.payload));
       AsyncStorage.setItem('price', JSON.stringify(0));
       AsyncStorage.setItem('currentRestrauntid', JSON.stringify(0));
+  
       return {
         ...state,
         cartdata: action.payload,
         price: 0,
         currentRestrauntid: 0,
+        dinein: false
       };
 
     case Store_RestrauntId:
@@ -607,6 +662,8 @@ function userReducer(state = initialState, action) {
         ProfileEmail: action.EmailPayload,
         ProfileImage: action.UserImagePayload,
         Profileinfo: action.data,
+userid: action.UserID,
+
       };
     case Logoutuser:
       return {

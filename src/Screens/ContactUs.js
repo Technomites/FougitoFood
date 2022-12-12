@@ -20,8 +20,8 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Contactus, emailNullstate, Contactemail} from '../Actions/actions';
-import {GToastContainer, showToast} from 'react-native-gtoast';
-import renderIf from 'render-if';
+
+
 import MYButton from '../Shared/Components/MYButton';
 import Animated from 'react-native-reanimated';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -35,10 +35,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlainHeader from '../Shared/Components/PlainHeader';
-import CustomButton from '../Shared/Components/CustomButton';
+
 import CountryInput from '../Shared/Components/CountryInput';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
-import BottomTab from '../Shared/Components/BottomTab';
+// import BottomTab from '../Shared/Components/BottomTab';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import PickerModel from '../Shared/Components/PickerModel';
 import {
@@ -75,10 +75,8 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
   }, []);
 
   useEffect(() => {
- console.log("this is the data " + JSON.stringify(detailsContact))
+    console.log('this is the data ' + JSON.stringify(detailsContact));
   }, [detailsContact]);
-
-  
 
   useEffect(() => {
     if (detailsContactstatus === 'Success') {
@@ -135,68 +133,58 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
     }
   };
 
+  function closemodal() {
+    setmodalVisible(false);
+  }
+
+  function buttonpress() {
+    if (AuthToken != '') {
+      emailsend();
+    } else {
+      setmodalVisible(true);
+    }
+  }
+
+  function openurl5() {
+    Linking.openURL(`${detailsContact[0]?.Facebook}`);
+  }
+  function openurl6() {
+    Linking.openURL(`${detailsContact[0]?.Instagram}`);
+  }
+
+  function openurl7() {
+    Linking.openURL(`${detailsContact[0]?.Twitter}`);
+  }
+
+  function openurl8() {
+    Linking.openURL(`${detailsContact[0]?.Youtube}`);
+  }
+
+  function openurl9() {
+    Linking.openURL(
+      'whatsapp://send?text=&phone=' + `${detailsContact[0]?.WhatsApp}`,
+    );
+  }
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      style={[drawerAnimationStyle, styleSheet.maindrawercontainer]}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
       />
 
-      <View
-        style={{
-          height: '100%',
-          width: '100%',
-          alignSelf: 'center',
-          flex: 12,
-          paddingTop: getStatusBarHeight(),
-        }}>
+      <View style={styleSheet.innerview}>
         <PlainHeader title={'Contact Us'} />
-        <View
-          style={{
-            justifyContent: 'center',
-            paddingHorizontal: scalableheight.two,
-          }}>
-          <View style={{marginVertical: 5}}>
-            <Text
-              style={{
-                fontSize: fontSize.fourteen,
-                fontFamily: 'Inter-Bold',
-                color: '#29262A',
-                alignSelf: 'flex-start',
-              }}>
-              {detailsContact[0]?.Title}
-            </Text>
-            <Text
-              style={{
-                fontSize: fontSize.twelve,
-                fontFamily: 'Inter-Medium',
-                color: 'rgba(41, 38, 42, 0.5)',
-                textAlign: 'justify',
-              }}>
-              We’re always available and happy to chat with you! Reach out to
-              us
+        <View style={styleSheet.innerview3}>
+          <View style={styleSheet.marginverticle5}>
+            <Text style={styleSheet.text5}>{detailsContact[0]?.Title}</Text>
+            <Text style={styleSheet.text6}>
+              We’re always available and happy to chat with you! Reach out to us
             </Text>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              marginVertical: scalableheight.one,
-            }}>
-            <View
-              style={{
-                width: scalableheight.five,
-                height: scalableheight.five,
-                backgroundColor: '#E14E4E',
-                borderRadius: scalableheight.five,
-              }}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  padding: scalableheight.one,
-                }}>
+          <View style={styleSheet.innerview4}>
+            <View style={styleSheet.innerview5}>
+              <View style={styleSheet.innerview6}>
                 <Icon
                   name="call-sharp"
                   size={scalableheight.three}
@@ -204,71 +192,27 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 />
               </View>
             </View>
-            <View style={{paddingLeft: scalableheight.one}}>
-              <Text
-                style={{
-                  fontSize: fontSize.twelve,
-                  fontFamily: 'Inter-Medium',
-                  color: '#29262A',
-                  textAlign: 'justify',
-                }}>
-                {detailsContact[0]?.Contact}{" , "}{detailsContact[0]?.Contact2}
+            <View style={styleSheet.paddingleftone}>
+              <Text style={styleSheet.text7}>
+                {detailsContact[0]?.Contact}
+                {' , '}
+                {detailsContact[0]?.Contact2}
               </Text>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              marginVertical: scalableheight.one,
-            }}>
-            <View
-              style={{
-                width: scalableheight.five,
-                height: scalableheight.five,
-                backgroundColor: '#E14E4E',
-                borderRadius: scalableheight.five,
-              }}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  padding: scalableheight.one,
-                }}>
+          <View style={styleSheet.innerview4}>
+            <View style={styleSheet.innerview5}>
+              <View style={styleSheet.innerview6}>
                 <Icon name="mail" size={scalableheight.three} color="#fff" />
               </View>
             </View>
-            <View style={{paddingLeft: scalableheight.one}}>
-              <Text
-                style={{
-                  fontSize: fontSize.twelve,
-                  fontFamily: 'Inter-Medium',
-                  color: '#29262A',
-                  textAlign: 'justify',
-                }}>
-                {detailsContact[0]?.Email}
-              </Text>
+            <View style={styleSheet.paddingleftone}>
+              <Text style={styleSheet.text7}>{detailsContact[0]?.Email}</Text>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              marginVertical: scalableheight.one,
-            }}>
-            <View
-              style={{
-                width: scalableheight.five,
-                height: scalableheight.five,
-                backgroundColor: '#E14E4E',
-                borderRadius: scalableheight.five,
-              }}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  padding: scalableheight.one,
-                }}>
+          <View style={styleSheet.innerview4}>
+            <View style={styleSheet.innerview5}>
+              <View style={styleSheet.innerview6}>
                 <Icon
                   name="location"
                   size={scalableheight.three}
@@ -276,47 +220,19 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
                 />
               </View>
             </View>
-            <View style={{paddingLeft: scalableheight.one}}>
-              <Text
-                style={{
-                  fontSize: fontSize.twelve,
-                  fontFamily: 'Inter-Medium',
-                  color: '#29262A',
-                  textAlign: 'justify',
-                }}>
+            <View style={styleSheet.paddingleftone}>
+              <Text style={styleSheet.text6}>
                 {detailsContact[0]?.StreetAddress}
               </Text>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginVertical: scalableheight.two,
-            }}>
+          <View style={styleSheet.innerview12}>
             <TouchableOpacity
-              onPress={() => Linking.openURL(`${detailsContact[0]?.Facebook}`)}
+              onPress={openurl5}
               activeOpacity={0.9}
-              style={{
-                backgroundColor: '#F9F9F9',
-                borderRadius: scalableheight.one,
-                width: scalableheight.six,
-                height: scalableheight.six,
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.23,
-                shadowRadius: 2.62,
-                elevation: 2,
-                borderWidth: scalableheight.borderTopWidth,
-                borderColor: 'rgba(211,211,211, 0.6)',
-              }}>
+              style={styleSheet.touchableview}>
               <FontAwesome
-                style={{alignSelf: 'center'}}
+                style={styleSheet.alignselfcenter}
                 name={'facebook'}
                 color={'#1980e7'}
                 size={fontSize.twentysix}
@@ -325,28 +241,10 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
 
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => Linking.openURL(`${detailsContact[0]?.Instagram}`)}
-              style={{
-                backgroundColor: '#F9F9F9',
-                borderRadius: scalableheight.one,
-                width: scalableheight.six,
-                height: scalableheight.six,
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.23,
-                shadowRadius: 2.62,
-
-                elevation: 2,
-                borderWidth: scalableheight.borderTopWidth,
-                borderColor: 'rgba(211,211,211, 0.6)',
-              }}>
+              onPress={openurl6}
+              style={styleSheet.touchableview}>
               <FontAwesome
-                style={{alignSelf: 'center'}}
+                style={styleSheet.alignselfcenter}
                 name={'instagram'}
                 color={'#d72e75'}
                 size={fontSize.twentysix}
@@ -354,29 +252,11 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => Linking.openURL(`${detailsContact[0]?.Twitter}`)}
+              onPress={openurl7}
               activeOpacity={0.9}
-              style={{
-                backgroundColor: '#F9F9F9',
-                borderRadius: scalableheight.one,
-                width: scalableheight.six,
-                height: scalableheight.six,
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.23,
-                shadowRadius: 2.62,
-
-                elevation: 2,
-                borderWidth: scalableheight.borderTopWidth,
-                borderColor: 'rgba(211,211,211, 0.6)',
-              }}>
+              style={styleSheet.touchableview}>
               <FontAwesome
-                style={{alignSelf: 'center'}}
+                style={styleSheet.alignselfcenter}
                 name={'twitter'}
                 color={'#7fcdf8'}
                 size={fontSize.twentysix}
@@ -385,26 +265,8 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
 
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => Linking.openURL(`${detailsContact[0]?.Youtube}`)}
-              style={{
-                backgroundColor: '#F9F9F9',
-                borderRadius: scalableheight.one,
-                width: scalableheight.six,
-                height: scalableheight.six,
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.23,
-                shadowRadius: 2.62,
-
-                elevation: 2,
-                borderWidth: scalableheight.borderTopWidth,
-                borderColor: 'rgba(211,211,211, 0.6)',
-              }}>
+              onPress={openurl8}
+              style={styleSheet.touchableview}>
               <FontAwesome
                 style={{alignSelf: 'center'}}
                 name={'youtube-play'}
@@ -414,32 +276,9 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() =>
-                Linking.openURL(
-                  'whatsapp://send?text=&phone=' +
-                    `${detailsContact[0]?.WhatsApp}`,
-                )
-              }
+              onPress={openurl9}
               activeOpacity={0.9}
-              style={{
-                backgroundColor: '#F9F9F9',
-                borderRadius: scalableheight.one,
-                width: scalableheight.six,
-                height: scalableheight.six,
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.23,
-                shadowRadius: 2.62,
-
-                elevation: 2,
-                borderWidth: scalableheight.borderTopWidth,
-                borderColor: 'rgba(211,211,211, 0.6)',
-              }}>
+              style={styleSheet.touchableview}>
               <FontAwesome
                 style={{alignSelf: 'center'}}
                 name={'whatsapp'}
@@ -457,31 +296,10 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
               message="Your message has been sent successfully"
               visible={successModal}
             /> */}
-          <View
-            style={{
-              marginVertical: 10,
-              borderBottomWidth: 1,
-              borderColor: 'rgba(112, 112, 112, 0.15)',
-            }}></View>
-          <Text
-            style={{
-              fontSize: fontSize.fourteen,
-              fontFamily: 'Inter-Bold',
-              color: '#29262A',
-              alignSelf: 'flex-start',
-              marginTop: scalableheight.one,
-            }}>
-            Send us a Message
-          </Text>
+          <View style={styleSheet.innerview14}></View>
+          <Text style={styleSheet.messagetext}>Send us a Message</Text>
 
-          <Text
-            style={{
-              fontSize: fontSize.twelve,
-              fontFamily: 'Inter-Medium',
-              color: 'rgba(41, 38, 42, 0.5)',
-
-              marginBottom: scalableheight.one,
-            }}>
+          <Text style={styleSheet.innertext}>
             We’d love to hear from you! Get in touch with us here
           </Text>
 
@@ -490,33 +308,14 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
             text="Your Message"
           /> */}
           {/* <MyFormInputTile placeHolder="Type Here" /> */}
-          <View
-            style={{
-              marginTop: scalableheight.one,
-              backgroundColor: '#F9F9F9',
-              height: scalableheight.twenty,
-              borderRadius: scalableheight.one,
-              paddingHorizontal: scalableheight.one,
-              width: '100%',
-
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.23,
-              shadowRadius: 2.62,
-
-              elevation: 1,
-              // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
-            }}>
+          <View style={styleSheet.textinputview}>
             <TextInput
               multiline
               value={message}
               placeholderStyle={{
                 fontSize: fontSize.twenty,
               }}
-              style={{marginVertical: scalableheight.one}}
+              style={styleSheet.marginverticleone}
               placeholderTextColor="lightgray"
               placeholder="Type here"
               onChangeText={text => {
@@ -525,34 +324,15 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
             />
           </View>
         </View>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: scalableheight.two,
-            width: '100%',
-            justifyContent: 'center',
-            paddingHorizontal: scalableheight.two,
-          }}>
-          <View style={{marginTop: scalableheight.two}}>
+        <View style={styleSheet.innerview7}>
+          <View style={styleSheet.marginTopone}>
             {loader == true ? (
-              <View
-                style={{
-                  height: scalableheight.seven,
-
-                  marginTop: '1%',
-                  marginBottom: '1%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+              <View style={styleSheet.activityindicatorview}>
                 <ActivityIndicator size={'large'} color="#E14E4E" />
               </View>
             ) : (
               <MYButton
-                onPress={() => {
-                  {
-                    AuthToken != '' ? emailsend() : setmodalVisible(true);
-                  }
-                }}
+                onPress={() => buttonpress()}
                 title={AuthToken != '' ? 'Submit' : 'Login'}
                 color={'#E14E4E'}
                 textcolor={'white'}
@@ -560,22 +340,125 @@ const ContactUs = ({navigation, drawerAnimationStyle}) => {
             )}
           </View>
         </View>
-        <AuthenticationModel
-          state={modalVisible}
-          togglemodel={() => {
-            setmodalVisible(false);
-          }}
-        />
-        <Toast
-          ref={toast}
-          style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
-        />
+        <AuthenticationModel state={modalVisible} togglemodel={closemodal} />
+        <Toast ref={toast} style={styleSheet.toastview} />
       </View>
     </Animated.View>
   );
 };
 
 const styleSheet = StyleSheet.create({
+  marginverticleone: {marginVertical: scalableheight.one},
+  textinputview: {
+    marginTop: scalableheight.one,
+    backgroundColor: '#F9F9F9',
+    height: scalableheight.twenty,
+    borderRadius: scalableheight.one,
+    paddingHorizontal: scalableheight.one,
+    width: '100%',
+
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.23,
+    // shadowRadius: 2.62,
+
+    // elevation: 1,
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
+  },
+  innertext: {
+    fontSize: fontSize.twelve,
+    fontFamily: 'Inter-Medium',
+    color: 'rgba(41, 38, 42, 0.5)',
+
+    marginBottom: scalableheight.one,
+  },
+  messagetext: {
+    fontSize: fontSize.fourteen,
+    fontFamily: 'Inter-Bold',
+    color: '#29262A',
+    alignSelf: 'flex-start',
+    marginTop: scalableheight.one,
+  },
+  innerview14: {
+    marginVertical: 10,
+    borderBottomWidth: 1,
+    borderColor: 'rgba(112, 112, 112, 0.15)',
+  },
+  alignselfcenter: {alignSelf: 'center'},
+  touchableview: {
+    backgroundColor: '#F9F9F9',
+    borderRadius: scalableheight.one,
+    width: scalableheight.six,
+    height: scalableheight.six,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.23,
+    // shadowRadius: 2.62,
+    // elevation: 2,
+    // borderWidth: scalableheight.borderTopWidth,
+    // borderColor: 'rgba(211,211,211, 0.6)',
+  },
+  innerview12: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: scalableheight.two,
+  },
+  innerview11: {
+    alignItems: 'center',
+    padding: scalableheight.one,
+  },
+  paddingleftone: {paddingLeft: scalableheight.one},
+  text7: {
+    fontSize: fontSize.twelve,
+    fontFamily: 'Inter-Medium',
+    color: '#29262A',
+    textAlign: 'justify',
+  },
+
+  innerview7: {
+    position: 'absolute',
+    bottom: scalableheight.two,
+    width: '100%',
+    justifyContent: 'center',
+    paddingHorizontal: scalableheight.two,
+  },
+  marginTopone: {marginTop: scalableheight.two},
+  activityindicatorview: {
+    height: scalableheight.seven,
+
+    marginTop: '1%',
+    marginBottom: '1%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  toastview: {marginBottom: scalableheight.ten, justifyContent: 'center'},
+  innerview6: {
+    alignItems: 'center',
+    padding: scalableheight.one,
+  },
+  innerview5: {
+    width: scalableheight.five,
+    height: scalableheight.five,
+    backgroundColor: '#E14E4E',
+    borderRadius: scalableheight.five,
+  },
+  innerview4: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginVertical: scalableheight.one,
+  },
   Text1: {
     color: '#F9B35E',
     fontSize: fontSize.eightteen,
@@ -634,6 +517,34 @@ const styleSheet = StyleSheet.create({
     right: '5%',
     height: '100%',
     justifyContent: 'center',
+  },
+  maindrawercontainer: {
+    flex: 1,
+    backgroundColor: '#F6F6F6',
+  },
+  innerview: {
+    height: '100%',
+    width: '100%',
+    alignSelf: 'center',
+    flex: 12,
+    paddingTop: getStatusBarHeight(),
+  },
+  innerview3: {
+    justifyContent: 'center',
+    paddingHorizontal: scalableheight.two,
+  },
+  marginverticle5: {marginVertical: 5},
+  text5: {
+    fontSize: fontSize.fourteen,
+    fontFamily: 'Inter-Bold',
+    color: '#29262A',
+    alignSelf: 'flex-start',
+  },
+  text6: {
+    fontSize: fontSize.twelve,
+    fontFamily: 'Inter-Medium',
+    color: 'rgba(41, 38, 42, 0.5)',
+    textAlign: 'justify',
   },
 });
 export default ContactUs;

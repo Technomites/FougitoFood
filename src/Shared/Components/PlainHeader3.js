@@ -21,29 +21,16 @@ export default function PlainHeader3(props) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  function goback() {
+    navigation.goBack();
+  }
   return (
     <View style={styleSheet.header}>
-      <View
-        style={{
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            // navigation.navigate("Home")
-            navigation.goBack();
-          }}
-          style={{
-            height: scalableheight.seven,
-            width: scalableheight.five,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+      <View style={styleSheet.containerview}>
+        <TouchableOpacity onPress={goback} style={styleSheet.innerview}>
           {/* <View style={styleSheet.backButtonMain}> */}
           <AntDesign
-            style={{alignSelf: 'center'}}
+            style={styleSheet.alignselfcenter}
             name="arrowleft"
             color={'black'}
             size={fontSize.twentyfour}
@@ -51,22 +38,9 @@ export default function PlainHeader3(props) {
           {/* </View> */}
         </TouchableOpacity>
 
-        <Text
-          style={{
-            color: 'black',
-            fontSize: fontSize.seventeen,
-            fontFamily: 'Inter-SemiBold',
-          }}>
-          {props.title}
-        </Text>
-        <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
-            style={{
-              height: scalableheight.seven,
-              width: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}></TouchableOpacity>
+        <Text style={styleSheet.text1}>{props.title}</Text>
+        <View style={styleSheet.flexdirectionrow}>
+          <TouchableOpacity style={styleSheet.touchableview}></TouchableOpacity>
         </View>
       </View>
     </View>
@@ -74,6 +48,13 @@ export default function PlainHeader3(props) {
 }
 
 const styleSheet = StyleSheet.create({
+  touchableview: {
+    height: scalableheight.seven,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  flexdirectionrow: {flexDirection: 'row'},
   header: {
     width: '100%',
     alignSelf: 'center',
@@ -104,5 +85,23 @@ const styleSheet = StyleSheet.create({
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  containerview: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  innerview: {
+    height: scalableheight.seven,
+    width: scalableheight.five,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  alignselfcenter: {alignSelf: 'center'},
+  text1: {
+    color: 'black',
+    fontSize: fontSize.seventeen,
+    fontFamily: 'Inter-SemiBold',
   },
 });

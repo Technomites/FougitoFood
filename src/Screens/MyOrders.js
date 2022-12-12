@@ -18,7 +18,6 @@ import {
   Myorders,
   storeorderid,
   isconnected,
-  
 } from '../Actions/actions';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -26,11 +25,11 @@ import PlainHeader from '../Shared/Components/PlainHeader';
 import Favourites from '../Shared/Components/Favourites';
 import ActiveRequestTile from '../Shared/Components/ActiveRequestTile';
 import Toast from 'react-native-toast-notifications';
-import BottomTab from '../Shared/Components/BottomTab';
+// import BottomTab from '../Shared/Components/BottomTab';
 import Animated from 'react-native-reanimated';
 import Octicons from 'react-native-vector-icons/Octicons';
 import NetInfo from '@react-native-community/netinfo';
-import {styles} from 'react-native-element-dropdown/src/components/TextInput/styles';
+
 import {
   createDrawerNavigator,
   DrawerItemList,
@@ -41,9 +40,14 @@ import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-  const {AuthToken, MyorderList, MyorderListpast, orderplacementstatus, cardorderplacementstatus, orderdetails} = useSelector(
-    state => state.userReducer,
-  );
+  const {
+    AuthToken,
+    MyorderList,
+    MyorderListpast,
+    orderplacementstatus,
+    cardorderplacementstatus,
+    orderdetails,
+  } = useSelector(state => state.userReducer);
 
   const [Order, SetOrders] = useState([
     {
@@ -72,7 +76,14 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
   const toast = useRef();
   useEffect(() => {
     dispatch(Myorders(AuthToken));
-  }, [AuthToken, orderplacementstatus, cardorderplacementstatus,orderdetails ]);
+  }, [AuthToken, orderplacementstatus, cardorderplacementstatus, orderdetails]);
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      Setordertype('Active Orders');
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   function onRefresh() {
     NetInfo.fetch().then(state => {
@@ -96,7 +107,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
 
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: '#F6F6F6'}}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
@@ -119,6 +130,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
             width: '100%',
+
             // height: '15%',
             paddingHorizontal: scalableheight.three,
           }}>
@@ -129,7 +141,7 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
             }}
             style={{
               height: scalableheight.five,
-              width: scalableheight.twenty,
+              width: '50%',
               backgroundColor:
                 ordertype == 'Active Orders'
                   ? 'rgba(245, 80, 80, 0.3)'
@@ -157,7 +169,8 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
             }}
             style={{
               height: scalableheight.five,
-              width: scalableheight.twenty,
+
+              width: '50%',
               backgroundColor:
                 ordertype == 'Past Orders'
                   ? 'rgba(245, 80, 80, 0.3)'
@@ -228,10 +241,10 @@ const MyOrders = ({props, navigation, drawerAnimationStyle}) => {
                       // dispatch(OrderStatus(AuthToken, item.Id));
                       dispatch(storeorderid(item.Id));
                       // navigation.navigate('PreparingFood');
-                  
+
                       navigation.navigate('OrderDetails', {
                         screenname: 'MyOrders',
-                      })
+                      });
                       // alert(item.Id);
 
                       // dispatch(OrderStatus(AuthToken, item.Id));

@@ -28,11 +28,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import PlainHeader from '../Shared/Components/PlainHeader';
-import UpcomingBookingCard from '../Shared/Components/UpcomingBookingCard';
+
 import Couponscomponent from '../Shared/Components/Couponscomponent';
-import BottomTab from '../Shared/Components/BottomTab';
+
 // import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {GToastContainer, showToast} from 'react-native-gtoast';
+
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Animated from 'react-native-reanimated';
 import {fontSize, scalableheight} from '../Utilities/fonts';
@@ -109,41 +109,25 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
     });
   }
 
+  function copyitem(item) {
+    Clipboard.setString(item.CouponCode);
+    copied();
+  }
   return (
-    <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white'}}>
+    <Animated.View style={[drawerAnimationStyle, styleSheet.maincontainer]}>
       <FocusAwareStatusBar
         barStyle="dark-content"
         backgroundColor="transparent"
       />
-      <View
-        style={{
-          flex: 1,
-
-          alignSelf: 'center',
-          marginTop: getStatusBarHeight(),
-        }}>
-        <View
-          style={{
-            height: '99%',
-            width: '100%',
-            overflow: 'hidden',
-          }}>
+      <View style={styleSheet.innerview}>
+        <View style={styleSheet.innerview2}>
           {/* <StatusBar
           barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         /> */}
           <PlainHeader title={'My Coupons'} />
           {UserCoupons.length == 0 ? (
-            <View
-              style={{
-                // justifyContent: 'center',
-                // alignItems: 'center',
-                alignSelf: 'center',
-                marginVertical: scalableheight.fourty,
-              }}>
-              <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
-                No Data Found
-              </Text>
+            <View style={styleSheet.innerview3}>
+              <Text style={styleSheet.text5}>No Data Found</Text>
             </View>
           ) : (
             <FlatList
@@ -152,23 +136,13 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
               // }
               keyExtractor={(item, index) => index.toString()}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                alignSelf: 'center',
-                width: '100%',
-                paddingBottom: scalableheight.two,
-              }}
+              contentContainerStyle={styleSheet.flatcontainer}
               data={UserCoupons}
               renderItem={({item}) => {
                 return (
                   <TouchableOpacity
-                    onPress={() => {
-                      Clipboard.setString(item.CouponCode);
-                      copied();
-                    }}
-                    style={{
-                      alignItems: 'center',
-                      paddingHorizontal: scalableheight.two,
-                    }}>
+                    onPress={() => copyitem(item)}
+                    style={styleSheet.touchableview}>
                     <Couponscomponent
                       sale={item.Value + '% OFF'}
                       title={item.CouponCode}
@@ -187,15 +161,18 @@ const Coupons = ({navigation, drawerAnimationStyle}) => {
           )}
         </View>
       </View>
-      <Toast
-        ref={toast}
-        style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
-      />
+      <Toast ref={toast} style={styleSheet.toastview} />
     </Animated.View>
   );
 };
 
 const styleSheet = StyleSheet.create({
+  toastview: {marginBottom: scalableheight.ten, justifyContent: 'center'},
+  touchableview: {
+    alignItems: 'center',
+    paddingHorizontal: scalableheight.two,
+  },
+  text5: {fontSize: fontSize.thirteen, color: '#000'},
   Text1: {
     color: '#F9B35E',
     fontSize: fontSize.eightteen,
@@ -255,6 +232,32 @@ const styleSheet = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 4,
+  },
+  maincontainer: {
+    flex: 1,
+    backgroundColor: '#F6F6F6',
+  },
+  innerview: {
+    flex: 1,
+
+    alignSelf: 'center',
+    marginTop: getStatusBarHeight(),
+  },
+  innerview2: {
+    height: '99%',
+    width: '100%',
+    overflow: 'hidden',
+  },
+  innerview3: {
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    alignSelf: 'center',
+    marginVertical: scalableheight.fourty,
+  },
+  flatcontainer: {
+    alignSelf: 'center',
+    width: '100%',
+    paddingBottom: scalableheight.two,
   },
 });
 export default Coupons;

@@ -10,96 +10,82 @@ import {
   StatusBar,
   Platform,
   Dimensions,
-  TextInput
+  TextInput,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
-import renderIf from 'render-if';
-import { useNavigation } from '@react-navigation/native';
-import { fontSize, scalableheight } from '../../Utilities/fonts'
+
+import {useNavigation} from '@react-navigation/native';
+import {fontSize, scalableheight} from '../../Utilities/fonts';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function MultiChoiceDropDownWithMultipleSelection(props) {
   const dispatch = useDispatch();
-const navigation = useNavigation();
+  const navigation = useNavigation();
 
-
+  function select(index) {
+    props.update(index, props.index);
+  }
   return (
-    <View
-    style={{
-      
-      width: '100%',
-      
-      justifyContent: 'center',
-      
-     
-      alignSelf: 'center',
-      marginTop:scalableheight.one
-    }}>
-      <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
-    <Text  style={{fontFamily: 'Inter-Bold',
-                fontSize: fontSize.fourteen,
-                color:"black",}}>{props?.title} </Text>
-                <View style={{paddingVertical: scalableheight.pointfive, paddingHorizontal: scalableheight.one, backgroundColor: props?.IsRequired == true  ? "#E14E4E" : "grey", borderRadius: fontSize.borderradius }}>
-                <Text style={{fontFamily: 'Inter-Bold',
-                fontSize: fontSize.fourteen,
-                color:"black",color: props?.IsRequired == true  ? "white" : "white"}}>{props?.IsRequired == true ? "Required" : "Optional"}</Text>
-                </View>
-                </View>
-                <Text  style={{fontFamily: 'Inter-Bold',
-                fontSize: fontSize.twelve,
-                opacity:0.4,
-                color:"black",}}>{props?.MaxLimit > 0 ? "Max " : null}{props?.MaxLimit > 0 ? props?.MaxLimit : null} </Text>
-                
-{props?.data?.map((item, index) => {
-        return (
-            <TouchableOpacity 
-            // activeOpacity={1}
-            onPress={() => {props.update(index, props.index)}}
-            style={{flexDirection:"row", marginTop:scalableheight.two, alignItems:"center"}}>
-                <View style={{width:"50%", flexDirection:"row", alignItems:"center"}}>
-              {renderIf(item?.selected == true)(
-                <MaterialIcons
-                name="check-box"
-                color={'#E14E4E'}
-                size={ fontSize.twenty}
-                style={{}}
-                /> 
-              )}
-               {renderIf(item?.selected == false)(
-                 <MaterialIcons
-                 name="check-box-outline-blank"
-                 color={'grey'}
-                 size={ fontSize.twenty}
-                 style={{}}
-                 />
-              )}
-      
-           
-    
-            <Text 
-            numberOfLines={1}
-            style={{fontFamily: 'Inter-Medium',
-                    fontSize: fontSize.fifteen,
-                 
-                    color:"black",marginLeft: scalableheight.one}}>{item?.Value}</Text>
-                    </View>
-                    <View style={{width:"50%" ,justifyContent:"center"}}>
-                     <Text  style={{fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.thirteen,
-                    color:"black",position:"absolute", right:0}}>AED {item?.Price?.toFixed(2)}</Text>
-                    </View>
-         
+    <View style={styleSheet.mainviewcontainer}>
+      <View style={styleSheet.innermainviewcontainer}>
+        <Text style={styleSheet.text1}>{props?.title} </Text>
+        <View
+          style={{
+            backgroundColor: props?.IsRequired == true ? '#E14E4E' : 'grey',
+            ...styleSheet.requiredview,
+          }}>
+          <Text style={styleSheet.text2}>
+            {props?.IsRequired == true ? 'Required' : 'Optional'}
+          </Text>
+        </View>
+      </View>
+      <Text style={styleSheet.text3}>
+        {props?.MaxLimit > 0 ? 'Max ' : null}
+        {props?.MaxLimit > 0 ? props?.MaxLimit : null}{' '}
+      </Text>
 
-       
-    </TouchableOpacity>
+      {props?.data?.map((item, index) => {
+        return (
+          <TouchableOpacity
+            // activeOpacity={1}
+            key={index.toString()}
+            onPress={() => select(index)}
+            style={styleSheet.listview}>
+            <View style={styleSheet.innerlistview}>
+            {item?.selected == true &&
+                <MaterialIcons
+                  name="check-box"
+                  color={'#E14E4E'}
+                  size={fontSize.twenty}
+                />
+      }
+         {item?.selected == false &&
+            
+                <MaterialIcons
+                  name="check-box-outline-blank"
+                  color={'grey'}
+                  size={fontSize.twenty}
+                />
+           
+      }
+
+              <Text numberOfLines={1} style={styleSheet.text4}>
+                {item?.Value}
+              </Text>
+            </View>
+            <View style={styleSheet.textview}>
+              <Text style={styleSheet.text5}>
+                AED {item?.Price?.toFixed(2)}
+              </Text>
+            </View>
+          </TouchableOpacity>
         );
       })}
-    
-  </View>   
+    </View>
   );
 }
 
@@ -112,7 +98,7 @@ const styleSheet = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    paddingHorizontal: scalableheight.one
+    paddingHorizontal: scalableheight.one,
   },
 
   text: {
@@ -128,14 +114,14 @@ const styleSheet = StyleSheet.create({
     right: '-1%',
   },
   backButtonMain: {
-    backgroundColor: "#F9F9F9",
+    backgroundColor: '#F9F9F9',
     height: scalableheight.four,
     width: scalableheight.four,
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
-},
-shadow: {
+  },
+  shadow: {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -146,6 +132,60 @@ shadow: {
 
     elevation: 4,
   },
+  mainviewcontainer: {
+    width: '100%',
+
+    justifyContent: 'center',
+
+    alignSelf: 'center',
+    marginTop: scalableheight.one,
+  },
+  innermainviewcontainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  text1: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fourteen,
+    color: 'black',
+  },
+  requiredview: {
+    paddingVertical: scalableheight.pointfive,
+    paddingHorizontal: scalableheight.one,
+    borderRadius: fontSize.borderradius,
+  },
+  text2: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fourteen,
+    color: 'black',
+    color: 'white',
+  },
+  text3: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.twelve,
+    opacity: 0.4,
+    color: 'black',
+  },
+  listview: {
+    flexDirection: 'row',
+    marginTop: scalableheight.two,
+    alignItems: 'center',
+  },
+  innerlistview: {width: '50%', flexDirection: 'row', alignItems: 'center'},
+  text4: {
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.fifteen,
+
+    color: 'black',
+    marginLeft: scalableheight.one,
+  },
+  textview: {width: '50%', justifyContent: 'center'},
+  text5: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.thirteen,
+    color: 'black',
+    position: 'absolute',
+    right: 0,
+  },
 });
-
-

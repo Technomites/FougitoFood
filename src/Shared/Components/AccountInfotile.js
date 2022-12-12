@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { fontSize, scalableheight } from '../../Utilities/fonts';
+import {fontSize, scalableheight} from '../../Utilities/fonts';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
@@ -23,38 +23,33 @@ export default function AccountInfotile(props) {
   // console.log(props?.data);
 
   async function pressablee() {
-    props?.data?.onPress()
-    setanimationstate(true)
-   
+    props?.data?.onPress();
+    setanimationstate(true);
+
     // setTimeout(async () => {
     //   props?.data?.onPress()
     // }, 500);
-   
   }
   function pressablee1() {
-     
     // console.log("yo")
   }
-  
+
   return (
     // <Animatable.View
     //   animation={animationstate ? 'bounceOutRight' : ""}
     //   onAnimationEnd={() => {
     //     props?.data?.onPress()
     //     setanimationstate(false);
-   
+
     //   }}
     //   easing="ease"
     //   iterationCount={1}>
     <View>
-      <TouchableOpacity 
-     activeOpacity={0.9}
-      onPress={()=>{
-        pressablee()
-      }
-       
-    }
-
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => {
+          pressablee();
+        }}
         style={{
           flexDirection: 'row',
           // justifyContent: 'center',
@@ -71,8 +66,9 @@ export default function AccountInfotile(props) {
             height: scalableheight.five,
             justifyContent: 'center',
             alignItems: 'center',
+            marginLeft: scalableheight.pointfive,
           }}>
-          <View style={{ alignSelf: 'center' }}>
+          <View style={{alignSelf: 'center'}}>
             {props?.data.type === 1 ? (
               <Ionicons
                 name={props?.data.icon}
@@ -139,7 +135,7 @@ export default function AccountInfotile(props) {
           borderBottomWidth: 1,
           borderColor: 'rgba(112, 112, 112, 0.15)',
         }}></View>
-        </View>
+    </View>
     // </Animatable.View>
   );
 }
@@ -147,11 +143,9 @@ export default function AccountInfotile(props) {
 const styles = StyleSheet.create({
   shadow: {
     shadowColor: '#470000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
   },
 });
-
-

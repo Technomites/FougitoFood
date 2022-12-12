@@ -21,7 +21,6 @@ import {fontSize, scalableheight} from '../../Utilities/fonts';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 export default function BranchListed(props) {
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -29,75 +28,37 @@ export default function BranchListed(props) {
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={props.onPress}
-      style={{
-        ...styleSheet.shadow,
-        height: scalableheight.eleven,
-        width: '99%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: scalableheight.pointfive,
-        marginTop:scalableheight.one,
-        borderRadius: fontSize.eleven,
-        backgroundColor: 'white',
-        flexDirection: 'row',
-        alignSelf: 'center',
-      }}>
-        <View style={{height:"100%", width:"30%",  alignItems:"center", justifyContent:"center", padding: scalableheight.one}}>
-              <Image
+      style={styleSheet.branchcontainer}>
+      <View style={styleSheet.innerbranchview}>
+        <Image
           resizeMode="contain"
           resizeMethod="resize"
-          style={{
-            width: '100%',
-            height: '100%',
-            borderRadius: fontSize.eleven,
-            // borderWidth: 1,
-            alignItems: 'center',
-          }}
-         
-              source={  props?.image ? {uri: props.image} : null}>
-          </Image>
-        </View>
-      <View
-        style={{
-          height: '100%',
-          width: '70%',
-          justifyContent: 'center',
-          padding: scalableheight.one,
-        //   borderWidth:1, borderColor:"green"
-        }}>
-     
-        <Text
-          numberOfLines={1}
-          style={{
-            fontFamily: 'Inter-Bold',
-            fontSize: fontSize.sixteen,
-            color: '#111111',
-        
-          }}>
+          style={styleSheet.imageview}
+          source={props?.image ? {uri: props.image} : null}></Image>
+      </View>
+      <View style={styleSheet.innercontainer}>
+        <Text numberOfLines={1} style={styleSheet.text1}>
           {props.title}
         </Text>
-        <Text
-          numberOfLines={2}
-          style={{
-            fontFamily: 'Inter-Medium',
-            fontSize: fontSize.eleven,
-            color: '#111111',
-
-         
-          }}>
+        <Text numberOfLines={2} style={styleSheet.text2}>
           {props.Address}
         </Text>
-{/* 
+        {/* 
         image={inneritem.Restaurant?.Logo}
                         title={inneritem?.NameAsPerTradeLicense}
                         Address={inneritem?.Address} */}
       </View>
-    
     </TouchableOpacity>
   );
 }
 
 const styleSheet = StyleSheet.create({
+  innercontainer: {
+    height: '100%',
+    width: '70%',
+    justifyContent: 'center',
+    padding: scalableheight.one,
+  },
   header: {
     width: '100%',
     alignSelf: 'center',
@@ -135,5 +96,44 @@ const styleSheet = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+  },
+  branchcontainer: {
+    // ...styleSheet.shadow,
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
+    height: scalableheight.eleven,
+    width: '99%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: scalableheight.pointfive,
+    marginTop: scalableheight.one,
+    borderRadius: fontSize.eleven,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
+  innerbranchview: {
+    height: '100%',
+    width: '30%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: scalableheight.one,
+  },
+  imageview: {
+    width: '100%',
+    height: '100%',
+    borderRadius: fontSize.eleven,
+    // borderWidth: 1,
+    alignItems: 'center',
+  },
+  text1: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.sixteen,
+    color: '#111111',
+  },
+  text2: {
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.eleven,
+    color: '#111111',
   },
 });

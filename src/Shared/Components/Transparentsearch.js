@@ -65,18 +65,26 @@ export default function Transparentsearch(props) {
           width: scalableheight.fivefive,
           backgroundColor: '#E14E4E',
           position: 'absolute',
-          right: scalableheight.borderwidth3 ,
+          right: scalableheight.borderwidth3,
           borderRadius: fontSize.borderradiusmedium,
           alignItems: 'center',
           justifyContent: 'center',
-          alignSelf: "center"
+          alignSelf: 'center',
         }}>
         <FontAwesome5
           name="qrcode"
           color={'white'}
-          size={fontSize.thirtyfive}
+          size={fontSize.twentyfive}
           style={{alignSelf: 'center'}}
         />
+        <Text
+          style={{
+            fontFamily: 'Inter-Bold',
+            fontSize: fontSize.four,
+            color: 'white',
+          }}>
+          SCAN QR
+        </Text>
       </TouchableOpacity>
     </View>
   );

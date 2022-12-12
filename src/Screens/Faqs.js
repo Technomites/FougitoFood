@@ -27,7 +27,7 @@ import {
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const Faqs = ({navigation, drawerAnimationStyle}) => {
-  const [search, setsearch] = useState("")
+  const [search, setsearch] = useState('');
   const [Faqs, SetFaqs] = useState([
     {
       question: 'Curabitur vulputate arcu odio, ac facilisis diam accumsan ut',
@@ -71,44 +71,26 @@ const Faqs = ({navigation, drawerAnimationStyle}) => {
     },
   ]);
   return (
-    <Animated.View
-      style={{flex: 1, backgroundColor: 'white', ...drawerAnimationStyle}}>
+    <Animated.View style={[styles.maincontainerview, drawerAnimationStyle]}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
       />
-      <View
-        style={{
-          alignSelf: 'center',
-          paddingTop: getStatusBarHeight(),
-          flex: 12,
-        }}>
+      <View style={styles.maincontainterview2}>
         <PlainHeader title={'FAQs'} />
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{
-            paddingHorizontal: scalableheight.two,
-          }}>
-          <View style={{...styles.shadow, ...styles.container}}>
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '10%',
-              }}>
+          style={styles.paddinghorizontal2}>
+          <View style={[styles.shadow, styles.container]}>
+            <View style={styles.innerview}>
               <FontAwesome
-                style={{alignSelf: 'center'}}
+                style={styles.alignselfcenter}
                 name="search"
                 color={'rgba(41, 38, 42, 0.5)'}
                 size={fontSize.fifteen}
               />
             </View>
-            <View
-              style={{
-                height: '100%',
-                width: '90%',
-                justifyContent: 'center',
-              }}>
+            <View style={styles.innerview2}>
               <TextInput
                 returnKeyType="next"
                 // numberOfLines={props.inputLine}
@@ -116,7 +98,6 @@ const Faqs = ({navigation, drawerAnimationStyle}) => {
                 // onChangeText={props.onChangeText}
                 value={search}
                 onChangeText={text => setsearch(text)}
-               
                 placeholderTextColor={'lightgray'}
                 placeholder={'Search'}
                 style={styles.textInput}
@@ -124,11 +105,10 @@ const Faqs = ({navigation, drawerAnimationStyle}) => {
             </View>
           </View>
           {Faqs.map((item, index) => {
-            return (
-              item.question.includes(search.trim()) || item.answer.includes(search.trim()) ? 
-            <Faqtitle 
-            key={index.toString()}
-            data={item} /> : null )
+            return item.question.includes(search.trim()) ||
+              item.answer.includes(search.trim()) ? (
+              <Faqtitle key={index.toString()} data={item} />
+            ) : null;
           })}
         </ScrollView>
       </View>
@@ -164,6 +144,29 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 2,
     // borderWidth:scalableheight.borderTopWidth, borderColor:'rgba(211,211,211, 0.6)'
+  },
+  maincontainerview: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  maincontainterview2: {
+    alignSelf: 'center',
+    paddingTop: getStatusBarHeight(),
+    flex: 12,
+  },
+  paddinghorizontal2: {
+    paddingHorizontal: scalableheight.two,
+  },
+  innerview: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '10%',
+  },
+  alignselfcenter: {alignSelf: 'center'},
+  innerview2: {
+    height: '100%',
+    width: '90%',
+    justifyContent: 'center',
   },
 });
 export default Faqs;

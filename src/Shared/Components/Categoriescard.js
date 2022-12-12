@@ -19,7 +19,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
 
 export default function Categoriescard(props) {
   const dispatch = useDispatch();
@@ -29,14 +29,7 @@ export default function Categoriescard(props) {
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={() => {}}
-      style={{
-        height: scalableheight.tweleve,
-        width: scalableheight.thirtytwo,
-        marginRight: scalableheight.one,
-        borderRadius: scalableheight.one,
-        overflow:"hidden"
-      }}>
-           
+      style={styleSheet.cardcontainer}>
       {/* <ImageBackground
         borderRadius={scalableheight.one}
         resizeMode="cover"
@@ -46,60 +39,28 @@ export default function Categoriescard(props) {
           marginRight: scalableheight.one,
         }}
         source={  props.image ? {uri: props.image} : null}> */}
-        
-        <ImageBackground
-      borderRadius={scalableheight.one}
-          resizeMode="cover"
-          style={{
-            height: '100%',
-            width: '100%',
-            justifyContent: 'center',
-            zIndex:5, elevation:5
 
-            // justifyContent: 'flex-end',
-            // alignItems: 'center',
-          }}
-          source={require('../../Resources/images/Rectangle.png')}>
-         
-          <View style={{position: 'absolute', bottom: scalableheight.two}}>
-            <Text
-              style={{
-                paddingLeft: scalableheight.two,
-                fontFamily: 'Inter-Bold',
-                fontSize: fontSize.sixteen,
-                color: 'white',
-              }}>
-              {props.type}
-            </Text>
-            <Text
-              style={{
-                paddingLeft: scalableheight.two,
-                fontFamily: 'Inter-medium',
-                fontSize: fontSize.twelve,
-                color: 'white',
-                opacity: 0.8,
-              }}>
-              {'Avg Price AED '} {props?.price?.toFixed(2)}
-            </Text>
-          </View>
-        </ImageBackground>
-        <FastImage
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginRight: scalableheight.one,
-       
-          height: "100%", width:"100%",
-          position:"absolute"
-       
-        }}
+      <ImageBackground
+        borderRadius={scalableheight.one}
+        resizeMode="cover"
+        style={styleSheet.backgroundimageview}
+        source={require('../../Resources/images/Rectangle.png')}>
+        <View style={styleSheet.backgroundimageinnerview}>
+          <Text style={styleSheet.text1}>{props.type}</Text>
+          <Text style={styleSheet.text2}>
+            {'Avg Price AED '} {props?.price?.toFixed(2)}
+          </Text>
+        </View>
+      </ImageBackground>
+      <FastImage
+        style={styleSheet.imagecontainer}
         source={{
-            uri: props.image ?  props.image : null,
-            // headers: { Authorization: 'someAuthToken' },
-            priority: FastImage.priority.normal,
+          uri: props.image ? props.image : null,
+          // headers: { Authorization: 'someAuthToken' },
+          priority: FastImage.priority.normal,
         }}
         resizeMode={FastImage.resizeMode.cover}
-    />
+      />
       {/* // </ImageBackground>  */}
     </TouchableOpacity>
   );
@@ -142,5 +103,45 @@ const styleSheet = StyleSheet.create({
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 2,
+  },
+  cardcontainer: {
+    height: scalableheight.tweleve,
+    width: scalableheight.thirtytwo,
+    marginRight: scalableheight.one,
+    borderRadius: scalableheight.one,
+    overflow: 'hidden',
+  },
+  backgroundimageview: {
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
+    zIndex: 5,
+    elevation: 5,
+
+    // justifyContent: 'flex-end',
+    // alignItems: 'center',
+  },
+  backgroundimageinnerview: {position: 'absolute', bottom: scalableheight.two},
+  text1: {
+    paddingLeft: scalableheight.two,
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.sixteen,
+    color: 'white',
+  },
+  text2: {
+    paddingLeft: scalableheight.two,
+    fontFamily: 'Inter-medium',
+    fontSize: fontSize.twelve,
+    color: 'white',
+    opacity: 0.8,
+  },
+  imagecontainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: scalableheight.one,
+
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
   },
 });

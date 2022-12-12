@@ -81,7 +81,9 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
+    entryFile: "index.js",
+      enableHermes: true
+    // enableHermes: false,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
@@ -122,7 +124,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  * on project.ext.react, JavaScript will not be compiled to Hermes Bytecode
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
-def enableHermes = project.ext.react.get("enableHermes", false);
+def enableHermes = project.ext.react.get("enableHermes", true);
 
 /**
  * Architectures to build native code for.
@@ -141,8 +143,9 @@ android {
         applicationId "com.fougitofood"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        //missingDimensionStrategy 'react-native-camera', 'general'
+        versionCode 13
+        versionName "1.1.2"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {
@@ -222,6 +225,12 @@ android {
         }
     }
     signingConfigs {
+          release {
+      storeFile file('Fougito.keystore')
+      storePassword '1234@Find'
+      keyAlias 'rnTSgitlabCICDExample-upload'
+      keyPassword '1234@Find'
+    }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -237,7 +246,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

@@ -1,11 +1,24 @@
-import React, {useState, useEffect, useRef, } from 'react';
-import { Animated, TextInput, KeyboardAvoidingView, StatusBar, ScrollView, View, TouchableOpacity, StyleSheet, Image, Text, SafeAreaView, Keyboard} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {
+  Animated,
+  TextInput,
+  KeyboardAvoidingView,
+  StatusBar,
+  ScrollView,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Text,
+  SafeAreaView,
+  Keyboard,
+} from 'react-native';
 import HeaderComponentRestaurant from '../Shared/Components/HeaderComponentRestaurant';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import DynamicHeader from '../Shared/Components/DynamicHeader';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {fontSize, scalableheight} from '../Utilities/fonts';
-import renderIf from 'render-if';
+
 import Starters from '../Shared/Components/Starters';
 import ScreenWrapper from '../Shared/Components/ScreenWrapper';
 
@@ -32,9 +45,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 
-
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
-
 
 const RestaurantpageAnimation = ({navigation, drawerAnimationStyle}) => {
   const [specialinstructions, setspecialinstructions] = useState('');
@@ -46,148 +57,136 @@ const RestaurantpageAnimation = ({navigation, drawerAnimationStyle}) => {
   const [showbottomsheet, setshowbottomsheet] = useState(false);
   const [level, setlevel] = useState(4);
   const [pinlocation, setpinlocation] = useState('');
-  
-    const [isEnabled, setisEnabled] = useState(false);
-    const [yposition, setyposition] = useState(0);
-    const [dataSourceCords, setDataSourceCords] = useState([]);
-    const scrollOffsetY = useRef(new Animated.Value(0)).current;
-    const scrollviewref = useRef()
-    const scrollviewhorizontalref = useRef()
-    const drinksref = useRef()
-    let y = 0
-    const animatedtop =  scrollOffsetY.interpolate({
-      inputRange: [0, getStatusBarHeight() + scalableheight.three],
-      outputRange: [0 , getStatusBarHeight() + scalableheight.three],
-      extrapolate: 'clamp',
 
-    })
-    const [types, settypes] = useState([
-        {
-          title: "Starters",
-          visible: false
-       
-        },
-        {
-          title: "Main Food",
-          visible: false
-       
-        },
-        {
-          title: "Desert",
-          visible: false
-       
-        },
-        {
-          title: "Drinks",
-          visible: false
-       
-        },
-       
-      ])
-      const [serving, setserving] = useState([
-        {
-          selected: false,
-          serving: 'Single Plate',
-          price: 'AED 159.00',
-        },
-        {
-          selected: false,
-          serving: 'Double Plate',
-          price: 'AED 129.00',
-        },
-        {
-          selected: false,
-          serving: 'Triple Plate',
-          price: 'AED 59.00',
-        },
-      ]);
-    
-      const [flavours, setflavours] = useState([
-        {
-          selected: false,
-          serving: 'Hummus',
-        },
-        {
-          selected: false,
-          serving: 'Chicken Munchurian',
-        },
-        {
-          selected: false,
-          serving: 'Pasta',
-        },
-        {
-          selected: false,
-          serving: 'Onion',
-        },
-        {
-          selected: false,
-          serving: 'Lettuce',
-        },
-      ])
-     
-      const [dished, setdisdhed] = useState([
-        {
-          selected: false,
-          serving: 'Hummus',
-        },
-        {
-          selected: false,
-          serving: 'Chicken Munchurian',
-        },
-        {
-          selected: false,
-          serving: 'Pasta',
-        },
-        {
-          selected: false,
-          serving: 'Hummus',
-        },
-        {
-          selected: false,
-          serving: 'Chicken Munchurian',
-        },
-        {
-          selected: false,
-          serving: 'Pasta',
-        },
-        {
-          selected: false,
-          serving: 'Hummus',
-        },
-      
-    ]);
-      const toggleSwitch = async () => {
+  const [isEnabled, setisEnabled] = useState(false);
+  const [yposition, setyposition] = useState(0);
+  const [dataSourceCords, setDataSourceCords] = useState([]);
+  const scrollOffsetY = useRef(new Animated.Value(0)).current;
+  const scrollviewref = useRef();
+  const scrollviewhorizontalref = useRef();
+  const drinksref = useRef();
+  let y = 0;
+  const animatedtop = scrollOffsetY.interpolate({
+    inputRange: [0, getStatusBarHeight() + scalableheight.three],
+    outputRange: [0, getStatusBarHeight() + scalableheight.three],
+    extrapolate: 'clamp',
+  });
+  const [types, settypes] = useState([
+    {
+      title: 'Starters',
+      visible: false,
+    },
+    {
+      title: 'Main Food',
+      visible: false,
+    },
+    {
+      title: 'Desert',
+      visible: false,
+    },
+    {
+      title: 'Drinks',
+      visible: false,
+    },
+  ]);
+  const [serving, setserving] = useState([
+    {
+      selected: false,
+      serving: 'Single Plate',
+      price: 'AED 159.00',
+    },
+    {
+      selected: false,
+      serving: 'Double Plate',
+      price: 'AED 129.00',
+    },
+    {
+      selected: false,
+      serving: 'Triple Plate',
+      price: 'AED 59.00',
+    },
+  ]);
 
-        setisEnabled(!isEnabled)
-      };
+  const [flavours, setflavours] = useState([
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+    {
+      selected: false,
+      serving: 'Chicken Munchurian',
+    },
+    {
+      selected: false,
+      serving: 'Pasta',
+    },
+    {
+      selected: false,
+      serving: 'Onion',
+    },
+    {
+      selected: false,
+      serving: 'Lettuce',
+    },
+  ]);
 
-      // useEffect(() => {
-      //   const keyboardDidShowListener = Keyboard.addListener(
-      //     'keyboardDidShow',
-      //     () => {
-      //       // hideNavigationBar();
-      //       console.log('Keyboard is open');
-      //     },
-      //   );
-      //   const keyboardDidHideListener = Keyboard.addListener(
-      //     'keyboardDidHide',
-      //     () => {
-      //       // hideNavigationBar();
-      //       console.log('Keyboard is closed');
-      //     },
-      //   );
-    
-      //   return () => {
-      //     keyboardDidHideListener.remove();
-      //   };
-      // }, []);
+  const [dished, setdisdhed] = useState([
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+    {
+      selected: false,
+      serving: 'Chicken Munchurian',
+    },
+    {
+      selected: false,
+      serving: 'Pasta',
+    },
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+    {
+      selected: false,
+      serving: 'Chicken Munchurian',
+    },
+    {
+      selected: false,
+      serving: 'Pasta',
+    },
+    {
+      selected: false,
+      serving: 'Hummus',
+    },
+  ]);
+  const toggleSwitch = async () => {
+    setisEnabled(!isEnabled);
+  };
 
+  // useEffect(() => {
+  //   const keyboardDidShowListener = Keyboard.addListener(
+  //     'keyboardDidShow',
+  //     () => {
+  //       // hideNavigationBar();
+  //       console.log('Keyboard is open');
+  //     },
+  //   );
+  //   const keyboardDidHideListener = Keyboard.addListener(
+  //     'keyboardDidHide',
+  //     () => {
+  //       // hideNavigationBar();
+  //       console.log('Keyboard is closed');
+  //     },
+  //   );
 
-      useEffect(() => {
-   
-        // hideNavigationBar();
-       
-   
+  //   return () => {
+  //     keyboardDidHideListener.remove();
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    // hideNavigationBar();
   }, [modalVisible]);
 
   useEffect(() => {
@@ -284,7 +283,7 @@ const RestaurantpageAnimation = ({navigation, drawerAnimationStyle}) => {
     }
     return false;
   };
- 
+
   function updateservingstate(index) {
     let arr = [...serving];
     for (const key in arr) {
@@ -319,10 +318,8 @@ const RestaurantpageAnimation = ({navigation, drawerAnimationStyle}) => {
     console.log('arr' + JSON.stringify(arr));
   }
   return (
-    <ScreenWrapper
-    drawer={drawerAnimationStyle}
-    style={{flex: 1, }}>
-           {modalVisible && (
+    <ScreenWrapper drawer={drawerAnimationStyle} style={{flex: 1}}>
+      {modalVisible && (
         <View
           style={{
             position: 'absolute',
@@ -332,237 +329,236 @@ const RestaurantpageAnimation = ({navigation, drawerAnimationStyle}) => {
             zIndex: 1,
           }}></View>
       )}
-   {modalVisible  &&  (  <Animatable.View
-              animation={'fadeInUpBig'}
-   
-                   easing="ease"
-                   //  iterationCount="infinite"
-                   iterationCount={1}
-                   style={{elevation: 4000, zIndex:4000}}>
-        <KeyboardAvoidingView
-          style={{width: '100%', height: '100%'}}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+      {modalVisible && (
+        <Animatable.View
+          animation={'fadeInUpBig'}
+          easing="ease"
+          //  iterationCount="infinite"
+          iterationCount={1}
+          style={{elevation: 4000, zIndex: 4000}}>
+          <KeyboardAvoidingView
+            style={{width: '100%', height: '100%'}}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
             <View
               style={{
-                width: '95%',
-                height: '90%',
-                borderRadius: fontSize.eleven,
-                backgroundColor: 'white',
+                width: '100%',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}>
-              <View style={{width: '100%', height: '30%'}}>
-                <Image
-                  resizeMode="stretch"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                  }}
-                  source={require('../Resources/images/food.jpg')}
-                />
-                {renderIf(serving?.filter(item => item.selected == true) != '')(
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      paddingHorizontal: scalableheight.two,
-                      height: scalableheight.four,
-                      backgroundColor: '#E14E4E',
-                      position: 'absolute',
-                      bottom: 0,
-                      right: 0,
-                      borderTopLeftRadius: fontSize.eleven,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: 'white',
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.ten,
-                      }}>
-                      AED{' '}
-                    </Text>
-
-                    {serving
-                      ?.filter(function (item) {
-                        return item.selected == true;
-                      })
-                      .map(function ({price}) {
-                        return (
-                          <Text
-                            style={{
-                              color: 'white',
-                              fontFamily: 'Inter-SemiBold',
-                              fontSize: fontSize.fourteen,
-                            }}>
-                            {price}
-                          </Text>
-                        );
-                      })}
-                  </View>,
-                )}
-                <TouchableOpacity
-                  onPress={() => {
-                    setmodalVisible(false);
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: scalableheight.one,
-                    right: scalableheight.one,
-                  }}>
-                  <Ionicons
-                    name="close-circle"
-                    color={'#F5F5F5'}
-                    size={fontSize.thirtyseven}
-                    style={{}}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              <ScrollView
-                showsVerticalScrollIndicator={false}
+              <View
                 style={{
-                  width: '100%',
-                  height: '70%',
-                  padding: scalableheight.two,
+                  width: '95%',
+                  height: '90%',
+                  borderRadius: fontSize.eleven,
+                  backgroundColor: 'white',
                 }}>
-                <Text
-                  style={{
-                    fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.sixteen,
-                    color: 'black',
-                  }}>
-                  Chicken Shawarma
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: 'Inter-Medium',
-                    fontSize: fontSize.fourteen,
-                    color: 'black',
-                  }}>
-                  Special mouth watering Chicken Fillet served with fresh vegies
-                  and special sauce.
-                </Text>
-                <View style={{height: scalableheight.one, }} />
-                <MultiChoiceDropDown
-                  title={'Choose Serving'}
-                  data={serving}
-                  update={updateservingstate}
-                />
-                <View style={{height: scalableheight.one}} />
-                <Mltichoicehorizontallist
-                  title={'Choose Serving'}
-                  data={flavours}
-                  update={updateflavourstate}
-                />
-
-                <View style={{height: scalableheight.one}} />
-                <Text
-                  style={{
-                    fontFamily: 'Inter-SemiBold',
-                    fontSize: fontSize.thirteen,
-                    color: 'black',
-                    opacity: 0.4,
-                  }}>
-                  Special Instructions
-                </Text>
-                <View style={{height: scalableheight.one}} />
-                <TextInput
-                  multiline
-                  value={specialinstructions}
-                  onChangeText={text => setspecialinstructions(text)}
-                  placeholder={'Type here'}
-                  style={{
-                    ...styleSheet.shadow,
-                    width: '98%',
-                    height: scalableheight.fifteen,
-                    fontSize: fontSize.fifteen,
-                    backgroundColor:'#F9F9F9',
-                    alignSelf: 'center',
-                    borderRadius: fontSize.borderradiusmedium,
-                    paddingHorizontal: '5%',
-                    textAlignVertical: 'top',
-                  }}
-                />
-                <View style={{height: scalableheight.three}} />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: '50%',
-                    justifyContent: 'space-evenly',
-                    alignSelf: 'center',
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      count > 1 ? setcount(count - 1) : null;
-                    }}>
-                    <AntDesign
-                      name="minuscircle"
-                      color={'#E14E4E'}
-                      size={fontSize.twentyseven}
-                      style={{}}
-                    />
-                  </TouchableOpacity>
-                  <View
+                <View style={{width: '100%', height: '30%'}}>
+                  <Image
+                    resizeMode="stretch"
                     style={{
-                      backgroundColor: '#F5F5F5',
-                      width: scalableheight.six,
-                      height: scalableheight.four,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: fontSize.eight,
-                    }}>
-                    <Text>{count}</Text>
-                  </View>
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    source={require('../Resources/images/food.jpg')}
+                  />
+                  {serving?.filter(item => item.selected == true) != '' &&
+             
+             <View
+                      style={{
+                        flexDirection: 'row',
+                        paddingHorizontal: scalableheight.two,
+                        height: scalableheight.four,
+                        backgroundColor: '#E14E4E',
+                        position: 'absolute',
+                        bottom: 0,
+                        right: 0,
+                        borderTopLeftRadius: fontSize.eleven,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontFamily: 'Inter-SemiBold',
+                          fontSize: fontSize.ten,
+                        }}>
+                        AED{' '}
+                      </Text>
 
+                      {serving
+                        ?.filter(function (item) {
+                          return item.selected == true;
+                        })
+                        .map(function ({price}) {
+                          return (
+                            <Text
+                              style={{
+                                color: 'white',
+                                fontFamily: 'Inter-SemiBold',
+                                fontSize: fontSize.fourteen,
+                              }}>
+                              {price}
+                            </Text>
+                          );
+                        })}
+                    </View>,
+                  }
                   <TouchableOpacity
                     onPress={() => {
-                      setcount(count + 1);
+                      setmodalVisible(false);
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: scalableheight.one,
+                      right: scalableheight.one,
                     }}>
-                    <AntDesign
-                      name="pluscircle"
-                      color={'#E14E4E'}
-                      size={fontSize.twentyseven}
+                    <Ionicons
+                      name="close-circle"
+                      color={'#F5F5F5'}
+                      size={fontSize.thirtyseven}
                       style={{}}
                     />
                   </TouchableOpacity>
                 </View>
-                <View style={{height: scalableheight.three}} />
-                <MYButton
-                  color={'#E14E4E'}
-                  title={'Add To Cart'}
-                  textcolor={'white'}
-                  onPress={() => {
-                    setmodalVisible(false);
-                    setcartvisible(true)
-                  }}
-                />
 
-                <View style={{height: scalableheight.three}} />
-              </ScrollView>
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  style={{
+                    width: '100%',
+                    height: '70%',
+                    padding: scalableheight.two,
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter-Bold',
+                      fontSize: fontSize.sixteen,
+                      color: 'black',
+                    }}>
+                    Chicken Shawarma
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter-Medium',
+                      fontSize: fontSize.fourteen,
+                      color: 'black',
+                    }}>
+                    Special mouth watering Chicken Fillet served with fresh
+                    vegies and special sauce.
+                  </Text>
+                  <View style={{height: scalableheight.one}} />
+                  <MultiChoiceDropDown
+                    title={'Choose Serving'}
+                    data={serving}
+                    update={updateservingstate}
+                  />
+                  <View style={{height: scalableheight.one}} />
+                  <Mltichoicehorizontallist
+                    title={'Choose Serving'}
+                    data={flavours}
+                    update={updateflavourstate}
+                  />
+
+                  <View style={{height: scalableheight.one}} />
+                  <Text
+                    style={{
+                      fontFamily: 'Inter-SemiBold',
+                      fontSize: fontSize.thirteen,
+                      color: 'black',
+                      opacity: 0.4,
+                    }}>
+                    Special Instructions
+                  </Text>
+                  <View style={{height: scalableheight.one}} />
+                  <TextInput
+                    multiline
+                    value={specialinstructions}
+                    onChangeText={text => setspecialinstructions(text)}
+                    placeholder={'Type here'}
+                    style={{
+                      ...styleSheet.shadow,
+                      width: '98%',
+                      height: scalableheight.fifteen,
+                      fontSize: fontSize.fifteen,
+                      backgroundColor: '#F9F9F9',
+                      alignSelf: 'center',
+                      borderRadius: fontSize.borderradiusmedium,
+                      paddingHorizontal: '5%',
+                      textAlignVertical: 'top',
+                    }}
+                  />
+                  <View style={{height: scalableheight.three}} />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      width: '50%',
+                      justifyContent: 'space-evenly',
+                      alignSelf: 'center',
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        count > 1 ? setcount(count - 1) : null;
+                      }}>
+                      <AntDesign
+                        name="minuscircle"
+                        color={'#E14E4E'}
+                        size={fontSize.twentyseven}
+                        style={{}}
+                      />
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        backgroundColor: '#F5F5F5',
+                        width: scalableheight.six,
+                        height: scalableheight.four,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: fontSize.eight,
+                      }}>
+                      <Text>{count}</Text>
+                    </View>
+
+                    <TouchableOpacity
+                      onPress={() => {
+                        setcount(count + 1);
+                      }}>
+                      <AntDesign
+                        name="pluscircle"
+                        color={'#E14E4E'}
+                        size={fontSize.twentyseven}
+                        style={{}}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{height: scalableheight.three}} />
+                  <MYButton
+                    color={'#E14E4E'}
+                    title={'Add To Cart'}
+                    textcolor={'white'}
+                    onPress={() => {
+                      setmodalVisible(false);
+                      setcartvisible(true);
+                    }}
+                  />
+
+                  <View style={{height: scalableheight.three}} />
+                </ScrollView>
+              </View>
             </View>
-          </View>
-        </KeyboardAvoidingView>
-      </Animatable.View>)}
+          </KeyboardAvoidingView>
+        </Animatable.View>
+      )}
       {/* <StatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'light-content'}
       /> */}
-  
 
       {cartvisible && (
         <Animatable.View
-        animation={'fadeInUpBig'}
-
-             easing="ease"
-             //  iterationCount="infinite"
-             iterationCount={1}
-            
+          animation={'fadeInUpBig'}
+          easing="ease"
+          //  iterationCount="infinite"
+          iterationCount={1}
           style={{
             bottom: scalableheight.two,
             position: 'absolute',
@@ -574,9 +570,11 @@ const RestaurantpageAnimation = ({navigation, drawerAnimationStyle}) => {
             paddingVertical: scalableheight.one,
             paddingHorizontal: scalableheight.two,
           }}>
-          <TouchableOpacity 
-          onPress={() => {navigation.navigate("Checkout")}}
-          style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Checkout');
+            }}
+            style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View
@@ -630,215 +628,306 @@ const RestaurantpageAnimation = ({navigation, drawerAnimationStyle}) => {
           </TouchableOpacity>
         </Animatable.View>
       )}
-     
-         <View style={{position:"absolute",backgroundColor: "transparent", paddingTop: getStatusBarHeight(), elevation: 3000, zIndex:3000}}>
-     
-           <HeaderComponentRestaurant  isEnabled={isEnabled}
-          toggleSwitch={toggleSwitch}/>
-          </View>
-      <DynamicHeader 
-      showlocation={() => {
-        setshowbottomsheet(true)
-       }}
-   animHeaderValue={scrollOffsetY} 
-  />
-  
-  {/* <Animated.View
+
+      <View
+        style={{
+          position: 'absolute',
+          backgroundColor: 'transparent',
+          paddingTop: getStatusBarHeight(),
+          elevation: 3000,
+          zIndex: 3000,
+        }}>
+        <HeaderComponentRestaurant
+          isEnabled={isEnabled}
+          toggleSwitch={toggleSwitch}
+        />
+      </View>
+      <DynamicHeader
+        showlocation={() => {
+          setshowbottomsheet(true);
+        }}
+        animHeaderValue={scrollOffsetY}
+      />
+
+      {/* <Animated.View
   style={{width:"100%", height: 100, backgroundColor:"red", marginTop: animatedtop}}>
 
   </Animated.View> */}
       <AnimatedScrollView
-      ref={scrollviewhorizontalref}
-      
-key={"scroller"}
-overflow={"hidden"}
-  horizontal
-  showsHorizontalScrollIndicator ={false}
-  style={{ width: "100%", height: scalableheight.sixteen, flexDirection: "row", backgroundColor:"transparent", marginTop: animatedtop }}>
-  {types.map((item, key) => {
+        ref={scrollviewhorizontalref}
+        key={'scroller'}
+        overflow={'hidden'}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={{
+          width: '100%',
+          height: scalableheight.sixteen,
+          flexDirection: 'row',
+          backgroundColor: 'transparent',
+          marginTop: animatedtop,
+        }}>
+        {types.map((item, key) => {
           return (
-            <TouchableOpacity 
-            onPress={() => {   
-              // scrollviewref?.scrollTo({
-              //   x: 0,
-              //   y: dataSourceCords[1], //we get the offset value from array based on key
-              //   animated: true,});
-      
-         
-              scrollviewref.current.scrollTo({ y: dataSourceCords[key + 1], animated: true, });
-              
-             let data = [...types]
-             for(const index in data){
-              data[index].visible = false
-             }
-             data[key].visible = true
-             settypes(data)
+            <TouchableOpacity
+              onPress={() => {
+                // scrollviewref?.scrollTo({
+                //   x: 0,
+                //   y: dataSourceCords[1], //we get the offset value from array based on key
+                //   animated: true,});
+
+                scrollviewref.current.scrollTo({
+                  y: dataSourceCords[key + 1],
+                  animated: true,
+                });
+
+                let data = [...types];
+                for (const index in data) {
+                  data[index].visible = false;
+                }
+                data[key].visible = true;
+                settypes(data);
               }}
-            style={{ backgroundColor:"transparent", paddingHorizontal: scalableheight.five, alignItems:"center", height: "100%", alignItems: "center", justifyContent:"center"}}>
-       <Text style={{fontFamily: 'Inter-SemiBold', color: item.visible? "#E14E4E" : 'rgba(211,211,211, 0.9)', fontSize: fontSize.fifteen, paddingVertical: scalableheight.one, borderBottomWidth: item.visible? 1 : 0, borderColor: "#E14E4E"  }}>{item.title}</Text>
-          </TouchableOpacity>
+              style={{
+                backgroundColor: 'transparent',
+                paddingHorizontal: scalableheight.five,
+                alignItems: 'center',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Inter-SemiBold',
+                  color: item.visible ? '#E14E4E' : 'rgba(211,211,211, 0.9)',
+                  fontSize: fontSize.fifteen,
+                  paddingVertical: scalableheight.one,
+                  borderBottomWidth: item.visible ? 1 : 0,
+                  borderColor: '#E14E4E',
+                }}>
+                {item.title}
+              </Text>
+            </TouchableOpacity>
           );
         })}
-   
-  </AnimatedScrollView>
+      </AnimatedScrollView>
 
-    
-    
-      <AnimatedScrollView 
-     ref ={scrollviewref}
- scrollEventThrottle={16}
- onScroll={
-    
-     Animated.event(
-       
-   [{ nativeEvent: { contentOffset: { y: scrollOffsetY},
-  
-  }}],
-  {listener: (event) =>    {
-    let y = event.nativeEvent.contentOffset.y 
-    
-    // let num = scrollOffsetY
-    console.log("a" + JSON.stringify(dataSourceCords) )
-    console.log("a" + JSON.stringify(types) )
-    
-    if( y < dataSourceCords[2]){
+      <AnimatedScrollView
+        ref={scrollviewref}
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollOffsetY}}}],
+          {
+            listener: event => {
+              let y = event.nativeEvent.contentOffset.y;
 
-      if(types[0].visible != true){
-        let data = [...types]
-                 for(const index in data){
-                  data[index].visible = false
-                 }
-                 data[0].visible = true
-                 settypes(data)
-                 scrollviewhorizontalref.current.scrollTo({ y: dataSourceCords[1], animated: true });
-      }
-      // console.log(JSON.stringify(scrollOffsetY))
-      // console.log("helle")
-     } 
-     else  if(y > dataSourceCords[2]  && y < dataSourceCords[3]  ){
+              // let num = scrollOffsetY
+              console.log('a' + JSON.stringify(dataSourceCords));
+              console.log('a' + JSON.stringify(types));
 
-      if(types[1].visible != true){
-        let data = [...types]
-                 for(const index in data){
-                  data[index].visible = false
-                 }
-                 data[1].visible = true
-                 settypes(data)
-                 scrollviewhorizontalref.current.scrollTo({ y: dataSourceCords[1], animated: true });
-      }
-      // console.log(JSON.stringify(scrollOffsetY))
-      // console.log("helle")
-    } else  if(y > dataSourceCords[3] && y < dataSourceCords[4]  ){
+              if (y < dataSourceCords[2]) {
+                if (types[0].visible != true) {
+                  let data = [...types];
+                  for (const index in data) {
+                    data[index].visible = false;
+                  }
+                  data[0].visible = true;
+                  settypes(data);
+                  scrollviewhorizontalref.current.scrollTo({
+                    y: dataSourceCords[1],
+                    animated: true,
+                  });
+                }
+                // console.log(JSON.stringify(scrollOffsetY))
+                // console.log("helle")
+              } else if (y > dataSourceCords[2] && y < dataSourceCords[3]) {
+                if (types[1].visible != true) {
+                  let data = [...types];
+                  for (const index in data) {
+                    data[index].visible = false;
+                  }
+                  data[1].visible = true;
+                  settypes(data);
+                  scrollviewhorizontalref.current.scrollTo({
+                    y: dataSourceCords[1],
+                    animated: true,
+                  });
+                }
+                // console.log(JSON.stringify(scrollOffsetY))
+                // console.log("helle")
+              } else if (y > dataSourceCords[3] && y < dataSourceCords[4]) {
+                if (types[2].visible != true) {
+                  let data = [...types];
+                  for (const index in data) {
+                    data[index].visible = false;
+                  }
+                  data[2].visible = true;
+                  settypes(data);
+                  scrollviewhorizontalref.current.scrollTo({
+                    y: dataSourceCords[2],
+                    animated: true,
+                  });
+                }
+                // console.log(JSON.stringify(scrollOffsetY))
+                // console.log("helle")
+              } else if (y > dataSourceCords[4]) {
+                if (types[3].visible != true) {
+                  let data = [...types];
+                  for (const index in data) {
+                    data[index].visible = false;
+                  }
+                  data[3].visible = true;
+                  settypes(data);
+                  scrollviewhorizontalref.current.scrollTo({
+                    y: dataSourceCords[3],
+                    animated: true,
+                  });
+                }
+                // console.log(JSON.stringify(scrollOffsetY))
+                // console.log("helle")
+              }
+            },
+          },
+          {useNativeDriver: true},
+        )}
+        //  ref ={scrollviewref}
+        showsVerticalScrollIndicator={false}
+        style={{
+          backgroundColor: 'white',
+          paddingHorizontal: scalableheight.one,
+          zIndex: -2,
+          elevation: -2,
+        }}>
+        <Text
+          // key={1}
+          onLayout={event => {
+            const layout = event.nativeEvent.layout;
+            dataSourceCords[1] = layout.y; // we store this offset values in an array
+          }}
+          style={styleSheet.heading}>
+          Starters{' '}
+        </Text>
+        {dished.map((item, key) => {
+          return (
+            <View style={{width: '100%', alignItems: 'center'}}>
+              <Starters
+                image={require('../Resources/images/food.jpg')}
+                title={'Mexican Enchiladas'}
+                description={
+                  'The original French toast! Thick slices of our signature jumbo...'
+                }
+                price={9.4}
+                onPress={() => {
+                  setmodalVisible(true);
+                }}
+              />
+            </View>
+          );
+        })}
 
-      if(types[2].visible != true){
-        let data = [...types]
-                 for(const index in data){
-                  data[index].visible = false
-                 }
-                 data[2].visible = true
-                 settypes(data)
-                 scrollviewhorizontalref.current.scrollTo({ y: dataSourceCords[2], animated: true });
-      }
-      // console.log(JSON.stringify(scrollOffsetY))
-      // console.log("helle")
-    } else  if(y > dataSourceCords[4]){
+        <Text
+          // key={2}
+          onLayout={event => {
+            const layout = event.nativeEvent.layout;
+            dataSourceCords[2] = layout.y; // we store this offset values in an array
+          }}
+          style={styleSheet.heading}>
+          Main Meal{' '}
+        </Text>
+        {dished.map((item, key) => {
+          return (
+            <View style={{width: '100%', alignItems: 'center'}}>
+              <Starters
+                image={require('../Resources/images/food.jpg')}
+                title={'Mexican Enchiladas'}
+                description={
+                  'The original French toast! Thick slices of our signature jumbo...'
+                }
+                price={9.4}
+                onPress={() => {
+                  setmodalVisible(true);
+                }}
+              />
+            </View>
+          );
+        })}
 
-      if(types[3].visible != true){
-        let data = [...types]
-                 for(const index in data){
-                  data[index].visible = false
-                 }
-                 data[3].visible = true
-                 settypes(data)
-                 scrollviewhorizontalref.current.scrollTo({ y: dataSourceCords[3], animated: true });
-      }
-      // console.log(JSON.stringify(scrollOffsetY))
-      // console.log("helle")
-    }
-    }},
-   {useNativeDriver: true},
- 
- )}
+        <Text
+          // key={3}
+          onLayout={event => {
+            const layout = event.nativeEvent.layout;
+            dataSourceCords[3] = layout.y; // we store this offset values in an array
+          }}
+          style={styleSheet.heading}>
+          Desert{' '}
+        </Text>
+        {dished.map((item, key) => {
+          return (
+            <View style={{width: '100%', alignItems: 'center'}}>
+              <Starters
+                image={require('../Resources/images/food.jpg')}
+                title={'Mexican Enchiladas'}
+                description={
+                  'The original French toast! Thick slices of our signature jumbo...'
+                }
+                price={9.4}
+                onPress={() => {
+                  setmodalVisible(true);
+                }}
+              />
+            </View>
+          );
+        })}
 
-//  ref ={scrollviewref}
-showsVerticalScrollIndicator={false}
-style={{backgroundColor:"white", paddingHorizontal: scalableheight.one , zIndex: -2, elevation:-2}}>
+        <Text
+          style={styleSheet.heading}
+          // key={4}
+          onLayout={event => {
+            const layout = event.nativeEvent.layout;
+            dataSourceCords[4] = layout.y; // we store this offset values in an array
+          }}>
+          Drinks{' '}
+        </Text>
+        {dished.map((item, key) => {
+          return (
+            <View style={{width: '100%', alignItems: 'center'}}>
+              <Starters
+                image={require('../Resources/images/food.jpg')}
+                title={'Mexican Enchiladas'}
+                description={
+                  'The original French toast! Thick slices of our signature jumbo...'
+                }
+                price={9.4}
+                onPress={() => {
+                  setmodalVisible(true);
+                }}
+              />
+            </View>
+          );
+        })}
+      </AnimatedScrollView>
+      <View
+        style={{
+          backgroundColor: '#201F1F',
+          position: 'absolute',
+          top: 0,
+          width: '100%',
+          height: scalableheight.fourteen + getStatusBarHeight(),
+          zIndex: -2,
+          elevation: -2,
+          paddingTop: getStatusBarHeight() + scalableheight.ten,
+        }}></View>
 
-
-<Text
-// key={1}
-onLayout={event => {
-  const layout = event.nativeEvent.layout;
-  dataSourceCords[1] = layout.y; // we store this offset values in an array
-  }}
-style={styleSheet.heading}>Starters </Text>
-{dished.map((item, key) => {
-       return (
-         <View style={{width:"100%", alignItems:"center"}}>
-         <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
-       </View>
-       );
-     })}
-   
-
-<Text 
-// key={2}
-onLayout={event => {
-  const layout = event.nativeEvent.layout;
-  dataSourceCords[2] = layout.y; // we store this offset values in an array
-  }}
-style={styleSheet.heading}>Main Meal </Text>
-{dished.map((item, key) => {
-       return (
-         <View style={{width:"100%", alignItems:"center",}}>
-         <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
-       </View>
-       );
-     })}
-    
-<Text 
-// key={3}
-onLayout={event => {
-  const layout = event.nativeEvent.layout;
-  dataSourceCords[3] = layout.y; // we store this offset values in an array
-  }}
-style={styleSheet.heading}>Desert </Text>
-{dished.map((item, key) => {
-       return (
-         <View style={{width:"100%", alignItems:"center",}}>
-         <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
-       </View>
-       );
-     })}
-   
-<Text style={styleSheet.heading}
-// key={4}
-onLayout={event => {
-  const layout = event.nativeEvent.layout;
-  dataSourceCords[4] = layout.y; // we store this offset values in an array
-  }}
->Drinks </Text>
-{dished.map((item, key) => {
-       return (
-         <View style={{width:"100%", alignItems:"center",}}>
-         <Starters image={require('../Resources/images/food.jpg')} title={"Mexican Enchiladas"} description={"The original French toast! Thick slices of our signature jumbo..."} price={9.40} onPress={()=>{setmodalVisible(true)}}/>
-       </View>
-       );
-     })}
-     
-    
-</AnimatedScrollView>
-<View style={{backgroundColor:"#201F1F", position:"absolute", top: 0, width:"100%", height: scalableheight.fourteen + getStatusBarHeight() , zIndex: -2, elevation:-2, paddingTop: getStatusBarHeight() + scalableheight.ten}}>
-
-</View>
-
-<Custombottomsheet state ={showbottomsheet} locationpin ={pinlocation} onPress={() => {
-              setshowbottomsheet(false);
-            }}  
-            onPressnewlocation={() => {
-              getnewlocation()
-            }}       />   
-    </ScreenWrapper> 
+      <Custombottomsheet
+        state={showbottomsheet}
+        locationpin={pinlocation}
+        onPress={() => {
+          setshowbottomsheet(false);
+        }}
+        onPressnewlocation={() => {
+          getnewlocation();
+        }}
+      />
+    </ScreenWrapper>
   );
 };
 
@@ -880,7 +969,10 @@ const styleSheet = StyleSheet.create({
     shadowRadius: 18,
   },
   heading: {
-    fontFamily: 'Inter-Bold', color: "black", fontSize: fontSize.twenty, paddingVertical: scalableheight.one
-  }
+    fontFamily: 'Inter-Bold',
+    color: 'black',
+    fontSize: fontSize.twenty,
+    paddingVertical: scalableheight.one,
+  },
 });
 export default RestaurantpageAnimation;

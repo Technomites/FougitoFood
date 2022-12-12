@@ -16,10 +16,10 @@ import {
 // import {request}  from './SavedAddresses';
 //import Geolocation from '@react-native-community/geolocation';
 
-import Geolocation from "react-native-geolocation-service";
+import Geolocation from 'react-native-geolocation-service';
 
 import Geocoder from 'react-native-geocoding';
-import renderIf from 'render-if';
+
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -32,7 +32,12 @@ import {useNavigation} from '@react-navigation/native';
 import {fontSize, scalableheight} from '../../Utilities/fonts';
 import SavedAddresses from './SavedAddresses';
 import MYButton from '../Components/MYButton';
-import {getalladdresses, storecurrentaddress, getdistancevalidation, cleardistancevalidation} from '../../Actions/actions';
+import {
+  getalladdresses,
+  storecurrentaddress,
+  getdistancevalidation,
+  cleardistancevalidation,
+} from '../../Actions/actions';
 import Addresstile from '../../Shared/Components/Addresstile';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import * as Animatable from 'react-native-animatable';
@@ -42,7 +47,9 @@ import CountDown from 'react-native-countdown-component';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 export default function Custombottomsheet(props) {
-  const {AuthToken, alladdresses, validdistance} = useSelector(state => state.userReducer);
+  const {AuthToken, alladdresses, validdistance} = useSelector(
+    state => state.userReducer,
+  );
   // alert(props?.latitudepin, props?.longitudepin);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -51,28 +58,16 @@ export default function Custombottomsheet(props) {
   const [animationtype, setanimationtype] = useState('fadeInUpBig');
   const [animationstate, setanimationstate] = useState(false);
   const [showmap, setshowmap] = useState(false);
-  // const [lat, setlat] = useState();
-  // const [long, setlong] = useState();
-  // const [inlat, setinlat] = useState();
-  // const [inlong, setinlong] = useState();
   const [pinlocation, setpinlocation] = useState('');
   const [center, setCenter] = useState();
-  // const [pinlatitude, SetPinLatitude] = useState(
-  //   props?.latitudepin != null ? props?.latitudepin : 0.88888,
-  // );
-  // const [pinLongitude, SetPinLongitude] = useState(
-  //   props?.longitudepin != null ? props?.longitudepin : 0.88888,
-  // );
-  // != null ? props?.latitudepin : 25.2048
   const [pinlatitude, SetPinLatitude] = useState(0);
   const [pinLongitude, SetPinLongitude] = useState(0);
   const [hidemarker, sethidemarker] = useState(false);
-
   const [showcurrent, setshowcurrent] = useState(false);
-  const [temportystoreforselectedaddress, settemportystoreforselectedaddress] = useState(null);
-  const [selectedaddress, setselectedaddress] = useState("");
+  const [temportystoreforselectedaddress, settemportystoreforselectedaddress] =
+    useState(null);
+  const [selectedaddress, setselectedaddress] = useState('');
   const [activatehideshow, setactivatehideshow] = useState(false);
-  // != null ? props?.longitude : 55.2708
 
   function toggleanimation() {
     if (animationtype == 'fadeInUpBig') {
@@ -83,50 +78,44 @@ export default function Custombottomsheet(props) {
   }
 
   function getnewlocation() {
-    Geocoder.init('AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso');
+    Geocoder.init('AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8');
     Geolocation.getCurrentPosition(info => {
-   
       SetPinLatitude(info?.coords?.latitude),
-      SetPinLongitude(info?.coords?.longitude);
+        SetPinLongitude(info?.coords?.longitude);
 
       Geocoder.from(info?.coords?.latitude, info?.coords?.longitude)
-      .then(json => {
-        var addressComponent = json.results[0].formatted_address;
-        // console.log(addressComponent);
-        // setpinlocation(addressComponent);
-        ref.current?.clear();
-        setshowcurrent(false)
-        setselectedaddress(addressComponent)
-      },
-      (error) => {
-        console.log("hellooo" + JSON.stringify(error))
-      },
-      {
-        accuracy: {
-          android: 'high',
-          ios: 'best'
-        },
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 10000,
-        distanceFilter: 0,
-        forceRequestLocation: true,
-        showLocationDialog: true,
-      })
-      .catch(error =>{
-    
-        requestResolution()
-        console.warn(error)});
+        .then(
+          json => {
+            var addressComponent = json.results[0].formatted_address;
+            // console.log(addressComponent);
+            // setpinlocation(addressComponent);
+            ref.current?.clear();
+            setshowcurrent(false);
+            setselectedaddress(addressComponent);
+          },
+          error => {
+            console.log('hellooo' + JSON.stringify(error));
+          },
+          {
+            accuracy: {
+              android: 'high',
+              ios: 'best',
+            },
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 10000,
+            distanceFilter: 0,
+            forceRequestLocation: true,
+            showLocationDialog: true,
+          },
+        )
+        .catch(error => {
+          requestResolution();
+          console.warn(error);
+        });
     });
-   
 
-
-
-        /////////////////////////
-
-
-
-     
+    /////////////////////////
   }
 
   useEffect(() => {
@@ -134,12 +123,14 @@ export default function Custombottomsheet(props) {
       setanimationstate(true);
     }
   }, [props.state]);
-  // useEffect(() => {
-  //   dispatch(getalladdresses(AuthToken));
-  // }, []);
 
   useEffect(() => {
-    if (props?.longitude != null && props?.latitude != null && props?.longitude != 0 && props?.latitude != 0) {
+    if (
+      props?.longitude != null &&
+      props?.latitude != null &&
+      props?.longitude != 0 &&
+      props?.latitude != 0
+    ) {
       console.log(
         props?.latitude,
         'props?.latitude not null----------------------------',
@@ -332,111 +323,176 @@ export default function Custombottomsheet(props) {
   ];
 
   useEffect(() => {
-    console.log("this part is working")
-    console.log("validdistance" + validdistance)
-    console.log("validdistance" + validdistance)
-    if(validdistance == true && temportystoreforselectedaddress != null){
-      console.log("this part is alsoooo working")
+    console.log('this part is working');
+    console.log('validdistance' + validdistance);
+    console.log('validdistance' + validdistance);
+    if (validdistance == true && temportystoreforselectedaddress != null) {
+      console.log('this part is alsoooo working');
       dispatch(storecurrentaddress(temportystoreforselectedaddress));
       props.onPressnewCoordinates(
         temportystoreforselectedaddress?.Latitude,
         temportystoreforselectedaddress?.Longitude,
       );
-      settemportystoreforselectedaddress(null)
-      dispatch(cleardistancevalidation())
+      settemportystoreforselectedaddress(null);
+      dispatch(cleardistancevalidation());
     }
-    
   }, [validdistance]);
 
+  function showmaptoggle() {
+    if (showmap == true) {
+      setshowmap(false);
+      // clearandclose();
+      // props.onPress();
+    } else {
+      // props.onPress();
+       clearandclose();
+    }
+  }
+
+  function locationdata(data) {
+    setpinlocation(data.description);
+    Geocoder.from(data.description)
+      .then(json => {
+        var location = json.results[0].geometry.location;
+        SetPinLatitude(location.lat), SetPinLongitude(location.lng);
+
+        Geocoder.from(location.lat, location.lng)
+          .then(json => {
+            var addressComponent = json.results[0].formatted_address;
+            console.log(addressComponent);
+            setshowcurrent(false);
+            setselectedaddress(addressComponent);
+            //ref.current?.setAddressText(addressComponent);
+            ref.current?.clear();
+          })
+          .catch(error => {
+            ref.current?.clear();
+            console.warn(error);
+          });
+        ref.current?.clear();
+      })
+      .catch(error => console.warn(error));
+  }
+
+  function changeregion(region) {
+    // console.log(region)
+
+    if (
+      region?.latitude?.toFixed(5) === pinlatitude?.toFixed(5) &&
+      region?.longitude?.toFixed(5) === pinLongitude?.toFixed(5)
+    ) {
+      return;
+    } else {
+      sethidemarker(false);
+      SetPinLatitude(region.latitude), SetPinLongitude(region.longitude);
+
+      Geocoder.from(region.latitude, region.longitude)
+        .then(json => {
+          var addressComponent = json.results[0].formatted_address;
+          console.log(addressComponent);
+          //ref.current?.setAddressText(addressComponent);
+          ref.current?.clear();
+          setshowcurrent(false);
+          setselectedaddress(addressComponent);
+        })
+        .catch(error => {
+          ref.current?.clear();
+          console.warn(error);
+        });
+    }
+  }
+
+  function buttonpress() {
+    if (showmap == true) {
+      let currentaddress = [
+        {
+          Latitude: pinlatitude,
+          Longitude: pinLongitude,
+          icon: 'Others',
+          place: 'Others',
+          address: selectedaddress,
+          note: '',
+          Street: '',
+          Floor: '',
+        },
+      ];
+
+      if (props.withvalidation == false) {
+        dispatch(storecurrentaddress(currentaddress));
+        props.onPressnewCoordinates(pinlatitude, pinLongitude);
+      } else {
+        dispatch(
+          getdistancevalidation(props.branchid, pinlatitude, pinLongitude),
+        );
+        settemportystoreforselectedaddress(currentaddress);
+      }
+      setshowmap(false);
+      clearandclose();
+      // props.onPress();
+    } else {
+      // setshowmap(false);
+      clearandclose();
+    }
+  }
   return (
     <>
       {props.state && (
-        // <Animatable.View
-        //   animation={animationstate ? animationtype : null}
-        //   onAnimationEnd={() => {
-        //     setanimationstate(false);
-        //     if (animationtype == 'fadeOutDownBig') {
-        //       setanimationtype('fadeInUpBig');
-        //       props.onPress();
-        //     }
-        //   }}
-        //   easing="ease"
-        //   //  iterationCount="infinite"
-        //   iterationCount={1}
-        //   style={{
-        //     width: '100%',
-        //     height: showmap == true ? "100%" : null,
-        //     // marginTop: showmap == true ? getStatusBarHeight() : null,
-        //     backgroundColor: 'white',
-        //     position: 'absolute',
-        //     bottom: 0,
-        //     borderTopLeftRadius: fontSize.twenty,
-        //     borderTopRightRadius: fontSize.twenty,
-        //     padding: showmap == true ? null : scalableheight.two,
-        //     zIndex: 3,
-        //     elevation: 3,
-        //   }}
-        //   >
-
-            <View  style={{
-            width: '100%',
-            height: showmap == true ? "100%" : null,
-            // marginTop: showmap == true ? getStatusBarHeight() : null,
-            backgroundColor: 'white',
-            position: 'absolute',
-            bottom: 0,
-            borderTopLeftRadius: fontSize.twenty,
-            borderTopRightRadius: fontSize.twenty,
+        <Animatable.View
+          animation={animationstate ? animationtype : null}
+          onAnimationEnd={() => {
+            setanimationstate(false);
+            if (animationtype == 'fadeOutDownBig') {
+              setanimationtype('fadeInUpBig');
+              props.onPress();
+            }
+          }}
+          easing="ease"
+          //  iterationCount="infinite"
+          iterationCount={1}
+          style={{
+            ...styleSheet.bottomsheetcontainer,
+            height: showmap == true ? '100%' : null,
             padding: showmap == true ? null : scalableheight.two,
-            zIndex: 3,
-            elevation: 3,
-          }}>
+            // marginTop: showmap == true ? getStatusBarHeight() : null,
+          }}
+          >
+
+        {/* <View
+          style={{
+            ...styleSheet.bottomsheetcontainer,
+            height: showmap == true ? '100%' : null,
+            padding: showmap == true ? null : scalableheight.two,
+            // marginTop: showmap == true ? getStatusBarHeight() : null,
+          }}> */}
           <TouchableOpacity
-            onPress={() => {
-              if (showmap == true) {
-                setshowmap(false);
-                props.onPress()
-              } else {
-                props.onPress()
-                // clearandclose();
-              }
-            }}
+            onPress={() => showmaptoggle()}
             style={{
-              position: 'absolute',
-              top: showmap == true ? getStatusBarHeight() + scalableheight.one : scalableheight.one,
-              right: scalableheight.onepointfive,
-              elevation:10,
-              zIndex:10
+              top:
+                showmap == true
+                  ? getStatusBarHeight() + scalableheight.one
+                  : scalableheight.one,
+              ...styleSheet.maptoggle,
             }}>
             <Ionicons
               name="close-circle"
-              color={ showmap == true ?  "#E14E4E":'rgba(211,211,211, 0.8)'}
+              color={showmap == true ? '#E14E4E' : 'rgba(211,211,211, 0.8)'}
               size={fontSize.thirtyseven}
               style={{}}
             />
           </TouchableOpacity>
 
-         { showmap != true ?   <Text
-            style={{
-              color: 'black',
-              fontFamily: 'Inter-Bold',
-              fontSize: fontSize.fifteen,
-              alignSelf: 'center',
-            }}>
-            {/* Select A Delivery Address */}
-          </Text>: null}
+          {showmap != true ? (
+            <Text style={styleSheet.deliveraddress}>
+              {/* Select A Delivery Address */}
+            </Text>
+          ) : null}
           {showmap != true ? (
             <>
               <TouchableOpacity
                 // disabled={props.locationpin == '' ? false : true}
                 onPress={props.onPressnewlocation}
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 1,
-                  borderColor: 'rgba(211,211,211, 0.5)',
-                  paddingVertical: scalableheight.one,
-                }}>
-                <View style={{justifyContent: "flex-start"}}>
+                style={styleSheet.current}>
+                <View style={{justifyContent: 'flex-start'}}>
                   <MaterialCommunityIcons
                     name={'crosshairs-gps'}
                     color={'#F55050'}
@@ -444,23 +500,9 @@ export default function Custombottomsheet(props) {
                   />
                 </View>
                 <View style={{marginLeft: scalableheight.two}}>
-                  <Text
-                    style={{
-                      color: '#F55050',
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.fifteen,
-                    }}>
-                    Detect Current Location
-                  </Text>
+                  <Text style={styleSheet.detect}>Detect Current Location</Text>
 
-                  <Text
-                    numberOfLines={2}
-                    style={{
-                      color: 'black',
-                      opacity: 0.5,
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.eleven,
-                    }}>
+                  <Text numberOfLines={2} style={styleSheet.gps}>
                     {props.locationpin == null ? 'Use GPS' : props.locationpin}
                   </Text>
                 </View>
@@ -484,17 +526,7 @@ export default function Custombottomsheet(props) {
                 //   <SavedAddresses title={'Home'} address={'Clifton block 2'} />
                 // </View>
                 <>
-                  <Text
-                    style={{
-                      // color: 'black',
-                      opacity: 0.6,
-                      // fontFamily: 'Inter-Regular',
-                      // fontSize: fontSize.fifteen,
-                      paddingVertical: scalableheight.one,
-                      color: 'black',
-                      fontFamily: 'Inter-SemiBold',
-                      fontSize: fontSize.fifteen,
-                    }}>
+                  <Text style={styleSheet.savedaddresses}>
                     My Saved Addresses
                   </Text>
                   <FlatList
@@ -533,21 +565,27 @@ export default function Custombottomsheet(props) {
                               },
                             ];
                             console.log(currentaddress);
-                          if(props.withvalidation == false){
-                            dispatch(storecurrentaddress(currentaddress));
-                            props.onPressnewCoordinates(
-                              item.Latitude,
-                              item.Longitude,
-                            );
-                            
-                          
-                          }else{
-                            dispatch(getdistancevalidation(props.branchid,   item.Latitude,   item.Longitude ))
-                            settemportystoreforselectedaddress(currentaddress)
-                          }
-                          clearandclose();
-                          props.onPress()
-                          
+                            if (props.withvalidation == false) {
+                              dispatch(storecurrentaddress(currentaddress));
+                              props.onPressnewCoordinates(
+                                item.Latitude,
+                                item.Longitude,
+                              );
+                            } else {
+                              dispatch(
+                                getdistancevalidation(
+                                  props.branchid,
+                                  item.Latitude,
+                                  item.Longitude,
+                                ),
+                              );
+                              settemportystoreforselectedaddress(
+                                currentaddress,
+                              );
+                            }
+                            clearandclose();
+                            // props.onPress();
+
                             //navigation.goBack();
                           }}
                           //  disabled={screenname == 'checkout' ? false : true}
@@ -570,13 +608,8 @@ export default function Custombottomsheet(props) {
                   onPress={() => {
                     setshowmap(true);
                   }}
-                  style={{
-                    flexDirection: 'row',
-                    borderBottomWidth: 1,
-                    borderColor: 'rgba(211,211,211, 0.5)',
-                    paddingVertical: scalableheight.one,
-                  }}>
-                     <View style={{justifyContent: "flex-start"}}>
+                  style={styleSheet.markermap}>
+                  <View style={{justifyContent: 'flex-start'}}>
                     <FontAwesome5
                       name={'map-marked-alt'}
                       color={'#F55050'}
@@ -584,194 +617,81 @@ export default function Custombottomsheet(props) {
                     />
                   </View>
                   <View style={{marginLeft: scalableheight.two}}>
-                    <Text
-                      style={{
-                        color: '#F55050',
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.fifteen,
-                      }}>
-                      Pin Your Location
-                    </Text>
-                    <Text
-                      style={{
-                        color: 'black',
-                        opacity: 0.5,
-                        fontFamily: 'Inter-SemiBold',
-                        fontSize: fontSize.eleven,
-                         
-                      }}>
-                      Open Map
-                    </Text>
+                    <Text style={styleSheet.location2}>Pin Your Location</Text>
+                    <Text style={styleSheet.openmap2}>Open Map</Text>
                   </View>
                 </TouchableOpacity>
               )}
             </>
           ) : (
-            <View style={{height:"100%"}}>
+            <View style={{height: '100%'}}>
               {/* <View style={{height: scalableheight.two}}></View> */}
-                    
-        
-<View 
-  style={{
-    position: 'absolute',
-top: getStatusBarHeight() + scalableheight.fourteen,
-    // left: scalableheight.two,
-    elevation:112,
-    zIndex:112,
-    width:"100%",
-    paddingHorizontal:scalableheight.two,
-  
 
-  }}>
-    <View style={{width:"100%", backgroundColor: '#F9F9F9', borderRadius: fontSize.borderradiusmedium, ...styleSheet.shadow, padding:scalableheight.one
-  }}>
-<Text 
-  style={{
-    color: '#F55050',
-    fontFamily: 'Inter-SemiBold',
-    fontSize: fontSize.fifteen,
-    paddingBottom:scalableheight.pointfive
-  }}
-        >My Location</Text>
-             <Text 
-              style={{
-                color: 'grey',
-                fontFamily: 'Inter-SemiBold',
-                fontSize: fontSize.twelve,
-               
-              }}
-             numberOfLines={2}
-        
-          >{showcurrent ?  props.locationpin : selectedaddress}</Text>
-          </View>
-</View>
-       
-
-
-<View
-              style={{
-                position:"absolute",
-                top:  getStatusBarHeight() + scalableheight.seven,
-                zIndex:115,
-                elevation:115,
-                width:"100%",
-                paddingHorizontal:scalableheight.two,
-                justifyContent:"center",
-              }}
-              >
-              <GooglePlacesAutocomplete
-                //  suppressDefaultStyles={false}
-          
-                //  autoFocus={true}
-                //  returnKeyType={'default'}
-                //  fetchDetails={true}
-                ref={ref}
-               
-                styles={{
-                  textInput: {
+              <View style={styleSheet.locationcontainer}>
+                <View
+                  style={{
                     ...styleSheet.shadow,
-                    width: '100%',
-                    height: scalableheight.six,
-                    fontSize: fontSize.fifteen,
-                    backgroundColor: '#F9F9F9',
-                    alignSelf: 'center',
-                    borderRadius: fontSize.borderradiusmedium,
-                    paddingHorizontal: scalableheight.two,
-                    paddingRight: scalableheight.six,
-             
-                
-                    zIndex:10,
-                elevation:10,
-                  
-                  },
-                }}
-                placeholder="Search"
-                
-                onPress={(data, details = null) => {
-                  setpinlocation(data.description);
-                  Geocoder.from(data.description)
-                    .then(json => {
-                      var location = json.results[0].geometry.location;
-                      SetPinLatitude(location.lat),
-                        SetPinLongitude(location.lng);
-
-                        Geocoder.from(location.lat, location.lng)
-                        .then(json => {
-                          var addressComponent = json.results[0].formatted_address;
-                          console.log(addressComponent);
-                          setshowcurrent(false)
-                          setselectedaddress(addressComponent)
-                          //ref.current?.setAddressText(addressComponent);
-                          ref.current?.clear();
-                        
-                        })
-                        .catch(error =>{
-                          ref.current?.clear();
-                          console.warn(error)});
-                        ref.current?.clear();
-                    })
-                    .catch(error => console.warn(error));
-                }}
-                query={{
-                  key: 'AIzaSyCB15FNPmpC70o8dPMjv2cH8qgRUHbDDso',
-                  language: 'en',
-                  components: "country:ae",
-                }}
-              />
-        
+                    ...styleSheet.locationinnercontainer,
+                  }}>
+                  <Text style={styleSheet.locationtext}>My Location</Text>
+                  <Text style={styleSheet.addresstext} numberOfLines={2}>
+                    {showcurrent ? props.locationpin : selectedaddress}
+                  </Text>
+                </View>
               </View>
-           
-                     <TouchableOpacity
-          //  onPress={() => {props.onPressnewlocation}
-          onPress={() => {
-            getnewlocation()
 
-          }}
-            style={{
-              position: 'absolute',
-       top: getStatusBarHeight() + scalableheight.eightpointfive,
-              right: Platform.OS == "ios" ? scalableheight.six : scalableheight.four,
-              elevation:120,
-              zIndex:120
-            }}>
-              <MaterialCommunityIcons
-                    name={'crosshairs-gps'}
-                    color={'#F55050'}
-                    size={fontSize.twentyfour}
-                  />
-          </TouchableOpacity>    
               <View
                 style={{
-                  width: '100%',
-                  height: "100%",
-                  // marginVertical: scalableheight.two,
-                  borderRadius: fontSize.fifteen,
-                  overflow: 'hidden',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  top: getStatusBarHeight() + scalableheight.seven,
+                  ...styleSheet.googlecompleteview,
                 }}>
+                <GooglePlacesAutocomplete
+                  //  suppressDefaultStyles={false}
+
+                  //  autoFocus={true}
+                  //  returnKeyType={'default'}
+                  //  fetchDetails={true}
+                  ref={ref}
+                  styles={{
+                    textInput: {
+                      ...styleSheet.shadow,
+                      ...styleSheet.googletext,
+                    },
+                  }}
+                  placeholder="Search"
+                  onPress={(data, details = null) => locationdata(data)}
+                  query={{
+                    key: 'AIzaSyDL1Kk_B0bkRx9FmM3v-3oRn57_MzFyiM8',
+                    language: 'en',
+                    components: 'country:ae',
+                  }}
+                />
+              </View>
+
+              <TouchableOpacity
+                //  onPress={() => {props.onPressnewlocation}
+                onPress={() => getnewlocation()}
+                style={{
+                  top: getStatusBarHeight() + scalableheight.eightpointfive,
+                  ...styleSheet.gpspositioning,
+                }}>
+                <MaterialCommunityIcons
+                  name={'crosshairs-gps'}
+                  color={'#F55050'}
+                  size={fontSize.twentyfour}
+                />
+              </TouchableOpacity>
+              <View style={styleSheet.markerview}>
                 {hidemarker == false ? (
                   <MaterialIcons
-                    style={{
-                      position: 'absolute',
-                      alignSelf: 'center',
-                      alignContent: 'center',
-                      zIndex: 3,
-                      elevation: 3,
-                    }}
+                    style={styleSheet.pinposition}
                     name="location-pin"
                     color={'#F55050'}
                     size={scalableheight.six}
                   />
                 ) : (
                   <Entypo
-                    style={{
-                      position: 'absolute',
-                      alignSelf: 'center',
-                      alignContent: 'center',
-                      zIndex: 3,
-                      elevation: 3,
-                    }}
+                    style={styleSheet.pinposition}
                     name="dot-single"
                     color={'#F55050'}
                     size={scalableheight.six}
@@ -779,15 +699,9 @@ top: getStatusBarHeight() + scalableheight.fourteen,
                 )}
 
                 <MapView
+                  showsMyLocationButton={false}
                   // provider={PROVIDER_GOOGLE}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: fontSize.fifteen,
-                 position:"absolute",
-                 bottom:0
-                
-                  }}
+                  style={styleSheet.mapposition}
                   region={{
                     latitude: pinlatitude,
                     longitude: pinLongitude,
@@ -803,7 +717,8 @@ top: getStatusBarHeight() + scalableheight.fourteen,
                   onRegionChange={region => {
                     //  console.log(region)
                     if (
-                      region?.latitude?.toFixed(5) === pinlatitude?.toFixed(5) &&
+                      region?.latitude?.toFixed(5) ===
+                        pinlatitude?.toFixed(5) &&
                       region?.longitude?.toFixed(5) === pinLongitude?.toFixed(5)
                     ) {
                       return;
@@ -811,34 +726,9 @@ top: getStatusBarHeight() + scalableheight.fourteen,
                       sethidemarker(true);
                     }
                   }}
-                  onRegionChangeComplete={region => {
-                    // console.log(region)
-
-                    if (
-                      region?.latitude?.toFixed(5) === pinlatitude?.toFixed(5) &&
-                      region?.longitude?.toFixed(5) === pinLongitude?.toFixed(5)
-                    ) {
-                      return;
-                    } else {
-                      sethidemarker(false);
-                      SetPinLatitude(region.latitude),
-                        SetPinLongitude(region.longitude);
-
-                        Geocoder.from(region.latitude, region.longitude)
-                        .then(json => {
-                          var addressComponent = json.results[0].formatted_address;
-                          console.log(addressComponent);
-                          //ref.current?.setAddressText(addressComponent);
-                          ref.current?.clear();
-                          setshowcurrent(false)
-                          setselectedaddress(addressComponent)
-                        })
-                        .catch(error =>{
-                          ref.current?.clear();
-                          console.warn(error)});
-                       
-                    }
-                  }}></MapView>
+                  onRegionChangeComplete={region =>
+                    changeregion(region)
+                  }></MapView>
                 {/* <View
                   style={{
                     width: scalableheight.eight,
@@ -870,60 +760,21 @@ top: getStatusBarHeight() + scalableheight.fourteen,
                   />
                 </View> */}
               </View>
-              <View
-                style={{
-                  width: '100%',
-                  position:"absolute",
-                  bottom: scalableheight.five,
-                  paddingHorizontal:scalableheight.two
-
-                }}>
-                <MYButton
-                  // disabled
-                  onPress={() => {
-                    if (showmap == true) {
-                      let currentaddress = [
-                        {
-                          Latitude: pinlatitude,
-                          Longitude: pinLongitude,
-                          icon: "Others",
-                          place: "Others",
-                          address: selectedaddress,
-                          note: "",
-                          Street: "",
-                          Floor: "",
-                        },
-                      ];
-                  
-                    
-                   
-
-                      if(props.withvalidation == false){
-                        dispatch(storecurrentaddress(currentaddress));
-                        props.onPressnewCoordinates(pinlatitude, pinLongitude);
-                        
-                      
-                      }else{
-                        dispatch(getdistancevalidation(props.branchid,   pinlatitude,  pinLongitude ))
-                        settemportystoreforselectedaddress(currentaddress)
-                      }
-                      setshowmap(false);
-                      clearandclose();
-                      props.onPress()
-                    } else {
-                  
-                      clearandclose();
-                    }
-                  }}
-                  title="CONFIRM PIN LOCATION"
-                  color={'#E14E4E'}
-                  textcolor={'white'}
-                />
+              <View style={styleSheet.buttonview}>
+                {props?.locationpin != '' || selectedaddress != '' ? (
+                  <MYButton
+                    // disabled
+                    onPress={() => buttonpress()}
+                    title="CONFIRM PIN LOCATION"
+                    color={'#E14E4E'}
+                    textcolor={'white'}
+                  />
+                ) : null}
               </View>
             </View>
           )}
-          </View>
- // </Animatable.View> 
+        {/* </View> */}
+         </Animatable.View>
       )}
       {/* {props.state && props.OnPressPinLocation != true && (
         
@@ -933,6 +784,147 @@ top: getStatusBarHeight() + scalableheight.fourteen,
 }
 
 const styleSheet = StyleSheet.create({
+  buttonview: {
+    width: '100%',
+    position: 'absolute',
+    bottom: scalableheight.five,
+    paddingHorizontal: scalableheight.two,
+  },
+  mapposition: {
+    width: '100%',
+    height: '100%',
+    borderRadius: fontSize.fifteen,
+    position: 'absolute',
+    bottom: 0,
+  },
+
+  pinposition: {
+    position: 'absolute',
+    alignSelf: 'center',
+    alignContent: 'center',
+    zIndex: 3,
+    elevation: 3,
+  },
+  markerview: {
+    width: '100%',
+    height: '100%',
+    // marginVertical: scalableheight.two,
+    borderRadius: fontSize.fifteen,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gpspositioning: {
+    position: 'absolute',
+
+    right: Platform.OS == 'ios' ? scalableheight.six : scalableheight.four,
+    elevation: 120,
+    zIndex: 120,
+  },
+  googletext: {
+    width: '100%',
+    height: scalableheight.six,
+    fontSize: fontSize.fifteen,
+    backgroundColor: '#F9F9F9',
+    alignSelf: 'center',
+    borderRadius: fontSize.borderradiusmedium,
+    paddingHorizontal: scalableheight.two,
+    paddingRight: scalableheight.six,
+
+    zIndex: 10,
+    elevation: 10,
+  },
+  googlecompleteview: {
+    position: 'absolute',
+
+    zIndex: 115,
+
+    width: '100%',
+    paddingHorizontal: scalableheight.two,
+    justifyContent: 'center',
+  },
+  addresstext: {
+    color: 'grey',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.twelve,
+  },
+  locationtext: {
+    color: '#F55050',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.fifteen,
+    paddingBottom: scalableheight.pointfive,
+  },
+  locationinnercontainer: {
+    width: '100%',
+    backgroundColor: '#F9F9F9',
+    borderRadius: fontSize.borderradiusmedium,
+    padding: scalableheight.one,
+  },
+  locationcontainer: {
+    position: 'absolute',
+
+    // left: scalableheight.two,
+    elevation: 112,
+    zIndex: 112,
+    width: '100%',
+    paddingHorizontal: scalableheight.two,
+    top: getStatusBarHeight() + scalableheight.fourteen,
+  },
+  openmap2: {
+    color: 'black',
+    opacity: 0.5,
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.eleven,
+  },
+  location2: {
+    color: '#F55050',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.fifteen,
+  },
+  markermap: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(211,211,211, 0.5)',
+    paddingVertical: scalableheight.one,
+  },
+  savedaddresses: {
+    // color: 'black',
+    opacity: 0.6,
+    // fontFamily: 'Inter-Regular',
+    // fontSize: fontSize.fifteen,
+    paddingVertical: scalableheight.one,
+    color: 'black',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.fifteen,
+  },
+  gps: {
+    color: 'black',
+    opacity: 0.5,
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.eleven,
+  },
+  detect: {
+    color: '#F55050',
+    fontFamily: 'Inter-SemiBold',
+    fontSize: fontSize.fifteen,
+  },
+  current: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(211,211,211, 0.5)',
+    paddingVertical: scalableheight.one,
+  },
+  bottomsheetcontainer: {
+    width: '100%',
+    backgroundColor: 'white',
+    position: 'absolute',
+    bottom: 0,
+    borderTopLeftRadius: fontSize.twenty,
+    borderTopRightRadius: fontSize.twenty,
+
+    zIndex: 3,
+    elevation: 3,
+  },
   Text1: {
     fontFamily: 'Inter-Bold',
     fontSize: fontSize.fifteen,
@@ -1054,20 +1046,35 @@ const styleSheet = StyleSheet.create({
     marginTop: scalableheight.one,
   },
   shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.23,
+    // shadowRadius: 2.62,
 
-    elevation: 2,
+    // elevation: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
   },
   RenderItemView: {
     borderTopColor: '#EFEFEF',
     borderTopWidth: 1,
     paddingVertical: scalableheight.two,
     paddingHorizontal: scalableheight.one,
+  },
+  maptoggle: {
+    position: 'absolute',
+
+    right: scalableheight.onepointfive,
+    elevation: 10,
+    zIndex: 10,
+  },
+  deliveraddress: {
+    color: 'black',
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    alignSelf: 'center',
   },
 });

@@ -13,7 +13,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-import renderIf from 'render-if';
+
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -145,61 +145,14 @@ export default function ItemsDetailsModel2(props) {
         //     height: '100%',
         //   }}>
 
-        <View
-          style={{
-            zIndex: 3,
-            elevation: 3,
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-          }}>
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <View
-              style={{
-                width: '90%',
-                //   height: '40%',
-                maxHeight: '40%',
-                borderRadius: fontSize.eleven,
-                backgroundColor: 'white',
-                paddingVertical: scalableheight.two,
-                paddingHorizontal: scalableheight.two,
-              }}>
+        <View style={styleSheet.maincontainer}>
+          <View style={styleSheet.innercontainer}>
+            <View style={styleSheet.innermostcontainer}>
               <ScrollView showsVerticalScrollIndicator={false} style={{}}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
-                  <View
-                    style={{
-                      height: scalableheight.five,
-                      width: scalableheight.five,
-                      backgroundColor: '#F9F9F9',
-                      borderRadius: fontSize.borderradiusmedium,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-bold',
-                        fontSize: scalableheight.onepointfive,
-                        color: '#F55050',
-                      }}>
-                      QTY
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter-Bold',
-                        fontSize: fontSize.fourteen,
-                        color: '#111111',
-                      }}>
+                <View style={styleSheet.innerview}>
+                  <View style={styleSheet.innerview2}>
+                    <Text style={styleSheet.text10}>QTY</Text>
+                    <Text style={styleSheet.text11}>
                       {props?.data?.Quantity}
                     </Text>
                   </View>
@@ -214,21 +167,10 @@ export default function ItemsDetailsModel2(props) {
                     // source={{uri: props?.data?.image}}
                     source={{uri: props?.data?.MenuItems?.Item?.Image}}
                   /> */}
-                  <Text
-                    style={{
-                      fontFamily: 'Inter',
-                      fontSize: fontSize.fourteen,
-                      color: '#111111',
-                      width: scalableheight.seventeen,
-                    }}>
+                  <Text style={styleSheet.text12}>
                     {props?.data?.MenuItems?.Name}
                   </Text>
-                  <Text
-                    style={{
-                      fontFamily: 'Inter-Medium',
-                      fontSize: fontSize.twelve,
-                      color: '#F55050',
-                    }}>
+                  <Text style={styleSheet.text13}>
                     {'AED '}
                     {props?.data?.Price?.toFixed(2)}
                   </Text>
@@ -286,35 +228,11 @@ export default function ItemsDetailsModel2(props) {
                 {props?.data?.OrderDetailOptionValues != '' &&
                   props?.data?.OrderDetailOptionValues != null && (
                     <>
-                      <Text
-                        style={{
-                          fontFamily: 'Inter-Bold',
-                          fontSize: fontSize.twelve,
-                          color: '#111111',
-                          marginTop: scalableheight.two,
-                        }}>
-                        Addons
-                      </Text>
+                      <Text style={styleSheet.text14}>Addons</Text>
                       {props?.data?.OrderDetailOptionValues.map(inneritem => {
                         return (
-                          <Text
-                            style={{
-                              fontFamily: 'Inter-Medium',
-                              fontSize: fontSize.twelve,
-                              color: '#F55050',
-                              // paddingBottom: scalableheight.two,
-                              //  marginLeft:scalableheight.one
-                            }}>
-                            <Text
-                              style={{
-                                color: 'grey',
-                                alignSelf: 'center',
-                                // position: 'relative',
-                                marginRight: scalableheight.one,
-                                fontSize: scalableheight.one,
-                              }}>
-                              {'\u2B24'}
-                            </Text>
+                          <Text style={styleSheet.text15}>
+                            <Text style={styleSheet.text16}>{'\u2B24'}</Text>
                             {' ' + inneritem?.MenuItemOptionValue}
                           </Text>
                         );
@@ -325,23 +243,10 @@ export default function ItemsDetailsModel2(props) {
                 {props?.data?.CustomerNote != '' &&
                   props?.data?.CustomerNote != null && (
                     <>
-                      <Text
-                        style={{
-                          fontFamily: 'Inter-Bold',
-                          fontSize: fontSize.twelve,
-                          color: '#111111',
-                          marginTop: scalableheight.two,
-                        }}>
+                      <Text style={styleSheet.text14}>
                         Special Instructions
                       </Text>
-                      <Text
-                        style={{
-                          fontFamily: 'Inter-Medium',
-                          fontSize: fontSize.twelve,
-                          color: '#111111',
-                          paddingBottom: scalableheight.two,
-                          fontStyle: 'italic',
-                        }}>
+                      <Text style={styleSheet.text17}>
                         {'" ' + props?.data?.CustomerNote + ' "'}
                       </Text>
                     </>
@@ -386,12 +291,7 @@ export default function ItemsDetailsModel2(props) {
                   </Text>
                 </View>
               </View> */}
-              <View
-                style={{
-                  borderTopColor: 'rgba(211,211,211, 0.5)',
-                  borderTopWidth: scalableheight.borderTopWidth,
-                  marginVertical: scalableheight.one,
-                }}></View>
+              <View style={styleSheet.innerview3}></View>
               {/* <Bll label={'Item Price'} price={props?.data?.Price.toFixed(2)} />
               <Bll
                 label={'Discount Percentage'}
@@ -415,24 +315,8 @@ export default function ItemsDetailsModel2(props) {
                 onPress={() => {
                   clearandclose();
                 }}
-                style={{
-                  width: '100%',
-                  // height: "10%",
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  //   position: 'absolute',
-                  //   top: scalableheight.one,
-                  //   right: scalableheight.one,
-                }}>
-                <Text
-                  style={{
-                    fontFamily: 'Inter-Bold',
-                    fontSize: fontSize.twelve,
-                    color: 'grey',
-                    paddingVertical: scalableheight.one,
-                  }}>
-                  CLOSE
-                </Text>
+                style={styleSheet.innerview4}>
+                <Text style={styleSheet.text19}>CLOSE</Text>
                 {/* <Ionicons
                       name="close-circle"
                       color={"#E14E4E"}
@@ -447,22 +331,53 @@ export default function ItemsDetailsModel2(props) {
       )}
 
       {/* //{props.state && animationtype == 'fadeInUpBig' && ( */}
-      {props.state && (
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            zIndex: 2,
-            elevation: 2,
-          }}></View>
-      )}
+      {props.state && <View style={styleSheet.backgroundview}></View>}
     </>
   );
 }
 
 const styleSheet = StyleSheet.create({
+  backgroundview: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    zIndex: 2,
+    elevation: 2,
+  },
+  text19: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.twelve,
+    color: 'grey',
+    paddingVertical: scalableheight.one,
+  },
+  innerview4: {
+    width: '100%',
+    // height: "10%",
+    alignItems: 'center',
+    justifyContent: 'center',
+    //   position: 'absolute',
+    //   top: scalableheight.one,
+    //   right: scalableheight.one,
+  },
+  text12: {
+    fontFamily: 'Inter',
+    fontSize: fontSize.fourteen,
+    color: '#111111',
+    width: scalableheight.seventeen,
+  },
+  text11: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fourteen,
+    color: '#111111',
+  },
+  maincontainer: {
+    zIndex: 3,
+    elevation: 3,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
   Text1: {
     fontFamily: 'Inter-Bold',
     fontSize: fontSize.fifteen,
@@ -473,6 +388,13 @@ const styleSheet = StyleSheet.create({
     fontSize: fontSize.ten,
     color: '#29262A',
     opacity: 0.4,
+  },
+  text15: {
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.twelve,
+    color: '#F55050',
+    // paddingBottom: scalableheight.two,
+    //  marginLeft:scalableheight.one
   },
   Text3: {
     fontFamily: 'Inter-Bold',
@@ -599,5 +521,68 @@ const styleSheet = StyleSheet.create({
     borderTopWidth: 1,
     paddingVertical: scalableheight.two,
     paddingHorizontal: scalableheight.one,
+  },
+  innercontainer: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  innermostcontainer: {
+    width: '90%',
+    //   height: '40%',
+    maxHeight: '40%',
+    borderRadius: fontSize.eleven,
+    backgroundColor: 'white',
+    paddingVertical: scalableheight.two,
+    paddingHorizontal: scalableheight.two,
+  },
+  innerview: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  innerview3: {
+    borderTopColor: 'rgba(211,211,211, 0.5)',
+    borderTopWidth: scalableheight.borderTopWidth,
+    marginVertical: scalableheight.one,
+  },
+  innerview2: {
+    height: scalableheight.five,
+    width: scalableheight.five,
+    backgroundColor: '#F9F9F9',
+    borderRadius: fontSize.borderradiusmedium,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text10: {
+    fontFamily: 'Inter-bold',
+    fontSize: scalableheight.onepointfive,
+    color: '#F55050',
+  },
+  text13: {
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.twelve,
+    color: '#F55050',
+  },
+  text14: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.twelve,
+    color: '#111111',
+    marginTop: scalableheight.two,
+  },
+  text16: {
+    color: 'grey',
+    alignSelf: 'center',
+    // position: 'relative',
+    marginRight: scalableheight.one,
+    fontSize: scalableheight.one,
+  },
+  text17: {
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.twelve,
+    color: '#111111',
+    paddingBottom: scalableheight.two,
+    fontStyle: 'italic',
   },
 });

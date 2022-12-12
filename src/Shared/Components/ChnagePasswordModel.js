@@ -12,7 +12,7 @@ import {
   Keyboard,
 } from 'react-native';
 
-import renderIf from 'render-if';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -35,8 +35,6 @@ export default function ChnagePasswordModel(props) {
   const [password, setpassword] = useState('');
   const [oldpassword, setoldpassword] = useState('');
   const [confirmpassword, Setconfirmpassword] = useState('');
-
-
 
   const [oldpasswordshow, setoldpasswordshow] = useState(true);
   const [newpasswordshow, setnewpasswordshow] = useState(true);
@@ -80,8 +78,8 @@ export default function ChnagePasswordModel(props) {
       console.log('LOGIN ERROROROOROROORO');
       dispatch(NewpasswordChangednull());
       setLoader(false);
-    }else if (NewchangedpasswordStatus === 'Network Request Failed') {
-      toast.current.show("Network Request Failed", {
+    } else if (NewchangedpasswordStatus === 'Network Request Failed') {
+      toast.current.show('Network Request Failed', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -98,7 +96,7 @@ export default function ChnagePasswordModel(props) {
 
   const ChangNewPasswordHandler = () => {
     Keyboard.dismiss();
-   if (oldpassword == "") {
+    if (oldpassword == '') {
       toast.current.show('Enter Current Password', {
         type: 'normal',
         placement: 'bottom',
@@ -106,10 +104,7 @@ export default function ChnagePasswordModel(props) {
         offset: 10,
         animationType: 'slide-in',
       });
-   
-    }
-    
-    else if (password == "") {
+    } else if (password == '') {
       toast.current.show('Enter New Password', {
         type: 'normal',
         placement: 'bottom',
@@ -117,10 +112,7 @@ export default function ChnagePasswordModel(props) {
         offset: 10,
         animationType: 'slide-in',
       });
-   
-    }
-    
-    else if (confirmpassword == "") {
+    } else if (confirmpassword == '') {
       toast.current.show('Enter Confirm Password', {
         type: 'normal',
         placement: 'bottom',
@@ -128,10 +120,7 @@ export default function ChnagePasswordModel(props) {
         offset: 10,
         animationType: 'slide-in',
       });
-   
-    }
-    
-    else if (password != confirmpassword) {
+    } else if (password != confirmpassword) {
       toast.current.show('Passwords Do Not Match', {
         type: 'normal',
         placement: 'bottom',
@@ -259,7 +248,7 @@ export default function ChnagePasswordModel(props) {
                 </View>
 
                 <ScrollView
-                      keyboardShouldPersistTaps={"always"}
+                  keyboardShouldPersistTaps={'always'}
                   showsVerticalScrollIndicator={false}
                   style={{width: '100%', height: '60%'}}
                   contentContainerStyle={{
@@ -267,7 +256,7 @@ export default function ChnagePasswordModel(props) {
                     paddingHorizontal: scalableheight.two,
                     justifyContent: 'center',
                   }}>
-                  {renderIf(changenewpassword == true)(
+                  {changenewpassword == true &&
                     <>
                       <Animatable.View
                         animation={
@@ -317,7 +306,7 @@ export default function ChnagePasswordModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={oldpasswordshow ? 'eye': 'eye-off'}
+                              name={oldpasswordshow ? 'eye' : 'eye-off'}
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -349,7 +338,7 @@ export default function ChnagePasswordModel(props) {
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={newpasswordshow ?  'eye' :'eye-off' }
+                              name={newpasswordshow ? 'eye' : 'eye-off'}
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -375,12 +364,14 @@ export default function ChnagePasswordModel(props) {
                           />
                           <TouchableOpacity
                             onPress={() => {
-                              setconfirmnewpasswordshow(!confirmnewpasswordshow);
+                              setconfirmnewpasswordshow(
+                                !confirmnewpasswordshow,
+                              );
                             }}
                             style={styleSheet.inputIconStyle}>
                             <Ionicons
                               color={'#8c8c8c'}
-                              name={confirmnewpasswordshow ? 'eye' :  'eye-off' }
+                              name={confirmnewpasswordshow ? 'eye' : 'eye-off'}
                               size={fontSize.twentytwo}
                             />
                           </TouchableOpacity>
@@ -406,8 +397,8 @@ export default function ChnagePasswordModel(props) {
                           />
                         )}
                       </Animatable.View>
-                    </>,
-                  )}
+                    </>
+                  }
                 </ScrollView>
               </View>
             </View>
@@ -555,15 +546,17 @@ const styleSheet = StyleSheet.create({
     marginTop: scalableheight.one,
   },
   shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.23,
+    // shadowRadius: 2.62,
 
-    elevation: 2,
+    // elevation: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
   },
   RenderItemView: {
     borderTopColor: '#EFEFEF',

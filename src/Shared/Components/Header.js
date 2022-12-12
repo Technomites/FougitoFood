@@ -15,13 +15,12 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { fontSize, scalableheight } from '../../Utilities/fonts'
+import {useNavigation} from '@react-navigation/native';
+import {fontSize, scalableheight} from '../../Utilities/fonts';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 export default function HeaderComponent(props) {
   const dispatch = useDispatch();
-const navigation = useNavigation();
-
+  const navigation = useNavigation();
 
   return (
     <View style={styleSheet.header}>
@@ -31,50 +30,53 @@ const navigation = useNavigation();
           alignItems: 'center',
           justifyContent: 'space-between',
           flexDirection: 'row',
-
         }}>
         <TouchableOpacity
-    onPress={() => {
-        // navigation.navigate("Home")
-        navigation.goBack()
-        }}
+          onPress={() => {
+            // navigation.navigate("Home")
+            navigation.goBack();
+          }}
           style={{
-            height:scalableheight.seven,
+            height: scalableheight.seven,
             width: scalableheight.five,
             justifyContent: 'center',
             alignItems: 'center',
-           
           }}>
-              <View style={styleSheet.backButtonMain}>
-              <Ionicons 
-              style={{  alignSelf:"center"}}
+          <View style={styleSheet.backButtonMain}>
+            <Ionicons
+              style={{alignSelf: 'center'}}
               name="chevron-back"
-      // color={"black"}
-          size={fontSize.twenty}
-        
-        />
-              </View>
-       
+              // color={"black"}
+              size={fontSize.twenty}
+            />
+          </View>
         </TouchableOpacity>
 
-    <Text style={{color:"black", fontSize:fontSize.twenty, fontFamily:"Rubik-Medium",}}>{props.title}</Text>
-    <View style={{flexDirection: 'row'}}>
-      {/* {props.notification &&  */}
+        <Text
+          style={{
+            color: 'black',
+            fontSize: fontSize.twenty,
+            fontFamily: 'Rubik-Medium',
+          }}>
+          {props.title}
+        </Text>
+        <View style={{flexDirection: 'row'}}>
+          {/* {props.notification &&  */}
           <TouchableOpacity
             onPress={() => navigation.navigate('Notifications')}
             style={{
               height: scalableheight.seven,
-              width:  scalableheight.five,
+              width: scalableheight.five,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Fontisto 
+            <Fontisto
               name="bell"
               color={'#B10071'}
               size={fontSize.twentythree}
             />
           </TouchableOpacity>
-        {/* } */}
+          {/* } */}
         </View>
       </View>
     </View>
@@ -90,7 +92,7 @@ const styleSheet = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    paddingHorizontal: scalableheight.one
+    paddingHorizontal: scalableheight.one,
   },
 
   text: {
@@ -106,13 +108,11 @@ const styleSheet = StyleSheet.create({
     right: '-1%',
   },
   backButtonMain: {
-    backgroundColor: "#F9F9F9",
+    backgroundColor: '#F9F9F9',
     height: scalableheight.four,
     width: scalableheight.four,
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
-},
+  },
 });
-
-

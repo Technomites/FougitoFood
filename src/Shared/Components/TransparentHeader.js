@@ -10,7 +10,7 @@ import {
   StatusBar,
   Platform,
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {DrawerActions} from '@react-navigation/native';
@@ -31,7 +31,6 @@ export default function TransparentHeader(props) {
           flexDirection: 'row',
         }}>
         <TouchableOpacity
-       
           onPress={props.onpressback}
           style={{
             height: scalableheight.seven,
@@ -43,7 +42,7 @@ export default function TransparentHeader(props) {
           <AntDesign
             style={{alignSelf: 'center'}}
             name="arrowleft"
-            color={'black'}
+            color={'white'}
             size={fontSize.twentyfour}
           />
           {/* </View> */}
@@ -51,13 +50,13 @@ export default function TransparentHeader(props) {
 
         <Text
           style={{
-            color: 'black',
+            color: 'white',
             fontSize: fontSize.twenty,
             fontFamily: 'Inter-SemiBold',
           }}>
           {props.title}
         </Text>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', width: 40}}>
           {props?.refresh != '' && (
             <TouchableOpacity
               onPress={props.onpress}
@@ -67,10 +66,10 @@ export default function TransparentHeader(props) {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Fontisto
+              <FontAwesome
                 style={{alignSelf: 'center'}}
-                name="spinner-refresh"
-                color={'black'}
+                name="refresh"
+                color={'white'}
                 size={fontSize.twentyfour}
               />
             </TouchableOpacity>
@@ -89,7 +88,7 @@ const styleSheet = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '"transparent',
     paddingHorizontal: scalableheight.one,
     elevation: 100000,
     zIndex: 1000000,

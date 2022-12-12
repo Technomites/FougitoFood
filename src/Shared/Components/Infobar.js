@@ -23,31 +23,9 @@ export default function Infobar(props) {
   const navigation = useNavigation();
 
   return (
-    <View
-      style={{
-        ...styleSheet.shadow,
-        flexDirection: 'row',
-        width: '100%',
-        height: scalableheight.eight,
-        backgroundColor: 'white',
-        borderRadius: fontSize.borderradiusmedium,
-      }}>
-      <View
-        style={{
-          height: '100%',
-          width: '20%',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <View
-          style={{
-            height: scalableheight.six,
-            width: scalableheight.six,
-            backgroundColor: 'rgba(211,211,211, 0.3)',
-            borderRadius: fontSize.borderradiusmedium,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+    <View style={styleSheet.maincontainer}>
+      <View style={styleSheet.innermaincontainer}>
+        <View style={styleSheet.innermostmaincontainer}>
           <MaterialIcons
             name="location-pin"
             color={'#F55050'}
@@ -56,38 +34,17 @@ export default function Infobar(props) {
         </View>
       </View>
 
-      <View style={{height: '100%', width: '60%', justifyContent: 'center'}}>
-        <Text
-          style={{
-            fontFamily: 'Inter-Bold',
-            fontSize: fontSize.fifteen,
-            color: '#29262A',
-          }}>
-          {props.Heading}
-        </Text>
-        <Text
-          style={{
-            fontFamily: 'Inter-Medium',
-            fontSize: fontSize.ten,
-            color: '#29262A',
-            opacity: 0.4,
-          }}
-          numberOfLines={1}>
+      <View style={styleSheet.secondview}>
+        <Text style={styleSheet.text1}>{props.Heading}</Text>
+        <Text style={styleSheet.text2} numberOfLines={1}>
           {props.Details}
         </Text>
       </View>
 
-      <TouchableOpacity
-        onPress={props.onPress}
-        style={{
-          height: '100%',
-          width: '20%',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+      <TouchableOpacity onPress={props.onPress} style={styleSheet.touchview}>
         <MaterialIcons
           name="edit"
-          color={'#00000029'}
+          color={'rgba(128, 128,128, 0.9)'}
           size={fontSize.twentyeight}
         />
       </TouchableOpacity>
@@ -132,5 +89,47 @@ const styleSheet = StyleSheet.create({
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     elevation: 3,
+  },
+  maincontainer: {
+    // ...styleSheet.shadow,
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
+    flexDirection: 'row',
+    width: '100%',
+    height: scalableheight.eight,
+    backgroundColor: 'white',
+    borderRadius: fontSize.borderradiusmedium,
+  },
+  innermaincontainer: {
+    height: '100%',
+    width: '20%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  innermostmaincontainer: {
+    height: scalableheight.six,
+    width: scalableheight.six,
+    backgroundColor: 'rgba(211,211,211, 0.3)',
+    borderRadius: fontSize.borderradiusmedium,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  secondview: {height: '100%', width: '60%', justifyContent: 'center'},
+  text1: {
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    color: '#29262A',
+  },
+  text2: {
+    fontFamily: 'Inter-Medium',
+    fontSize: fontSize.ten,
+    color: '#29262A',
+    opacity: 0.4,
+  },
+  touchview: {
+    height: '100%',
+    width: '20%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

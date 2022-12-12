@@ -24,7 +24,7 @@ import {
   clearstatusProfileupdate,
   updateprofilepicture,
   clearimageresponse,
-  clearprofileupdationstatus  
+  clearprofileupdationstatus,
 } from '../Actions/actions';
 // import changeNavigationBarColor, {
 //   hideNavigationBar,
@@ -34,14 +34,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MYButton from '../Shared/Components/MYButton';
 import Animated from 'react-native-reanimated';
 import {fontSize, scalableheight} from '../Utilities/fonts';
-import {GToastContainer, showToast} from 'react-native-gtoast';
 import NetInfo from '@react-native-community/netinfo';
 import NumberInput from '../Shared/Components/NumberInput';
 import ImagePicker from 'react-native-image-crop-picker';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import PlainHeader3 from '../Shared/Components/PlainHeader3';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import FastImage from 'react-native-fast-image';
 import {
   createDrawerNavigator,
   DrawerItemList,
@@ -73,7 +72,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
     LoginCustomer,
     UserUpdateProfileStatus,
     UserUpdateProfileMessage,
-    imageupdationstatus
+    imageupdationstatus,
   } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
@@ -83,8 +82,8 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
     // StatusBar.setBarStyle('light-content');
   }, []);
   useEffect(() => {
-    if(imageupdationstatus != ""){
-      if(imageupdationstatus == "Success"){
+    if (imageupdationstatus != '') {
+      if (imageupdationstatus == 'Success') {
         toast.current.show('Profile Image Updated Successfully', {
           type: 'normal',
           placement: 'bottom',
@@ -92,22 +91,24 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
           offset: 10,
           animationType: 'slide-in',
         });
-      }else{
-        toast.current.show('There was an error updating your profile picture. Please try again later', {
-          type: 'normal',
-          placement: 'bottom',
-          duration: 4000,
-          offset: 10,
-          animationType: 'slide-in',
-        });
+      } else {
+        toast.current.show(
+          'There was an error updating your profile picture. Please try again later',
+          {
+            type: 'normal',
+            placement: 'bottom',
+            duration: 4000,
+            offset: 10,
+            animationType: 'slide-in',
+          },
+        );
       }
-      dispatch(clearimageresponse())
+      dispatch(clearimageresponse());
       dispatch(GetProfile(AuthToken));
-      setimageloader(false)
+      setimageloader(false);
     }
   }, [imageupdationstatus]);
 
-  
   useEffect(() => {
     console.log(
       ProfileEmail,
@@ -166,7 +167,7 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
       setLoader(false);
 
       dispatch(GetProfile(AuthToken));
-      dispatch(clearprofileupdationstatus())
+      dispatch(clearprofileupdationstatus());
     } else if (UserUpdateProfileStatus === 'Error') {
       toast.current.show(UserUpdateProfileMessage, {
         type: 'normal',
@@ -177,9 +178,8 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
         zIndex: 2,
       });
       setLoader(false);
-      dispatch(clearprofileupdationstatus())
-    }
-    else if (UserUpdateProfileStatus === 'Network Request Failed') {
+      dispatch(clearprofileupdationstatus());
+    } else if (UserUpdateProfileStatus === 'Network Request Failed') {
       toast.current.show('Network Request Failed', {
         type: 'normal',
         placement: 'bottom',
@@ -189,34 +189,9 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
         zIndex: 2,
       });
       setLoader(false);
-      dispatch(clearprofileupdationstatus())
+      dispatch(clearprofileupdationstatus());
     }
   }, [UserUpdateProfileStatus, UserUpdateProfileMessage]);
-  // function postupdatedprofile() {
-  //   if (Name == '') {
-  //     showToast('Enter first name', {
-  //       duration: 500,
-  //     });
-  //   } else if (EmailAddress == '') {
-  //     showToast('Enter Email Address', {
-  //       duration: 500,
-  //     });
-  //   } else {
-  //     NetInfo.fetch().then(state => {
-  //       if (state.isConnected == false && state.isInternetReachable == false) {
-  //         showToast('Problem with internet connectivity', {
-  //           duration: 500,
-  //         });
-  //         setLoader(false);
-  //       } else {
-  //         setLoader(true);
-  //         dispatch(
-  //           postupdatedprofile(Name, EmailAddress, Password, PhoneNumber),
-  //         );
-  //       }
-  //     });
-  //   }
-  // }
 
   const imagePicker = async () => {
     //  let imagePick = [];
@@ -232,53 +207,31 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
       .then(response => {
         setPickImage(response.path);
         console.log(response);
-        setimageloader(true)
+        setimageloader(true);
         dispatch(updateprofilepicture(response, AuthToken));
       })
-      .catch(e => console.log(e, 'Error'));  
+      .catch(e => console.log(e, 'Error'));
   };
   return (
-    <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'rgba(246, 246, 246, 1)'}}>
+    <Animated.View style={{...drawerAnimationStyle, ...styleSheet.mainview}}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
       />
-      <View
-        style={{
-          height: '100%',
-          width: '100%',
-          alignSelf: 'center',
-          flex: 12,
-          paddingTop: getStatusBarHeight(),
-        }}>
+      <View style={styleSheet.innerview}>
         <PlainHeader3 title={'Account Settings'} />
-        
+
         {imageloader == true ? (
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: scalableheight.fifteen,
-                height: scalableheight.fifteen,
-           
-                marginTop: scalableheight.three,
-                alignSelf:"center"
-              }}>
-              <ActivityIndicator size={'large'} color="#E14E4E" />
-            </View>
-          ) : (
-        <View
-          style={{
-            ...styleSheet.shadow,
-            borderRadius: fontSize.circle,
-            width: scalableheight.fifteen,
-            height: scalableheight.fifteen,
-            alignSelf: 'center',
-            marginTop: scalableheight.three,
-            backgroundColor: 'white',
-          }}>
-          <Image
+          <View style={styleSheet.activityloaderview}>
+            <ActivityIndicator size={'large'} color="#E14E4E" />
+          </View>
+        ) : (
+          <View
+            style={{
+              ...styleSheet.shadow,
+              ...styleSheet.innerview2,
+            }}>
+            {/* <Image
             resizeMode="cover"
             style={{
               width: '100%',
@@ -294,82 +247,73 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                   }
                 : require('../Resources/images/grill.png')
             }
-          />
+          /> */}
+            <FastImage
+              style={styleSheet.fastimageview}
+              source={
+                AuthToken != ''
+                  ? {
+                      uri: ProfileImage,
+                      priority: FastImage.priority.normal,
+                    }
+                  : {
+                      uri: require('../Resources/images/logoguest.png'),
+                      priority: FastImage.priority.low,
+                    }
 
-          <View
-            style={{
-              backgroundColor: '#E14E4E',
-              height: scalableheight.five,
-              width: scalableheight.five,
-              borderRadius: fontSize.borderradiusmedium,
-              bottom: scalableheight.three,
-              alignSelf: 'center',
-            }}>
-            <TouchableOpacity
-              //    disabled={imageLoader}
-              onPress={() => imagePicker()}
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                //  alignItems:'center',
-                padding: scalableheight.one,
-              }}>
-              {/* {imageLoader ? (
+                //   {
+                //     uri:  ProfileImage,
+
+                //     // headers: { Authorization: 'someAuthToken' },
+                //     priority: FastImage.priority.high,
+                // }
+              }
+              resizeMode={FastImage.resizeMode.cover}
+            />
+
+            <View style={styleSheet.innerview3}>
+              <TouchableOpacity
+                //    disabled={imageLoader}
+                onPress={imagePicker}
+                style={styleSheet.touchableview}>
+                {/* {imageLoader ? (
                 <ActivityIndicator color={'white'} />
               ) : ( )} */}
-              <Icon
-                name="camera-outline"
-                size={fontSize.twentythree}
-                color="#fff"
-              />
-            </TouchableOpacity>
+                <Icon
+                  name="camera-outline"
+                  size={fontSize.twentythree}
+                  color="#fff"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-          )}
+        )}
 
-        <View
-          style={{
-            paddingHorizontal: scalableheight.two,
-            marginVertical: scalableheight.ten,
-          }}>
-          <View style={{marginBottom: scalableheight.one}}>
-            <Text
-              style={{
-                color: 'rgba(41, 38, 42, 0.6)',
-                fontFamily: 'Inter-Bold',
-                fontSize: fontSize.fifteen,
-                marginBottom: scalableheight.pointfive,
-              }}>
-              Full Name
-            </Text>
+        <View style={styleSheet.innerview4}>
+          <View style={styleSheet.marginbottomone}>
+            <Text style={styleSheet.text1}>Full Name</Text>
 
             <TextInput
-              style={{
-                ...styleSheet.TextInput,
-                ...styleSheet.shadow,
-              }}
+              style={[
+                styleSheet.TextInput,
+                // ...styleSheet.shadow,
+                styleSheet.border,
+              ]}
               placeholderTextColor="#8c8c8c"
               placeholder={'Enter Full Name'}
               onChangeText={text => setName(text)}
               defaultValue={Name}
             />
           </View>
-          <View style={{marginVertical: scalableheight.one}}>
-            <Text
-              style={{
-                color: 'rgba(41, 38, 42, 0.6)',
-                fontFamily: 'Inter-Bold',
-                fontSize: fontSize.fifteen,
-                marginBottom: scalableheight.pointfive,
-              }}>
-              Email Address
-            </Text>
+          <View style={styleSheet.marginbottomone}>
+            <Text style={styleSheet.text1}>Email Address</Text>
 
             <TextInput
-              style={{
-                ...styleSheet.TextInput,
-                ...styleSheet.shadow,
-              }}
+              style={[
+                styleSheet.TextInput,
+                // ...styleSheet.shadow,
+                styleSheet.border,
+              ]}
               placeholderTextColor="#8c8c8c"
               placeholder={'Enter Email Address'}
               onChangeText={text => setEmailAddress(text)}
@@ -412,16 +356,8 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
               </TouchableOpacity>
             </View>
           </View> */}
-          <View style={{marginVertical: scalableheight.one}}>
-            <Text
-              style={{
-                color: 'rgba(41, 38, 42, 0.6)',
-                fontFamily: 'Inter-Bold',
-                fontSize: fontSize.fifteen,
-                marginBottom: scalableheight.pointfive,
-              }}>
-              Phone Number
-            </Text>
+          <View style={styleSheet.marginVerticalone}>
+            <Text style={styleSheet.text1}>Phone Number</Text>
             {/* <View style={styleSheet.container}> */}
             {/* <View
                 style={{
@@ -445,93 +381,147 @@ const AccountSettings = ({navigation, drawerAnimationStyle}) => {
                   }}
                 />
               </View> */}
-            <View style={{justifyContent: 'center'}}>
+            <View style={styleSheet.justifyContentcenter}>
               <TextInput
-                style={{
-                  ...styleSheet.TextInput,
-                  ...styleSheet.shadow,
-                  paddingLeft: scalableheight.fourteen,
-                  backgroundColor:"#E1E1E1"
-                }}
+                style={[
+                  styleSheet.TextInput,
+                  // ...styleSheet.shadow,
+                  styleSheet.border,
+                  styleSheet.textinputviewextra,
+                ]}
                 editable={false}
                 keyboardType="numeric"
                 placeholderTextColor="#8c8c8c"
                 //          placeholder={'Enter Phone Number'}
                 onChangeText={text => setPhoneNumber(text)}
                 defaultValue={PhoneNumber.substring(3)}
-             
               />
               <Image
-                style={{
-                  height: scalableheight.three,
-                  width: scalableheight.four,
-                  resizeMode: 'stretch',
-                  position: 'absolute',
-                  left: scalableheight.one,
-                }}
+                style={styleSheet.imageview}
                 source={require('../Resources/images/uaeFlag.png')}
               />
-              <Text
-                style={{
-                  color: 'rgba(41, 38, 42, 0.6)',
-                  fontFamily: 'Inter-Bold',
-                  fontSize: fontSize.fifteen,
-                  position: 'absolute',
-                  left: scalableheight.six,
-                }}>
-                +971
-              </Text>
+              <Text style={styleSheet.text2}>+971</Text>
             </View>
           </View>
         </View>
 
-        <View
-          style={{
-            marginVertical: fontSize.eight,
-            width: '100%',
-            position: 'absolute',
-            bottom: scalableheight.two,
-            alignSelf: 'center',
-            paddingHorizontal: scalableheight.two,
-          }}>
+        <View style={styleSheet.innerview6}>
           {loader == true ? (
-            <View
-              style={{
-                width: '100%',
-
-                justifyContent: 'center',
-                alignItems: 'center',
-            
-                height: scalableheight.seven,
-            
-                borderRadius: fontSize.borderradiusmedium,
-            
-                marginTop: '1%',
-                marginBottom: '1%',
-              }}>
+            <View style={styleSheet.innerview8}>
               <ActivityIndicator size={'large'} color="#E14E4E" />
             </View>
           ) : (
             <MYButton
-              onPress={() => {
-                // SetModelPopUP(true);
-                postupdatedprofileHandler();
-              }}
+              onPress={postupdatedprofileHandler}
               color={'rgba(225, 78, 78, 1)'}
               title={'UPDATE'}
               textcolor={'white'}
             />
           )}
         </View>
-        <Toast
-          ref={toast}
-          style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
-        />
+        <Toast ref={toast} style={styleSheet.toastview} />
       </View>
     </Animated.View>
   );
 };
 const styleSheet = StyleSheet.create({
+  toastview: {marginBottom: scalableheight.ten, justifyContent: 'center'},
+  innerview8: {
+    width: '100%',
+
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    height: scalableheight.seven,
+
+    borderRadius: fontSize.borderradiusmedium,
+
+    marginTop: '1%',
+    marginBottom: '1%',
+  },
+  innerview6: {
+    marginVertical: fontSize.eight,
+    width: '100%',
+    position: 'absolute',
+    bottom: scalableheight.two,
+    alignSelf: 'center',
+    paddingHorizontal: scalableheight.two,
+  },
+  text2: {
+    color: 'rgba(41, 38, 42, 0.6)',
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    position: 'absolute',
+    left: scalableheight.six,
+  },
+  imageview: {
+    height: scalableheight.three,
+    width: scalableheight.four,
+    resizeMode: 'stretch',
+    position: 'absolute',
+    left: scalableheight.one,
+  },
+  textinputviewextra: {
+    paddingLeft: scalableheight.fourteen,
+    backgroundColor: '#E1E1E1',
+  },
+  justifyContentcenter: {justifyContent: 'center'},
+  marginVerticalone: {marginVertical: scalableheight.one},
+  border: {
+    borderWidth: 1,
+    borderColor: 'rgba(128, 128,128, 0.6)',
+  },
+  text1: {
+    color: 'rgba(41, 38, 42, 0.6)',
+    fontFamily: 'Inter-Bold',
+    fontSize: fontSize.fifteen,
+    marginBottom: scalableheight.pointfive,
+  },
+  marginbottomone: {marginBottom: scalableheight.one},
+  innerview4: {
+    paddingHorizontal: scalableheight.two,
+    marginVertical: scalableheight.ten,
+  },
+  touchableview: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    //  alignItems:'center',
+    padding: scalableheight.one,
+  },
+  innerview3: {
+    backgroundColor: '#E14E4E',
+    height: scalableheight.five,
+    width: scalableheight.five,
+    borderRadius: fontSize.borderradiusmedium,
+    bottom: scalableheight.three,
+    alignSelf: 'center',
+  },
+  fastimageview: {
+    width: '100%',
+    height: '100%',
+    borderColor: 'rgba(225, 78, 78, 1)',
+    borderWidth: scalableheight.borderwidth,
+    borderRadius: fontSize.circle,
+  },
+  innerview2: {
+    borderRadius: fontSize.circle,
+    width: scalableheight.fifteen,
+    height: scalableheight.fifteen,
+    alignSelf: 'center',
+    marginTop: scalableheight.three,
+    backgroundColor: 'white',
+  },
+  innerview: {
+    height: '100%',
+    width: '100%',
+    alignSelf: 'center',
+    flex: 12,
+    paddingTop: getStatusBarHeight(),
+  },
+  mainview: {
+    flex: 1,
+    backgroundColor: 'rgba(246, 246, 246, 1)',
+  },
   container: {
     height: scalableheight.six,
     backgroundColor: 'rgba(42, 28, 28, 0.1)',
@@ -582,6 +572,15 @@ const styleSheet = StyleSheet.create({
     marginTop: scalableheight.one,
     height: scalableheight.six,
     paddingHorizontal: scalableheight.two,
+  },
+  activityloaderview: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: scalableheight.fifteen,
+    height: scalableheight.fifteen,
+
+    marginTop: scalableheight.three,
+    alignSelf: 'center',
   },
 });
 export default AccountSettings;

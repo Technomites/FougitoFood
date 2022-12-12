@@ -22,7 +22,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PlainHeader from '../Shared/Components/PlainHeader';
 import Whyuscomponent from '../Shared/Components/Whyuscomponent';
-import BottomTab from '../Shared/Components/BottomTab';
+
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {
@@ -33,32 +33,7 @@ import {
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
 
 const Aboutus = ({navigation, drawerAnimationStyle}) => {
-  const [LocationData, setLocationData] = useState([
-    {
-      name: 'Jhon Doe',
-      designation: 'Room Cleaner',
 
-      image: require('../Resources/images/person.jpg'),
-    },
-    {
-      name: 'Jhon Doe',
-      designation: 'Room Cleaner',
-
-      image: require('../Resources/images/person.jpg'),
-    },
-    {
-      name: 'Jhon Doe',
-      designation: 'Room Cleaner',
-
-      image: require('../Resources/images/person.jpg'),
-    },
-    {
-      name: 'Jhon Doe',
-      designation: 'Room Cleaner',
-
-      image: require('../Resources/images/person.jpg'),
-    },
-  ]);
   const {detailsContact} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -68,25 +43,39 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
     dispatch(seticonfocus('home'));
   }, []);
 
+  function openurl() {
+    Linking.openURL(`${detailsContact[0]?.Facebook}`);
+  }
+
+  function openurl1() {
+    Linking.openURL(`${detailsContact[0]?.Instagram}`);
+  }
+
+  function openurl3() {
+    Linking.openURL(`${detailsContact[0]?.Twitter}`);
+  }
+
+  function openurl4() {
+    Linking.openURL(`${detailsContact[0]?.Youtube}`);
+  }
+
+  function openurl5() {
+    Linking.openURL(
+      'whatsapp://send?text=&phone=' + `${detailsContact[0]?.WhatsApp}`,
+    );
+  }
   return (
     <Animated.View
-      style={{flex: 1, backgroundColor: 'white', ...drawerAnimationStyle}}>
+      style={{...styleSheet.maincontainerview, ...drawerAnimationStyle}}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
       />
-      <View
-        style={{
-          alignSelf: 'center',
-          paddingTop: getStatusBarHeight(),
-          flex: 12,
-        }}>
+      <View style={styleSheet.innerview}>
         <PlainHeader title={'About Us'} />
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{
-            paddingHorizontal: scalableheight.two,
-          }}>
+          style={styleSheet.scrollviewview}>
           <View>
             <View
               style={{
@@ -95,33 +84,14 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               }}>
               <Image
                 resizeMode="contain"
-                style={{width: '100%', height: scalableheight.twenty}}
+                style={styleSheet.imageview}
                 source={require('../Resources/images/fougitocover.png')}
               />
             </View>
             <View style={{marginVertical: scalableheight.one}}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Text
-                  style={{
-                    fontSize: fontSize.fourteen,
-                    fontFamily: 'Inter-Bold',
-                    color: '#29262A',
-                    alignSelf: 'flex-start',
-                  }}>
-                  Welcome to Fougito!
-                </Text>
-                <Text
-                  style={{
-                    fontSize: fontSize.twelve,
-                    fontFamily: 'Inter-Medium',
-                    color: 'rgba(41, 38, 42, 0.5)',
-                    textAlign: 'justify',
-                    alignSelf: 'flex-start',
-                  }}>
+              <View style={styleSheet.alignandjustifycenter}>
+                <Text style={styleSheet.text4}>Welcome to Fougito!</Text>
+                <Text style={styleSheet.text5}>
                   You can refer to a specific region of Mexico where your food
                   comes from, or use some common Mexican terms in your tagline.
                   Make sure that they’re terms most people would know, to avoid
@@ -130,45 +100,16 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
                   their fitness goals
                 </Text>
               </View>
-              <View
-                style={{
-                  width: '100%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginVertical: scalableheight.one,
-                }}>
-                <View
-                  style={{
-                    alignSelf: 'flex-start',
-                    width: '100%',
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: fontSize.fourteen,
-                      fontFamily: 'Inter-Bold',
-                      color: '#29262A',
-                      alignSelf: 'flex-start',
-                    }}>
-                    Come Sit With Us
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: fontSize.twelve,
-                      fontFamily: 'Inter-Medium',
-                      color: 'rgba(41, 38, 42, 0.5)',
-                      // alignSelf: 'flex-start',
-                      textAlign: 'justify',
-                    }}>
+              <View style={styleSheet.innerview2}>
+                <View style={styleSheet.innerview3}>
+                  <Text style={styleSheet.text4}>Come Sit With Us</Text>
+                  <Text style={styleSheet.text7}>
                     You could also draw attention to an open-fire grill or
                     unique cooking method, or your particularly speedy service.
                   </Text>
                 </View>
 
-                <View
-                  style={{
-                    width: '100%',
-                    flexDirection: 'row',
-                  }}>
+                <View style={styleSheet.innerview9}>
                   <View>
                     <Whyuscomponent text={'Amet curabitur loborti'} />
                     <Whyuscomponent text={'Purus purus'} />
@@ -178,28 +119,13 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
                 </View>
               </View>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginVertical: scalableheight.two,
-              }}>
+            <View style={styleSheet.innerview10}>
               <TouchableOpacity
-                onPress={() =>
-                  Linking.openURL(`${detailsContact[0]?.Facebook}`)
-                }
+                onPress={openurl}
                 activeOpacity={0.9}
-                style={{
-                  ...styleSheet.shadow,
-                  backgroundColor: '#F5F5F5',
-                  borderRadius: scalableheight.one,
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                style={[styleSheet.shadow, styleSheet.touchableviewstyle]}>
                 <FontAwesome
-                  style={{alignSelf: 'center'}}
+                  style={styleSheet.iconstyle}
                   name={'facebook'}
                   color={'#1980e7'}
                   size={fontSize.twentysix}
@@ -207,21 +133,11 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() =>
-                  Linking.openURL(`${detailsContact[0]?.Instagram}`)
-                }
+                onPress={openurl1}
                 activeOpacity={0.9}
-                style={{
-                  ...styleSheet.shadow,
-                  backgroundColor: '#F5F5F5',
-                  borderRadius: scalableheight.one,
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                style={[styleSheet.shadow, styleSheet.touchableviewstyle]}>
                 <FontAwesome
-                  style={{alignSelf: 'center'}}
+                  style={styleSheet.iconstyle}
                   name={'instagram'}
                   color={'#d72e75'}
                   size={fontSize.twentysix}
@@ -229,19 +145,11 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => Linking.openURL(`${detailsContact[0]?.Twitter}`)}
+                onPress={openurl3}
                 activeOpacity={0.9}
-                style={{
-                  ...styleSheet.shadow,
-                  backgroundColor: '#F5F5F5',
-                  borderRadius: scalableheight.one,
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                style={[styleSheet.shadow, styleSheet.touchableviewstyle]}>
                 <FontAwesome
-                  style={{alignSelf: 'center'}}
+                  style={styleSheet.iconstyle}
                   name={'twitter'}
                   color={'#7fcdf8'}
                   size={fontSize.twentysix}
@@ -250,28 +158,10 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
 
               <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={() => Linking.openURL(`${detailsContact[0]?.Youtube}`)}
-                style={{
-                  backgroundColor: '#F9F9F9',
-                  borderRadius: scalableheight.one,
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.23,
-                  shadowRadius: 2.62,
-
-                  elevation: 2,
-                  borderWidth: scalableheight.borderTopWidth,
-                  borderColor: 'rgba(211,211,211, 0.6)',
-                }}>
+                onPress={openurl4}
+                style={[styleSheet.shadow, styleSheet.touchableviewstyle]}>
                 <FontAwesome
-                  style={{alignSelf: 'center'}}
+                  style={styleSheet.iconstyle}
                   name={'youtube-play'}
                   color={'#E14E4E'}
                   size={fontSize.twentysix}
@@ -279,24 +169,11 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() =>
-                  Linking.openURL(
-                    'whatsapp://send?text=&phone=' +
-                      `${detailsContact[0]?.WhatsApp}`,
-                  )
-                }
+                onPress={openurl5}
                 activeOpacity={0.9}
-                style={{
-                  ...styleSheet.shadow,
-                  backgroundColor: '#F5F5F5',
-                  borderRadius: scalableheight.one,
-                  width: scalableheight.six,
-                  height: scalableheight.six,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                style={[styleSheet.shadow, styleSheet.touchableviewstyle]}>
                 <FontAwesome
-                  style={{alignSelf: 'center'}}
+                  style={styleSheet.iconstyle}
                   name={'whatsapp'}
                   color={'#26c54b'}
                   size={fontSize.twentysix}
@@ -311,6 +188,71 @@ const Aboutus = ({navigation, drawerAnimationStyle}) => {
 };
 
 const styleSheet = StyleSheet.create({
+  iconstyle: {alignSelf: 'center'},
+  touchableviewstyle: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: scalableheight.one,
+    width: scalableheight.six,
+    height: scalableheight.six,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerview10: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: scalableheight.two,
+  },
+  innerview9: {
+    width: '100%',
+    flexDirection: 'row',
+  },
+  text7: {
+    fontSize: fontSize.twelve,
+    fontFamily: 'Inter-Medium',
+    color: 'rgba(41, 38, 42, 0.5)',
+    // alignSelf: 'flex-start',
+    textAlign: 'justify',
+  },
+  innerview3: {
+    alignSelf: 'flex-start',
+    width: '100%',
+  },
+  text5: {
+    fontSize: fontSize.twelve,
+    fontFamily: 'Inter-Medium',
+    color: 'rgba(41, 38, 42, 0.5)',
+    textAlign: 'justify',
+    alignSelf: 'flex-start',
+  },
+  text4: {
+    fontSize: fontSize.fourteen,
+    fontFamily: 'Inter-Bold',
+    color: '#29262A',
+    alignSelf: 'flex-start',
+  },
+  alignandjustifycenter: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageview: {width: '100%', height: scalableheight.twenty},
+  scrollviewview: {
+    paddingHorizontal: scalableheight.two,
+  },
+  innerview: {
+    alignSelf: 'center',
+    paddingTop: getStatusBarHeight(),
+    flex: 12,
+  },
+  innerview2: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: scalableheight.one,
+  },
+  maincontainerview: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   Text1: {
     color: '#F9B35E',
     fontSize: fontSize.eightteen,

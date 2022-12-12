@@ -29,18 +29,19 @@ export default function Bll(props) {
       <Text
         style={{
           ...styleSheet.Text3,
-          color: props.label == 'Total Amount' ? 'black' : "black",
+          color: props.label == 'Total Amount' ? 'black' : 'black',
         }}>
         {props.label}
       </Text>
-      {props?.price > 0 &&
-      <Text
-        style={{
-          ...styleSheet.Text3,
-          color: props.label == 'Total Amount' ? 'black' : "black",
-        }}>
-        AED {props?.price?.toFixed(2)}
-      </Text>}
+      {props?.price > 0 && (
+        <Text
+          style={{
+            ...styleSheet.Text3,
+            color: props.label == 'Total Amount' ? 'black' : 'black',
+          }}>
+          AED {props?.price?.toFixed(2)}
+        </Text>
+      )}
     </View>
   );
 }

@@ -9,7 +9,7 @@ import {
   Image,
   Modal,
   ScrollView,
-  LayoutAnimation
+  LayoutAnimation,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
@@ -21,32 +21,28 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Favourites from '../Shared/Components/Favourites';
 import Addresstile from '../Shared/Components/Addresstile';
 import MYButton from '../Shared/Components/MYButton';
-import BottomTab from '../Shared/Components/BottomTab';
+// import BottomTab from '../Shared/Components/BottomTab';
 import Animated from 'react-native-reanimated';
 import Toast from 'react-native-toast-notifications';
 import NetInfo from '@react-native-community/netinfo';
-import {styles} from 'react-native-element-dropdown/src/components/TextInput/styles';
+
 import {
   createDrawerNavigator,
   DrawerItemList,
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
 import FocusAwareStatusBar from '../../src/component/StatusBar/customStatusBar';
-import {
-  deleteaddress,
-  clearaddressdeletionstatus
-} from '../Actions/actions';
-
+import {deleteaddress, clearaddressdeletionstatus} from '../Actions/actions';
 
 const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   const dispatch = useDispatch();
   const [screenname, setscreenname] = useState('');
   const [gesturestate, setgesturestate] = useState(false);
-  const {AuthToken, alladdresses, addressdeletionstatus} = useSelector(state => state.userReducer);
+  const {AuthToken, alladdresses, addressdeletionstatus} = useSelector(
+    state => state.userReducer,
+  );
   const toast = useRef();
 
-
- 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       dispatch(getalladdresses(AuthToken));
@@ -55,10 +51,10 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
       if (route?.params?.screenname != undefined) {
         setscreenname(route?.params?.screenname);
       }
-      setgesturestate(false)
+      setgesturestate(false);
       setTimeout(() => {
-        LayoutAnimation.easeInEaseOut()
-        setgesturestate(true)
+        LayoutAnimation.easeInEaseOut();
+        setgesturestate(true);
       }, 500);
     });
 
@@ -67,8 +63,16 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   }, [navigation, route]);
 
   useEffect(() => {
-    if(addressdeletionstatus != ""){
-      toast.current.show(addressdeletionstatus, {
+    if (addressdeletionstatus != '') {
+      // toast.current.show(addressdeletionstatus, {
+      //   type: 'normal',
+      //   placement: 'bottom',
+      //   duration: 4000,
+      //   offset: 10,
+      //   animationType: 'slide-in',
+      //   zIndex: 2,
+      // });
+      toast.current.show('Address Deleted Successfully', {
         type: 'normal',
         placement: 'bottom',
         duration: 4000,
@@ -77,7 +81,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
         zIndex: 2,
       });
       dispatch(getalladdresses(AuthToken));
-      dispatch(clearaddressdeletionstatus())
+      dispatch(clearaddressdeletionstatus());
     }
   }, [addressdeletionstatus]);
 
@@ -86,17 +90,15 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
       <TouchableOpacity
         style={[styleSheet.actionButton, styleSheet.deleteBtn]}
         onPress={() => {
-
-           dispatch(deleteaddress(item.Id, AuthToken))
-         
+          dispatch(deleteaddress(item.Id, AuthToken));
         }}>
         {/* <Text style={styleSheet.btnText}>Delete</Text> */}
         <MaterialCommunityIcons
-                            style={{alignSelf: 'center'}}
-                            name={'delete'}
-                            color={'white'}
-                            size={fontSize.thirty}
-                          />
+          style={{alignSelf: 'center'}}
+          name={'delete'}
+          color={'white'}
+          size={fontSize.thirty}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -106,7 +108,12 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
   };
   return (
     <Animated.View
-      style={{flex: 1, ...drawerAnimationStyle, backgroundColor: 'white', overflow:"hidden"}}>
+      style={{
+        flex: 1,
+        ...drawerAnimationStyle,
+        backgroundColor: '#F6F6F6',
+        overflow: 'hidden',
+      }}>
       <FocusAwareStatusBar
         barStyle={useIsDrawerOpen() ? 'light-content' : 'dark-content'}
         backgroundColor="transparent"
@@ -172,65 +179,77 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
               );
             }}
           /> */}
-{gesturestate == true &&
-<SwipeListView
-            key={'1'}
-            data={alladdresses}
-            // swipeGestureBegan= {gesturestate}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: scalableheight.twentytwo}}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({item, i}) => {
-              return (
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => {
-                    let currentaddress = [
-                      {
-                        Latitude: item.Latitude,
-                        Longitude: item.Longitude,
-                        icon: item.Type,
-                        place: item.Type,
-                        address: item.Address,
-                        note: item.NoteToRider,
-                        Street: item.Street,
-                        Floor: item.Floor,
-                      },
-                    ];
-                    console.log(currentaddress);
-                    dispatch(storecurrentaddress(currentaddress));
-                    navigation.goBack();
-                  }}
-                  disabled={screenname == 'checkout' ? false : true}
-                  style={{marginTop: '5%'}}>
-                  <Addresstile
-                    disabled={screenname == 'checkout' ? false : true}
+          {gesturestate == true && alladdresses.length > 0 ? (
+            <SwipeListView
+              key={'1'}
+              data={alladdresses}
+              // swipeGestureBegan= {gesturestate}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingBottom: scalableheight.twentytwo}}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item, i}) => {
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.9}
                     onPress={() => {
-                      navigation.navigate('EditAddress', {
-                        // orderId: item.OrderNo,
-                        // completedetails: Order,
-                      });
+                      let currentaddress = [
+                        {
+                          Latitude: item.Latitude,
+                          Longitude: item.Longitude,
+                          icon: item.Type,
+                          place: item.Type,
+                          address: item.Address,
+                          note: item.NoteToRider,
+                          Street: item.Street,
+                          Floor: item.Floor,
+                        },
+                      ];
+                      console.log(currentaddress);
+                      dispatch(storecurrentaddress(currentaddress));
+                      navigation.goBack();
                     }}
-                    //   // onModelPopUp={changestatus}
-                    icon={item.Type}
-                    place={item.Type}
-                    address={item.Address}
-                    note={item.NoteToRider}
-                    screenname={screenname}
-                  />
-                </TouchableOpacity>
-              );
-            }}
-            renderHiddenItem={renderHiddenItem}
-            // leftOpenValue={0}
-            disableRightSwipe={true}
-            rightOpenValue={-scalableheight.seven}
-            previewRowKey={'0'}
-            previewOpenValue={-60}
-            // previewOpenDelay={3000}
-            onRowDidOpen={onItemOpen}
-          />
-}
+                    disabled={screenname == 'checkout' ? false : true}
+                    style={{marginTop: '5%'}}>
+                    <Addresstile
+                      disabled={screenname == 'checkout' ? false : true}
+                      onPress={() => {
+                        navigation.navigate('EditAddress', {
+                          // orderId: item.OrderNo,
+                          // completedetails: Order,
+                        });
+                      }}
+                      //   // onModelPopUp={changestatus}
+                      icon={item.Type}
+                      place={item.Type}
+                      address={item.Address}
+                      note={item.NoteToRider}
+                      screenname={screenname}
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+              renderHiddenItem={renderHiddenItem}
+              // leftOpenValue={0}
+              disableRightSwipe={true}
+              rightOpenValue={-scalableheight.seven}
+              previewRowKey={'0'}
+              previewOpenValue={-60}
+              // previewOpenDelay={3000}
+              onRowDidOpen={onItemOpen}
+            />
+          ) : (
+            <View
+              style={{
+                // justifyContent: 'center',
+                // alignItems: 'center',
+                alignSelf: 'center',
+                marginVertical: scalableheight.fourty,
+              }}>
+              <Text style={{fontSize: fontSize.thirteen, color: '#000'}}>
+                No Addresses Available
+              </Text>
+            </View>
+          )}
         </View>
       </View>
       {screenname != 'checkout' && (
@@ -240,7 +259,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
             position: 'absolute',
             width: '100%',
             paddingHorizontal: scalableheight.two,
-            backgroundColor: 'white',
+            backgroundColor: '#F6F6F6',
             height: scalableheight.fifteen,
             justifyContent: 'center',
           }}>
@@ -256,7 +275,7 @@ const MyAddresses = ({props, navigation, drawerAnimationStyle, route}) => {
         </View>
       )}
 
-<Toast
+      <Toast
         ref={toast}
         style={{marginBottom: scalableheight.ten, justifyContent: 'center'}}
       />
@@ -355,13 +374,12 @@ const styleSheet = StyleSheet.create({
   },
   rowBack: {
     alignItems: 'center',
-    backgroundColor: '#fff',
-    height: '92%',
+    backgroundColor: '#F6F6F6',
+    height: '91%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingLeft: 5,
-    marginTop: '5%'
-   
+    marginTop: '5%',
   },
   actionButton: {
     alignItems: 'center',

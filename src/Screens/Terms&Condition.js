@@ -28,7 +28,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PlainHeader from '../Shared/Components/PlainHeader';
 import Whyuscomponent from '../Shared/Components/Whyuscomponent';
-import BottomTab from '../Shared/Components/BottomTab';
+// import BottomTab from '../Shared/Components/BottomTab';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {fontSize, scalableheight} from '../Utilities/fonts';
 import {

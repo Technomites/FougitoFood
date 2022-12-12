@@ -29,7 +29,10 @@ target 'FougitoFood' do
 #   'RCTWebSocket'
 # ]
 
+
+
   # Flags change depending on the env values.
+
   flags = get_default_flags()
 
   use_react_native!(
